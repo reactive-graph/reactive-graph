@@ -18,6 +18,6 @@ pub async fn print_graphql_schema_and_exit(commands: &GraphqlSchemaCommands) {
         GraphqlSchemaCommands::ReactiveGraphPluginSchema => runtime.get_plugin_schema_manager().get_schema().sdl(),
         GraphqlSchemaCommands::ReactiveGraphRuntimeSchema => runtime.get_runtime_schema_manager().get_schema().sdl(),
     };
-    println!("{}", sdl);
+    println!("{sdl}");
     exit(0);
 }

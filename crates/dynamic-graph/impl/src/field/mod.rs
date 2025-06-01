@@ -9,6 +9,7 @@ pub use relation::*;
 pub mod component;
 pub mod datatype;
 pub mod entity;
+pub mod flow;
 pub mod json;
 pub mod namespace;
 pub mod property_instance;

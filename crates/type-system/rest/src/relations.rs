@@ -26,7 +26,7 @@ pub async fn get_relation_type(
         Some(relation_type) => HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(&relation_type),
         None => HttpResponse::NotFound()
             .content_type(APPLICATION_JSON.to_string())
-            .body(format!("Relation Type {}__{} not found", namespace, type_name)),
+            .body(format!("Relation Type {namespace}__{type_name} not found")),
     }
 }
 

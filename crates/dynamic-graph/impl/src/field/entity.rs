@@ -10,16 +10,16 @@ use reactive_graph_dynamic_graph_api::EntityInstanceNotFound;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::DynamicGraphTypeDefinition;
-use crate::UNION_ALL_ENTITIES;
-use crate::create_properties_from_field_arguments;
-use crate::field_description::DynamicGraphFieldDescriptionExtension;
-use crate::field_name::DynamicGraphFieldNameExtension;
+use crate::extension::field_description::DynamicGraphFieldDescriptionExtension;
+use crate::extension::field_name::DynamicGraphFieldNameExtension;
+use crate::field::create_properties_from_field_arguments;
+use crate::field::to_field_value;
+use crate::field::to_input_type_ref;
+use crate::field::to_type_ref;
 use crate::interface::entity::INTERFACE_ENTITY_FIELD_ID;
-use crate::namespace_entities_union_type_name;
-use crate::to_field_value;
-use crate::to_input_type_ref;
-use crate::to_type_ref;
+use crate::object::types::DynamicGraphTypeDefinition;
+use crate::union::entity::UNION_ALL_ENTITIES;
+use crate::union::entity::namespace_entities_union_type_name;
 use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
 use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::ComponentTypeId;
@@ -38,10 +38,10 @@ use reactive_graph_reactive_service_api::ReactiveEntityManager;
 use reactive_graph_reactive_service_api::ReactiveRelationManager;
 use reactive_graph_runtime_model::LabeledProperties::LABEL;
 
-pub fn entity_query_field(entity_ty: &EntityTypeId, entity_type: &EntityType) -> Field {
-    let ty = entity_ty.clone();
+pub fn entity_query_field(entity_type: &EntityType) -> Field {
+    let ty = entity_type.ty.clone();
     let entity_type_inner = entity_type.clone();
-    let dy_ty = DynamicGraphTypeDefinition::from(entity_ty);
+    let dy_ty = DynamicGraphTypeDefinition::from(&ty);
     let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         let entity_type = entity_type_inner.clone();
@@ -73,10 +73,10 @@ pub fn entity_query_field(entity_ty: &EntityTypeId, entity_type: &EntityType) ->
     field
 }
 
-pub fn entity_creation_field(entity_ty: &EntityTypeId, entity_type: &EntityType) -> Option<Field> {
-    let ty = entity_ty.clone();
+pub fn entity_creation_field(entity_type: &EntityType) -> Option<Field> {
+    let ty = entity_type.ty.clone();
     let entity_type_inner = entity_type.clone();
-    let dy_ty = DynamicGraphTypeDefinition::from(entity_ty);
+    let dy_ty = DynamicGraphTypeDefinition::from(&ty);
     let mut field = Field::new(dy_ty.mutation_field_name("create"), TypeRef::named_nn(dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         let entity_type = entity_type_inner.clone();
@@ -85,7 +85,7 @@ pub fn entity_creation_field(entity_ty: &EntityTypeId, entity_type: &EntityType)
             let id = if let Some(id) = ctx.args.get("id") {
                 let id = Uuid::from_str(id.string()?)?;
                 if entity_instance_manager.has(id) {
-                    return Err(Error::new(format!("Uuid {} is already taken", id)));
+                    return Err(Error::new(format!("Uuid {id} is already taken")));
                 }
                 id
             } else {

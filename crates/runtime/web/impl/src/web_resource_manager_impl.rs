@@ -42,7 +42,7 @@ impl WebResourceManager for WebResourceManagerImpl {
     async fn register_provider(&self, web_resource_provider: Arc<dyn WebResourceProvider>) {
         let id = web_resource_provider.id();
         let context_path: String = web_resource_provider.get_context_path();
-        debug!("Registering web resource provider with context path: {}", context_path);
+        debug!("Registering web resource provider with context path: {context_path}");
         self.web_resource_providers.insert(context_path.clone(), web_resource_provider.clone());
         self.web_resource_provider_context_paths.insert(id, context_path);
     }

@@ -32,7 +32,7 @@ impl<T: Tabled + Serialize> RenderTable for Vec<T> {
         match output_format {
             OutputFormatArgs::Table => {
                 let table = Table::new(self).modify(Rows::new(1..), Width::wrap(40)).to_owned();
-                Ok(format!("{}", table))
+                Ok(format!("{table}"))
             }
             OutputFormatArgs::HtmlTable => Ok(HtmlTable::with_header(Vec::<Vec<String>>::from(Table::builder(self)))
                 .to_string()
@@ -40,7 +40,7 @@ impl<T: Tabled + Serialize> RenderTable for Vec<T> {
                 .to_string()),
             OutputFormatArgs::MarkdownTable => {
                 let table = Table::new(self).with(Style::markdown()).to_owned();
-                Ok(format!("{}", table))
+                Ok(format!("{table}"))
             }
             OutputFormatArgs::Count => Ok(format!("{}", self.len())),
             OutputFormatArgs::Json | OutputFormatArgs::Json5 => Ok(serde_json::to_string_pretty(self).map_err(SerializationError::Json)?),

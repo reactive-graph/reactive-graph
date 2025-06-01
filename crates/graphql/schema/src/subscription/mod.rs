@@ -37,10 +37,10 @@ impl ReactiveGraphSubscription {
         match context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>() {
             Ok(entity_instance_manager) => {
                 let entity_instance;
-                if id.is_some() {
-                    entity_instance = entity_instance_manager.get(id.unwrap());
-                } else if label.is_some() {
-                    entity_instance = entity_instance_manager.get_by_label(label.unwrap().as_str());
+                if let Some(id) = id {
+                    entity_instance = entity_instance_manager.get(id);
+                } else if let Some(label) = label {
+                    entity_instance = entity_instance_manager.get_by_label(label.as_str());
                 } else {
                     return Err("Either id or label must be given!".into());
                 }

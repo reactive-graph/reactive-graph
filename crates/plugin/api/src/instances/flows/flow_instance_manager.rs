@@ -1,10 +1,8 @@
-use std::collections::HashMap;
-
-use serde_json::Value;
 use uuid::Uuid;
 
 use reactive_graph_graph::FlowInstance;
 use reactive_graph_graph::FlowTypeId;
+use reactive_graph_graph::PropertyInstances;
 use reactive_graph_reactive_model_impl::ReactiveFlow;
 use reactive_graph_reactive_service_api::ReactiveFlowCreationError;
 
@@ -39,8 +37,9 @@ pub trait FlowInstanceManager: Send + Sync {
     fn create_from_type(
         &self,
         ty: &FlowTypeId,
-        variables: HashMap<String, Value>,
-        properties: HashMap<String, Value>,
+        id: Option<Uuid>,
+        variables: PropertyInstances,
+        properties: PropertyInstances,
     ) -> Result<ReactiveFlow, ReactiveFlowCreationError>;
 
     /// Deletes the flow instance with the given id.

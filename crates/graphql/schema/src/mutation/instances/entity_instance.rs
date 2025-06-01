@@ -56,7 +56,7 @@ impl MutationEntityInstances {
         let entity_ty = entity_ty.into();
         let entity_type = entity_type_manager
             .get(&entity_ty)
-            .ok_or(Error::new(format!("Entity type {} does not exist", entity_ty)))?;
+            .ok_or(Error::new(format!("Entity type {entity_ty} does not exist")))?;
 
         let properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, entity_type.properties);
 
@@ -98,10 +98,10 @@ impl MutationEntityInstances {
     ) -> Result<GraphQLEntityInstance> {
         let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
         let entity_instance;
-        if id.is_some() {
-            entity_instance = reactive_entity_manager.get(id.unwrap());
-        } else if label.is_some() {
-            entity_instance = reactive_entity_manager.get_by_label(label.unwrap().as_str());
+        if let Some(id) = id {
+            entity_instance = reactive_entity_manager.get(id);
+        } else if let Some(label) = label {
+            entity_instance = reactive_entity_manager.get_by_label(label.as_str());
         } else {
             return Err("Either id or label must be given!".into());
         }
@@ -194,7 +194,7 @@ impl MutationEntityInstances {
         let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
         let entity_instance = reactive_entity_manager.get(id);
         if entity_instance.is_none() {
-            return Err(Error::new(format!("Entity instance {} does not exist!", id)));
+            return Err(Error::new(format!("Entity instance {id} does not exist!")));
         }
         let entity_instance = entity_instance.unwrap();
         entity_instance.tick();
@@ -237,12 +237,12 @@ impl MutationEntityInstances {
         if entity_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             entity_behaviour_manager
                 .connect(reactive_instance.clone(), &behaviour_ty)
-                .map_err(|e| Error::new(format!("Failed to connect entity behaviour {:?}", e)))?;
+                .map_err(|e| Error::new(format!("Failed to connect entity behaviour {e:?}")))?;
         }
         if entity_component_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             entity_component_behaviour_manager
                 .connect(reactive_instance.clone(), &behaviour_ty)
-                .map_err(|e| Error::new(format!("Failed to connect entity component behaviour {:?}", e)))?;
+                .map_err(|e| Error::new(format!("Failed to connect entity component behaviour {e:?}")))?;
         }
         Ok(reactive_instance.into())
     }
@@ -261,12 +261,12 @@ impl MutationEntityInstances {
         if entity_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             entity_behaviour_manager
                 .disconnect(reactive_instance.clone(), &behaviour_ty)
-                .map_err(|e| Error::new(format!("Failed to disconnect entity behaviour {:?}", e)))?;
+                .map_err(|e| Error::new(format!("Failed to disconnect entity behaviour {e:?}")))?;
         }
         if entity_component_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             entity_component_behaviour_manager
                 .disconnect(reactive_instance.clone(), &behaviour_ty)
-                .map_err(|e| Error::new(format!("Failed to connect entity component behaviour {:?}", e)))?;
+                .map_err(|e| Error::new(format!("Failed to connect entity component behaviour {e:?}")))?;
         }
         Ok(reactive_instance.into())
     }
@@ -285,12 +285,12 @@ impl MutationEntityInstances {
         if entity_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             entity_behaviour_manager
                 .reconnect(reactive_instance.clone(), &behaviour_ty)
-                .map_err(|e| Error::new(format!("Failed to reconnect entity behaviour {:?}", e)))?;
+                .map_err(|e| Error::new(format!("Failed to reconnect entity behaviour {e:?}")))?;
         }
         if entity_component_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             entity_component_behaviour_manager
                 .reconnect(reactive_instance.clone(), &behaviour_ty)
-                .map_err(|e| Error::new(format!("Failed to connect entity component behaviour {:?}", e)))?;
+                .map_err(|e| Error::new(format!("Failed to connect entity component behaviour {e:?}")))?;
         }
         Ok(reactive_instance.into())
     }

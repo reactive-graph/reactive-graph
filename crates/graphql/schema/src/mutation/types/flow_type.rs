@@ -83,7 +83,7 @@ impl MutationFlowTypes {
             Ok(_) => relation_type_manager
                 .get(&ty)
                 .map(|relation_type| relation_type.into())
-                .ok_or_else(|| Error::new(format!("Relation Type {} not found", ty))),
+                .ok_or_else(|| Error::new(format!("Relation Type {ty} not found"))),
             Err(FlowTypeUpdateError::FlowTypeDoesNotExist(ty)) => {
                 Err(Error::new(format!("Failed to update description of flow type {ty}: Flow type does not exist")))
             }

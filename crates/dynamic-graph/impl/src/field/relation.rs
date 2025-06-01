@@ -8,15 +8,15 @@ use reactive_graph_reactive_service_api::ReactiveRelationRegistrationError;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::DynamicGraphTypeDefinition;
-use crate::INTERFACE_RELATION_FIELD_INSTANCE_ID;
-use crate::INTERFACE_RELATION_FIELD_KEY;
-use crate::UNION_ALL_ENTITIES;
-use crate::create_properties_from_field_arguments;
-use crate::namespace_entities_union_type_name;
-use crate::to_field_value;
-use crate::to_input_type_ref;
-use crate::to_type_ref;
+use crate::field::create_properties_from_field_arguments;
+use crate::field::to_field_value;
+use crate::field::to_input_type_ref;
+use crate::field::to_type_ref;
+use crate::interface::relation::INTERFACE_RELATION_FIELD_INSTANCE_ID;
+use crate::interface::relation::INTERFACE_RELATION_FIELD_KEY;
+use crate::object::types::DynamicGraphTypeDefinition;
+use crate::union::entity::UNION_ALL_ENTITIES;
+use crate::union::entity::namespace_entities_union_type_name;
 use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
 use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::ComponentTypeId;
@@ -29,7 +29,6 @@ use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::RelationInstanceTypeId;
 use reactive_graph_graph::RelationType;
-use reactive_graph_graph::RelationTypeId;
 use reactive_graph_reactive_model_impl::ReactiveProperties;
 use reactive_graph_reactive_model_impl::ReactiveRelation;
 use reactive_graph_reactive_service_api::ReactiveEntityManager;
@@ -37,10 +36,10 @@ use reactive_graph_reactive_service_api::ReactiveRelationCreationError;
 use reactive_graph_reactive_service_api::ReactiveRelationManager;
 use reactive_graph_runtime_model::LabeledProperties::LABEL;
 
-pub fn relation_query_field(relation_ty: &RelationTypeId, relation_type: &RelationType) -> Field {
-    let ty = relation_ty.clone();
+pub fn relation_query_field(relation_type: &RelationType) -> Field {
+    let ty = relation_type.ty.clone();
     let relation_type_inner = relation_type.clone();
-    let dy_ty = DynamicGraphTypeDefinition::from(relation_ty);
+    let dy_ty = DynamicGraphTypeDefinition::from(&ty);
     let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         let relation_type = relation_type_inner.clone();
@@ -126,10 +125,10 @@ pub fn relation_query_field(relation_ty: &RelationTypeId, relation_type: &Relati
     field
 }
 
-pub fn relation_creation_field(relation_ty: &RelationTypeId, relation_type: &RelationType) -> Option<Field> {
-    let ty = relation_ty.clone();
+pub fn relation_creation_field(relation_type: &RelationType) -> Option<Field> {
+    let ty = relation_type.ty.clone();
     let relation_type_inner = relation_type.clone();
-    let dy_ty = DynamicGraphTypeDefinition::from(relation_ty);
+    let dy_ty = DynamicGraphTypeDefinition::from(&ty);
     let mut field = Field::new(dy_ty.mutation_field_name("create"), TypeRef::named_nn(dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         let relation_type = relation_type_inner.clone();
@@ -182,9 +181,9 @@ pub fn relation_creation_field(relation_ty: &RelationTypeId, relation_type: &Rel
     Some(field)
 }
 
-pub fn relation_mutation_field(relation_ty: &RelationTypeId, relation_type: &RelationType) -> Option<Field> {
-    let ty = relation_ty.clone();
-    let dy_ty = DynamicGraphTypeDefinition::from(relation_ty);
+pub fn relation_mutation_field(relation_type: &RelationType) -> Option<Field> {
+    let ty = relation_type.ty.clone();
+    let dy_ty = DynamicGraphTypeDefinition::from(&ty);
     let field = Field::new(dy_ty.field_name(), TypeRef::named_nn(dy_ty.mutation_type_name()), move |ctx| {
         let ty = ty.clone();
         FieldFuture::new(async move {

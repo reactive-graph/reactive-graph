@@ -21,7 +21,7 @@ pub async fn get_component(path: web::Path<(String, String)>, component_manager:
         Some(component) => HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(&component),
         None => HttpResponse::NotFound()
             .content_type(APPLICATION_JSON.to_string())
-            .body(format!("Component {}__{} not found", namespace, type_name)),
+            .body(format!("Component {namespace}__{type_name} not found")),
     }
 }
 

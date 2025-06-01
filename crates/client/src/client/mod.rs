@@ -37,10 +37,10 @@ impl Display for ReactiveGraphClientError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
             ReactiveGraphClientError::InvalidBearer(e) => {
-                writeln!(f, "{}", e)
+                writeln!(f, "{e}")
             }
             ReactiveGraphClientError::ClientCreationError(e) => {
-                writeln!(f, "{}", e)
+                writeln!(f, "{e}")
             }
         }
     }
@@ -73,7 +73,7 @@ impl Display for ReactiveGraphClientExecutionError {
                 writeln!(f, "Failed to parse response:\n{e:?}")
             }
             ReactiveGraphClientExecutionError::GraphQlError(e) => {
-                let graphql_errors: Vec<String> = e.iter().map(|graphql_error| format!("{}", graphql_error)).collect();
+                let graphql_errors: Vec<String> = e.iter().map(|graphql_error| format!("{graphql_error}")).collect();
                 writeln!(f, "The response returned errors:\n{}", graphql_errors.join("\n"))
             }
             ReactiveGraphClientExecutionError::IntrospectionQueryError => {
@@ -102,7 +102,7 @@ impl ReactiveGraphClient {
         let remote = remote.into();
         let mut client_builder = Client::builder().user_agent(remote.user_agent.clone());
         if let Some(bearer) = remote.bearer.clone() {
-            let header_value = reqwest::header::HeaderValue::from_str(&format!("Bearer {}", bearer)).map_err(ReactiveGraphClientError::InvalidBearer)?;
+            let header_value = reqwest::header::HeaderValue::from_str(&format!("Bearer {bearer}")).map_err(ReactiveGraphClientError::InvalidBearer)?;
             client_builder = client_builder.default_headers(std::iter::once((reqwest::header::AUTHORIZATION, header_value)).collect());
         }
         let client = client_builder.build().map_err(ReactiveGraphClientError::ClientCreationError)?;
@@ -149,10 +149,7 @@ impl ReactiveGraphClient {
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .ok_or(ReactiveGraphClientExecutionError::IntrospectionQueryError)
-            .and_then(|data| {
-                data.into_schema()
-                    .map_err(|e| ReactiveGraphClientExecutionError::IntrospectionQuerySchemaError(e))
-            })
+            .and_then(|data| data.into_schema().map_err(ReactiveGraphClientExecutionError::IntrospectionQuerySchemaError))
     }
 
     pub async fn introspection_query_reactive_graph(&self) -> Result<Schema, ReactiveGraphClientExecutionError> {

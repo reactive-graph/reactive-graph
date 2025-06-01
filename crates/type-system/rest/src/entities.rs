@@ -23,7 +23,7 @@ pub async fn get_entity_type(path: web::Path<(String, String)>, entity_type_mana
         Some(entity_type) => HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(&entity_type),
         None => HttpResponse::NotFound()
             .content_type(APPLICATION_JSON.to_string())
-            .body(format!("Entity Type {}__{} not found", namespace, type_name)),
+            .body(format!("Entity Type {namespace}__{type_name} not found")),
     }
 }
 

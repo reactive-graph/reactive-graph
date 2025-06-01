@@ -9,9 +9,10 @@ use crate::query::GraphQLPlugin;
 
 pub struct PluginMutation;
 
-/// Mutations for the type system, the instances and the flows.
+/// Mutations for the plugin system.
 #[Object(name = "Mutation")]
 impl PluginMutation {
+    /// Stops the plugin with the given name.
     async fn stop(&self, context: &Context<'_>, name: String) -> Result<GraphQLPlugin> {
         let plugin_container_manager = context.data::<Arc<dyn PluginContainerManager + Send + Sync>>()?;
         let plugin_resolver = context.data::<Arc<dyn PluginResolver + Send + Sync>>()?;
@@ -26,6 +27,7 @@ impl PluginMutation {
         Ok(GraphQLPlugin { id })
     }
 
+    /// Starts the plugin with the given name.
     async fn start(&self, context: &Context<'_>, name: String) -> Result<GraphQLPlugin> {
         let plugin_container_manager = context.data::<Arc<dyn PluginContainerManager + Send + Sync>>()?;
         let plugin_resolver = context.data::<Arc<dyn PluginResolver + Send + Sync>>()?;
@@ -45,6 +47,7 @@ impl PluginMutation {
         Ok(GraphQLPlugin { id })
     }
 
+    /// Restarts the plugin with the given name.
     async fn restart(&self, context: &Context<'_>, name: String) -> Result<GraphQLPlugin> {
         let plugin_container_manager = context.data::<Arc<dyn PluginContainerManager + Send + Sync>>()?;
         let plugin_resolver = context.data::<Arc<dyn PluginResolver + Send + Sync>>()?;
@@ -70,7 +73,7 @@ impl PluginMutation {
         Ok(GraphQLPlugin { id })
     }
 
-    /// Uninstalls a plugin
+    /// Uninstalls the plugin with the given name.
     async fn uninstall(&self, context: &Context<'_>, name: String) -> Result<bool> {
         let plugin_container_manager = context.data::<Arc<dyn PluginContainerManager + Send + Sync>>()?;
         let plugin_resolver = context.data::<Arc<dyn PluginResolver + Send + Sync>>()?;

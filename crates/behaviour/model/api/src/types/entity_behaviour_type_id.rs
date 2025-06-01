@@ -26,6 +26,7 @@ use typed_builder::TypedBuilder;
 use crate::BehaviourTypeId;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::NamespacedType;
+use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 
 /// The behaviour of an entity type.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema, TypedBuilder)]
@@ -63,7 +64,7 @@ impl From<&BehaviourTypeId> for EntityBehaviourTypeId {
 
 impl Display for EntityBehaviourTypeId {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}__{}", &self.entity_ty, &self.behaviour_ty)
+        write!(f, "{}{}{}", &self.entity_ty, TYPE_ID_TYPE_SEPARATOR, &self.behaviour_ty)
     }
 }
 

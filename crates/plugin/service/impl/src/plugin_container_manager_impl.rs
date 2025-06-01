@@ -213,7 +213,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
     fn deploy_dll(&self, id: &Uuid) -> PluginTransitionResult {
         match self.plugin_containers.get_mut(id) {
             Some(mut plugin_container) => {
-                trace!("Plugin {} is deploying the dynamic linked library", id);
+                trace!("Plugin {id} is deploying the dynamic linked library");
                 plugin_container.deploy_dll()
             }
             None => NoChange,
@@ -223,7 +223,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
     fn load_dll(&self, id: &Uuid) -> PluginTransitionResult {
         match self.plugin_containers.get_mut(id) {
             Some(mut plugin_container) => {
-                trace!("Plugin {} is loading the dynamic linked library", id);
+                trace!("Plugin {id} is loading the dynamic linked library");
                 plugin_container.load_dll()
             }
             None => NoChange,
@@ -233,7 +233,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
     fn load_plugin_declaration(&self, id: &Uuid) -> PluginTransitionResult {
         match self.plugin_containers.get_mut(id) {
             Some(mut plugin_container) => {
-                trace!("Plugin {} is loading the plugin declaration", id);
+                trace!("Plugin {id} is loading the plugin declaration");
                 plugin_container.value_mut().load_plugin_declaration()
             }
             None => NoChange,
@@ -243,7 +243,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
     fn check_plugin_compatibility(&self, id: &Uuid) -> PluginTransitionResult {
         match self.plugin_containers.get_mut(id) {
             Some(mut plugin_container) => {
-                trace!("Plugin {} is checked for compatibility", id);
+                trace!("Plugin {id} is checked for compatibility");
                 plugin_container.value_mut().check_compatibility()
             }
             None => NoChange,
@@ -253,7 +253,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
     fn load_plugin_dependencies(&self, id: &Uuid) -> PluginTransitionResult {
         match self.plugin_containers.get_mut(id) {
             Some(mut plugin_container) => {
-                trace!("Plugin {} is loading the list of dependencies", id);
+                trace!("Plugin {id} is loading the list of dependencies");
                 plugin_container.value_mut().load_plugin_dependencies()
             }
             None => NoChange,
@@ -318,7 +318,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
 
     fn resolve_dependencies_state(&self, id: &Uuid, refreshing: bool) -> PluginTransitionResult {
         if !self.has_unsatisfied_dependencies(id) {
-            debug!("Plugin {} has no unsatisfied dependencies", id);
+            debug!("Plugin {id} has no unsatisfied dependencies");
             let new_state = if refreshing {
                 PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::ConstructingProxy))
             } else {
@@ -326,7 +326,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
             };
             self.set_state(id, new_state)
         } else {
-            trace!("Plugin {} has unsatisfied dependencies", id);
+            trace!("Plugin {id} has unsatisfied dependencies");
             let new_state = if refreshing {
                 PluginState::Refreshing(PluginRefreshingState::Resolving(PluginResolveState::DependenciesNotActive))
             } else {

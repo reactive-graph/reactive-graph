@@ -10,10 +10,21 @@ rust-version.workspace = true
 readme = "../../../README.md"
 
 [dependencies]
-actix-web = { workspace = true, features = ["rustls-0_23"] }
+default-test = { workspace = true, optional = true }
 schemars = { workspace = true, features = ["uuid1"] }
+serde_json = { workspace = true }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-utils-test = { version = "0.10.0", path = "../../utils/test", optional = true }
+
+[dev-dependencies]
+default-test = { workspace = true }
+
+reactive-graph-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
+reactive-graph-utils-test = { version = "0.10.0", path = "../../utils/test" }
+
+[features]
+test = ["default-test", "reactive-graph-utils-test"]
 
 [lib]
 crate-type = ["lib"]

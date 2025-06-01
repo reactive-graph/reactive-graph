@@ -86,7 +86,7 @@ impl MutationRelationTypes {
             Ok(_) => relation_type_manager
                 .get(&ty)
                 .map(|relation_type| relation_type.into())
-                .ok_or_else(|| Error::new(format!("Relation Type {} not found", ty))),
+                .ok_or_else(|| Error::new(format!("Relation Type {ty} not found"))),
             Err(RelationTypeUpdateError::RelationTypeDoesNotExist(ty)) => {
                 Err(Error::new(format!("Failed to update description of relation type {ty}: Relation type does not exist")))
             }

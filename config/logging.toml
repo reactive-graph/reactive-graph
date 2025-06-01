@@ -118,7 +118,7 @@ level = "debug"
 level = "info"
 
 [loggers."reactive_graph_dynamic_graph_impl::object::namespace"]
-level = "error"
+level = "info"
 
 ### Plugin Service Implementation
 
@@ -261,11 +261,11 @@ level = "info"
 [loggers."h2::codec"]
 level = "info"
 
-[loggers."salsa"]
+[loggers."hyper"]
 level = "info"
 
-[loggers."salsa::derived::slot"]
-level = "warn"
+[loggers."hyper_util"]
+level = "info"
 
 [loggers."rumqttc::state"]
 level = "debug"
@@ -275,17 +275,20 @@ additive = false
 [loggers."reqwest"]
 level = "info"
 
-[loggers."hyper"]
-level = "info"
+[loggers."rustls"]
+level = "error"
 
 [loggers."rustyline"]
 level = "info"
+
+[loggers."salsa"]
+level = "info"
+
+[loggers."salsa::derived::slot"]
+level = "warn"
 
 [loggers."springtime_di::factory"]
 level = "info"
 
 [loggers."springtime_di::component_registry::registry"]
-level = "info"
-
-[loggers."hyper_util"]
 level = "info"

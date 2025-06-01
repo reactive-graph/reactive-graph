@@ -39,8 +39,8 @@ impl fmt::Display for GraphQLRelationInstanceId {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "{}--{}{}{}__{}--{}",
-            self.outbound_id, self.namespace, &TYPE_ID_TYPE_SEPARATOR, self.type_name, self.instance_id, self.outbound_id
+            "{}--{}{}{}{}{}--{}",
+            self.outbound_id, self.namespace, &TYPE_ID_TYPE_SEPARATOR, self.type_name, TYPE_ID_TYPE_SEPARATOR, self.instance_id, self.outbound_id
         )
     }
 }

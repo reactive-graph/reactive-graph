@@ -48,8 +48,8 @@ impl Instances {
         #[graphql(name = "properties", desc = "Query by properties.")] property_query: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<Vec<GraphQLEntityInstance>> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
-        if id.is_some() {
-            let entity_instance = entity_instance_manager.get(id.unwrap()).map(|entity_instance| {
+        if let Some(id) = id {
+            let entity_instance = entity_instance_manager.get(id).map(|entity_instance| {
                 let entity_instance: GraphQLEntityInstance = entity_instance.into();
                 entity_instance
             });
@@ -59,8 +59,8 @@ impl Instances {
                 Ok(Vec::new())
             };
         }
-        if label.is_some() {
-            let entity_instance = entity_instance_manager.get_by_label(label.unwrap().as_str()).map(|entity_instance| {
+        if let Some(label) = label {
+            let entity_instance = entity_instance_manager.get_by_label(label.as_str()).map(|entity_instance| {
                 let entity_instance: GraphQLEntityInstance = entity_instance.into();
                 entity_instance
             });
@@ -179,8 +179,7 @@ impl Instances {
         #[graphql(name = "properties", desc = "Query by properties.")] property_query: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<Vec<GraphQLRelationInstance>> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
-        if id.is_some() {
-            let id = id.unwrap();
+        if let Some(id) = id {
             let id = id.into();
             let relation_instance = relation_instance_manager.get(&id).map(|relation_instance| {
                 let relation_instance: GraphQLRelationInstance = relation_instance.into();
@@ -275,14 +274,14 @@ impl Instances {
         // TODO: Add filter by property
     ) -> Result<Vec<GraphQLFlowInstance>> {
         let reactive_flow_manager = context.data::<Arc<dyn ReactiveFlowManager + Send + Sync>>()?;
-        if id.is_some() {
-            return match reactive_flow_manager.get(id.unwrap()).map(|flow| flow.into()) {
+        if let Some(id) = id {
+            return match reactive_flow_manager.get(id).map(|flow| flow.into()) {
                 Some(flow) => Ok(vec![flow]),
                 None => Ok(Vec::new()),
             };
         }
-        if label.is_some() {
-            let flow = reactive_flow_manager.get_by_label(label.unwrap().as_str()).map(|flow| {
+        if let Some(label) = label {
+            let flow = reactive_flow_manager.get_by_label(label.as_str()).map(|flow| {
                 let flow: GraphQLFlowInstance = flow.into();
                 flow
             });

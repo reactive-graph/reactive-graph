@@ -142,7 +142,7 @@ impl RemotesManagerImpl {
             Ok(Some(query)) => Ok(query.instance_info),
             Ok(None) => Err(FailedToFetchInstanceInfo::InvalidResponseData),
             Err(e) => {
-                error!("{}", e);
+                error!("{e}");
                 Err(FailedToFetchInstanceInfo::RequestError(e))
             }
         }
@@ -156,7 +156,7 @@ impl RemotesManagerImpl {
             Ok(Some(query)) => Ok(query.remotes),
             Ok(None) => Err(FailedToFetchRemoteInstances::InvalidResponseData),
             Err(e) => {
-                error!("{}", e);
+                error!("{e}");
                 Err(FailedToFetchRemoteInstances::RequestError(e))
             }
         }

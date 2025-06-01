@@ -78,7 +78,7 @@ impl PluginRepositoryManagerImpl {
                         if event.kind != Access(Close(Write)) {
                             continue;
                         }
-                        trace!("Hot Deploy Watcher: Detected file system activity: {:?}", event);
+                        trace!("Hot Deploy Watcher: Detected file system activity: {event:?}");
                         for path in event.paths.clone() {
                             let Some(stem) = get_stem(&path) else {
                                 continue;
@@ -175,7 +175,7 @@ impl PluginRepositoryManagerImpl {
                         }
                     }
                     Err(e) => {
-                        error!("Hot Deploy Watcher: Error: {}", e);
+                        error!("Hot Deploy Watcher: Error: {e}");
                     }
                 }
             }
@@ -187,7 +187,7 @@ impl PluginRepositoryManagerImpl {
                 match tx.send(r).await {
                     Ok(_) => {}
                     Err(e) => {
-                        trace!("SendError {}", e);
+                        trace!("SendError {e}");
                     }
                 }
             });
@@ -303,7 +303,7 @@ impl PluginRepositoryManager for PluginRepositoryManagerImpl {
                     trace!("Watching hot deploy folder {hot_deploy_location:?}");
                 }
                 Err(e) => {
-                    error!("Failed to watch hot deploy folder {hot_deploy_location:?}: {}", e);
+                    error!("Failed to watch hot deploy folder {hot_deploy_location:?}: {e}");
                 }
             }
         }

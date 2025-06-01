@@ -46,8 +46,8 @@ impl HinterMatch {
                         .iter()
                         .find(|(kind, _)| kind != &ContextKind::InvalidSubcommand && kind != &ContextKind::Usage && kind != &ContextKind::Custom)
                         .and_then(|(kind, value)| match (kind, value) {
-                            (ContextKind::InvalidArg, ContextValue::String(s)) => Some(format!("   {} {}", CHAR_SUGGESTION, s).to_string()),
-                            (ContextKind::InvalidArg, ContextValue::Strings(s)) => Some(format!("   {} {}", CHAR_SUGGESTION, s.join(" | "))),
+                            (ContextKind::InvalidArg, ContextValue::String(s)) => Some(format!("   {CHAR_SUGGESTION} {s}").to_string()),
+                            (ContextKind::InvalidArg, ContextValue::Strings(s)) => Some(format!("   {CHAR_SUGGESTION} {}", s.join(" | "))),
                             (ContextKind::SuggestedSubcommand, ContextValue::String(s)) => s.strip_prefix(&last_arg).map(|s| s.to_string()),
                             (ContextKind::SuggestedSubcommand, ContextValue::Strings(s)) => {
                                 let mut s: Vec<String> = s.iter().filter_map(|s| s.strip_prefix(&last_arg).map(|s| s.to_string())).collect();
@@ -55,8 +55,8 @@ impl HinterMatch {
                                 s.sort_by_key(|s| s.len());
                                 Some(s.join(" | "))
                             }
-                            (ContextKind::ValidSubcommand, ContextValue::String(s)) => Some(format!("   {} {}", CHAR_SUGGESTION, s)),
-                            (ContextKind::ValidSubcommand, ContextValue::Strings(s)) => Some(format!("   {} {}", CHAR_SUGGESTION, s.join(" | "))),
+                            (ContextKind::ValidSubcommand, ContextValue::String(s)) => Some(format!("   {CHAR_SUGGESTION} {s}")),
+                            (ContextKind::ValidSubcommand, ContextValue::Strings(s)) => Some(format!("   {CHAR_SUGGESTION} {}", s.join(" | "))),
                             (kind, value) => Some(format!(
                                 "   {} |{}| : {} = {} ({})",
                                 CHAR_ERROR,
@@ -104,14 +104,14 @@ impl HinterMatch {
         };
 
         let display = if !error_info.is_empty() {
-            format!("{}  {}", display, error_info)
+            format!("{display}  {error_info}")
         } else {
             display
         };
 
         let completion = completion.map(|s| {
             let spacer = if completion_matches < 2 { " " } else { "" };
-            format!("{}{}", s, spacer)
+            format!("{s}{spacer}")
         });
 
         Self { display, completion }

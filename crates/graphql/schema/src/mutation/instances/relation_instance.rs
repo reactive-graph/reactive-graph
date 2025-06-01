@@ -131,29 +131,29 @@ impl MutationRelationInstances {
 
         // The outbound entity instance must exist
         if !entity_instance_manager.has(outbound_id) {
-            return Err(Error::new(format!("Outbound entity {} does not exist!", outbound_id)));
+            return Err(Error::new(format!("Outbound entity {outbound_id} does not exist!")));
         }
 
         // The inbound entity instance must exist
         if !entity_instance_manager.has(inbound_id) {
-            return Err(Error::new(format!("Inbound entity {} does not exist!", inbound_id)));
+            return Err(Error::new(format!("Inbound entity {inbound_id} does not exist!")));
         }
 
         // The outbound entity instance's property must exist
         if entity_instance_manager.get(outbound_id).map(|e| e.get(&outbound_property_name)).is_none() {
-            return Err(Error::new(format!("Outbound entity {} has no property named {}!", outbound_id, outbound_property_name)));
+            return Err(Error::new(format!("Outbound entity {outbound_id} has no property named {outbound_property_name}!")));
         }
 
         // The inbound entity instance's property must exist
         if entity_instance_manager.get(inbound_id).map(|e| e.get(&inbound_property_name)).is_none() {
-            return Err(Error::new(format!("Inbound entity {} has no property named {}!", inbound_id, inbound_property_name)));
+            return Err(Error::new(format!("Inbound entity {inbound_id} has no property named {inbound_property_name}!")));
         }
 
         // Construct the instance_id because between two nodes only one edge with the same type
         // can exist. Therefore, we construct a unique type which contains the names of the outbound
         // property and the inbound property. This allows *exactly one* connector (of the given
         // connector type) between the two properties.
-        let instance_id = format!("{}__{}", outbound_property_name, inbound_property_name);
+        let instance_id = format!("{outbound_property_name}__{inbound_property_name}");
         let ty = RelationInstanceTypeId::new_unique_for_instance_id(relation_ty, instance_id);
 
         // Construct a relation instance id using the outbound id, the type identifier (containing the
@@ -174,7 +174,7 @@ impl MutationRelationInstances {
                 }
                 Ok(relation_instance.into())
             }
-            Err(creation_error) => Err(Error::new(format!("Failed to create relation instance: {:?}", creation_error))),
+            Err(e) => Err(Error::new(format!("Failed to create relation instance: {e:?}"))),
         }
     }
 
@@ -206,13 +206,13 @@ impl MutationRelationInstances {
         let relation_ty = ty.relation_type_id();
 
         if relation_type_manager.get(&relation_ty).is_none() {
-            return Err(Error::new(format!("Relation type {} does not exist!", relation_instance_id)));
+            return Err(Error::new(format!("Relation type {relation_instance_id} does not exist!")));
         }
 
         let id: RelationInstanceId = relation_instance_id.into();
         let relation_instance = relation_instance_manager
             .get(&id)
-            .ok_or_else(|| Error::new(format!("Relation instance {} does not exist!", id)))?;
+            .ok_or_else(|| Error::new(format!("Relation instance {id} does not exist!")))?;
 
         if let Some(components) = add_components {
             for component in components {
@@ -273,7 +273,7 @@ impl MutationRelationInstances {
         let id = relation_instance_id.into();
         let relation_instance = relation_instance_manager
             .get(&id)
-            .ok_or_else(|| Error::new(format!("Relation instance {} does not exist!", id)))?;
+            .ok_or_else(|| Error::new(format!("Relation instance {id} does not exist!")))?;
         relation_instance.tick();
         Ok(relation_instance.into())
     }
@@ -284,7 +284,7 @@ impl MutationRelationInstances {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
 
-        debug!("Deleting relation instance {:?}", relation_instance_id);
+        debug!("Deleting relation instance {relation_instance_id:?}",);
 
         if !entity_instance_manager.has(relation_instance_id.outbound_id) {
             return Err(Error::new(format!("Outbound entity {} does not exist!", relation_instance_id.outbound_id)));
@@ -314,12 +314,12 @@ impl MutationRelationInstances {
         if relation_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             relation_behaviour_manager
                 .connect(reactive_instance.clone(), &behaviour_ty)
-                .map_err(|e| Error::new(format!("Failed to connect relation behaviour {:?}", e)))?;
+                .map_err(|e| Error::new(format!("Failed to connect relation behaviour {e:?}")))?;
         }
         if relation_component_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             relation_component_behaviour_manager
                 .connect(reactive_instance.clone(), &behaviour_ty)
-                .map_err(|e| Error::new(format!("Failed to connect relation component behaviour {:?}", e)))?;
+                .map_err(|e| Error::new(format!("Failed to connect relation component behaviour {e:?}")))?;
         }
         Ok(reactive_instance.into())
     }
@@ -341,12 +341,12 @@ impl MutationRelationInstances {
         if relation_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             relation_behaviour_manager
                 .disconnect(reactive_instance.clone(), &behaviour_ty)
-                .map_err(|e| Error::new(format!("Failed to disconnect relation behaviour {:?}", e)))?;
+                .map_err(|e| Error::new(format!("Failed to disconnect relation behaviour {e:?}")))?;
         }
         if relation_component_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             relation_component_behaviour_manager
                 .disconnect(reactive_instance.clone(), &behaviour_ty)
-                .map_err(|e| Error::new(format!("Failed to disconnect relation component behaviour {:?}", e)))?;
+                .map_err(|e| Error::new(format!("Failed to disconnect relation component behaviour {e:?}")))?;
         }
         Ok(reactive_instance.into())
     }
@@ -368,12 +368,12 @@ impl MutationRelationInstances {
         if relation_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             relation_behaviour_manager
                 .reconnect(reactive_instance.clone(), &behaviour_ty)
-                .map_err(|e| Error::new(format!("Failed to reconnect relation behaviour {:?}", e)))?;
+                .map_err(|e| Error::new(format!("Failed to reconnect relation behaviour {e:?}")))?;
         }
         if relation_component_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             relation_component_behaviour_manager
                 .reconnect(reactive_instance.clone(), &behaviour_ty)
-                .map_err(|e| Error::new(format!("Failed to reconnect relation component behaviour {:?}", e)))?;
+                .map_err(|e| Error::new(format!("Failed to reconnect relation component behaviour {e:?}")))?;
         }
         Ok(reactive_instance.into())
     }

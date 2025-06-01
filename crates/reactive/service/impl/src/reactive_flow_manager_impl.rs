@@ -8,7 +8,6 @@ use log::debug;
 use log::error;
 use log::trace;
 use path_tree::PathTree;
-use serde_json::Value;
 use springtime_di::Component;
 use springtime_di::component_alias;
 use uuid::Uuid;
@@ -23,6 +22,7 @@ use reactive_graph_graph::MutablePropertyInstanceSetter;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyInstanceSetter;
+use reactive_graph_graph::PropertyInstances;
 use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_graph::RelationInstance;
 use reactive_graph_graph::RelationInstanceId;
@@ -84,7 +84,7 @@ pub struct ReactiveFlowManagerImpl {
 }
 
 impl ReactiveFlowManagerImpl {
-    fn get_entity_instance_id_by_extension(&self, entity_instance: &EntityInstance, variables: &HashMap<String, Value>) -> Uuid {
+    fn get_entity_instance_id_by_extension(&self, entity_instance: &EntityInstance, variables: &PropertyInstances) -> Uuid {
         // Resolve an existing entity instance: Do not replace the uuid
         if entity_instance.has_own_extension(&EXTENSION_FLOW_RESOLVE_EXISTING_INSTANCE.clone()) {
             return entity_instance.id;
@@ -94,8 +94,8 @@ impl ReactiveFlowManagerImpl {
             .get_own_extension(&EXTENSION_FLOW_UUID_TYPE_VARIABLE.clone())
             .and_then(|extension| extension.extension.as_str().map(|s| s.to_string()))
             .and_then(|variable_name| variables.get(&variable_name))
-            .and_then(|variable_value| variable_value.as_str())
-            .and_then(|variable_value| Uuid::parse_str(variable_value).ok())
+            .and_then(|variable_value| variable_value.as_str().map(|s| s.to_string()))
+            .and_then(|variable_value| Uuid::parse_str(&variable_value).ok())
         {
             return id;
         }
@@ -132,6 +132,19 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
         self.reactive_flow_instances.iter().map(|reactive_flow| reactive_flow.value().clone()).collect()
     }
 
+    // TODO: Assuming, that an EntityType is used in only one FlowType!
+    fn get_by_type(&self, ty: &FlowTypeId) -> Vec<ReactiveFlow> {
+        let Some(flow_type) = self.flow_type_manager.get(ty) else {
+            return Vec::new();
+        };
+        let entity_ty = flow_type.wrapper_type();
+        self.reactive_flow_instances
+            .iter()
+            .filter(|reactive_flow| reactive_flow.ty == entity_ty)
+            .map(|reactive_flow| reactive_flow.value().clone())
+            .collect()
+    }
+
     fn count_flow_instances(&self) -> usize {
         self.reactive_flow_instances.len()
     }
@@ -149,8 +162,9 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     fn create_from_type(
         &self,
         ty: &FlowTypeId,
-        variables: HashMap<String, Value>,
-        properties: HashMap<String, Value>,
+        id: Option<Uuid>,
+        variables: PropertyInstances,
+        properties: PropertyInstances,
     ) -> Result<ReactiveFlow, ReactiveFlowCreationError> {
         let flow_type = self
             .flow_type_manager
@@ -166,7 +180,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
             .get(&flow_type.wrapper_entity_instance.ty)
             .ok_or_else(|| ReactiveFlowCreationError::EntityTypeDoesntExist(flow_type.wrapper_entity_instance.ty.clone()))?;
         let mut wrapper_entity_instance = flow_type.wrapper_entity_instance.clone();
-        let wrapper_entity_instance_id = self.get_entity_instance_id_by_extension(&wrapper_entity_instance, &variables);
+        let wrapper_entity_instance_id = id.unwrap_or_else(|| self.get_entity_instance_id_by_extension(&wrapper_entity_instance, &variables));
         let mut entity_instance_id_mapping: HashMap<Uuid, Uuid> = HashMap::new();
         entity_instance_id_mapping.insert(wrapper_entity_instance.id, wrapper_entity_instance_id);
         wrapper_entity_instance.id = wrapper_entity_instance_id;
@@ -198,9 +212,11 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
             }
         }
 
-        for (property_name, property_value) in properties.iter() {
-            trace!("Setting property {} with value {} from parameter", &property_name, property_value.clone());
-            wrapper_entity_instance.set(property_name, property_value.clone());
+        for property in properties.iter() {
+            let property_name = property.key();
+            let value = property.value();
+            trace!("Setting property {property_name} with value {value} from parameter");
+            wrapper_entity_instance.set(property_name, value.clone());
         }
 
         let entity_instances = EntityInstances::new_with_instance(wrapper_entity_instance);
@@ -314,19 +330,21 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
             .build();
 
         // let flow_instance = flow_instance_builder.build();
-        trace!("{:?}", flow_instance);
+        trace!("{flow_instance:?}");
         match ReactiveFlow::try_from(flow_instance) {
             Ok(reactive_flow_instance) => {
                 self.register_flow_instance_and_reactive_instances(reactive_flow_instance.clone());
 
                 // Set or create properties given with the flow type instantiation
                 if let Some(wrapper_entity_instance) = reactive_flow_instance.get_wrapper_entity_instance() {
-                    for (property_name, property_value) in properties.iter() {
+                    for property in properties.iter() {
+                        let property_name = property.key();
+                        let property_value = property.value();
                         if !wrapper_entity_instance.has_property(property_name) {
-                            trace!("Adding parameter property {} with value {} from parameter", property_name, property_value.clone());
+                            trace!("Adding parameter property {property_name} with value {property_value} from parameter");
                             wrapper_entity_instance.add_property(property_name, Mutable, property_value.clone());
                         } else {
-                            trace!("Set parameter property {} with value {} from parameter", property_name, property_value.clone());
+                            trace!("Set parameter property {property_name} with value {property_value} from parameter");
                             wrapper_entity_instance.set(property_name, property_value.clone());
                         }
                     }
@@ -355,7 +373,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
                         }
                         Err(e) => {
                             // This happens when a entity instance doesn't exist and cannot be created
-                            debug!("Failed to register entity instance {}: {:?}", uuid, e);
+                            debug!("Failed to register entity instance {uuid}: {e:?}");
                         }
                     }
                     // let entity_instance = self
@@ -405,7 +423,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
                         }
                         Err(e) => {
                             // This happens when a relation instance doesn't exist and cannot be created
-                            debug!("Failed to register relation instance {:?}: {:?}", relation_instance_id, e);
+                            debug!("Failed to register relation instance {relation_instance_id:?}: {e:?}");
                         }
                     }
                 }
@@ -557,7 +575,7 @@ impl Lifecycle for ReactiveFlowManagerImpl {
                         match created_flow_instance {
                             Ok(created_flow_instance) => {
                                 let json = serde_json::to_string_pretty(&created_flow_instance).unwrap();
-                                debug!("Successfully created reactive flow instance:\r\n{}", json);
+                                debug!("Successfully created reactive flow instance:\r\n{json}");
                             }
                             Err(err) => {
                                 debug!("Successfully created reactive flow instance {}, but failed to serialize: {:?}", flow_instance.id, err);

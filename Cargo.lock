@@ -4733,9 +4733,11 @@ dependencies = [
  "async-graphql",
  "async-trait",
  "convert_case 0.8.0",
+ "dashmap",
  "itertools 0.14.0",
  "log",
  "reactive-graph-dynamic-graph-api",
+ "reactive-graph-dynamic-graph-json-schema",
  "reactive-graph-dynamic-graph-model",
  "reactive-graph-graph",
  "reactive-graph-lifecycle",
@@ -4744,6 +4746,7 @@ dependencies = [
  "reactive-graph-reactive-service-api",
  "reactive-graph-runtime-model",
  "reactive-graph-type-system-api",
+ "schemars",
  "serde",
  "serde_json",
  "springtime-di",
@@ -4755,9 +4758,11 @@ dependencies = [
 name = "reactive-graph-dynamic-graph-json-schema"
 version = "0.10.0"
 dependencies = [
- "actix-web",
+ "default-test",
  "reactive-graph-graph",
+ "reactive-graph-utils-test",
  "schemars",
+ "serde_json",
 ]
 
 [[package]]
@@ -5637,12 +5642,12 @@ name = "reactive-graph-utils-schema-generator"
 version = "0.10.0"
 dependencies = [
  "anyhow",
- "reactive-graph-graph",
+ "async-graphql",
  "reactive-graph-instance-system-json-schema",
  "reactive-graph-runtime-impl",
  "reactive-graph-type-system-json-schema",
- "schemars",
  "serde_json",
+ "thiserror 2.0.12",
  "workspace_root",
 ]
 

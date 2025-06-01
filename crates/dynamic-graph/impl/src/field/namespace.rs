@@ -27,19 +27,17 @@ pub fn namespace_mutation_type_ref(namespace: &String) -> TypeRef {
 }
 
 pub fn namespace_query_field(namespace: &String) -> Field {
-    Field::new(namespace_field_name(namespace), namespace_type_ref(namespace), |_ctx| {
-        FieldFuture::new(async move {
-            let v = FieldValue::value("test");
-            Ok(Some(v))
-        })
+    let namespace_inner = namespace.clone();
+    Field::new(namespace_field_name(namespace), namespace_type_ref(namespace), move |_ctx| {
+        let namespace = namespace_inner.clone();
+        FieldFuture::new(async move { Ok(Some(FieldValue::value(namespace))) })
     })
 }
 
 pub fn namespace_mutation_field(namespace: &String) -> Field {
-    Field::new(namespace_field_name(namespace), namespace_mutation_type_ref(namespace), |_ctx| {
-        FieldFuture::new(async move {
-            let v = FieldValue::value("test");
-            Ok(Some(v))
-        })
+    let namespace_inner = namespace.clone();
+    Field::new(namespace_field_name(namespace), namespace_mutation_type_ref(namespace), move |_ctx| {
+        let namespace = namespace_inner.clone();
+        FieldFuture::new(async move { Ok(Some(FieldValue::value(namespace))) })
     })
 }

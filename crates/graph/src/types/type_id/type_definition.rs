@@ -1,17 +1,22 @@
 use schemars::JsonSchema;
 use serde::Deserialize;
+use serde::Deserializer;
 use serde::Serialize;
+use serde::Serializer;
+use serde::de::Error;
 use std::fmt::Display;
 use std::fmt::Formatter;
+use thiserror::Error;
 use typed_builder::TypedBuilder;
 
 use crate::NamespacedType;
 use crate::NamespacedTypeGetter;
 use crate::TYPE_ID_TYPE_SEPARATOR;
 use crate::TypeIdType;
+use crate::TypeIdTypeParseError;
 
 /// Definition of a type with the type of the type, the namespace and the name of the type.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[derive(Clone, Debug, PartialEq, Eq, JsonSchema, TypedBuilder)]
 pub struct TypeDefinition {
     pub type_id_type: TypeIdType,
     pub namespace: String,
@@ -67,6 +72,25 @@ impl NamespacedTypeGetter for TypeDefinition {
         self.type_name.clone()
     }
 }
+impl Serialize for TypeDefinition {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(format!("{self}").as_str())
+    }
+}
+
+impl<'de> Deserialize<'de> for TypeDefinition {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let v = String::deserialize(deserializer)?;
+        let type_definition = Self::try_from(&v).map_err(Error::custom)?;
+        Ok(type_definition)
+    }
+}
 
 /// Returns the fully qualified type name.
 impl Display for TypeDefinition {
@@ -96,23 +120,53 @@ impl From<&TypeDefinition> for NamespacedType {
     }
 }
 
+#[derive(Debug, Error)]
+pub enum TypeDefinitionParseError {
+    #[error("The type id type is empty")]
+    EmptyTypeIdType,
+    #[error("{0}")]
+    TypeIdTypeParseError(TypeIdTypeParseError),
+    #[error("The namespace is missing")]
+    MissingNamespace,
+    #[error("The namespace is empty")]
+    EmptyNamespace,
+    #[error("The type name is missing")]
+    MissingTypeName,
+    #[error("The type name is empty")]
+    EmptyTypeName,
+    #[error("There are too many separators")]
+    TooManySeparators,
+}
+
+#[derive(Debug, Error)]
+pub enum TypeIdParseError {
+    #[error("Failed to parse type id: {0}")]
+    TypeDefinitionParseError(TypeDefinitionParseError),
+    #[error("The type id type must be {0} but was {1}")]
+    InvalidTypeIdType(TypeIdType, TypeIdType),
+}
+
 impl TryFrom<&String> for TypeDefinition {
-    type Error = ();
+    type Error = TypeDefinitionParseError;
 
     fn try_from(s: &String) -> Result<Self, Self::Error> {
         let mut s = s.split(&TYPE_ID_TYPE_SEPARATOR);
-        let type_type: TypeIdType = s.next().ok_or(())?.try_into()?;
+        let type_type: TypeIdType = s
+            .next()
+            .ok_or(TypeDefinitionParseError::EmptyTypeIdType)?
+            .try_into()
+            .map_err(TypeDefinitionParseError::TypeIdTypeParseError)?;
 
-        let namespace = s.next().ok_or(())?;
+        let namespace = s.next().ok_or(TypeDefinitionParseError::MissingNamespace)?;
         if namespace.is_empty() {
-            return Err(());
+            return Err(TypeDefinitionParseError::EmptyNamespace);
         }
-        let type_name = s.next().ok_or(())?;
+        let type_name = s.next().ok_or(TypeDefinitionParseError::MissingTypeName)?;
         if type_name.is_empty() {
-            return Err(());
+            return Err(TypeDefinitionParseError::EmptyTypeName);
         }
         if s.next().is_some() {
-            return Err(());
+            return Err(TypeDefinitionParseError::TooManySeparators);
         }
         let td = TypeDefinition::new(type_type, NamespacedType::new(namespace, type_name));
         Ok(td)

@@ -54,7 +54,7 @@ pub(crate) async fn repl(client: &Arc<ReactiveGraphClient>) -> Result<(), i32> {
                             let command = cli_args.commands;
                             match handle_command(client, command).await {
                                 Ok(response) => {
-                                    println!("{}", response);
+                                    println!("{response}");
                                     // input was executed (successful or not)
                                     return_state = ReturnState::Success;
                                     break_state = false;
@@ -67,7 +67,7 @@ pub(crate) async fn repl(client: &Arc<ReactiveGraphClient>) -> Result<(), i32> {
                             }
                         }
                         Ok(Err(e)) => {
-                            eprintln!("{}", e);
+                            eprintln!("{e}");
                             return_state = ReturnState::Error;
                         }
                         Err(r) => {
@@ -89,7 +89,7 @@ pub(crate) async fn repl(client: &Arc<ReactiveGraphClient>) -> Result<(), i32> {
             // CTRL-D
             Err(ReadlineError::Eof) => break,
             Err(e) => {
-                eprintln!("Error: {:?}", e);
+                eprintln!("Error: {e:?}");
                 break;
             }
         }

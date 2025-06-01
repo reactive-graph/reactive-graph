@@ -14,7 +14,7 @@ where
         match self.reactive_instance.as_bool(&self.property_name) {
             None => Err(Error),
             Some(v) => {
-                write!(f, "{:?}", v)
+                write!(f, "{v:?}")
             }
         }
     }
@@ -29,7 +29,7 @@ where
         match self.reactive_instance.as_bool(&self.property_name) {
             None => Err(Error),
             Some(v) => {
-                write!(f, "{}", v)
+                write!(f, "{v}")
             }
         }
     }

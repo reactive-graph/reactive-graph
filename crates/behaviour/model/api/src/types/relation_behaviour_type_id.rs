@@ -20,6 +20,7 @@ use typed_builder::TypedBuilder;
 use crate::BehaviourTypeId;
 use reactive_graph_graph::NamespacedType;
 use reactive_graph_graph::RelationTypeId;
+use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
@@ -64,7 +65,7 @@ impl From<&BehaviourTypeId> for RelationBehaviourTypeId {
 
 impl Display for RelationBehaviourTypeId {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}__{}", &self.relation_ty, &self.behaviour_ty)
+        write!(f, "{}{}{}", &self.relation_ty, TYPE_ID_TYPE_SEPARATOR, &self.behaviour_ty)
     }
 }
 

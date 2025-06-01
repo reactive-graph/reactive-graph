@@ -13,8 +13,10 @@ readme = "../../../README.md"
 async-graphql = { workspace = true, features = ["uuid", "dynamic-schema"] }
 async-trait = { workspace = true }
 convert_case = { workspace = true }
+dashmap = { workspace = true }
 itertools = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
+schemars = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
@@ -30,6 +32,7 @@ reactive-graph-reactive-service-api = { version = "0.10.0", path = "../../reacti
 reactive-graph-reactive-model-api = { version = "0.10.0", path = "../../reactive/model/api" }
 reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
 reactive-graph-dynamic-graph-api = { version = "0.10.0", path = "../api" }
+reactive-graph-dynamic-graph-json-schema = { version = "0.10.0", path = "../json-schema" }
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }

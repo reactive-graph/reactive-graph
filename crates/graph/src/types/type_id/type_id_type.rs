@@ -3,6 +3,7 @@ use serde::Deserialize;
 use serde::Serialize;
 use std::fmt::Display;
 use std::fmt::Formatter;
+use thiserror::Error;
 use uuid::Uuid;
 
 /// Separator for the string representation of a type definition.
@@ -90,8 +91,14 @@ impl Display for TypeIdType {
     }
 }
 
+#[derive(Debug, Error)]
+pub enum TypeIdTypeParseError {
+    #[error("The type id type {0} is unknown")]
+    UnknownTypeIdType(String),
+}
+
 impl TryFrom<&str> for TypeIdType {
-    type Error = ();
+    type Error = TypeIdTypeParseError;
 
     fn try_from(s: &str) -> Result<Self, Self::Error> {
         match s {
@@ -101,7 +108,7 @@ impl TryFrom<&str> for TypeIdType {
             TYPE_ID_TYPE_EXTENSION => Ok(TypeIdType::Extension),
             TYPE_ID_TYPE_RELATION_TYPE => Ok(TypeIdType::RelationType),
             TYPE_ID_TYPE_FLOW_TYPE => Ok(TypeIdType::FlowType),
-            _ => Err(()),
+            _ => Err(TypeIdTypeParseError::UnknownTypeIdType(s.to_owned())),
         }
     }
 }

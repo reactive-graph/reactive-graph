@@ -51,7 +51,7 @@ pub fn daemonize(args: &DaemonArguments) {
     match daemon {
         Ok(_) => println!("Process has been daemonized with success"),
         Err(e) => {
-            eprintln!("Failed to run as daemon: {}", e);
+            eprintln!("Failed to run as daemon: {e}");
             exit(-1);
         }
     }

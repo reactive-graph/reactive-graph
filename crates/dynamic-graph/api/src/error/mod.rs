@@ -1,5 +1,6 @@
 use async_graphql::dynamic::SchemaError;
 use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::FlowTypeId;
 use serde_json::Error;
 use thiserror::Error;
 use uuid::Uuid;
@@ -33,3 +34,11 @@ pub struct EntityInstanceNotFound(pub Uuid);
 #[derive(Debug, Error)]
 #[error("The entity instance {0} is not of type {1}")]
 pub struct EntityInstanceIsNotOfType(pub Uuid, pub EntityTypeId);
+
+#[derive(Debug, Error)]
+#[error("Can't find flow instance with id {0}")]
+pub struct FlowInstanceNotFound(pub Uuid);
+
+#[derive(Debug, Error)]
+#[error("The flow instance {0} is not of entity type {2} which is defined in flow type {1}")]
+pub struct FlowInstanceIsNotOfType(pub Uuid, pub FlowTypeId, pub EntityTypeId);

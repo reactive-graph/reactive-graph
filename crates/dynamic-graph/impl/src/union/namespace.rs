@@ -1,7 +1,7 @@
 use async_graphql::dynamic::*;
 
-use crate::get_namespace_entities_union;
-use crate::get_namespace_relations_union;
+use crate::union::entity::get_namespace_entities_union;
+use crate::union::relation::get_namespace_relations_union;
 use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
 
 pub fn get_namespace_unions(mut schema: SchemaBuilder, context: &SchemaBuilderContext) -> SchemaBuilder {

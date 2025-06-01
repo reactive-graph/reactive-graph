@@ -1,10 +1,11 @@
+use serde::Serialize;
+use serde::Serializer;
+use serde_json::Map;
+use serde_json::Value;
 use std::fmt::Display;
 use std::fmt::Formatter;
 use std::ops::Deref;
 use std::sync::Arc;
-
-use serde_json::Map;
-use serde_json::Value;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
@@ -19,6 +20,7 @@ use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityType;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::Extensions;
+use reactive_graph_graph::JsonSchemaId;
 use reactive_graph_graph::Mutability;
 use reactive_graph_graph::Mutability::Mutable;
 use reactive_graph_graph::NamespacedTypeGetter;
@@ -315,6 +317,12 @@ impl TypeDefinitionGetter for ReactiveEntity {
     }
 }
 
+impl TypeDefinitionGetter for &ReactiveEntity {
+    fn type_definition(&self) -> TypeDefinition {
+        self.ty.type_definition()
+    }
+}
+
 impl Display for ReactiveEntity {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}__{}", &self.ty, self.id)
@@ -373,5 +381,17 @@ impl From<EntityInstance> for ReactiveEntity {
             behaviours: BehaviourTypeIds::new(),
         };
         entity_instance.into()
+    }
+}
+
+impl Serialize for ReactiveEntity {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let property_instances = PropertyInstances::from(&self.properties);
+        property_instances.insert("$id".to_string(), JsonSchemaId::from(&self).into());
+        property_instances.insert("id".to_string(), Value::String(self.id.to_string()));
+        serializer.collect_map(property_instances)
     }
 }

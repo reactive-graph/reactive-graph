@@ -4,6 +4,8 @@ use std::ops::Deref;
 use std::sync::Arc;
 
 use dashmap::DashMap;
+use serde::Serialize;
+use serde::Serializer;
 use serde_json::Map;
 use serde_json::Value;
 use typed_builder::TypedBuilder;
@@ -19,6 +21,7 @@ use reactive_graph_graph::ComponentContainer;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::ComponentTypeIds;
 use reactive_graph_graph::Extensions;
+use reactive_graph_graph::JsonSchemaId;
 use reactive_graph_graph::Mutability;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyInstanceGetter;
@@ -542,6 +545,12 @@ impl TypeDefinitionGetter for ReactiveRelation {
     }
 }
 
+impl TypeDefinitionGetter for &ReactiveRelation {
+    fn type_definition(&self) -> TypeDefinition {
+        self.ty.type_definition()
+    }
+}
+
 impl Display for ReactiveRelation {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}--[{}]-->{}", self.outbound.id, &self.ty, self.inbound.id)
@@ -581,5 +590,19 @@ impl From<&ReactiveRelation> for RelationInstance {
 impl From<ReactiveRelationInstance> for ReactiveRelation {
     fn from(relation_instance: ReactiveRelationInstance) -> Self {
         ReactiveRelation(Arc::new(relation_instance))
+    }
+}
+
+impl Serialize for ReactiveRelation {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let property_instances = PropertyInstances::from(&self.properties);
+        property_instances.insert("$id".to_string(), JsonSchemaId::from(&self).into());
+        property_instances.insert("outbound_id".to_string(), Value::String(self.outbound.id.to_string()));
+        property_instances.insert("instance_id".to_string(), Value::String(self.instance_id()));
+        property_instances.insert("inbound_id".to_string(), Value::String(self.inbound.id.to_string()));
+        serializer.collect_map(property_instances)
     }
 }

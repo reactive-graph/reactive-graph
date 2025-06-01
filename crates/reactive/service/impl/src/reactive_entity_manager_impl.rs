@@ -577,14 +577,14 @@ impl Lifecycle for ReactiveEntityManagerImpl {
     async fn post_init(&self) {
         for type_system_event_instance in self.type_system_event_manager.get_type_system_event_instances() {
             if let Err(e) = self.register_reactive_instance(type_system_event_instance) {
-                error!("Failed to register type system event instance: {:?}", e);
+                error!("Failed to register type system event instance: {e:?}");
                 // TODO: Propagate this error
             }
         }
 
         for reactive_instance_event_instance in self.reactive_instance_event_manager.get_reactive_instance_event_instances() {
             if let Err(e) = self.register_reactive_instance(reactive_instance_event_instance) {
-                error!("Failed to register reactive instance event instance: {:?}", e);
+                error!("Failed to register reactive instance event instance: {e:?}");
                 // TODO: Propagate this error
             }
         }

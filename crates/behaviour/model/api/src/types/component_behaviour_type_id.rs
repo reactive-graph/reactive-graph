@@ -27,6 +27,7 @@ use crate::BehaviourTypeId;
 use crate::BehaviourTypeIds;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::NamespacedType;
+use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 
 /// The behaviour of a component.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema, TypedBuilder)]
@@ -64,7 +65,7 @@ impl From<&BehaviourTypeId> for ComponentBehaviourTypeId {
 
 impl Display for ComponentBehaviourTypeId {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}__{}", &self.component_ty, &self.behaviour_ty)
+        write!(f, "{}{}{}", &self.component_ty, TYPE_ID_TYPE_SEPARATOR, &self.behaviour_ty)
     }
 }
 
