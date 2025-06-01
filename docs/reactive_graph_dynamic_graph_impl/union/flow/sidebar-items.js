@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["UNION_ALL_FLOWS","UNION_NAMESPACE_FLOWS_SUFFIX"],"fn":["get_all_flows_union","get_namespace_flows_union","namespace_flows_union_type_name"]};

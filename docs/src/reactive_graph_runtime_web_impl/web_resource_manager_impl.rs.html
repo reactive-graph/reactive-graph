@@ -42,7 +42,7 @@
 <a href=#42 id=42 data-nosnippet>42</a>    <span class="kw">async fn </span>register_provider(<span class="kw-2">&amp;</span><span class="self">self</span>, web_resource_provider: Arc&lt;<span class="kw">dyn </span>WebResourceProvider&gt;) {
 <a href=#43 id=43 data-nosnippet>43</a>        <span class="kw">let </span>id = web_resource_provider.id();
 <a href=#44 id=44 data-nosnippet>44</a>        <span class="kw">let </span>context_path: String = web_resource_provider.get_context_path();
-<a href=#45 id=45 data-nosnippet>45</a>        <span class="macro">debug!</span>(<span class="string">"Registering web resource provider with context path: {}"</span>, context_path);
+<a href=#45 id=45 data-nosnippet>45</a>        <span class="macro">debug!</span>(<span class="string">"Registering web resource provider with context path: {context_path}"</span>);
 <a href=#46 id=46 data-nosnippet>46</a>        <span class="self">self</span>.web_resource_providers.insert(context_path.clone(), web_resource_provider.clone());
 <a href=#47 id=47 data-nosnippet>47</a>        <span class="self">self</span>.web_resource_provider_context_paths.insert(id, context_path);
 <a href=#48 id=48 data-nosnippet>48</a>    }

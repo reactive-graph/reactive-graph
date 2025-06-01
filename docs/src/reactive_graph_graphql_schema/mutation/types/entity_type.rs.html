@@ -75,7 +75,7 @@
 <a href=#75 id=75 data-nosnippet>75</a>            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; entity_type_manager
 <a href=#76 id=76 data-nosnippet>76</a>                .get(<span class="kw-2">&amp;</span>ty)
 <a href=#77 id=77 data-nosnippet>77</a>                .map(|entity_type| entity_type.into())
-<a href=#78 id=78 data-nosnippet>78</a>                .ok_or_else(|| Error::new(<span class="macro">format!</span>(<span class="string">"Entity Type {} not found"</span>, ty))),
+<a href=#78 id=78 data-nosnippet>78</a>                .ok_or_else(|| Error::new(<span class="macro">format!</span>(<span class="string">"Entity Type {ty} not found"</span>))),
 <a href=#79 id=79 data-nosnippet>79</a>            <span class="prelude-val">Err</span>(EntityTypeUpdateError::EntityTypeDoesNotExist(ty)) =&gt; {
 <a href=#80 id=80 data-nosnippet>80</a>                <span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Failed to update description of entity type {ty}: Entity type does not exist"</span>)))
 <a href=#81 id=81 data-nosnippet>81</a>            }

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["JSON_SCHEMA_ID_URI_PREFIX"],"struct":["JsonSchemaId"]};

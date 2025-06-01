@@ -10,16 +10,16 @@
 <a href=#10 id=10 data-nosnippet>10</a><span class="kw">use </span>serde_json::Value;
 <a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span>uuid::Uuid;
 <a href=#12 id=12 data-nosnippet>12</a>
-<a href=#13 id=13 data-nosnippet>13</a><span class="kw">use </span><span class="kw">crate</span>::DynamicGraphTypeDefinition;
-<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span><span class="kw">crate</span>::UNION_ALL_ENTITIES;
-<a href=#15 id=15 data-nosnippet>15</a><span class="kw">use </span><span class="kw">crate</span>::create_properties_from_field_arguments;
-<a href=#16 id=16 data-nosnippet>16</a><span class="kw">use </span><span class="kw">crate</span>::field_description::DynamicGraphFieldDescriptionExtension;
-<a href=#17 id=17 data-nosnippet>17</a><span class="kw">use </span><span class="kw">crate</span>::field_name::DynamicGraphFieldNameExtension;
-<a href=#18 id=18 data-nosnippet>18</a><span class="kw">use </span><span class="kw">crate</span>::interface::entity::INTERFACE_ENTITY_FIELD_ID;
-<a href=#19 id=19 data-nosnippet>19</a><span class="kw">use </span><span class="kw">crate</span>::namespace_entities_union_type_name;
-<a href=#20 id=20 data-nosnippet>20</a><span class="kw">use </span><span class="kw">crate</span>::to_field_value;
-<a href=#21 id=21 data-nosnippet>21</a><span class="kw">use </span><span class="kw">crate</span>::to_input_type_ref;
-<a href=#22 id=22 data-nosnippet>22</a><span class="kw">use </span><span class="kw">crate</span>::to_type_ref;
+<a href=#13 id=13 data-nosnippet>13</a><span class="kw">use </span><span class="kw">crate</span>::extension::field_description::DynamicGraphFieldDescriptionExtension;
+<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span><span class="kw">crate</span>::extension::field_name::DynamicGraphFieldNameExtension;
+<a href=#15 id=15 data-nosnippet>15</a><span class="kw">use </span><span class="kw">crate</span>::field::create_properties_from_field_arguments;
+<a href=#16 id=16 data-nosnippet>16</a><span class="kw">use </span><span class="kw">crate</span>::field::to_field_value;
+<a href=#17 id=17 data-nosnippet>17</a><span class="kw">use </span><span class="kw">crate</span>::field::to_input_type_ref;
+<a href=#18 id=18 data-nosnippet>18</a><span class="kw">use </span><span class="kw">crate</span>::field::to_type_ref;
+<a href=#19 id=19 data-nosnippet>19</a><span class="kw">use </span><span class="kw">crate</span>::interface::entity::INTERFACE_ENTITY_FIELD_ID;
+<a href=#20 id=20 data-nosnippet>20</a><span class="kw">use </span><span class="kw">crate</span>::object::types::DynamicGraphTypeDefinition;
+<a href=#21 id=21 data-nosnippet>21</a><span class="kw">use </span><span class="kw">crate</span>::union::entity::UNION_ALL_ENTITIES;
+<a href=#22 id=22 data-nosnippet>22</a><span class="kw">use </span><span class="kw">crate</span>::union::entity::namespace_entities_union_type_name;
 <a href=#23 id=23 data-nosnippet>23</a><span class="kw">use </span>reactive_graph_dynamic_graph_api::SchemaBuilderContext;
 <a href=#24 id=24 data-nosnippet>24</a><span class="kw">use </span>reactive_graph_graph::ComponentOrEntityTypeId;
 <a href=#25 id=25 data-nosnippet>25</a><span class="kw">use </span>reactive_graph_graph::ComponentTypeId;
@@ -38,10 +38,10 @@
 <a href=#38 id=38 data-nosnippet>38</a><span class="kw">use </span>reactive_graph_reactive_service_api::ReactiveRelationManager;
 <a href=#39 id=39 data-nosnippet>39</a><span class="kw">use </span>reactive_graph_runtime_model::LabeledProperties::LABEL;
 <a href=#40 id=40 data-nosnippet>40</a>
-<a href=#41 id=41 data-nosnippet>41</a><span class="kw">pub fn </span>entity_query_field(entity_ty: <span class="kw-2">&amp;</span>EntityTypeId, entity_type: <span class="kw-2">&amp;</span>EntityType) -&gt; Field {
-<a href=#42 id=42 data-nosnippet>42</a>    <span class="kw">let </span>ty = entity_ty.clone();
+<a href=#41 id=41 data-nosnippet>41</a><span class="kw">pub fn </span>entity_query_field(entity_type: <span class="kw-2">&amp;</span>EntityType) -&gt; Field {
+<a href=#42 id=42 data-nosnippet>42</a>    <span class="kw">let </span>ty = entity_type.ty.clone();
 <a href=#43 id=43 data-nosnippet>43</a>    <span class="kw">let </span>entity_type_inner = entity_type.clone();
-<a href=#44 id=44 data-nosnippet>44</a>    <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(entity_ty);
+<a href=#44 id=44 data-nosnippet>44</a>    <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(<span class="kw-2">&amp;</span>ty);
 <a href=#45 id=45 data-nosnippet>45</a>    <span class="kw">let </span><span class="kw-2">mut </span>field = Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), <span class="kw">move </span>|ctx| {
 <a href=#46 id=46 data-nosnippet>46</a>        <span class="kw">let </span>ty = ty.clone();
 <a href=#47 id=47 data-nosnippet>47</a>        <span class="kw">let </span>entity_type = entity_type_inner.clone();
@@ -73,10 +73,10 @@
 <a href=#73 id=73 data-nosnippet>73</a>    field
 <a href=#74 id=74 data-nosnippet>74</a>}
 <a href=#75 id=75 data-nosnippet>75</a>
-<a href=#76 id=76 data-nosnippet>76</a><span class="kw">pub fn </span>entity_creation_field(entity_ty: <span class="kw-2">&amp;</span>EntityTypeId, entity_type: <span class="kw-2">&amp;</span>EntityType) -&gt; <span class="prelude-ty">Option</span>&lt;Field&gt; {
-<a href=#77 id=77 data-nosnippet>77</a>    <span class="kw">let </span>ty = entity_ty.clone();
+<a href=#76 id=76 data-nosnippet>76</a><span class="kw">pub fn </span>entity_creation_field(entity_type: <span class="kw-2">&amp;</span>EntityType) -&gt; <span class="prelude-ty">Option</span>&lt;Field&gt; {
+<a href=#77 id=77 data-nosnippet>77</a>    <span class="kw">let </span>ty = entity_type.ty.clone();
 <a href=#78 id=78 data-nosnippet>78</a>    <span class="kw">let </span>entity_type_inner = entity_type.clone();
-<a href=#79 id=79 data-nosnippet>79</a>    <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(entity_ty);
+<a href=#79 id=79 data-nosnippet>79</a>    <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(<span class="kw-2">&amp;</span>ty);
 <a href=#80 id=80 data-nosnippet>80</a>    <span class="kw">let </span><span class="kw-2">mut </span>field = Field::new(dy_ty.mutation_field_name(<span class="string">"create"</span>), TypeRef::named_nn(dy_ty.to_string()), <span class="kw">move </span>|ctx| {
 <a href=#81 id=81 data-nosnippet>81</a>        <span class="kw">let </span>ty = ty.clone();
 <a href=#82 id=82 data-nosnippet>82</a>        <span class="kw">let </span>entity_type = entity_type_inner.clone();
@@ -85,7 +85,7 @@
 <a href=#85 id=85 data-nosnippet>85</a>            <span class="kw">let </span>id = <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = ctx.args.get(<span class="string">"id"</span>) {
 <a href=#86 id=86 data-nosnippet>86</a>                <span class="kw">let </span>id = Uuid::from_str(id.string()<span class="question-mark">?</span>)<span class="question-mark">?</span>;
 <a href=#87 id=87 data-nosnippet>87</a>                <span class="kw">if </span>entity_instance_manager.has(id) {
-<a href=#88 id=88 data-nosnippet>88</a>                    <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Uuid {} is already taken"</span>, id)));
+<a href=#88 id=88 data-nosnippet>88</a>                    <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Uuid {id} is already taken"</span>)));
 <a href=#89 id=89 data-nosnippet>89</a>                }
 <a href=#90 id=90 data-nosnippet>90</a>                id
 <a href=#91 id=91 data-nosnippet>91</a>            } <span class="kw">else </span>{

@@ -60,11 +60,11 @@
 <a href=#60 id=60 data-nosnippet>60</a><span class="kw">impl </span>Display <span class="kw">for </span>CommandResponse {
 <a href=#61 id=61 data-nosnippet>61</a>    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
 <a href=#62 id=62 data-nosnippet>62</a>        <span class="kw">match </span><span class="self">self </span>{
-<a href=#63 id=63 data-nosnippet>63</a>            CommandResponse::Message(message) =&gt; <span class="macro">write!</span>(f, <span class="string">"{}"</span>, message),
+<a href=#63 id=63 data-nosnippet>63</a>            CommandResponse::Message(message) =&gt; <span class="macro">write!</span>(f, <span class="string">"{message}"</span>),
 <a href=#64 id=64 data-nosnippet>64</a>            CommandResponse::Value(value) =&gt; <span class="macro">write!</span>(f, <span class="string">"{}"</span>, serde_json::to_string_pretty(<span class="kw-2">&amp;</span>value).unwrap_or_default()),
 <a href=#65 id=65 data-nosnippet>65</a>            <span class="attr">#[cfg(feature = <span class="string">"toml"</span>)]
 <a href=#66 id=66 data-nosnippet>66</a>            </span>CommandResponse::TomlValue(value) =&gt; <span class="macro">write!</span>(f, <span class="string">"{}"</span>, toml::to_string_pretty(<span class="kw-2">&amp;</span>value).unwrap_or_default()),
-<a href=#67 id=67 data-nosnippet>67</a>            CommandResponse::Table(table) =&gt; <span class="macro">write!</span>(f, <span class="string">"{}"</span>, table),
+<a href=#67 id=67 data-nosnippet>67</a>            CommandResponse::Table(table) =&gt; <span class="macro">write!</span>(f, <span class="string">"{table}"</span>),
 <a href=#68 id=68 data-nosnippet>68</a>        }
 <a href=#69 id=69 data-nosnippet>69</a>    }
 <a href=#70 id=70 data-nosnippet>70</a>}

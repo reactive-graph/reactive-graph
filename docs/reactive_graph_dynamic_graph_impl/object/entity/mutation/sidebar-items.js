@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["create_entity_mutation_object","register_entity_type_mutation_objects"],"mod":["delete","export","trigger","update"]};

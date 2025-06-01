@@ -1,1 +1,1 @@
-searchState.loadedDescShard("reactive_graph_utils_schema_generator", 0, "Returns the argument unchanged.\nCalls <code>U::from(self)</code>.\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.")
+searchState.loadedDescShard("reactive_graph_utils_schema_generator", 0, "Returns the argument unchanged.\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.\nCalls <code>U::from(self)</code>.\n<code>ToString::to_string</code>, but without panic on OOM.\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.")

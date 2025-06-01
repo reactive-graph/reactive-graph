@@ -213,7 +213,7 @@
 <a href=#213 id=213 data-nosnippet>213</a>    <span class="kw">fn </span>deploy_dll(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>Uuid) -&gt; PluginTransitionResult {
 <a href=#214 id=214 data-nosnippet>214</a>        <span class="kw">match </span><span class="self">self</span>.plugin_containers.get_mut(id) {
 <a href=#215 id=215 data-nosnippet>215</a>            <span class="prelude-val">Some</span>(<span class="kw-2">mut </span>plugin_container) =&gt; {
-<a href=#216 id=216 data-nosnippet>216</a>                <span class="macro">trace!</span>(<span class="string">"Plugin {} is deploying the dynamic linked library"</span>, id);
+<a href=#216 id=216 data-nosnippet>216</a>                <span class="macro">trace!</span>(<span class="string">"Plugin {id} is deploying the dynamic linked library"</span>);
 <a href=#217 id=217 data-nosnippet>217</a>                plugin_container.deploy_dll()
 <a href=#218 id=218 data-nosnippet>218</a>            }
 <a href=#219 id=219 data-nosnippet>219</a>            <span class="prelude-val">None </span>=&gt; NoChange,
@@ -223,7 +223,7 @@
 <a href=#223 id=223 data-nosnippet>223</a>    <span class="kw">fn </span>load_dll(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>Uuid) -&gt; PluginTransitionResult {
 <a href=#224 id=224 data-nosnippet>224</a>        <span class="kw">match </span><span class="self">self</span>.plugin_containers.get_mut(id) {
 <a href=#225 id=225 data-nosnippet>225</a>            <span class="prelude-val">Some</span>(<span class="kw-2">mut </span>plugin_container) =&gt; {
-<a href=#226 id=226 data-nosnippet>226</a>                <span class="macro">trace!</span>(<span class="string">"Plugin {} is loading the dynamic linked library"</span>, id);
+<a href=#226 id=226 data-nosnippet>226</a>                <span class="macro">trace!</span>(<span class="string">"Plugin {id} is loading the dynamic linked library"</span>);
 <a href=#227 id=227 data-nosnippet>227</a>                plugin_container.load_dll()
 <a href=#228 id=228 data-nosnippet>228</a>            }
 <a href=#229 id=229 data-nosnippet>229</a>            <span class="prelude-val">None </span>=&gt; NoChange,
@@ -233,7 +233,7 @@
 <a href=#233 id=233 data-nosnippet>233</a>    <span class="kw">fn </span>load_plugin_declaration(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>Uuid) -&gt; PluginTransitionResult {
 <a href=#234 id=234 data-nosnippet>234</a>        <span class="kw">match </span><span class="self">self</span>.plugin_containers.get_mut(id) {
 <a href=#235 id=235 data-nosnippet>235</a>            <span class="prelude-val">Some</span>(<span class="kw-2">mut </span>plugin_container) =&gt; {
-<a href=#236 id=236 data-nosnippet>236</a>                <span class="macro">trace!</span>(<span class="string">"Plugin {} is loading the plugin declaration"</span>, id);
+<a href=#236 id=236 data-nosnippet>236</a>                <span class="macro">trace!</span>(<span class="string">"Plugin {id} is loading the plugin declaration"</span>);
 <a href=#237 id=237 data-nosnippet>237</a>                plugin_container.value_mut().load_plugin_declaration()
 <a href=#238 id=238 data-nosnippet>238</a>            }
 <a href=#239 id=239 data-nosnippet>239</a>            <span class="prelude-val">None </span>=&gt; NoChange,
@@ -243,7 +243,7 @@
 <a href=#243 id=243 data-nosnippet>243</a>    <span class="kw">fn </span>check_plugin_compatibility(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>Uuid) -&gt; PluginTransitionResult {
 <a href=#244 id=244 data-nosnippet>244</a>        <span class="kw">match </span><span class="self">self</span>.plugin_containers.get_mut(id) {
 <a href=#245 id=245 data-nosnippet>245</a>            <span class="prelude-val">Some</span>(<span class="kw-2">mut </span>plugin_container) =&gt; {
-<a href=#246 id=246 data-nosnippet>246</a>                <span class="macro">trace!</span>(<span class="string">"Plugin {} is checked for compatibility"</span>, id);
+<a href=#246 id=246 data-nosnippet>246</a>                <span class="macro">trace!</span>(<span class="string">"Plugin {id} is checked for compatibility"</span>);
 <a href=#247 id=247 data-nosnippet>247</a>                plugin_container.value_mut().check_compatibility()
 <a href=#248 id=248 data-nosnippet>248</a>            }
 <a href=#249 id=249 data-nosnippet>249</a>            <span class="prelude-val">None </span>=&gt; NoChange,
@@ -253,7 +253,7 @@
 <a href=#253 id=253 data-nosnippet>253</a>    <span class="kw">fn </span>load_plugin_dependencies(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>Uuid) -&gt; PluginTransitionResult {
 <a href=#254 id=254 data-nosnippet>254</a>        <span class="kw">match </span><span class="self">self</span>.plugin_containers.get_mut(id) {
 <a href=#255 id=255 data-nosnippet>255</a>            <span class="prelude-val">Some</span>(<span class="kw-2">mut </span>plugin_container) =&gt; {
-<a href=#256 id=256 data-nosnippet>256</a>                <span class="macro">trace!</span>(<span class="string">"Plugin {} is loading the list of dependencies"</span>, id);
+<a href=#256 id=256 data-nosnippet>256</a>                <span class="macro">trace!</span>(<span class="string">"Plugin {id} is loading the list of dependencies"</span>);
 <a href=#257 id=257 data-nosnippet>257</a>                plugin_container.value_mut().load_plugin_dependencies()
 <a href=#258 id=258 data-nosnippet>258</a>            }
 <a href=#259 id=259 data-nosnippet>259</a>            <span class="prelude-val">None </span>=&gt; NoChange,
@@ -318,7 +318,7 @@
 <a href=#318 id=318 data-nosnippet>318</a>
 <a href=#319 id=319 data-nosnippet>319</a>    <span class="kw">fn </span>resolve_dependencies_state(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>Uuid, refreshing: bool) -&gt; PluginTransitionResult {
 <a href=#320 id=320 data-nosnippet>320</a>        <span class="kw">if </span>!<span class="self">self</span>.has_unsatisfied_dependencies(id) {
-<a href=#321 id=321 data-nosnippet>321</a>            <span class="macro">debug!</span>(<span class="string">"Plugin {} has no unsatisfied dependencies"</span>, id);
+<a href=#321 id=321 data-nosnippet>321</a>            <span class="macro">debug!</span>(<span class="string">"Plugin {id} has no unsatisfied dependencies"</span>);
 <a href=#322 id=322 data-nosnippet>322</a>            <span class="kw">let </span>new_state = <span class="kw">if </span>refreshing {
 <a href=#323 id=323 data-nosnippet>323</a>                PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::ConstructingProxy))
 <a href=#324 id=324 data-nosnippet>324</a>            } <span class="kw">else </span>{
@@ -326,7 +326,7 @@
 <a href=#326 id=326 data-nosnippet>326</a>            };
 <a href=#327 id=327 data-nosnippet>327</a>            <span class="self">self</span>.set_state(id, new_state)
 <a href=#328 id=328 data-nosnippet>328</a>        } <span class="kw">else </span>{
-<a href=#329 id=329 data-nosnippet>329</a>            <span class="macro">trace!</span>(<span class="string">"Plugin {} has unsatisfied dependencies"</span>, id);
+<a href=#329 id=329 data-nosnippet>329</a>            <span class="macro">trace!</span>(<span class="string">"Plugin {id} has unsatisfied dependencies"</span>);
 <a href=#330 id=330 data-nosnippet>330</a>            <span class="kw">let </span>new_state = <span class="kw">if </span>refreshing {
 <a href=#331 id=331 data-nosnippet>331</a>                PluginState::Refreshing(PluginRefreshingState::Resolving(PluginResolveState::DependenciesNotActive))
 <a href=#332 id=332 data-nosnippet>332</a>            } <span class="kw">else </span>{

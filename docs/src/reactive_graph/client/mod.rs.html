@@ -39,7 +39,7 @@
 <a href=#39 id=39 data-nosnippet>39</a>    <span class="comment">// If a command was given, handle command
 <a href=#40 id=40 data-nosnippet>40</a>    </span><span class="kw">match </span>handle_command(<span class="kw-2">&amp;</span>client, command).<span class="kw">await </span>{
 <a href=#41 id=41 data-nosnippet>41</a>        <span class="prelude-val">Ok</span>(response) =&gt; {
-<a href=#42 id=42 data-nosnippet>42</a>            <span class="macro">println!</span>(<span class="string">"{}"</span>, response);
+<a href=#42 id=42 data-nosnippet>42</a>            <span class="macro">println!</span>(<span class="string">"{response}"</span>);
 <a href=#43 id=43 data-nosnippet>43</a>            exit(<span class="number">0</span>)
 <a href=#44 id=44 data-nosnippet>44</a>        }
 <a href=#45 id=45 data-nosnippet>45</a>        <span class="prelude-val">Err</span>(e) =&gt; {

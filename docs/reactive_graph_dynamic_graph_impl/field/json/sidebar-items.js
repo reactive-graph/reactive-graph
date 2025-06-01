@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["to_field_value"]};
+window.SIDEBAR_ITEMS = {"fn":["id_to_field_value","ids_to_field_value","to_field_value"]};

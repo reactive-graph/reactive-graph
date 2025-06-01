@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["create_relation_type_query_object","register_relation_type_query_objects"]};

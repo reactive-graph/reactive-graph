@@ -33,7 +33,7 @@
 <a href=#33 id=33 data-nosnippet>33</a>        <span class="kw">let </span>plugin_container_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>PluginContainerManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
 <a href=#34 id=34 data-nosnippet>34</a>        plugin_container_manager
 <a href=#35 id=35 data-nosnippet>35</a>            .get_plugin_state(<span class="kw-2">&amp;</span><span class="self">self</span>.id)
-<a href=#36 id=36 data-nosnippet>36</a>            .map(|s| <span class="macro">format!</span>(<span class="string">"{:?}"</span>, s))
+<a href=#36 id=36 data-nosnippet>36</a>            .map(|state| <span class="macro">format!</span>(<span class="string">"{state:?}"</span>))
 <a href=#37 id=37 data-nosnippet>37</a>            .ok_or_else(|| Error::new(<span class="string">"Failed to resolve plugin state"</span>))
 <a href=#38 id=38 data-nosnippet>38</a>    }
 <a href=#39 id=39 data-nosnippet>39</a>

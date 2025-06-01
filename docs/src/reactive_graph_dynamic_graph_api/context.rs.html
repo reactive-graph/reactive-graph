@@ -2,29 +2,33 @@
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a><span class="kw">use </span>reactive_graph_type_system_api::ComponentManager;
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>reactive_graph_type_system_api::EntityTypeManager;
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>reactive_graph_type_system_api::NamespaceManager;
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>reactive_graph_type_system_api::RelationTypeManager;
-<a href=#7 id=7 data-nosnippet>7</a>
-<a href=#8 id=8 data-nosnippet>8</a><span class="attr">#[derive(Clone)]
-<a href=#9 id=9 data-nosnippet>9</a></span><span class="kw">pub struct </span>SchemaBuilderContext {
-<a href=#10 id=10 data-nosnippet>10</a>    <span class="kw">pub </span>namespace_manager: Arc&lt;<span class="kw">dyn </span>NamespaceManager + Send + Sync&gt;,
-<a href=#11 id=11 data-nosnippet>11</a>    <span class="kw">pub </span>component_manager: Arc&lt;<span class="kw">dyn </span>ComponentManager + Send + Sync&gt;,
-<a href=#12 id=12 data-nosnippet>12</a>    <span class="kw">pub </span>entity_type_manager: Arc&lt;<span class="kw">dyn </span>EntityTypeManager + Send + Sync&gt;,
-<a href=#13 id=13 data-nosnippet>13</a>    <span class="kw">pub </span>relation_type_manager: Arc&lt;<span class="kw">dyn </span>RelationTypeManager + Send + Sync&gt;,
-<a href=#14 id=14 data-nosnippet>14</a>}
-<a href=#15 id=15 data-nosnippet>15</a>
-<a href=#16 id=16 data-nosnippet>16</a><span class="kw">impl </span>SchemaBuilderContext {
-<a href=#17 id=17 data-nosnippet>17</a>    <span class="kw">pub fn </span>new(
-<a href=#18 id=18 data-nosnippet>18</a>        namespace_manager: Arc&lt;<span class="kw">dyn </span>NamespaceManager + Send + Sync&gt;,
-<a href=#19 id=19 data-nosnippet>19</a>        component_manager: Arc&lt;<span class="kw">dyn </span>ComponentManager + Send + Sync&gt;,
-<a href=#20 id=20 data-nosnippet>20</a>        entity_type_manager: Arc&lt;<span class="kw">dyn </span>EntityTypeManager + Send + Sync&gt;,
-<a href=#21 id=21 data-nosnippet>21</a>        relation_type_manager: Arc&lt;<span class="kw">dyn </span>RelationTypeManager + Send + Sync&gt;,
-<a href=#22 id=22 data-nosnippet>22</a>    ) -&gt; SchemaBuilderContext {
-<a href=#23 id=23 data-nosnippet>23</a>        SchemaBuilderContext {
-<a href=#24 id=24 data-nosnippet>24</a>            namespace_manager,
-<a href=#25 id=25 data-nosnippet>25</a>            component_manager,
-<a href=#26 id=26 data-nosnippet>26</a>            entity_type_manager,
-<a href=#27 id=27 data-nosnippet>27</a>            relation_type_manager,
-<a href=#28 id=28 data-nosnippet>28</a>        }
-<a href=#29 id=29 data-nosnippet>29</a>    }
-<a href=#30 id=30 data-nosnippet>30</a>}</code></pre></div></section></main></body></html>
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>reactive_graph_type_system_api::FlowTypeManager;
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>reactive_graph_type_system_api::NamespaceManager;
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>reactive_graph_type_system_api::RelationTypeManager;
+<a href=#8 id=8 data-nosnippet>8</a>
+<a href=#9 id=9 data-nosnippet>9</a><span class="attr">#[derive(Clone)]
+<a href=#10 id=10 data-nosnippet>10</a></span><span class="kw">pub struct </span>SchemaBuilderContext {
+<a href=#11 id=11 data-nosnippet>11</a>    <span class="kw">pub </span>namespace_manager: Arc&lt;<span class="kw">dyn </span>NamespaceManager + Send + Sync&gt;,
+<a href=#12 id=12 data-nosnippet>12</a>    <span class="kw">pub </span>component_manager: Arc&lt;<span class="kw">dyn </span>ComponentManager + Send + Sync&gt;,
+<a href=#13 id=13 data-nosnippet>13</a>    <span class="kw">pub </span>entity_type_manager: Arc&lt;<span class="kw">dyn </span>EntityTypeManager + Send + Sync&gt;,
+<a href=#14 id=14 data-nosnippet>14</a>    <span class="kw">pub </span>relation_type_manager: Arc&lt;<span class="kw">dyn </span>RelationTypeManager + Send + Sync&gt;,
+<a href=#15 id=15 data-nosnippet>15</a>    <span class="kw">pub </span>flow_type_manager: Arc&lt;<span class="kw">dyn </span>FlowTypeManager + Send + Sync&gt;,
+<a href=#16 id=16 data-nosnippet>16</a>}
+<a href=#17 id=17 data-nosnippet>17</a>
+<a href=#18 id=18 data-nosnippet>18</a><span class="kw">impl </span>SchemaBuilderContext {
+<a href=#19 id=19 data-nosnippet>19</a>    <span class="kw">pub fn </span>new(
+<a href=#20 id=20 data-nosnippet>20</a>        namespace_manager: Arc&lt;<span class="kw">dyn </span>NamespaceManager + Send + Sync&gt;,
+<a href=#21 id=21 data-nosnippet>21</a>        component_manager: Arc&lt;<span class="kw">dyn </span>ComponentManager + Send + Sync&gt;,
+<a href=#22 id=22 data-nosnippet>22</a>        entity_type_manager: Arc&lt;<span class="kw">dyn </span>EntityTypeManager + Send + Sync&gt;,
+<a href=#23 id=23 data-nosnippet>23</a>        relation_type_manager: Arc&lt;<span class="kw">dyn </span>RelationTypeManager + Send + Sync&gt;,
+<a href=#24 id=24 data-nosnippet>24</a>        flow_type_manager: Arc&lt;<span class="kw">dyn </span>FlowTypeManager + Send + Sync&gt;,
+<a href=#25 id=25 data-nosnippet>25</a>    ) -&gt; SchemaBuilderContext {
+<a href=#26 id=26 data-nosnippet>26</a>        SchemaBuilderContext {
+<a href=#27 id=27 data-nosnippet>27</a>            namespace_manager,
+<a href=#28 id=28 data-nosnippet>28</a>            component_manager,
+<a href=#29 id=29 data-nosnippet>29</a>            entity_type_manager,
+<a href=#30 id=30 data-nosnippet>30</a>            relation_type_manager,
+<a href=#31 id=31 data-nosnippet>31</a>            flow_type_manager,
+<a href=#32 id=32 data-nosnippet>32</a>        }
+<a href=#33 id=33 data-nosnippet>33</a>    }
+<a href=#34 id=34 data-nosnippet>34</a>}</code></pre></div></section></main></body></html>

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["metrics_field","metrics_object","metrics_type_name"]};

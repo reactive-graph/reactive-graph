@@ -32,7 +32,7 @@
 <a href=#32 id=32 data-nosnippet>32</a>        <span class="kw">match </span>output_format {
 <a href=#33 id=33 data-nosnippet>33</a>            OutputFormatArgs::Table =&gt; {
 <a href=#34 id=34 data-nosnippet>34</a>                <span class="kw">let </span>table = Table::new(<span class="self">self</span>).modify(Rows::new(<span class="number">1</span>..), Width::wrap(<span class="number">40</span>)).to_owned();
-<a href=#35 id=35 data-nosnippet>35</a>                <span class="prelude-val">Ok</span>(<span class="macro">format!</span>(<span class="string">"{}"</span>, table))
+<a href=#35 id=35 data-nosnippet>35</a>                <span class="prelude-val">Ok</span>(<span class="macro">format!</span>(<span class="string">"{table}"</span>))
 <a href=#36 id=36 data-nosnippet>36</a>            }
 <a href=#37 id=37 data-nosnippet>37</a>            OutputFormatArgs::HtmlTable =&gt; <span class="prelude-val">Ok</span>(HtmlTable::with_header(Vec::&lt;Vec&lt;String&gt;&gt;::from(Table::builder(<span class="self">self</span>)))
 <a href=#38 id=38 data-nosnippet>38</a>                .to_string()
@@ -40,7 +40,7 @@
 <a href=#40 id=40 data-nosnippet>40</a>                .to_string()),
 <a href=#41 id=41 data-nosnippet>41</a>            OutputFormatArgs::MarkdownTable =&gt; {
 <a href=#42 id=42 data-nosnippet>42</a>                <span class="kw">let </span>table = Table::new(<span class="self">self</span>).with(Style::markdown()).to_owned();
-<a href=#43 id=43 data-nosnippet>43</a>                <span class="prelude-val">Ok</span>(<span class="macro">format!</span>(<span class="string">"{}"</span>, table))
+<a href=#43 id=43 data-nosnippet>43</a>                <span class="prelude-val">Ok</span>(<span class="macro">format!</span>(<span class="string">"{table}"</span>))
 <a href=#44 id=44 data-nosnippet>44</a>            }
 <a href=#45 id=45 data-nosnippet>45</a>            OutputFormatArgs::Count =&gt; <span class="prelude-val">Ok</span>(<span class="macro">format!</span>(<span class="string">"{}"</span>, <span class="self">self</span>.len())),
 <a href=#46 id=46 data-nosnippet>46</a>            OutputFormatArgs::Json | OutputFormatArgs::Json5 =&gt; <span class="prelude-val">Ok</span>(serde_json::to_string_pretty(<span class="self">self</span>).map_err(SerializationError::Json)<span class="question-mark">?</span>),

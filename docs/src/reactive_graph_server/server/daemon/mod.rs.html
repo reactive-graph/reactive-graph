@@ -51,7 +51,7 @@
 <a href=#51 id=51 data-nosnippet>51</a>    <span class="kw">match </span>daemon {
 <a href=#52 id=52 data-nosnippet>52</a>        <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">println!</span>(<span class="string">"Process has been daemonized with success"</span>),
 <a href=#53 id=53 data-nosnippet>53</a>        <span class="prelude-val">Err</span>(e) =&gt; {
-<a href=#54 id=54 data-nosnippet>54</a>            <span class="macro">eprintln!</span>(<span class="string">"Failed to run as daemon: {}"</span>, e);
+<a href=#54 id=54 data-nosnippet>54</a>            <span class="macro">eprintln!</span>(<span class="string">"Failed to run as daemon: {e}"</span>);
 <a href=#55 id=55 data-nosnippet>55</a>            exit(-<span class="number">1</span>);
 <a href=#56 id=56 data-nosnippet>56</a>        }
 <a href=#57 id=57 data-nosnippet>57</a>    }

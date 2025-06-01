@@ -430,9 +430,9 @@
 <a href=#430 id=430 data-nosnippet>430</a>            }
 <a href=#431 id=431 data-nosnippet>431</a>        }
 <a href=#432 id=432 data-nosnippet>432</a>        <span class="kw">let </span>extensions = extensions.map(|extensions| extensions.into_iter().map(|ty| ty.into()).collect());
-<a href=#433 id=433 data-nosnippet>433</a>        <span class="kw">if </span>search.is_some() {
+<a href=#433 id=433 data-nosnippet>433</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(search) = search {
 <a href=#434 id=434 data-nosnippet>434</a>            <span class="kw">let </span>flow_types = flow_type_manager
-<a href=#435 id=435 data-nosnippet>435</a>                .find_by_type_name(search.unwrap().as_str())
+<a href=#435 id=435 data-nosnippet>435</a>                .find_by_type_name(search.as_str())
 <a href=#436 id=436 data-nosnippet>436</a>                .into_iter()
 <a href=#437 id=437 data-nosnippet>437</a>                .map(|(<span class="kw">_</span>, flow_type)| flow_type.clone().into())
 <a href=#438 id=438 data-nosnippet>438</a>                .collect();

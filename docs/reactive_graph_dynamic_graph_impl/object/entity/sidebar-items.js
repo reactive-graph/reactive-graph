@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["get_entity_delete_field","get_entity_mutation_type","get_entity_mutation_types","get_entity_type","get_entity_type_trigger_field","get_entity_types","get_entity_update_field"]};
+window.SIDEBAR_ITEMS = {"mod":["mutation","query"]};

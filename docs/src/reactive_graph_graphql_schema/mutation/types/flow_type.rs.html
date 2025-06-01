@@ -83,7 +83,7 @@
 <a href=#83 id=83 data-nosnippet>83</a>            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; relation_type_manager
 <a href=#84 id=84 data-nosnippet>84</a>                .get(<span class="kw-2">&amp;</span>ty)
 <a href=#85 id=85 data-nosnippet>85</a>                .map(|relation_type| relation_type.into())
-<a href=#86 id=86 data-nosnippet>86</a>                .ok_or_else(|| Error::new(<span class="macro">format!</span>(<span class="string">"Relation Type {} not found"</span>, ty))),
+<a href=#86 id=86 data-nosnippet>86</a>                .ok_or_else(|| Error::new(<span class="macro">format!</span>(<span class="string">"Relation Type {ty} not found"</span>))),
 <a href=#87 id=87 data-nosnippet>87</a>            <span class="prelude-val">Err</span>(FlowTypeUpdateError::FlowTypeDoesNotExist(ty)) =&gt; {
 <a href=#88 id=88 data-nosnippet>88</a>                <span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Failed to update description of flow type {ty}: Flow type does not exist"</span>)))
 <a href=#89 id=89 data-nosnippet>89</a>            }

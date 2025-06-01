@@ -27,19 +27,17 @@
 <a href=#27 id=27 data-nosnippet>27</a>}
 <a href=#28 id=28 data-nosnippet>28</a>
 <a href=#29 id=29 data-nosnippet>29</a><span class="kw">pub fn </span>namespace_query_field(namespace: <span class="kw-2">&amp;</span>String) -&gt; Field {
-<a href=#30 id=30 data-nosnippet>30</a>    Field::new(namespace_field_name(namespace), namespace_type_ref(namespace), |_ctx| {
-<a href=#31 id=31 data-nosnippet>31</a>        FieldFuture::new(<span class="kw">async move </span>{
-<a href=#32 id=32 data-nosnippet>32</a>            <span class="kw">let </span>v = FieldValue::value(<span class="string">"test"</span>);
-<a href=#33 id=33 data-nosnippet>33</a>            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(v))
-<a href=#34 id=34 data-nosnippet>34</a>        })
-<a href=#35 id=35 data-nosnippet>35</a>    })
-<a href=#36 id=36 data-nosnippet>36</a>}
-<a href=#37 id=37 data-nosnippet>37</a>
-<a href=#38 id=38 data-nosnippet>38</a><span class="kw">pub fn </span>namespace_mutation_field(namespace: <span class="kw-2">&amp;</span>String) -&gt; Field {
-<a href=#39 id=39 data-nosnippet>39</a>    Field::new(namespace_field_name(namespace), namespace_mutation_type_ref(namespace), |_ctx| {
-<a href=#40 id=40 data-nosnippet>40</a>        FieldFuture::new(<span class="kw">async move </span>{
-<a href=#41 id=41 data-nosnippet>41</a>            <span class="kw">let </span>v = FieldValue::value(<span class="string">"test"</span>);
-<a href=#42 id=42 data-nosnippet>42</a>            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(v))
-<a href=#43 id=43 data-nosnippet>43</a>        })
-<a href=#44 id=44 data-nosnippet>44</a>    })
-<a href=#45 id=45 data-nosnippet>45</a>}</code></pre></div></section></main></body></html>
+<a href=#30 id=30 data-nosnippet>30</a>    <span class="kw">let </span>namespace_inner = namespace.clone();
+<a href=#31 id=31 data-nosnippet>31</a>    Field::new(namespace_field_name(namespace), namespace_type_ref(namespace), <span class="kw">move </span>|_ctx| {
+<a href=#32 id=32 data-nosnippet>32</a>        <span class="kw">let </span>namespace = namespace_inner.clone();
+<a href=#33 id=33 data-nosnippet>33</a>        FieldFuture::new(<span class="kw">async move </span>{ <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(FieldValue::value(namespace))) })
+<a href=#34 id=34 data-nosnippet>34</a>    })
+<a href=#35 id=35 data-nosnippet>35</a>}
+<a href=#36 id=36 data-nosnippet>36</a>
+<a href=#37 id=37 data-nosnippet>37</a><span class="kw">pub fn </span>namespace_mutation_field(namespace: <span class="kw-2">&amp;</span>String) -&gt; Field {
+<a href=#38 id=38 data-nosnippet>38</a>    <span class="kw">let </span>namespace_inner = namespace.clone();
+<a href=#39 id=39 data-nosnippet>39</a>    Field::new(namespace_field_name(namespace), namespace_mutation_type_ref(namespace), <span class="kw">move </span>|_ctx| {
+<a href=#40 id=40 data-nosnippet>40</a>        <span class="kw">let </span>namespace = namespace_inner.clone();
+<a href=#41 id=41 data-nosnippet>41</a>        FieldFuture::new(<span class="kw">async move </span>{ <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(FieldValue::value(namespace))) })
+<a href=#42 id=42 data-nosnippet>42</a>    })
+<a href=#43 id=43 data-nosnippet>43</a>}</code></pre></div></section></main></body></html>

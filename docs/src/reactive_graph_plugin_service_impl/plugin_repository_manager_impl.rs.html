@@ -78,7 +78,7 @@
 <a href=#78 id=78 data-nosnippet>78</a>                        <span class="kw">if </span>event.kind != Access(Close(Write)) {
 <a href=#79 id=79 data-nosnippet>79</a>                            <span class="kw">continue</span>;
 <a href=#80 id=80 data-nosnippet>80</a>                        }
-<a href=#81 id=81 data-nosnippet>81</a>                        <span class="macro">trace!</span>(<span class="string">"Hot Deploy Watcher: Detected file system activity: {:?}"</span>, event);
+<a href=#81 id=81 data-nosnippet>81</a>                        <span class="macro">trace!</span>(<span class="string">"Hot Deploy Watcher: Detected file system activity: {event:?}"</span>);
 <a href=#82 id=82 data-nosnippet>82</a>                        <span class="kw">for </span>path <span class="kw">in </span>event.paths.clone() {
 <a href=#83 id=83 data-nosnippet>83</a>                            <span class="kw">let </span><span class="prelude-val">Some</span>(stem) = get_stem(<span class="kw-2">&amp;</span>path) <span class="kw">else </span>{
 <a href=#84 id=84 data-nosnippet>84</a>                                <span class="kw">continue</span>;
@@ -175,7 +175,7 @@
 <a href=#175 id=175 data-nosnippet>175</a>                        }
 <a href=#176 id=176 data-nosnippet>176</a>                    }
 <a href=#177 id=177 data-nosnippet>177</a>                    <span class="prelude-val">Err</span>(e) =&gt; {
-<a href=#178 id=178 data-nosnippet>178</a>                        <span class="macro">error!</span>(<span class="string">"Hot Deploy Watcher: Error: {}"</span>, e);
+<a href=#178 id=178 data-nosnippet>178</a>                        <span class="macro">error!</span>(<span class="string">"Hot Deploy Watcher: Error: {e}"</span>);
 <a href=#179 id=179 data-nosnippet>179</a>                    }
 <a href=#180 id=180 data-nosnippet>180</a>                }
 <a href=#181 id=181 data-nosnippet>181</a>            }
@@ -187,7 +187,7 @@
 <a href=#187 id=187 data-nosnippet>187</a>                <span class="kw">match </span>tx.send(r).<span class="kw">await </span>{
 <a href=#188 id=188 data-nosnippet>188</a>                    <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {}
 <a href=#189 id=189 data-nosnippet>189</a>                    <span class="prelude-val">Err</span>(e) =&gt; {
-<a href=#190 id=190 data-nosnippet>190</a>                        <span class="macro">trace!</span>(<span class="string">"SendError {}"</span>, e);
+<a href=#190 id=190 data-nosnippet>190</a>                        <span class="macro">trace!</span>(<span class="string">"SendError {e}"</span>);
 <a href=#191 id=191 data-nosnippet>191</a>                    }
 <a href=#192 id=192 data-nosnippet>192</a>                }
 <a href=#193 id=193 data-nosnippet>193</a>            });
@@ -303,7 +303,7 @@
 <a href=#303 id=303 data-nosnippet>303</a>                    <span class="macro">trace!</span>(<span class="string">"Watching hot deploy folder {hot_deploy_location:?}"</span>);
 <a href=#304 id=304 data-nosnippet>304</a>                }
 <a href=#305 id=305 data-nosnippet>305</a>                <span class="prelude-val">Err</span>(e) =&gt; {
-<a href=#306 id=306 data-nosnippet>306</a>                    <span class="macro">error!</span>(<span class="string">"Failed to watch hot deploy folder {hot_deploy_location:?}: {}"</span>, e);
+<a href=#306 id=306 data-nosnippet>306</a>                    <span class="macro">error!</span>(<span class="string">"Failed to watch hot deploy folder {hot_deploy_location:?}: {e}"</span>);
 <a href=#307 id=307 data-nosnippet>307</a>                }
 <a href=#308 id=308 data-nosnippet>308</a>            }
 <a href=#309 id=309 data-nosnippet>309</a>        }

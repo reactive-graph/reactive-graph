@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["namespace_mutation","namespace_query"]};
+window.SIDEBAR_ITEMS = {"fn":["namespace_mutation","namespace_query"],"mod":["metrics","schema"]};

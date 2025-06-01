@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_flow_delete_field","get_flow_mutation_type","get_flow_mutation_types","get_flow_type","get_flow_type_trigger_field","get_flow_types","get_flow_update_field"]};

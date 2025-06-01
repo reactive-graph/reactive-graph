@@ -2,7 +2,7 @@
 <a href=#2 id=2 data-nosnippet>2</a><span class="kw">use </span>convert_case::Case::Pascal;
 <a href=#3 id=3 data-nosnippet>3</a><span class="kw">use </span>convert_case::Casing;
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span><span class="kw">crate</span>::DynamicGraphTypeDefinition;
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span><span class="kw">crate</span>::object::types::DynamicGraphTypeDefinition;
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>reactive_graph_dynamic_graph_api::SchemaBuilderContext;
 <a href=#7 id=7 data-nosnippet>7</a>
 <a href=#8 id=8 data-nosnippet>8</a><span class="kw">pub const </span>UNION_ALL_ENTITIES: <span class="kw-2">&amp;</span>str = <span class="string">"AllEntities"</span>;
@@ -14,7 +14,7 @@
 <a href=#14 id=14 data-nosnippet>14</a>
 <a href=#15 id=15 data-nosnippet>15</a><span class="kw">pub fn </span>get_namespace_entities_union(schema: SchemaBuilder, context: <span class="kw-2">&amp;</span>SchemaBuilderContext, namespace: <span class="kw-2">&amp;</span>String) -&gt; SchemaBuilder {
 <a href=#16 id=16 data-nosnippet>16</a>    <span class="kw">let </span>type_name = namespace_entities_union_type_name(namespace);
-<a href=#17 id=17 data-nosnippet>17</a>    <span class="kw">let </span><span class="kw-2">mut </span>union = Union::new(type_name).description(<span class="macro">format!</span>(<span class="string">"Any entity of the namespace {}"</span>, namespace));
+<a href=#17 id=17 data-nosnippet>17</a>    <span class="kw">let </span><span class="kw-2">mut </span>union = Union::new(type_name).description(<span class="macro">format!</span>(<span class="string">"Any entity of the namespace {namespace}"</span>));
 <a href=#18 id=18 data-nosnippet>18</a>    <span class="kw">for </span>entity_tys <span class="kw">in </span>context.entity_type_manager.get_types_by_namespace(namespace) {
 <a href=#19 id=19 data-nosnippet>19</a>        <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(<span class="kw-2">&amp;</span>entity_tys);
 <a href=#20 id=20 data-nosnippet>20</a>        union = union.possible_type(dy_ty.to_string());
@@ -23,10 +23,13 @@
 <a href=#23 id=23 data-nosnippet>23</a>}
 <a href=#24 id=24 data-nosnippet>24</a>
 <a href=#25 id=25 data-nosnippet>25</a><span class="kw">pub fn </span>get_all_entities_union(schema: SchemaBuilder, context: <span class="kw-2">&amp;</span>SchemaBuilderContext) -&gt; SchemaBuilder {
-<a href=#26 id=26 data-nosnippet>26</a>    <span class="kw">let </span><span class="kw-2">mut </span>union = Union::new(UNION_ALL_ENTITIES).description(<span class="string">"Any entity."</span>);
-<a href=#27 id=27 data-nosnippet>27</a>    <span class="kw">for </span>entity_ty <span class="kw">in </span>context.entity_type_manager.get_type_ids() {
-<a href=#28 id=28 data-nosnippet>28</a>        <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(<span class="kw-2">&amp;</span>entity_ty);
-<a href=#29 id=29 data-nosnippet>29</a>        union = union.possible_type(dy_ty.to_string());
-<a href=#30 id=30 data-nosnippet>30</a>    }
-<a href=#31 id=31 data-nosnippet>31</a>    schema.register(union)
-<a href=#32 id=32 data-nosnippet>32</a>}</code></pre></div></section></main></body></html>
+<a href=#26 id=26 data-nosnippet>26</a>    <span class="kw">if </span>context.entity_type_manager.get_type_ids().is_empty() {
+<a href=#27 id=27 data-nosnippet>27</a>        <span class="kw">return </span>schema;
+<a href=#28 id=28 data-nosnippet>28</a>    }
+<a href=#29 id=29 data-nosnippet>29</a>    <span class="kw">let </span><span class="kw-2">mut </span>union = Union::new(UNION_ALL_ENTITIES).description(<span class="string">"Any entity."</span>);
+<a href=#30 id=30 data-nosnippet>30</a>    <span class="kw">for </span>entity_ty <span class="kw">in </span>context.entity_type_manager.get_type_ids() {
+<a href=#31 id=31 data-nosnippet>31</a>        <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(<span class="kw-2">&amp;</span>entity_ty);
+<a href=#32 id=32 data-nosnippet>32</a>        union = union.possible_type(dy_ty.to_string());
+<a href=#33 id=33 data-nosnippet>33</a>    }
+<a href=#34 id=34 data-nosnippet>34</a>    schema.register(union)
+<a href=#35 id=35 data-nosnippet>35</a>}</code></pre></div></section></main></body></html>

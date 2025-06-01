@@ -56,7 +56,7 @@
 <a href=#56 id=56 data-nosnippet>56</a>        <span class="kw">let </span>entity_ty = entity_ty.into();
 <a href=#57 id=57 data-nosnippet>57</a>        <span class="kw">let </span>entity_type = entity_type_manager
 <a href=#58 id=58 data-nosnippet>58</a>            .get(<span class="kw-2">&amp;</span>entity_ty)
-<a href=#59 id=59 data-nosnippet>59</a>            .ok_or(Error::new(<span class="macro">format!</span>(<span class="string">"Entity type {} does not exist"</span>, entity_ty)))<span class="question-mark">?</span>;
+<a href=#59 id=59 data-nosnippet>59</a>            .ok_or(Error::new(<span class="macro">format!</span>(<span class="string">"Entity type {entity_ty} does not exist"</span>)))<span class="question-mark">?</span>;
 <a href=#60 id=60 data-nosnippet>60</a>
 <a href=#61 id=61 data-nosnippet>61</a>        <span class="kw">let </span>properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, entity_type.properties);
 <a href=#62 id=62 data-nosnippet>62</a>
@@ -98,10 +98,10 @@
 <a href=#98 id=98 data-nosnippet>98</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLEntityInstance&gt; {
 <a href=#99 id=99 data-nosnippet>99</a>        <span class="kw">let </span>reactive_entity_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveEntityManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
 <a href=#100 id=100 data-nosnippet>100</a>        <span class="kw">let </span>entity_instance;
-<a href=#101 id=101 data-nosnippet>101</a>        <span class="kw">if </span>id.is_some() {
-<a href=#102 id=102 data-nosnippet>102</a>            entity_instance = reactive_entity_manager.get(id.unwrap());
-<a href=#103 id=103 data-nosnippet>103</a>        } <span class="kw">else if </span>label.is_some() {
-<a href=#104 id=104 data-nosnippet>104</a>            entity_instance = reactive_entity_manager.get_by_label(label.unwrap().as_str());
+<a href=#101 id=101 data-nosnippet>101</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = id {
+<a href=#102 id=102 data-nosnippet>102</a>            entity_instance = reactive_entity_manager.get(id);
+<a href=#103 id=103 data-nosnippet>103</a>        } <span class="kw">else if let </span><span class="prelude-val">Some</span>(label) = label {
+<a href=#104 id=104 data-nosnippet>104</a>            entity_instance = reactive_entity_manager.get_by_label(label.as_str());
 <a href=#105 id=105 data-nosnippet>105</a>        } <span class="kw">else </span>{
 <a href=#106 id=106 data-nosnippet>106</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"Either id or label must be given!"</span>.into());
 <a href=#107 id=107 data-nosnippet>107</a>        }
@@ -194,7 +194,7 @@
 <a href=#194 id=194 data-nosnippet>194</a>        <span class="kw">let </span>reactive_entity_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveEntityManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
 <a href=#195 id=195 data-nosnippet>195</a>        <span class="kw">let </span>entity_instance = reactive_entity_manager.get(id);
 <a href=#196 id=196 data-nosnippet>196</a>        <span class="kw">if </span>entity_instance.is_none() {
-<a href=#197 id=197 data-nosnippet>197</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Entity instance {} does not exist!"</span>, id)));
+<a href=#197 id=197 data-nosnippet>197</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Entity instance {id} does not exist!"</span>)));
 <a href=#198 id=198 data-nosnippet>198</a>        }
 <a href=#199 id=199 data-nosnippet>199</a>        <span class="kw">let </span>entity_instance = entity_instance.unwrap();
 <a href=#200 id=200 data-nosnippet>200</a>        entity_instance.tick();
@@ -237,12 +237,12 @@
 <a href=#237 id=237 data-nosnippet>237</a>        <span class="kw">if </span>entity_behaviour_manager.has(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty) {
 <a href=#238 id=238 data-nosnippet>238</a>            entity_behaviour_manager
 <a href=#239 id=239 data-nosnippet>239</a>                .connect(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty)
-<a href=#240 id=240 data-nosnippet>240</a>                .map_err(|e| Error::new(<span class="macro">format!</span>(<span class="string">"Failed to connect entity behaviour {:?}"</span>, e)))<span class="question-mark">?</span>;
+<a href=#240 id=240 data-nosnippet>240</a>                .map_err(|e| Error::new(<span class="macro">format!</span>(<span class="string">"Failed to connect entity behaviour {e:?}"</span>)))<span class="question-mark">?</span>;
 <a href=#241 id=241 data-nosnippet>241</a>        }
 <a href=#242 id=242 data-nosnippet>242</a>        <span class="kw">if </span>entity_component_behaviour_manager.has(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty) {
 <a href=#243 id=243 data-nosnippet>243</a>            entity_component_behaviour_manager
 <a href=#244 id=244 data-nosnippet>244</a>                .connect(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty)
-<a href=#245 id=245 data-nosnippet>245</a>                .map_err(|e| Error::new(<span class="macro">format!</span>(<span class="string">"Failed to connect entity component behaviour {:?}"</span>, e)))<span class="question-mark">?</span>;
+<a href=#245 id=245 data-nosnippet>245</a>                .map_err(|e| Error::new(<span class="macro">format!</span>(<span class="string">"Failed to connect entity component behaviour {e:?}"</span>)))<span class="question-mark">?</span>;
 <a href=#246 id=246 data-nosnippet>246</a>        }
 <a href=#247 id=247 data-nosnippet>247</a>        <span class="prelude-val">Ok</span>(reactive_instance.into())
 <a href=#248 id=248 data-nosnippet>248</a>    }
@@ -261,12 +261,12 @@
 <a href=#261 id=261 data-nosnippet>261</a>        <span class="kw">if </span>entity_behaviour_manager.has(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty) {
 <a href=#262 id=262 data-nosnippet>262</a>            entity_behaviour_manager
 <a href=#263 id=263 data-nosnippet>263</a>                .disconnect(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty)
-<a href=#264 id=264 data-nosnippet>264</a>                .map_err(|e| Error::new(<span class="macro">format!</span>(<span class="string">"Failed to disconnect entity behaviour {:?}"</span>, e)))<span class="question-mark">?</span>;
+<a href=#264 id=264 data-nosnippet>264</a>                .map_err(|e| Error::new(<span class="macro">format!</span>(<span class="string">"Failed to disconnect entity behaviour {e:?}"</span>)))<span class="question-mark">?</span>;
 <a href=#265 id=265 data-nosnippet>265</a>        }
 <a href=#266 id=266 data-nosnippet>266</a>        <span class="kw">if </span>entity_component_behaviour_manager.has(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty) {
 <a href=#267 id=267 data-nosnippet>267</a>            entity_component_behaviour_manager
 <a href=#268 id=268 data-nosnippet>268</a>                .disconnect(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty)
-<a href=#269 id=269 data-nosnippet>269</a>                .map_err(|e| Error::new(<span class="macro">format!</span>(<span class="string">"Failed to connect entity component behaviour {:?}"</span>, e)))<span class="question-mark">?</span>;
+<a href=#269 id=269 data-nosnippet>269</a>                .map_err(|e| Error::new(<span class="macro">format!</span>(<span class="string">"Failed to connect entity component behaviour {e:?}"</span>)))<span class="question-mark">?</span>;
 <a href=#270 id=270 data-nosnippet>270</a>        }
 <a href=#271 id=271 data-nosnippet>271</a>        <span class="prelude-val">Ok</span>(reactive_instance.into())
 <a href=#272 id=272 data-nosnippet>272</a>    }
@@ -285,12 +285,12 @@
 <a href=#285 id=285 data-nosnippet>285</a>        <span class="kw">if </span>entity_behaviour_manager.has(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty) {
 <a href=#286 id=286 data-nosnippet>286</a>            entity_behaviour_manager
 <a href=#287 id=287 data-nosnippet>287</a>                .reconnect(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty)
-<a href=#288 id=288 data-nosnippet>288</a>                .map_err(|e| Error::new(<span class="macro">format!</span>(<span class="string">"Failed to reconnect entity behaviour {:?}"</span>, e)))<span class="question-mark">?</span>;
+<a href=#288 id=288 data-nosnippet>288</a>                .map_err(|e| Error::new(<span class="macro">format!</span>(<span class="string">"Failed to reconnect entity behaviour {e:?}"</span>)))<span class="question-mark">?</span>;
 <a href=#289 id=289 data-nosnippet>289</a>        }
 <a href=#290 id=290 data-nosnippet>290</a>        <span class="kw">if </span>entity_component_behaviour_manager.has(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty) {
 <a href=#291 id=291 data-nosnippet>291</a>            entity_component_behaviour_manager
 <a href=#292 id=292 data-nosnippet>292</a>                .reconnect(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty)
-<a href=#293 id=293 data-nosnippet>293</a>                .map_err(|e| Error::new(<span class="macro">format!</span>(<span class="string">"Failed to connect entity component behaviour {:?}"</span>, e)))<span class="question-mark">?</span>;
+<a href=#293 id=293 data-nosnippet>293</a>                .map_err(|e| Error::new(<span class="macro">format!</span>(<span class="string">"Failed to connect entity component behaviour {e:?}"</span>)))<span class="question-mark">?</span>;
 <a href=#294 id=294 data-nosnippet>294</a>        }
 <a href=#295 id=295 data-nosnippet>295</a>        <span class="prelude-val">Ok</span>(reactive_instance.into())
 <a href=#296 id=296 data-nosnippet>296</a>    }

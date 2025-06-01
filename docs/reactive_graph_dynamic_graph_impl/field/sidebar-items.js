@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["component","datatype","entity","json","namespace","property_instance","relation"]};
+window.SIDEBAR_ITEMS = {"mod":["component","datatype","entity","flow","json","namespace","property_instance","relation"]};

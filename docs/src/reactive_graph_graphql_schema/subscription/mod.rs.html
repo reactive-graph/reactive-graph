@@ -37,10 +37,10 @@
 <a href=#37 id=37 data-nosnippet>37</a>        <span class="kw">match </span>context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveEntityManager + Send + Sync&gt;&gt;() {
 <a href=#38 id=38 data-nosnippet>38</a>            <span class="prelude-val">Ok</span>(entity_instance_manager) =&gt; {
 <a href=#39 id=39 data-nosnippet>39</a>                <span class="kw">let </span>entity_instance;
-<a href=#40 id=40 data-nosnippet>40</a>                <span class="kw">if </span>id.is_some() {
-<a href=#41 id=41 data-nosnippet>41</a>                    entity_instance = entity_instance_manager.get(id.unwrap());
-<a href=#42 id=42 data-nosnippet>42</a>                } <span class="kw">else if </span>label.is_some() {
-<a href=#43 id=43 data-nosnippet>43</a>                    entity_instance = entity_instance_manager.get_by_label(label.unwrap().as_str());
+<a href=#40 id=40 data-nosnippet>40</a>                <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = id {
+<a href=#41 id=41 data-nosnippet>41</a>                    entity_instance = entity_instance_manager.get(id);
+<a href=#42 id=42 data-nosnippet>42</a>                } <span class="kw">else if let </span><span class="prelude-val">Some</span>(label) = label {
+<a href=#43 id=43 data-nosnippet>43</a>                    entity_instance = entity_instance_manager.get_by_label(label.as_str());
 <a href=#44 id=44 data-nosnippet>44</a>                } <span class="kw">else </span>{
 <a href=#45 id=45 data-nosnippet>45</a>                    <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"Either id or label must be given!"</span>.into());
 <a href=#46 id=46 data-nosnippet>46</a>                }

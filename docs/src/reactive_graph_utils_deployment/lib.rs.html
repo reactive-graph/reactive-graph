@@ -35,7 +35,7 @@
 <a href=#35 id=35 data-nosnippet>35</a>                <span class="macro">println!</span>(<span class="string">"Copy plugin from {} to {}"</span>, source_path.display(), target_path.display());
 <a href=#36 id=36 data-nosnippet>36</a>                <span class="kw">match </span>fs::copy(source_path, target_path) {
 <a href=#37 id=37 data-nosnippet>37</a>                    <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">println!</span>(<span class="string">"Success"</span>),
-<a href=#38 id=38 data-nosnippet>38</a>                    <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">eprintln!</span>(<span class="string">"Error: {}"</span>, e),
+<a href=#38 id=38 data-nosnippet>38</a>                    <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">eprintln!</span>(<span class="string">"Error: {e}"</span>),
 <a href=#39 id=39 data-nosnippet>39</a>                }
 <a href=#40 id=40 data-nosnippet>40</a>            }
 <a href=#41 id=41 data-nosnippet>41</a>        }
