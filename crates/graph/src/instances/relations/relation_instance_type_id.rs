@@ -148,11 +148,11 @@ impl From<&RelationInstanceTypeId> for NamespacedType {
 }
 
 impl TryFrom<&String> for RelationInstanceTypeId {
-    type Error = ();
+    type Error = (); // TODO: Like TypeIdParseError
 
     fn try_from(s: &String) -> Result<Self, Self::Error> {
         let mut s = s.splitn(4, &TYPE_ID_TYPE_SEPARATOR);
-        let type_id_type = s.next().ok_or(())?.try_into()?;
+        let type_id_type = s.next().ok_or(())?.try_into().map_err(|_| ())?;
         if TypeIdType::RelationType == type_id_type {
             let namespace = s.next().ok_or(())?;
             if namespace.is_empty() {

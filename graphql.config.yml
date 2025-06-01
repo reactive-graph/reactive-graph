@@ -1,39 +1,52 @@
-schema:
-  - ./schema/graphql/reactive-graph-schema.graphql
-  - ./schema/graphql/dynamic-graph-schema.graphql
-  - ./schema/graphql/reactive-graph-runtime-schema.graphql
-  - ./schema/graphql/reactive-graph-plugin-schema.graphql
-extensions:
-  endpoints:
-    ReactiveGraph@http:
-      url: http://localhost:31415/graphql
-      introspect: true
-      schema: ./schema/graphql/reactive-graph-schema.graphql
-    ReactiveGraph@https:
-      url: https://localhost:31415/graphql
-      introspect: false
-      schema: ./schema/graphql/reactive-graph-schema.graphql
-    DynamicGraph@http:
-      url: http://localhost:31415/dynamic_graph
-      introspect: true
-      schema: ./schema/graphql/dynamic-graph-schema.graphql
-    DynamicGraph@https:
-      url: https://localhost:31415/dynamic_graph
-      introspect: false
-      schema: ./schema/graphql/dynamic-graph-schema.graphql
-    ReactiveGraphRuntime@http:
-      url: http://localhost:31415/runtime/graphql
-      introspect: true
-      schema: ./schema/graphql/reactive-graph-runtime-schema.graphql
-    ReactiveGraphRuntime@https:
-      url: https://localhost:31415/runtime/graphql
-      introspect: false
-      schema: ./schema/graphql/reactive-graph-runtime-schema.graphql
-    ReactiveGraphPlugins@http:
-      url: http://localhost:31415/plugin/graphql
-      introspect: true
-      schema: ./schema/graphql/reactive-graph-plugin-schema.graphql
-    ReactiveGraphPlugins@https:
-      url: https://localhost:31415/plugin/graphql
-      introspect: false
-      schema: ./schema/graphql/reactive-graph-plugin-schema.graphql
+projects:
+  reactive-graph:
+    schema: ./schema/graphql/reactive-graph-schema.graphql
+    include:
+      - ./crates/**/graphql/**/*.graphql
+      - ./tests/graphql/**/*.graphql
+    extensions:
+      endpoints:
+        ReactiveGraph@http:
+          url: http://localhost:31415/graphql
+          introspect: true
+        ReactiveGraph@https:
+          url: https://localhost:31415/graphql
+          introspect: true
+  dynamic-graph:
+    schema: ./schema/graphql/dynamic-graph-schema.graphql
+    include:
+      - ./crates/**/dynamic_graph/**/*.graphql
+      - ./tests/dynamic_graph/**/*.graphql
+    extensions:
+      endpoints:
+        DynamicGraph@http:
+          url: http://localhost:31415/dynamic_graph
+          introspect: true
+        DynamicGraph@https:
+          url: https://localhost:31415/dynamic_graph
+          introspect: true
+  reactive-graph-runtime:
+    schema: ./schema/graphql/reactive-graph-runtime-schema.graphql
+    include:
+      - ./crates/**/graphql-runtime/**/*.graphql
+      - ./tests/graphql-runtime/**/*.graphql
+    extensions:
+      endpoints:
+        ReactiveGraphRuntime@http:
+          url: http://localhost:31415/runtime/graphql
+          introspect: true
+        ReactiveGraphRuntime@https:
+          url: https://localhost:31415/runtime/graphql
+          introspect: true
+  reactive-graph-plugin:
+    schema: ./schema/graphql/reactive-graph-plugin-schema.graphql
+    include:
+      - ./crates/**/graphql-plugin/**/*.graphql
+    extensions:
+      endpoints:
+        ReactiveGraphPlugin@http:
+          url: http://localhost:31415/plugin/graphql
+          introspect: true
+        ReactiveGraphPlugin@https:
+          url: https://localhost:31415/plugin/graphql
+          introspect: true

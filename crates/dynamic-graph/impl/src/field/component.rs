@@ -7,8 +7,8 @@ use async_graphql::dynamic::FieldValue;
 use async_graphql::dynamic::InterfaceField;
 use async_graphql::dynamic::TypeRef;
 
-use crate::DynamicGraphTypeDefinition;
-use crate::to_type_ref;
+use crate::field::to_type_ref;
+use crate::object::types::DynamicGraphTypeDefinition;
 use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::PropertyType;
@@ -17,9 +17,9 @@ use reactive_graph_reactive_model_impl::ReactiveRelation;
 use reactive_graph_reactive_service_api::ReactiveEntityManager;
 use reactive_graph_reactive_service_api::ReactiveRelationManager;
 
-pub fn component_query_field(component_ty: &ComponentTypeId, component: &Component) -> Field {
-    let ty = component_ty.clone();
-    let dy_ty = DynamicGraphTypeDefinition::from(component_ty);
+pub fn component_query_field(component: &Component) -> Field {
+    let ty = component.ty.clone();
+    let dy_ty = DynamicGraphTypeDefinition::from(&ty);
     Field::new(dy_ty.field_name_with_suffix(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         FieldFuture::new(async move {
@@ -46,7 +46,7 @@ fn relation_instance_component<'a>(relation_instance: ReactiveRelation) -> Field
 
 pub fn instance_component_id_field(ty: &ComponentTypeId) -> Field {
     let ty_inner = ty.clone();
-    Field::new(format!("_{}", ty), TypeRef::named(TypeRef::ID), move |_ctx| {
+    Field::new(format!("_{ty}"), TypeRef::named(TypeRef::ID), move |_ctx| {
         let ty = ty_inner.clone();
         FieldFuture::new(async move {
             let dy_ty = DynamicGraphTypeDefinition::from(&ty);
@@ -60,5 +60,5 @@ pub fn component_property_field(property_type: &PropertyType) -> InterfaceField 
 }
 
 pub fn component_id_field(ty: &ComponentTypeId) -> InterfaceField {
-    InterfaceField::new(format!("_{}", ty), TypeRef::named(TypeRef::ID))
+    InterfaceField::new(format!("_{ty}"), TypeRef::named(TypeRef::ID))
 }

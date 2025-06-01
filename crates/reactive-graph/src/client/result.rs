@@ -60,11 +60,11 @@ impl<S: 'static, T: Clone + Tabled + From<S> + TableInlineFormatSetter + 'static
 impl Display for CommandResponse {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            CommandResponse::Message(message) => write!(f, "{}", message),
+            CommandResponse::Message(message) => write!(f, "{message}"),
             CommandResponse::Value(value) => write!(f, "{}", serde_json::to_string_pretty(&value).unwrap_or_default()),
             #[cfg(feature = "toml")]
             CommandResponse::TomlValue(value) => write!(f, "{}", toml::to_string_pretty(&value).unwrap_or_default()),
-            CommandResponse::Table(table) => write!(f, "{}", table),
+            CommandResponse::Table(table) => write!(f, "{table}"),
         }
     }
 }

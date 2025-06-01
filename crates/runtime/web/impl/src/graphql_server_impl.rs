@@ -102,8 +102,8 @@ impl GraphQLServer for GraphQLServerImpl {
         trace!("Initialize GraphQL server");
         let server = match self.setup() {
             Ok(server) => server,
-            Err(error) => {
-                error!("Failed to setup graphql server: {}!", error);
+            Err(e) => {
+                error!("Failed to setup graphql server: {e}!");
                 return;
             }
         };

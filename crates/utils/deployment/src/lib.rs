@@ -35,7 +35,7 @@ pub fn deploy_plugin(filename: &str) -> Result<(), DeploymentError> {
                 println!("Copy plugin from {} to {}", source_path.display(), target_path.display());
                 match fs::copy(source_path, target_path) {
                     Ok(_) => println!("Success"),
-                    Err(e) => eprintln!("Error: {}", e),
+                    Err(e) => eprintln!("Error: {e}"),
                 }
             }
         }

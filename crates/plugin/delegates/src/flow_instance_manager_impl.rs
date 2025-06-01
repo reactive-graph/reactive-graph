@@ -1,11 +1,10 @@
-use std::collections::HashMap;
 use std::sync::Arc;
 
-use serde_json::Value;
 use uuid::Uuid;
 
 use reactive_graph_graph::FlowInstance;
 use reactive_graph_graph::FlowTypeId;
+use reactive_graph_graph::PropertyInstances;
 use reactive_graph_reactive_model_impl::ReactiveFlow;
 use reactive_graph_reactive_service_api::ReactiveFlowCreationError;
 use reactive_graph_reactive_service_api::ReactiveFlowManager;
@@ -40,10 +39,11 @@ impl reactive_graph_plugin_api::FlowInstanceManager for FlowInstanceManagerDeleg
     fn create_from_type(
         &self,
         ty: &FlowTypeId,
-        variables: HashMap<String, Value>,
-        properties: HashMap<String, Value>,
+        id: Option<Uuid>,
+        variables: PropertyInstances,
+        properties: PropertyInstances,
     ) -> Result<ReactiveFlow, ReactiveFlowCreationError> {
-        self.reactive_flow_manager.create_from_type(ty, variables, properties)
+        self.reactive_flow_manager.create_from_type(ty, id, variables, properties)
     }
 
     fn delete(&self, id: Uuid) -> bool {

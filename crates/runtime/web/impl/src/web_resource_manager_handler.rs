@@ -27,14 +27,14 @@ pub async fn handle_web_resource(
     match web_resource_manager.get(context_path.clone()) {
         Some(web_resource) => match web_resource.handle_web_resource(path, http_request).await {
             Ok(response) => convert_response(response),
-            Err(err) => HttpResponse::InternalServerError().body(format!("500 Internal Server Error: {}", err)),
+            Err(e) => HttpResponse::InternalServerError().body(format!("500 Internal Server Error: {e}")),
         },
         None => match web_resource_manager.get_default() {
-            Some(web_resource) => match web_resource.handle_web_resource(format!("{}/{}", context_path, path), http_request).await {
+            Some(web_resource) => match web_resource.handle_web_resource(format!("{context_path}/{path}"), http_request).await {
                 Ok(response) => convert_response(response),
-                Err(err) => HttpResponse::InternalServerError().body(format!("500 Internal Server Error: {}", err)),
+                Err(e) => HttpResponse::InternalServerError().body(format!("500 Internal Server Error: {e}")),
             },
-            None => HttpResponse::NotFound().body(format!("404 Not Found: {}", uri)),
+            None => HttpResponse::NotFound().body(format!("404 Not Found: {uri}")),
         },
     }
 }
@@ -46,14 +46,14 @@ pub async fn handle_root_web_resource(
 ) -> HttpResponse {
     let path = path_info.path.clone();
     let uri = request.uri().clone();
-    debug!("path: {} uri: {}", path, uri);
+    debug!("Handle root web resource on path: {path} uri: {uri}");
     let http_request = convert_request(request);
     match web_resource_manager.get_default() {
         Some(web_resource) => match web_resource.handle_web_resource(path, http_request).await {
             Ok(response) => convert_response(response),
-            Err(err) => HttpResponse::InternalServerError().body(format!("500 Internal Server Error: {}", err)),
+            Err(e) => HttpResponse::InternalServerError().body(format!("500 Internal Server Error: {e}")),
         },
-        None => HttpResponse::NotFound().body(format!("404 Not Found: {}", uri)),
+        None => HttpResponse::NotFound().body(format!("404 Not Found: {uri}")),
     }
 }
 

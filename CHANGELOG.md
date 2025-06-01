@@ -17,9 +17,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL: Sort fields and enums
 - GraphQL: Generate static schema SDL files during build
 - Dynamic Graph: Sort components, entity types, relation types and properties
+- Dynamic Graph: Export reactive entities, relations and flows using dynamic schemas
+- Dynamic Graph: Type System Metrics
 - JSON Schema: Include an unique JSON schema identifier ($id) in the JSON schemas
 - JSON Schema: Provide an $id field when serializing types and instances
 - JSON Schema: Type definitions and instance definitions can refer to the JSON schema using an $id field
+- JSON Schema: Generate dynamic schemas for all registered entity types and relation types
+- Reactive: Added delegates for reactive flow to its wrapper entity
+- Reactive: Added method to get reactive flow by entity type
+- Reactive: Implemented json serialization for reactive entity and reactive relation
 
 ### Changed
 
@@ -28,7 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Configure lints on workspace level
 - Replaced lazy_static with LazyLock
 - CLI: Updated shell completions
+- Dynamic Graph: Refactored GraphQL objects
 - JSON schema: Refactored REST services
+- Reactive: When creating a reactive flow from type a id can be provided
 
 ### Fixed
 

@@ -25,6 +25,9 @@ pub trait DynamicGraphSchemaManager: Send + Sync + Lifecycle {
     /// Returns the SDL of the Dynamic Graph Schema.
     async fn create_dynamic_schema(&self) -> Result<Schema, SchemaError>;
 
+    /// Returns the SDL of the Dynamic Graph Schema.
+    fn create_dynamic_schema_sync(&self) -> Result<Schema, SchemaError>;
+
     /// Regenerates the Dynamic Graph Schema.
     async fn regenerate_dynamic_schema(&self) -> Result<(), SchemaError>;
 

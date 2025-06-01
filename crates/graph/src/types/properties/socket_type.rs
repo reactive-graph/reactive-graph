@@ -50,7 +50,7 @@ impl From<&str> for SocketType {
 
 impl Display for SocketType {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "{:?}", self)
+        write!(f, "{self:?}")
     }
 }
 

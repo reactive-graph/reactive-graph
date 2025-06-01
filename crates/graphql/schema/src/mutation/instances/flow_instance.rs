@@ -10,6 +10,7 @@ use reactive_graph_reactive_service_api::ReactiveEntityManager;
 use reactive_graph_reactive_service_api::ReactiveFlowManager;
 use reactive_graph_reactive_service_api::ReactiveRelationManager;
 use reactive_graph_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::FlowTypeManager;
 use reactive_graph_type_system_api::RelationTypeManager;
 
 use crate::error::flow::FlowMutationError;
@@ -55,8 +56,7 @@ impl MutationFlowInstances {
             return Err(FlowMutationError::MissingEntityType(ty).into());
         }
 
-        if flow_id.is_some() {
-            let flow_id = flow_id.unwrap();
+        if let Some(flow_id) = flow_id {
             if reactive_flow_manager.has(flow_id) {
                 return Err(FlowMutationError::FlowAlreadyExists(flow_id).into());
             }
@@ -99,19 +99,29 @@ impl MutationFlowInstances {
         &self,
         context: &Context<'_>,
         #[graphql(name = "type", desc = "The flow type")] flow_ty: FlowTypeIdDefinition,
-        // #[graphql(desc = "The namespace of the flow type.")] namespace: String,
-        // #[graphql(name = "type", desc = "The type name of the flow type.")] type_name: String,
+        id: Option<Uuid>,
         #[graphql(desc = "Parametrized construction of a flow instance using variables of a flow type.")] variables: Option<Vec<GraphQLPropertyInstance>>,
         #[graphql(desc = "A list of properties of the wrapper entity instance.")] properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLFlowInstance> {
+        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
+        let flow_type_manager = context.data::<Arc<dyn FlowTypeManager + Send + Sync>>()?;
         let reactive_flow_manager = context.data::<Arc<dyn ReactiveFlowManager + Send + Sync>>()?;
 
         let flow_ty = flow_ty.into();
 
-        let variables = GraphQLPropertyInstance::to_map(variables);
-        let properties = GraphQLPropertyInstance::to_map(properties);
+        let Some(flow_type) = flow_type_manager.get(&flow_ty) else {
+            return Err(FlowMutationError::MissingFlowType(flow_ty.clone()).into());
+        };
 
-        match reactive_flow_manager.create_from_type(&flow_ty, variables, properties) {
+        let entity_ty = flow_type.wrapper_type();
+        let Some(entity_type) = entity_type_manager.get(&entity_ty) else {
+            return Err(FlowMutationError::MissingEntityType(entity_ty).into());
+        };
+
+        let variables = GraphQLPropertyInstance::to_property_instances_with_defaults(variables, flow_type.variables);
+        let properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, entity_type.properties);
+
+        match reactive_flow_manager.create_from_type(&flow_ty, id, variables, properties) {
             Ok(flow_instance) => Ok(flow_instance.into()),
             Err(e) => Err(Error::new(e)),
         }
@@ -128,13 +138,13 @@ impl MutationFlowInstances {
     // /// property is connected to other properties.
     // async fn commit(&self, context: &Context<'_>, id: Uuid) -> Result<GraphQLFlowInstance> {
     //     let reactive_flow_manager = context.data::<Arc<dyn ReactiveFlowManager + Send + Sync>>()?;
-    //     let flow_instance = reactive_flow_manager.get(id);
-    //     if flow_instance.is_none() {
+    //     let reactive_flow = reactive_flow_manager.get(id);
+    //     if reactive_flow.is_none() {
     //         return Err(FlowMutationError::MissingFlow(id).into());
     //     }
-    //     let flow_instance = flow_instance.unwrap();
-    //     reactive_flow_manager.commit(flow_instance.id);
-    //     Ok(flow_instance.into())
+    //     let reactive_flow: ReactiveFlow = reactive_flow.unwrap();
+    //     reactive_flow_manager.commit(reactive_flow.id);
+    //     Ok(reactive_flow.into())
     // }
 
     /// Creates a new entity instance and adds the entity instance to the given flow by id.
@@ -151,52 +161,40 @@ impl MutationFlowInstances {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
         let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
 
-        let flow_instance = reactive_flow_manager.get(flow_id);
-        if flow_instance.is_none() {
+        let Some(reactive_flow) = reactive_flow_manager.get(flow_id) else {
             return Err(FlowMutationError::MissingFlow(flow_id).into());
-        }
-        let flow_instance = flow_instance.unwrap();
+        };
 
         let ty = EntityTypeId::new_from_type(namespace, type_name);
-        let entity_type = entity_type_manager.get(&ty);
-        if entity_type.is_none() {
+        let Some(entity_type) = entity_type_manager.get(&ty) else {
             return Err(FlowMutationError::MissingEntityType(ty).into());
-        }
+        };
 
-        let properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, entity_type.unwrap().properties);
+        let properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, entity_type.properties);
 
-        let entity_instance = match entity_id {
+        let Ok(reactive_entity) = (match entity_id {
             Some(id) => reactive_entity_manager.create_with_id(&ty, id, properties),
             None => reactive_entity_manager.create_reactive_entity(&ty, properties),
-        };
-        if entity_instance.is_err() {
+        }) else {
             return Err(FlowMutationError::EntityInstanceCreationError().into());
-        }
-        flow_instance.add_entity(entity_instance.unwrap());
-        Ok(flow_instance.into())
+        };
+        reactive_flow.add_entity(reactive_entity);
+        Ok(reactive_flow.into())
     }
 
     /// Adds an existing entity instance by id to the given flow by id
     async fn add_entity(&self, context: &Context<'_>, flow_id: Uuid, entity_id: Uuid) -> Result<GraphQLFlowInstance> {
         let reactive_flow_manager = context.data::<Arc<dyn ReactiveFlowManager + Send + Sync>>()?;
         let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
-
-        let flow_instance = reactive_flow_manager.get(flow_id);
-        if flow_instance.is_none() {
+        let Some(reactive_flow) = reactive_flow_manager.get(flow_id) else {
             return Err(FlowMutationError::MissingFlow(flow_id).into());
-        }
-        let flow_instance = flow_instance.unwrap();
-
-        let entity_instance = reactive_entity_manager.get(entity_id);
-        if entity_instance.is_none() {
+        };
+        let Some(reactive_entity) = reactive_entity_manager.get(entity_id) else {
             return Err(FlowMutationError::MissingEntityInstance(entity_id).into());
-        }
-        let entity_instance = entity_instance.unwrap();
-
-        flow_instance.add_entity(entity_instance);
-        // No commit necessary _> The entity_instance is registered in the reactive_entity_manager
-
-        Ok(flow_instance.into())
+        };
+        reactive_flow.add_entity(reactive_entity);
+        // No commit necessary _> The reactive entity  is registered in the reactive_entity_manager
+        Ok(reactive_flow.into())
     }
 
     /// Removes an entity instance from flow.

@@ -3,6 +3,9 @@ use crate::client::error::CommandError::NotFound;
 use clap::Args;
 use reactive_graph_client::types::common::variables::type_id::variables::TypeIdVariables;
 use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
+use std::fmt::Display;
+use std::fmt::Formatter;
 
 /// The component type.
 #[derive(Args, Debug, Clone)]
@@ -16,7 +19,7 @@ pub(crate) struct ComponentTypeIdArgs {
 
 impl ComponentTypeIdArgs {
     pub fn not_found(&self) -> CommandError {
-        NotFound(format!("Component {}__{} not found", &self.namespace, &self.name))
+        NotFound(format!("Component {}{}{} not found", &self.namespace, TYPE_ID_TYPE_SEPARATOR, &self.name))
     }
 }
 
@@ -30,6 +33,12 @@ impl From<&ComponentTypeIdArgs> for TypeIdVariables {
     fn from(ty: &ComponentTypeIdArgs) -> Self {
         let ty: ComponentTypeId = ty.clone().into();
         ty.into()
+    }
+}
+
+impl Display for ComponentTypeIdArgs {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}{}{}", &self.namespace, TYPE_ID_TYPE_SEPARATOR, &self.name)
     }
 }
 

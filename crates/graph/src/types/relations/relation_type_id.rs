@@ -26,9 +26,9 @@ use crate::NamespacedType;
 use crate::NamespacedTypeGetter;
 use crate::NamespacedTypeIdContainer;
 use crate::NamespacedTypeIds;
-use crate::TYPE_ID_TYPE_SEPARATOR;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
+use crate::TypeIdParseError;
 use crate::TypeIdType;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
@@ -103,26 +103,14 @@ impl TryFrom<&TypeDefinition> for RelationTypeId {
 }
 
 impl TryFrom<&String> for RelationTypeId {
-    type Error = ();
+    type Error = TypeIdParseError;
 
     fn try_from(s: &String) -> Result<Self, Self::Error> {
-        let mut s = s.split(&TYPE_ID_TYPE_SEPARATOR);
-        let type_type = s.next().ok_or(())?.try_into()?;
-        if TypeIdType::RelationType == type_type {
-            let namespace = s.next().ok_or(())?;
-            if namespace.is_empty() {
-                return Err(());
-            }
-            let type_name = s.next().ok_or(())?;
-            if type_name.is_empty() {
-                return Err(());
-            }
-            if s.next().is_some() {
-                return Err(());
-            }
-            return Ok(Self(NamespacedType::new(namespace, type_name)));
+        let type_definition = TypeDefinition::try_from(s).map_err(TypeIdParseError::TypeDefinitionParseError)?;
+        if TypeIdType::RelationType != type_definition.type_id_type {
+            return Err(TypeIdParseError::InvalidTypeIdType(TypeIdType::RelationType, type_definition.type_id_type));
         }
-        Err(())
+        Ok(Self((&type_definition).into()))
     }
 }
 

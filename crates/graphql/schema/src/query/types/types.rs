@@ -430,9 +430,9 @@ impl Types {
             }
         }
         let extensions = extensions.map(|extensions| extensions.into_iter().map(|ty| ty.into()).collect());
-        if search.is_some() {
+        if let Some(search) = search {
             let flow_types = flow_type_manager
-                .find_by_type_name(search.unwrap().as_str())
+                .find_by_type_name(search.as_str())
                 .into_iter()
                 .map(|(_, flow_type)| flow_type.clone().into())
                 .collect();

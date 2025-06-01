@@ -75,7 +75,7 @@ impl MutationEntityTypes {
             Ok(_) => entity_type_manager
                 .get(&ty)
                 .map(|entity_type| entity_type.into())
-                .ok_or_else(|| Error::new(format!("Entity Type {} not found", ty))),
+                .ok_or_else(|| Error::new(format!("Entity Type {ty} not found"))),
             Err(EntityTypeUpdateError::EntityTypeDoesNotExist(ty)) => {
                 Err(Error::new(format!("Failed to update description of entity type {ty}: Entity type does not exist")))
             }

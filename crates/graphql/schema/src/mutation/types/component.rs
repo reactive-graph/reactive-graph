@@ -55,7 +55,7 @@ impl MutationComponents {
         match component_manager.register(component) {
             Ok(component) => Ok(component.into()),
             Err(ComponentRegistrationError::ComponentAlreadyExists(ty)) => {
-                Err(Error::new(format!("Failed to create component {}: Component already exists", ty)))
+                Err(Error::new(format!("Failed to create component {ty}: Component already exists")))
             }
         }
     }
@@ -90,7 +90,7 @@ impl MutationComponents {
             Ok(_) => component_manager
                 .get(&ty)
                 .map(|component| component.into())
-                .ok_or_else(|| Error::new(format!("Component {} not found", ty))),
+                .ok_or_else(|| Error::new(format!("Component {ty} not found"))),
             Err(ComponentUpdateError::ComponentDoesNotExist(ty)) => {
                 Err(Error::new(format!("Failed to update description of component {ty}: Component does not exist")))
             }
@@ -110,7 +110,7 @@ impl MutationComponents {
             Ok(_) => component_manager
                 .get(&ty)
                 .map(|component| component.into())
-                .ok_or_else(|| Error::new(format!("Component {} not found", ty))),
+                .ok_or_else(|| Error::new(format!("Component {ty} not found"))),
             Err(ComponentAddPropertyError::ComponentDoesNotExist(ty)) => {
                 Err(Error::new(format!("Failed to add property to component {ty}: Component does not exist")))
             }
@@ -134,7 +134,7 @@ impl MutationComponents {
             Ok(_) => component_manager
                 .get(&ty)
                 .map(|component| component.into())
-                .ok_or_else(|| Error::new(format!("Component {} not found", ty))),
+                .ok_or_else(|| Error::new(format!("Component {ty} not found"))),
             Err(ComponentUpdatePropertyError::ComponentDoesNotExist(ty)) => {
                 Err(Error::new(format!("Failed to update property of component {ty}: Component does not exist")))
             }
@@ -157,7 +157,7 @@ impl MutationComponents {
             Ok(_) => component_manager
                 .get(&ty)
                 .map(|component| component.into())
-                .ok_or_else(|| Error::new(format!("Component {} not found", ty))),
+                .ok_or_else(|| Error::new(format!("Component {ty} not found"))),
             Err(ComponentRemovePropertyError::ComponentDoesNotExist(ty)) => {
                 Err(Error::new(format!("Failed to update property of component {ty}: Component does not exist")))
             }
@@ -180,7 +180,7 @@ impl MutationComponents {
             Ok(_) => component_manager
                 .get(&ty)
                 .map(|component| component.into())
-                .ok_or_else(|| Error::new(format!("Component {} not found", ty))),
+                .ok_or_else(|| Error::new(format!("Component {ty} not found"))),
             Err(ComponentAddExtensionError::ComponentDoesNotExist(ty)) => {
                 Err(Error::new(format!("Failed to add extension to component {ty}: Component does not exist")))
             }

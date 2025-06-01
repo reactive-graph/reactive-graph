@@ -1,6 +1,7 @@
 use std::fmt::Display;
 use std::fmt::Formatter;
 
+use crate::TYPE_ID_TYPE_SEPARATOR;
 #[cfg(any(test, feature = "test"))]
 use rand_derive3::RandGen;
 use schemars::JsonSchema;
@@ -55,7 +56,7 @@ impl NamespacedTypeGetter for NamespacedType {
 
 impl Display for NamespacedType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}__{}", &self.namespace, self.type_name)
+        write!(f, "{}{}{}", &self.namespace, TYPE_ID_TYPE_SEPARATOR, self.type_name)
     }
 }
 

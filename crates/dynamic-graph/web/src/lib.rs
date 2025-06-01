@@ -6,7 +6,6 @@ use async_graphql::ServerError;
 use async_graphql::dynamic::DynamicRequest;
 use async_graphql_actix_web::GraphQLRequest;
 use async_graphql_actix_web::GraphQLResponse;
-
 use reactive_graph_dynamic_graph_api::DynamicGraphSchemaManager;
 
 #[post("/dynamic_graph")]
@@ -20,7 +19,7 @@ pub async fn query_dynamic_graph(
             schema.execute(dynamic_request).await.into()
         }
         Err(e) => {
-            let errors = vec![ServerError::new(format!("Dynamic schema not available: {}", e), None)];
+            let errors = vec![ServerError::new(format!("Dynamic schema not available: {e}"), None)];
             async_graphql::Response::from_errors(errors).into()
         }
     }

@@ -42,7 +42,7 @@ impl From<&str> for Mutability {
 
 impl Display for Mutability {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "{:?}", self)
+        write!(f, "{self:?}")
     }
 }
 

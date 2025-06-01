@@ -33,7 +33,7 @@ impl GraphQLPlugin {
         let plugin_container_manager = context.data::<Arc<dyn PluginContainerManager + Send + Sync>>()?;
         plugin_container_manager
             .get_plugin_state(&self.id)
-            .map(|s| format!("{:?}", s))
+            .map(|state| format!("{state:?}"))
             .ok_or_else(|| Error::new("Failed to resolve plugin state"))
     }
 

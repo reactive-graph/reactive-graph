@@ -6,6 +6,7 @@ use std::fmt::Formatter;
 
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::FlowTypeId;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::RelationTypeId;
 use reactive_graph_graph::TypeDefinition;
@@ -18,6 +19,10 @@ pub struct DynamicGraphTypeDefinition {
 impl DynamicGraphTypeDefinition {
     pub fn field_name(&self) -> String {
         self.ty.type_name.to_case(Camel)
+    }
+
+    pub fn field_name_with_appendix(&self, appendix: &str) -> String {
+        format!("{}{}", self.ty.type_name.to_case(Pascal), appendix)
     }
 
     pub fn mutation_field_name(&self, action: &str) -> String {
@@ -37,7 +42,7 @@ impl DynamicGraphTypeDefinition {
     }
 
     pub fn mutation_type_name(&self) -> String {
-        format!("{}_Mutations", self)
+        format!("{self}_Mutations")
     }
 }
 
@@ -71,6 +76,12 @@ impl From<&EntityTypeId> for DynamicGraphTypeDefinition {
 
 impl From<&RelationTypeId> for DynamicGraphTypeDefinition {
     fn from(ty: &RelationTypeId) -> Self {
+        DynamicGraphTypeDefinition { ty: ty.type_definition() }
+    }
+}
+
+impl From<&FlowTypeId> for DynamicGraphTypeDefinition {
+    fn from(ty: &FlowTypeId) -> Self {
         DynamicGraphTypeDefinition { ty: ty.type_definition() }
     }
 }

@@ -78,9 +78,9 @@ impl GraphQLFlowInstance {
     async fn entities(&self) -> Vec<GraphQLEntityInstance> {
         let reader = self.flow_instance.entity_instances.read().unwrap();
         reader
-            .iter()
-            .map(|(_, entity_instance)| {
-                let entity_instance: GraphQLEntityInstance = entity_instance.clone().into();
+            .values()
+            .map(|reactive_entity| {
+                let entity_instance: GraphQLEntityInstance = reactive_entity.clone().into();
                 entity_instance
             })
             .collect()
@@ -90,9 +90,9 @@ impl GraphQLFlowInstance {
     async fn relations(&self) -> Vec<GraphQLRelationInstance> {
         let reader = self.flow_instance.relation_instances.read().unwrap();
         reader
-            .iter()
-            .map(|(_, relation_instance)| {
-                let relation_instance: GraphQLRelationInstance = relation_instance.clone().into();
+            .values()
+            .map(|reactive_relation| {
+                let relation_instance: GraphQLRelationInstance = reactive_relation.clone().into();
                 relation_instance
             })
             .collect()

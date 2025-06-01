@@ -5,6 +5,7 @@ use reactive_graph_utils_schema_generator::write_graphql_schema;
 use reactive_graph_utils_schema_generator::write_json_schema;
 
 fn main() -> Result<()> {
+    write_graphql_schema(GraphQLSchemaTypes::DynamicGraphSchema)?;
     write_graphql_schema(GraphQLSchemaTypes::ReactiveGraphSchema)?;
     write_graphql_schema(GraphQLSchemaTypes::ReactiveGraphPluginSchema)?;
     write_graphql_schema(GraphQLSchemaTypes::ReactiveGraphRuntimeSchema)?;

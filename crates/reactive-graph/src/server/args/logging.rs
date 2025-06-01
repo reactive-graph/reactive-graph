@@ -26,8 +26,8 @@ pub fn init_logging(args: &ServerArguments) {
                 eprintln!("Failed to create fallback logger! Exiting with error");
                 exit(1);
             };
-            if let Err(error) = log4rs::init_config(config) {
-                eprintln!("Failed to configure logger: {}", error);
+            if let Err(e) = log4rs::init_config(config) {
+                eprintln!("Failed to configure logger: {e}");
             }
         }
     }

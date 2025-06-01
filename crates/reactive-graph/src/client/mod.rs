@@ -39,7 +39,7 @@ pub async fn client(args: ClientArguments) {
     // If a command was given, handle command
     match handle_command(&client, command).await {
         Ok(response) => {
-            println!("{}", response);
+            println!("{response}");
             exit(0)
         }
         Err(e) => {

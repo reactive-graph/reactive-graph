@@ -43,6 +43,7 @@ use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstances;
 use crate::RemoveExtensionError;
+use crate::TYPE_ID_TYPE_SEPARATOR;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::UpdateExtensionError;
@@ -288,7 +289,7 @@ impl Ord for EntityInstance {
 
 impl Display for EntityInstance {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}__{}", &self.ty, self.id)
+        write!(f, "{}{}{}", &self.ty, TYPE_ID_TYPE_SEPARATOR, self.id)
     }
 }
 

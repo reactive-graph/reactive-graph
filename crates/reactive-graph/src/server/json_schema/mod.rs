@@ -29,7 +29,7 @@ pub async fn print_json_schema_and_exit(commands: &JsonSchemaCommands) {
     };
     match serde_json::to_string_pretty(&json_schema.to_value()) {
         Ok(json_schema) => {
-            println!("{}", json_schema);
+            println!("{json_schema}");
             exit(0);
         }
         Err(_) => {

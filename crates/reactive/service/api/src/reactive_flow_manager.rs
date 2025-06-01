@@ -1,8 +1,6 @@
-use std::collections::HashMap;
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use serde_json::Value;
 use springtime_di::injectable;
 use uuid::Uuid;
 
@@ -10,6 +8,7 @@ use crate::FlowInstanceProvider;
 use crate::ReactiveFlowCreationError;
 use reactive_graph_graph::FlowInstance;
 use reactive_graph_graph::FlowTypeId;
+use reactive_graph_graph::PropertyInstances;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_reactive_model_impl::ReactiveFlow;
 
@@ -27,6 +26,9 @@ pub trait ReactiveFlowManager: Send + Sync + Lifecycle {
 
     /// Returns all reactive flow instances.
     fn get_all(&self) -> Vec<ReactiveFlow>;
+
+    /// Returns all reactive entity instances of the given type.
+    fn get_by_type(&self, ty: &FlowTypeId) -> Vec<ReactiveFlow>;
 
     /// Returns the count of registered reactive flow instances.
     fn count_flow_instances(&self) -> usize;
@@ -54,8 +56,9 @@ pub trait ReactiveFlowManager: Send + Sync + Lifecycle {
     fn create_from_type(
         &self,
         ty: &FlowTypeId,
-        variables: HashMap<String, Value>,
-        properties: HashMap<String, Value>,
+        id: Option<Uuid>,
+        variables: PropertyInstances,
+        properties: PropertyInstances,
     ) -> Result<ReactiveFlow, ReactiveFlowCreationError>;
 
     /// Registers the given reactive flow instance and registers all of the reactive instances

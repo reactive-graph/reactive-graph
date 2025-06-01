@@ -43,7 +43,12 @@ async fn test_dynamic_graph_query() {
     println!("{}", entity_type.ty);
     let entity_type = entity_type_manager.register(entity_type).expect("Failed to register entity type");
 
-    let sdl = rt.get_dynamic_graph_schema_manager().get_dynamic_schema().await.unwrap().sdl();
+    let sdl = rt
+        .get_dynamic_graph_schema_manager()
+        .get_dynamic_schema()
+        .await
+        .expect("Failed to get GraphQL schema for dynamic graph")
+        .sdl();
     println!("{sdl}");
 
     let query = format!(

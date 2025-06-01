@@ -97,7 +97,7 @@ where
             panic!("Detected dependency cycle for: {type_id:?}/{type_name:?}");
         }
         Err(ComponentInstanceProviderError::ConstructorError(constructor_error)) => {
-            panic!("Error in component constructor: {}", constructor_error);
+            panic!("Error in component constructor: {constructor_error}");
         }
     }
 }
