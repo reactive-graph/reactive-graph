@@ -37,7 +37,6 @@ type Behaviours {
 	relations: [RelationBehaviour!]!
 }
 
-
 """
 Components are composable parts which can be used by types (entity type, relation type).
 """
@@ -465,7 +464,6 @@ input ExtensionTypeId {
 	namespace: String!
 }
 
-
 """
 A flow is a container for entity instances and relation instances.
 
@@ -657,7 +655,6 @@ input FlowTypeId {
 	namespace: String!
 }
 
-
 """
 Search for instances
 """
@@ -793,7 +790,6 @@ type Instances {
 		properties: [PropertyInstanceDefinition!]
 	): [RelationInstance!]!
 }
-
 
 """
 A scalar that can represent any JSON value.
@@ -1154,7 +1150,7 @@ type MutationFlowInstances {
 		"""
 		The flow type
 		"""
-		type: FlowTypeId!,
+		type: FlowTypeId!,		id: UUID,
 		"""
 		Parametrized construction of a flow instance using variables of a flow type.
 		"""
@@ -1967,7 +1963,6 @@ enum SocketType {
 	OUTPUT
 }
 
-
 """
 Subscriptions for the reactive property instances.
 """
@@ -2127,15 +2122,27 @@ entities without requiring a central allocating authority.
 # References
 
 * [Wikipedia: Universally Unique Identifier](http://en.wikipedia.org/wiki/Universally_unique_identifier)
-* [RFC4122: A Universally Unique IDentifier (UUID) URN Namespace](http://tools.ietf.org/html/rfc4122)
+* [RFC4122: A Universally Unique Identifier (UUID) URN Namespace](http://tools.ietf.org/html/rfc4122)
 """
 scalar UUID
 
 directive @concat(value: String!) on FIELD
+"""
+Directs the executor to include this field or fragment only when the `if` argument is true.
+"""
 directive @include(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+"""
+Indicates that an Input Object is a OneOf Input Object (and thus requires exactly one of its field be provided)
+"""
 directive @oneOf on INPUT_OBJECT
 directive @random_uuid on FIELD
+"""
+Directs the executor to skip this field or fragment when the `if` argument is true.
+"""
 directive @skip(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+"""
+Provides a scalar specification URL for specifying the behavior of custom scalar types.
+"""
 directive @specifiedBy(url: String!) on SCALAR
 schema {
 	query: Query
