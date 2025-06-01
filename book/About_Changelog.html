@@ -336,9 +336,15 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>GraphQL: Sort fields and enums</li>
 <li>GraphQL: Generate static schema SDL files during build</li>
 <li>Dynamic Graph: Sort components, entity types, relation types and properties</li>
+<li>Dynamic Graph: Export reactive entities, relations and flows using dynamic schemas</li>
+<li>Dynamic Graph: Type System Metrics</li>
 <li>JSON Schema: Include an unique JSON schema identifier ($id) in the JSON schemas</li>
 <li>JSON Schema: Provide an $id field when serializing types and instances</li>
 <li>JSON Schema: Type definitions and instance definitions can refer to the JSON schema using an $id field</li>
+<li>JSON Schema: Generate dynamic schemas for all registered entity types and relation types</li>
+<li>Reactive: Added delegates for reactive flow to its wrapper entity</li>
+<li>Reactive: Added method to get reactive flow by entity type</li>
+<li>Reactive: Implemented json serialization for reactive entity and reactive relation</li>
 </ul>
 <h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
 <ul>
@@ -347,7 +353,9 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Configure lints on workspace level</li>
 <li>Replaced lazy_static with LazyLock</li>
 <li>CLI: Updated shell completions</li>
+<li>Dynamic Graph: Refactored GraphQL objects</li>
 <li>JSON schema: Refactored REST services</li>
+<li>Reactive: When creating a reactive flow from type a id can be provided</li>
 </ul>
 <h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
 <h3 id="distribution"><a class="header" href="#distribution">Distribution</a></h3>
