@@ -4773,7 +4773,6 @@ dependencies = [
  "itertools 0.14.0",
  "log",
  "reactive-graph-dynamic-graph-api",
- "reactive-graph-dynamic-graph-json-schema",
  "reactive-graph-dynamic-graph-model",
  "reactive-graph-graph",
  "reactive-graph-lifecycle",
@@ -4788,17 +4787,6 @@ dependencies = [
  "springtime-di",
  "tokio",
  "uuid",
-]
-
-[[package]]
-name = "reactive-graph-dynamic-graph-json-schema"
-version = "0.10.0"
-dependencies = [
- "default-test",
- "reactive-graph-graph",
- "reactive-graph-utils-test",
- "schemars",
- "serde_json",
 ]
 
 [[package]]
