@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"macro":["component_model","component_ty","entity_ty","extension_ty","flow_ty","properties","relation_ty","rx_accessor"],"mod":["instances","prelude","types"]};
+window.SIDEBAR_ITEMS = {"macro":["component_model","component_ty","entity_ty","extension_ty","flow_ty","properties","relation_ty","rx_accessor"],"mod":["instances","json_schema","prelude","types"]};

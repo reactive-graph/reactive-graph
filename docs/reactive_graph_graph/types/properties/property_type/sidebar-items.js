@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"static":["NAMESPACE_PROPERTY_TYPE"],"struct":["PropertyType","PropertyTypes"],"trait":["PropertyTypeDefinition"]};
+window.SIDEBAR_ITEMS = {"static":["EXTENSION_JSON_SCHEMA_PROPERTIES","NAMESPACE_PROPERTY_TYPE"],"struct":["PropertyType","PropertyTypes"],"trait":["PropertyTypeDefinition"]};

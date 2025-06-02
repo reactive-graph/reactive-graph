@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"static":["EXTENSION_JSON_SCHEMA_FORMAT"]};

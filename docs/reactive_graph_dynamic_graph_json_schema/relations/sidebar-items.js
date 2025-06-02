@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["dynamic_json_schema_for_relation_type"]};

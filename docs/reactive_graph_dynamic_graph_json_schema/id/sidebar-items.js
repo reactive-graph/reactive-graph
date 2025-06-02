@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["dynamic_schema_id"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["json_schema_id","namespaced_tys","type_definition","type_definition_component","type_definition_extension","type_definition_property","type_id_type","type_namespaced_type"]};
+window.SIDEBAR_ITEMS = {"mod":["json_schema","namespaced_tys","type_definition","type_definition_component","type_definition_extension","type_definition_property","type_id_type","type_namespaced_type"]};
