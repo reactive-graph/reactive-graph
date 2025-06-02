@@ -341,10 +341,11 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>JSON Schema: Include an unique JSON schema identifier ($id) in the JSON schemas</li>
 <li>JSON Schema: Provide an $id field when serializing types and instances</li>
 <li>JSON Schema: Type definitions and instance definitions can refer to the JSON schema using an $id field</li>
-<li>JSON Schema: Generate dynamic schemas for all registered entity types and relation types</li>
+<li>JSON Schema: Generate dynamic schemas for all registered entity types, relation types and flow types</li>
 <li>Reactive: Added delegates for reactive flow to its wrapper entity</li>
 <li>Reactive: Added method to get reactive flow by entity type</li>
-<li>Reactive: Implemented json serialization for reactive entity and reactive relation</li>
+<li>Reactive: Implemented json serialization for reactive entities and reactive relations</li>
+<li>Type System: Added traits JsonSchemaGetter and JsonSchemaIdGetter</li>
 </ul>
 <h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
 <ul>
