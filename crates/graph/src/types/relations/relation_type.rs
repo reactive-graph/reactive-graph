@@ -4,6 +4,7 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
+use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
 #[cfg(any(test, feature = "test"))]
@@ -27,6 +28,7 @@ use crate::Extension;
 use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::Extensions;
+use crate::JSON_SCHEMA_ID_URI_PREFIX;
 use crate::NamespacedTypeComponentTypeIdContainer;
 use crate::NamespacedTypeContainer;
 use crate::NamespacedTypeExtensionContainer;
@@ -52,13 +54,15 @@ use crate::RemoveExtensionError;
 use crate::RemovePropertyError;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
+use crate::TypeDefinitionJsonSchema;
+use crate::TypeDefinitionJsonSchemaGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
-pub const JSON_SCHEMA_ID_RELATION_TYPE: &str = "https://schema.reactive-graph.io/schema/json/relation-type.schema.json";
+pub const JSON_SCHEMA_ID_RELATION_TYPE: &str = formatcp!("{}/relation-type.schema.json", JSON_SCHEMA_ID_URI_PREFIX);
 
 /// A relation type defines the type of relation instance.
 ///
@@ -195,6 +199,10 @@ impl PropertyTypeContainer for RelationType {
     fn merge_properties<P: Into<PropertyTypes>>(&mut self, properties_to_merge: P) {
         self.properties.merge_properties(properties_to_merge);
     }
+
+    fn get_own_properties(&self) -> &PropertyTypes {
+        &self.properties
+    }
 }
 
 impl ExtensionContainer for RelationType {
@@ -236,6 +244,17 @@ impl NamespacedTypeGetter for RelationType {
 impl TypeDefinitionGetter for RelationType {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+}
+
+impl TypeDefinitionJsonSchemaGetter for RelationType {
+    fn json_schema(&self) -> Schema {
+        TypeDefinitionJsonSchema::new(self)
+            .description(&self.description)
+            .required_id_property("outbound_id")
+            .required_string_property("instance_id")
+            .required_id_property("inbound_id")
+            .into()
     }
 }
 
@@ -662,6 +681,7 @@ fn add_json_schema_id_property(schema: &mut Schema) {
 
 #[cfg(test)]
 mod tests {
+    use default_test::DefaultTest;
     use schemars::schema_for;
     use serde_json::json;
 
@@ -679,6 +699,7 @@ mod tests {
     use crate::RelationTypeId;
     use crate::SocketType;
     use crate::TypeDefinitionGetter;
+    use crate::TypeDefinitionJsonSchemaGetter;
     use crate::TypeIdType;
     use reactive_graph_utils_test::r_string;
 
@@ -853,5 +874,12 @@ mod tests {
     fn relation_type_json_schema() {
         let schema = schema_for!(RelationType);
         println!("{}", serde_json::to_string_pretty(&schema).unwrap());
+    }
+
+    #[test]
+    fn relation_type_dynamic_json_schema() {
+        let relation_type = RelationType::default_test();
+        let schema = relation_type.json_schema();
+        println!("{}", serde_json::to_string_pretty(schema.as_value()).unwrap());
     }
 }

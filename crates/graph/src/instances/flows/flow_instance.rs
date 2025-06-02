@@ -3,12 +3,14 @@ use crate::EntityInstances;
 #[cfg(any(test, feature = "test"))]
 use crate::EntityType;
 use crate::EntityTypeId;
+use crate::JSON_SCHEMA_ID_URI_PREFIX;
 use crate::NamespacedTypeGetter;
 use crate::RelationInstances;
 use crate::TYPE_ID_TYPE_SEPARATOR;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::instances::named::NamedInstanceContainer;
+use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
 #[cfg(any(test, feature = "test"))]
@@ -36,7 +38,7 @@ use std::ops::DerefMut;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
-pub const JSON_SCHEMA_ID_FLOW_INSTANCE: &str = "https://schema.reactive-graph.io/schema/json/flow-instance.schema.json";
+pub const JSON_SCHEMA_ID_FLOW_INSTANCE: &str = formatcp!("{}/flow-instance.schema.json", JSON_SCHEMA_ID_URI_PREFIX);
 
 /// A flow instance is a container for entity instances and relation instances.
 ///

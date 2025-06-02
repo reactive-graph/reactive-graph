@@ -17,7 +17,6 @@ members = [
     "crates/command/impl",
     "crates/dynamic-graph/api",
     "crates/dynamic-graph/impl",
-    "crates/dynamic-graph/json-schema",
     "crates/dynamic-graph/model",
     "crates/dynamic-graph/test",
     "crates/dynamic-graph/web",
@@ -108,6 +107,7 @@ clap-markdown = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
 colored = "3.0"
 convert_case = "0.8"
+const_format = { version = "0.2", features = ["fmt"] }
 criterion = { version = "0.5", features = ["html_reports"] }
 crossbeam = "0.8"
 cynic = { version = "3.11", features = ["http-reqwest"], default-features = false }

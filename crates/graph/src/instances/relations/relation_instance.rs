@@ -6,6 +6,7 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
+use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
 #[cfg(any(test, feature = "test"))]
@@ -34,6 +35,7 @@ use crate::Extension;
 use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::Extensions;
+use crate::JSON_SCHEMA_ID_URI_PREFIX;
 use crate::MutablePropertyInstanceSetter;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
@@ -50,7 +52,7 @@ use crate::instances::named::NamedInstanceContainer;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
-pub const JSON_SCHEMA_ID_RELATION_INSTANCE: &str = "https://schema.reactive-graph.io/schema/json/relation-instance.schema.json";
+pub const JSON_SCHEMA_ID_RELATION_INSTANCE: &str = formatcp!("{}/relation-instance.schema.json", JSON_SCHEMA_ID_URI_PREFIX);
 
 /// Relation instances are edges from an outbound entity instance to an
 /// inbound entity instance.

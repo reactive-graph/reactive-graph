@@ -4,6 +4,7 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
+use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
 #[cfg(any(test, feature = "test"))]
@@ -13,9 +14,11 @@ use rand::Rng;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::consts::meta_schemas::DRAFT2020_12;
 use schemars::json_schema;
 use serde::Deserialize;
 use serde::Serialize;
+use serde_json::json;
 use std::borrow::Cow;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
@@ -27,6 +30,7 @@ use crate::AddVariableError;
 use crate::EntityInstance;
 use crate::EntityInstanceContainer;
 use crate::EntityInstances;
+use crate::EntityType;
 use crate::EntityTypeId;
 use crate::EntityTypeIds;
 use crate::Extension;
@@ -50,6 +54,8 @@ use crate::FlowTypeUpdateEntityInstanceError;
 use crate::FlowTypeUpdateExtensionError;
 use crate::FlowTypeUpdateRelationInstanceError;
 use crate::FlowTypeUpdateVariableError;
+use crate::JSON_SCHEMA_ID_URI_PREFIX;
+use crate::JsonSchemaIdGetter;
 use crate::NamespacedTypeContainer;
 use crate::NamespacedTypeEntityInstanceContainer;
 use crate::NamespacedTypeExtensionContainer;
@@ -80,7 +86,7 @@ use crate::VariablesContainer;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
-pub const JSON_SCHEMA_ID_FLOW_TYPE: &str = "https://schema.reactive-graph.io/schema/json/flow-type.schema.json";
+pub const JSON_SCHEMA_ID_FLOW_TYPE: &str = formatcp!("{}/flow-type.schema.json", JSON_SCHEMA_ID_URI_PREFIX);
 
 #[derive(Debug)]
 pub struct FlowTypeCreationError;
@@ -206,18 +212,40 @@ impl FlowType {
         let entity_tys = self.entity_instances.get_type_ids();
         entity_tys.insert(self.wrapper_type());
         entity_tys
-        //     .
-        // let entity_types: EntityTypeIds = self.entity_instances.iter().map(|e| e.ty.clone()).collect();
-        // entity_types.insert(self.wrapper_type());
-        // entity_types
     }
 
     /// Returns the relation types which are used by the flow type.
     pub fn uses_relation_types(&self) -> RelationTypeIds {
         self.relation_instances.get_type_ids()
-        // self.relation_instances.iter().map(|r| r.relation_type_id()).collect()
-        // let relation_type_names: RelationTypeIds = ;
-        // relation_type_names
+    }
+
+    pub fn json_schema(&self, entity_type: &EntityType) -> Result<Schema, ()> {
+        if entity_type.ty != self.wrapper_type() {
+            return Err(());
+        }
+        let mut properties = entity_type.properties.as_json_schema_properties();
+        properties.insert("$id".to_string(), self.json_schema_id_property());
+        properties.insert(
+            "id".to_string(),
+            json!({
+                "description": "The unique identifier of the instance",
+                "type": "string",
+                "format": "uuid"
+            }),
+        );
+        let mut required = entity_type.properties.names();
+        required.push("id".to_string());
+        required.sort();
+        let json_schema = json_schema!({
+            "$schema": DRAFT2020_12,
+            "$id": self.json_schema_id(),
+            "type": "object",
+            "title": self.type_name(),
+            "description": self.description,
+            "properties": properties,
+            "required": required,
+        });
+        Ok(json_schema)
     }
 }
 
@@ -779,20 +807,25 @@ fn add_json_schema_id_property(schema: &mut Schema) {
 
 #[cfg(test)]
 mod tests {
+    use default_test::DefaultTest;
     use schemars::schema_for;
     use serde_json::json;
     use uuid::Uuid;
 
+    use crate::ComponentTypeIds;
     use crate::DataType;
     use crate::EntityInstanceContainer;
+    use crate::EntityType;
     use crate::Extension;
     use crate::ExtensionContainer;
     use crate::ExtensionTypeId;
+    use crate::Extensions;
     use crate::FlowType;
     use crate::FlowTypeId;
     use crate::NamespacedTypeGetter;
     use crate::PropertyInstances;
     use crate::PropertyType;
+    use crate::PropertyTypes;
     use crate::RelationInstance;
     use crate::RelationInstanceContainer;
     use crate::RelationInstanceTypeId;
@@ -959,5 +992,21 @@ mod tests {
     fn flow_type_json_schema() {
         let schema = schema_for!(FlowType);
         println!("{}", serde_json::to_string_pretty(&schema).unwrap());
+    }
+
+    #[test]
+    fn flow_type_dynamic_json_schema() {
+        let flow_type = FlowType::default_test();
+        let entity_type = EntityType::builder()
+            .ty(flow_type.wrapper_type())
+            .description(r_string())
+            .components(ComponentTypeIds::default_test())
+            .properties(PropertyTypes::default_test())
+            .extensions(Extensions::default_test())
+            .build();
+        let schema = flow_type
+            .json_schema(&entity_type)
+            .expect("Failed to generate dynamic json schema for flow type!");
+        println!("{}", serde_json::to_string_pretty(schema.as_value()).unwrap());
     }
 }

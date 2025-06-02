@@ -4,6 +4,7 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
+use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
 use dashmap::mapref::multiple::RefMulti;
@@ -26,6 +27,7 @@ use crate::Extension;
 use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::Extensions;
+use crate::JSON_SCHEMA_ID_URI_PREFIX;
 use crate::NamespacedTypeContainer;
 use crate::NamespacedTypeGetter;
 use crate::Namespaces;
@@ -36,11 +38,13 @@ use crate::RemoveExtensionError;
 use crate::RemovePropertyError;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
+use crate::TypeDefinitionJsonSchema;
+use crate::TypeDefinitionJsonSchemaGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
 
-pub const JSON_SCHEMA_ID_COMPONENT: &str = "https://schema.reactive-graph.io/schema/json/component.schema.json";
+pub const JSON_SCHEMA_ID_COMPONENT: &str = formatcp!("{}/component.schema.json", JSON_SCHEMA_ID_URI_PREFIX);
 
 /// A component defines a set of properties to be applied to entity
 /// types and relation types.
@@ -153,6 +157,10 @@ impl PropertyTypeContainer for Component {
     fn merge_properties<P: Into<PropertyTypes>>(&mut self, properties_to_merge: P) {
         self.properties.merge_properties(properties_to_merge);
     }
+
+    fn get_own_properties(&self) -> &PropertyTypes {
+        &self.properties
+    }
 }
 
 impl ExtensionContainer for Component {
@@ -194,6 +202,12 @@ impl NamespacedTypeGetter for Component {
 impl TypeDefinitionGetter for Component {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+}
+
+impl TypeDefinitionJsonSchemaGetter for Component {
+    fn json_schema(&self) -> Schema {
+        TypeDefinitionJsonSchema::new(self).description(&self.description).into()
     }
 }
 
@@ -462,6 +476,7 @@ fn add_json_schema_id_property(schema: &mut Schema) {
 
 #[cfg(test)]
 mod component_type_tests {
+    use default_test::DefaultTest;
     use schemars::schema_for;
     use serde_json::json;
 
@@ -477,6 +492,7 @@ mod component_type_tests {
     use crate::PropertyTypeContainer;
     use crate::PropertyTypes;
     use crate::TypeDefinitionGetter;
+    use crate::TypeDefinitionJsonSchemaGetter;
     use reactive_graph_utils_test::r_string;
 
     #[test]
@@ -684,5 +700,12 @@ mod component_type_tests {
     fn component_json_schema() {
         let schema = schema_for!(Component);
         println!("{}", serde_json::to_string_pretty(&schema).unwrap());
+    }
+
+    #[test]
+    fn component_dynamic_json_schema() {
+        let component = Component::default_test();
+        let schema = component.json_schema();
+        println!("{}", serde_json::to_string_pretty(schema.as_value()).unwrap());
     }
 }

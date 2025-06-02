@@ -19,9 +19,7 @@ use itertools::Itertools;
 use log::warn;
 use metrics::metrics_field;
 use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
-use reactive_graph_dynamic_graph_json_schema::components::dynamic_json_schema_for_component;
-use reactive_graph_dynamic_graph_json_schema::entities::dynamic_json_schema_for_entity_type;
-use reactive_graph_dynamic_graph_json_schema::relations::dynamic_json_schema_for_relation_type;
+use reactive_graph_graph::TypeDefinitionJsonSchemaGetter;
 use std::cmp::Ordering;
 use std::hash::Hash;
 
@@ -45,21 +43,26 @@ pub fn namespace_query(context: SchemaBuilderContext, namespace: &String) -> Opt
 
     for component in components.iter().sorted_by(sort_by_key) {
         namespace = namespace.field(component_query_field(component.value()));
-        namespace = namespace.field(json_schema_field(&component.ty, dynamic_json_schema_for_component(component.clone())));
+        namespace = namespace.field(json_schema_field(&component.ty, component.json_schema()));
     }
 
     for entity_type in entity_types.iter().sorted_by(sort_by_key) {
         let entity_type = entity_type.value();
         namespace = namespace.field(entity_query_field(entity_type));
-        namespace = namespace.field(json_schema_field(&entity_type.ty, dynamic_json_schema_for_entity_type(entity_type.clone())));
+        namespace = namespace.field(json_schema_field(&entity_type.ty, entity_type.json_schema()));
     }
     for relation_type in relation_types.iter().sorted_by(sort_by_key) {
         namespace = namespace.field(relation_query_field(relation_type.value()));
-        namespace = namespace.field(json_schema_field(&relation_type.ty, dynamic_json_schema_for_relation_type(relation_type.clone())));
+        namespace = namespace.field(json_schema_field(&relation_type.ty, relation_type.json_schema()));
     }
 
     for flow_type in flow_types.iter().sorted_by(sort_by_key) {
         namespace = namespace.field(flow_query_field(flow_type.value()));
+        if let Some(entity_type) = entity_types.get(&flow_type.wrapper_type()) {
+            if let Ok(json_schema) = flow_type.json_schema(entity_type.value()) {
+                namespace = namespace.field(json_schema_field(&flow_type.ty, json_schema));
+            }
+        }
     }
 
     namespace = namespace.field(metrics_field(Some(namespace_field_value)));
