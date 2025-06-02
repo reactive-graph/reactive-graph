@@ -22,10 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - JSON Schema: Include an unique JSON schema identifier ($id) in the JSON schemas
 - JSON Schema: Provide an $id field when serializing types and instances
 - JSON Schema: Type definitions and instance definitions can refer to the JSON schema using an $id field
-- JSON Schema: Generate dynamic schemas for all registered entity types and relation types
+- JSON Schema: Generate dynamic schemas for all registered entity types, relation types and flow types
 - Reactive: Added delegates for reactive flow to its wrapper entity
 - Reactive: Added method to get reactive flow by entity type
-- Reactive: Implemented json serialization for reactive entity and reactive relation
+- Reactive: Implemented json serialization for reactive entities and reactive relations
+- Type System: Added traits JsonSchemaGetter and JsonSchemaIdGetter
 
 ### Changed
 

@@ -38,6 +38,9 @@ pub trait PropertyTypeContainer {
 
     /// Merges the given properties into the own properties.
     fn merge_properties<P: Into<PropertyTypes>>(&mut self, properties_to_merge: P);
+
+    /// Returns all own properties.
+    fn get_own_properties(&self) -> &PropertyTypes;
 }
 
 /// Collection of a type which contains property types.

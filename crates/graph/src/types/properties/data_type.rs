@@ -68,6 +68,27 @@ impl DataType {
             _ => json!(""),
         }
     }
+
+    /// Converts the reactive graph data type into a JSON Schema data type.
+    /// https://json-schema.org/understanding-json-schema/reference/type
+    pub fn as_json_schema_data_type(&self) -> Value {
+        match self {
+            DataType::Null => Value::String("null".to_owned()),
+            DataType::Bool => Value::String("boolean".to_owned()),
+            DataType::Number => Value::String("number".to_owned()),
+            DataType::String => Value::String("string".to_owned()),
+            DataType::Array => Value::String("array".to_owned()),
+            DataType::Object => Value::String("object".to_owned()),
+            DataType::Any => Value::Array(vec![
+                Value::String("null".to_owned()),
+                Value::String("boolean".to_owned()),
+                Value::String("number".to_owned()),
+                Value::String("string".to_owned()),
+                Value::String("array".to_owned()),
+                Value::String("object".to_owned()),
+            ]),
+        }
+    }
 }
 
 impl From<&str> for DataType {

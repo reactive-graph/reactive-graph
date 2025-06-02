@@ -13,8 +13,11 @@ use serde::Deserialize;
 use serde::Deserializer;
 use serde::Serialize;
 use serde::Serializer;
+use serde_json::Map;
 use serde_json::Value;
+use serde_json::json;
 use std::borrow::Cow;
+use std::sync::LazyLock;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
@@ -34,6 +37,8 @@ use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
 
 pub static NAMESPACE_PROPERTY_TYPE: Uuid = Uuid::from_u128(0x1ab7c8109dcd11c180b400d02fd540c7);
+
+pub static EXTENSION_JSON_SCHEMA_PROPERTIES: LazyLock<ExtensionTypeId> = LazyLock::new(|| ExtensionTypeId::new_from_type("json_schema", "properties"));
 
 /// Definition of a property. The definition contains
 /// the name of the property, the data type and the socket
@@ -281,6 +286,28 @@ impl PropertyTypes {
     pub fn names(&self) -> Vec<String> {
         self.0.iter().map(|property_type| property_type.name.clone()).collect()
     }
+
+    pub fn as_json_schema_properties(&self) -> Map<String, Value> {
+        let mut properties = Map::new();
+        for entry in self.0.iter() {
+            let property = entry.value();
+            let property_name = entry.key().clone();
+            let mut json_schema_property = Map::new();
+            json_schema_property.insert("type".to_string(), property.data_type.as_json_schema_data_type());
+            if !property.description.is_empty() {
+                json_schema_property.insert("description".to_string(), json!(&property.description));
+            }
+            // If the property type has an extension "json_schema__properties" add all key-value pairs from the extension
+            if let Some(mut extension_json_schema_properties) = property.get_extension(&EXTENSION_JSON_SCHEMA_PROPERTIES).map(|extension| extension.extension) {
+                if let Some(json_schema_properties) = extension_json_schema_properties.as_object_mut() {
+                    properties.append(json_schema_properties);
+                }
+            }
+            properties.insert(property_name, Value::Object(json_schema_property));
+        }
+        properties.sort_keys();
+        properties
+    }
 }
 
 impl PropertyTypeContainer for PropertyTypes {
@@ -326,7 +353,6 @@ impl PropertyTypeContainer for PropertyTypes {
         let properties_to_merge = properties_to_merge.into();
         properties_to_merge.into_iter().for_each(|(property_name, property_to_merge)| {
             if !self.0.contains_key(&property_name) {
-                // let p = property_to_merge;
                 self.push(property_to_merge);
             } else if let Some(mut existing_property) = self.0.get_mut(&property_name) {
                 existing_property.description = property_to_merge.description.clone();
@@ -336,17 +362,10 @@ impl PropertyTypeContainer for PropertyTypes {
                 existing_property.merge_extensions(property_to_merge.extensions);
             }
         });
-        // for property_to_merge in properties_to_merge.into() {
-        //     if !self.has_own_property(&property_to_merge.name) {
-        //         self.properties.push(property_to_merge);
-        //     } else if let Some(existing_property) = self.properties.iter_mut().find(|p| p.name == property_to_merge.name) {
-        //         existing_property.description = property_to_merge.description.clone();
-        //         existing_property.data_type = property_to_merge.data_type;
-        //         existing_property.socket_type = property_to_merge.socket_type;
-        //         existing_property.mutability = property_to_merge.mutability;
-        //         existing_property.merge_extensions(property_to_merge.extensions);
-        //     }
-        // }
+    }
+
+    fn get_own_properties(&self) -> &PropertyTypes {
+        &self
     }
 }
 

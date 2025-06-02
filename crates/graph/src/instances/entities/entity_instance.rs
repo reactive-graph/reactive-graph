@@ -6,6 +6,7 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
+use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
 #[cfg(any(test, feature = "test"))]
@@ -38,6 +39,7 @@ use crate::Extension;
 use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::Extensions;
+use crate::JSON_SCHEMA_ID_URI_PREFIX;
 use crate::MutablePropertyInstanceSetter;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
@@ -53,7 +55,7 @@ use crate::test_utils::default_from::DefaultFrom;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
-pub const JSON_SCHEMA_ID_ENTITY_INSTANCE: &str = "https://schema.reactive-graph.io/schema/json/entity-instance.schema.json";
+pub const JSON_SCHEMA_ID_ENTITY_INSTANCE: &str = formatcp!("{}/entity-instance.schema.json", JSON_SCHEMA_ID_URI_PREFIX);
 
 /// Entity instances represents an typed object which contains properties.
 ///

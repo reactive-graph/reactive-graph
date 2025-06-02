@@ -10,6 +10,7 @@ rust-version.workspace = true
 readme = "../../README.md"
 
 [dependencies]
+const_format = { workspace = true }
 dashmap = { workspace = true, features = ["serde"] }
 default-test = { workspace = true, optional = true }
 rand = { workspace = true, optional = true }

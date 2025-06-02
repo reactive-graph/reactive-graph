@@ -4,6 +4,7 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
+use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
 #[cfg(any(test, feature = "test"))]
@@ -40,6 +41,7 @@ use crate::EntityTypeUpdatePropertyError;
 use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::Extensions;
+use crate::JSON_SCHEMA_ID_URI_PREFIX;
 use crate::NamespacedTypeComponentTypeIdContainer;
 use crate::NamespacedTypeContainer;
 use crate::NamespacedTypeExtensionContainer;
@@ -52,6 +54,8 @@ use crate::RemoveExtensionError;
 use crate::RemovePropertyError;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
+use crate::TypeDefinitionJsonSchema;
+use crate::TypeDefinitionJsonSchemaGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
@@ -59,7 +63,7 @@ use crate::extension::Extension;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
-pub const JSON_SCHEMA_ID_ENTITY_TYPE: &str = "https://schema.reactive-graph.io/schema/json/entity-type.schema.json";
+pub const JSON_SCHEMA_ID_ENTITY_TYPE: &str = formatcp!("{}/entity-type.schema.json", JSON_SCHEMA_ID_URI_PREFIX);
 
 /// Entity types defines the type of entity instance.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
@@ -184,6 +188,10 @@ impl PropertyTypeContainer for EntityType {
     fn merge_properties<P: Into<PropertyTypes>>(&mut self, properties_to_merge: P) {
         self.properties.merge_properties(properties_to_merge);
     }
+
+    fn get_own_properties(&self) -> &PropertyTypes {
+        &self.properties
+    }
 }
 
 impl ExtensionContainer for EntityType {
@@ -225,6 +233,15 @@ impl NamespacedTypeGetter for EntityType {
 impl TypeDefinitionGetter for EntityType {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+}
+
+impl TypeDefinitionJsonSchemaGetter for EntityType {
+    fn json_schema(&self) -> Schema {
+        TypeDefinitionJsonSchema::from(self)
+            .description(&self.description)
+            .required_id_property("id")
+            .into()
     }
 }
 
@@ -587,6 +604,7 @@ fn add_json_schema_id_property(schema: &mut Schema) {
 
 #[cfg(test)]
 mod tests {
+    use default_test::DefaultTest;
     use schemars::schema_for;
     use serde_json::json;
 
@@ -603,6 +621,7 @@ mod tests {
     use crate::PropertyTypeContainer;
     use crate::SocketType;
     use crate::TypeDefinitionGetter;
+    use crate::TypeDefinitionJsonSchemaGetter;
     use reactive_graph_utils_test::r_string;
 
     #[test]
@@ -729,5 +748,12 @@ mod tests {
     fn entity_type_json_schema() {
         let schema = schema_for!(EntityType);
         println!("{}", serde_json::to_string_pretty(&schema).unwrap());
+    }
+
+    #[test]
+    fn entity_type_dynamic_json_schema() {
+        let entity_type = EntityType::default_test();
+        let schema = entity_type.json_schema();
+        println!("{}", serde_json::to_string_pretty(schema.as_value()).unwrap());
     }
 }
