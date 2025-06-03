@@ -45,7 +45,7 @@
     },
     "PropertyType": {
       "additionalProperties": false,
-      "description": "Definition of a property. The definition contains\n the name of the property, the data type and the socket\n type.",
+      "description": "Definition of a property. The definition contains\nthe name of the property, the data type and the socket\ntype.",
       "properties": {
         "data_type": {
           "description": "The data type of the property",
@@ -149,7 +149,7 @@
   "$id": "https://schema.reactive-graph.io/schema/json/component.schema.json",
   "$ref": "#/$defs/NamespacedType",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "A component defines a set of properties to be applied to entity\n types and relation types.",
+  "description": "A component defines a set of properties to be applied to entity\ntypes and relation types.",
   "properties": {
     "$id": {
       "default": "https://schema.reactive-graph.io/schema/json/component.schema.json",

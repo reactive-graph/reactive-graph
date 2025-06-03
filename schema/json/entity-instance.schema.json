@@ -60,7 +60,7 @@
   "$id": "https://schema.reactive-graph.io/schema/json/entity-instance.schema.json",
   "$ref": "#/$defs/NamespacedType",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "Entity instances represents an typed object which contains properties.\n\n The entity type defines the properties (name, data type and socket type).\n\n In contrast to the entity type the entity instance stores values in its\n properties.",
+  "description": "Entity instances represents an typed object which contains properties.\n\nThe entity type defines the properties (name, data type and socket type).\n\nIn contrast to the entity type the entity instance stores values in its\nproperties.",
   "properties": {
     "$id": {
       "default": "https://schema.reactive-graph.io/schema/json/entity-instance.schema.json",
@@ -95,7 +95,7 @@
     "properties": {
       "$ref": "#/$defs/PropertyInstances",
       "default": {},
-      "description": "The properties of the entity instance.\n\n Each property is represented by its name (String) and it's value. The value is\n a representation of a JSON. Therefore, the value can be boolean, number, string,\n array or an object. For more information about the data types please look at\n <https://docs.serde.rs/serde_json/value/enum.Value.html>"
+      "description": "The properties of the entity instance.\n\nEach property is represented by its name (String) and it's value. The value is\na representation of a JSON. Therefore, the value can be boolean, number, string,\narray or an object. For more information about the data types please look at\n<https://docs.serde.rs/serde_json/value/enum.Value.html>"
     }
   },
   "required": [
