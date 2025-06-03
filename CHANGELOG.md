@@ -16,13 +16,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL: Added entity instances to flow types
 - GraphQL: Sort fields and enums
 - GraphQL: Generate static schema SDL files during build
+- GraphQL: Added resolver for the dynamic JSON schema for each type in the type system
+- GraphQL: Added resolver for the dynamic JSON schema identifier ($id) for each type in the type system
 - Dynamic Graph: Sort components, entity types, relation types and properties
 - Dynamic Graph: Export reactive entities, relations and flows using dynamic schemas
 - Dynamic Graph: Type System Metrics
+- Dynamic Graph: Refactored field resolvers of the entity types
+- Dynamic Graph: Refactored object resolvers of the flow types
 - JSON Schema: Include an unique JSON schema identifier ($id) in the JSON schemas
 - JSON Schema: Provide an $id field when serializing types and instances
 - JSON Schema: Type definitions and instance definitions can refer to the JSON schema using an $id field
-- JSON Schema: Generate dynamic schemas for all registered entity types, relation types and flow types
+- JSON Schema: Generate dynamic schemas for all registered types in the type system
 - Reactive: Added delegates for reactive flow to its wrapper entity
 - Reactive: Added method to get reactive flow by entity type
 - Reactive: Implemented json serialization for reactive entities and reactive relations

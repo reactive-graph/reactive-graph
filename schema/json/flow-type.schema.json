@@ -12,7 +12,7 @@
     "EntityInstance": {
       "$id": "https://schema.reactive-graph.io/schema/json/entity-instance.schema.json",
       "$ref": "#/$defs/NamespacedType",
-      "description": "Entity instances represents an typed object which contains properties.\n\n The entity type defines the properties (name, data type and socket type).\n\n In contrast to the entity type the entity instance stores values in its\n properties.",
+      "description": "Entity instances represents an typed object which contains properties.\n\nThe entity type defines the properties (name, data type and socket type).\n\nIn contrast to the entity type the entity instance stores values in its\nproperties.",
       "properties": {
         "$id": {
           "default": "https://schema.reactive-graph.io/schema/json/entity-instance.schema.json",
@@ -47,7 +47,7 @@
         "properties": {
           "$ref": "#/$defs/PropertyInstances",
           "default": {},
-          "description": "The properties of the entity instance.\n\n Each property is represented by its name (String) and it's value. The value is\n a representation of a JSON. Therefore, the value can be boolean, number, string,\n array or an object. For more information about the data types please look at\n <https://docs.serde.rs/serde_json/value/enum.Value.html>"
+          "description": "The properties of the entity instance.\n\nEach property is represented by its name (String) and it's value. The value is\na representation of a JSON. Therefore, the value can be boolean, number, string,\narray or an object. For more information about the data types please look at\n<https://docs.serde.rs/serde_json/value/enum.Value.html>"
         }
       },
       "required": [
@@ -113,7 +113,7 @@
     },
     "PropertyType": {
       "additionalProperties": false,
-      "description": "Definition of a property. The definition contains\n the name of the property, the data type and the socket\n type.",
+      "description": "Definition of a property. The definition contains\nthe name of the property, the data type and the socket\ntype.",
       "properties": {
         "data_type": {
           "description": "The data type of the property",
@@ -223,7 +223,7 @@
     "RelationInstance": {
       "$id": "https://schema.reactive-graph.io/schema/json/relation-instance.schema.json",
       "$ref": "#/$defs/NamespacedType",
-      "description": "Relation instances are edges from an outbound entity instance to an\n inbound entity instance.\n\n The relation instance is of a relation type. The relation type defines\n the entity types of the outbound entity instance and the inbound entity\n instance. Furthermore, the relation type defines which properties\n (name, data type, socket type) a relation instance have to have.\n\n In contrast to the relation type, the relation instance stores values/\n documents in its properties.",
+      "description": "Relation instances are edges from an outbound entity instance to an\ninbound entity instance.\n\nThe relation instance is of a relation type. The relation type defines\nthe entity types of the outbound entity instance and the inbound entity\ninstance. Furthermore, the relation type defines which properties\n(name, data type, socket type) a relation instance have to have.\n\nIn contrast to the relation type, the relation instance stores values/\ndocuments in its properties.",
       "properties": {
         "$id": {
           "default": "https://schema.reactive-graph.io/schema/json/relation-instance.schema.json",
@@ -267,7 +267,7 @@
         "properties": {
           "$ref": "#/$defs/PropertyInstances",
           "default": {},
-          "description": "The properties of then relation instance.\n\n Each property is represented by its name (String) and it's value. The value is\n a representation of a JSON. Therefore, the value can be boolean, number, string,\n array or an object. For more information about the data types please look at\n <https://docs.serde.rs/serde_json/value/enum.Value.html>"
+          "description": "The properties of then relation instance.\n\nEach property is represented by its name (String) and it's value. The value is\na representation of a JSON. Therefore, the value can be boolean, number, string,\narray or an object. For more information about the data types please look at\n<https://docs.serde.rs/serde_json/value/enum.Value.html>"
         }
       },
       "required": [
@@ -290,7 +290,7 @@
   "$id": "https://schema.reactive-graph.io/schema/json/flow-type.schema.json",
   "$ref": "#/$defs/NamespacedType",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "Flow types defines the type of flow instance like a template\n for flow instances.\n\n They contain entity instances and relation instances. The wrapper\n entity instance is mandatory and used for input and outputs.",
+  "description": "Flow types defines the type of flow instance like a template\nfor flow instances.\n\nThey contain entity instances and relation instances. The wrapper\nentity instance is mandatory and used for input and outputs.",
   "properties": {
     "$id": {
       "default": "https://schema.reactive-graph.io/schema/json/flow-type.schema.json",
@@ -305,7 +305,7 @@
     "entity_instances": {
       "$ref": "#/$defs/EntityInstances",
       "default": [],
-      "description": "The entity instances which are contained in this flow.\n\n By default, no entity instances are contained in this flow type."
+      "description": "The entity instances which are contained in this flow.\n\nBy default, no entity instances are contained in this flow type."
     },
     "extensions": {
       "$ref": "#/$defs/Extensions",
@@ -315,12 +315,12 @@
     "relation_instances": {
       "$ref": "#/$defs/RelationInstances",
       "default": [],
-      "description": "The relation instances which are contained in this flow.\n\n By default, no relation instances are contained in this flow type."
+      "description": "The relation instances which are contained in this flow.\n\nBy default, no relation instances are contained in this flow type."
     },
     "variables": {
       "$ref": "#/$defs/PropertyTypes",
       "default": [],
-      "description": "The variables. Variables will be replaced by instantiation of a flow instance.\n\n By default, the flow type has no variables."
+      "description": "The variables. Variables will be replaced by instantiation of a flow instance.\n\nBy default, the flow type has no variables."
     },
     "wrapper_entity_instance": {
       "$ref": "#/$defs/EntityInstance",

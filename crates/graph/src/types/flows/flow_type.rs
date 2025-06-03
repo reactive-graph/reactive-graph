@@ -44,6 +44,7 @@ use crate::FlowTypeAddVariableError;
 use crate::FlowTypeDoesNotExistError;
 use crate::FlowTypeId;
 use crate::FlowTypeIds;
+use crate::FlowTypeJsonSchemaError;
 use crate::FlowTypeMergeExtensionsError;
 use crate::FlowTypeMergeVariablesError;
 use crate::FlowTypeRemoveEntityInstanceError;
@@ -219,9 +220,10 @@ impl FlowType {
         self.relation_instances.get_type_ids()
     }
 
-    pub fn json_schema(&self, entity_type: &EntityType) -> Result<Schema, ()> {
-        if entity_type.ty != self.wrapper_type() {
-            return Err(());
+    pub fn json_schema(&self, entity_type: &EntityType) -> Result<Schema, FlowTypeJsonSchemaError> {
+        let entity_ty = self.wrapper_type();
+        if entity_type.ty != entity_ty {
+            return Err(FlowTypeJsonSchemaError::WrapperEntityTypeDoesNotMatch(self.ty.clone(), entity_ty, entity_type.ty.clone()));
         }
         let mut properties = entity_type.properties.as_json_schema_properties();
         properties.insert("$id".to_string(), self.json_schema_id_property());

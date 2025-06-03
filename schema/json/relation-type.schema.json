@@ -85,7 +85,7 @@
     },
     "PropertyType": {
       "additionalProperties": false,
-      "description": "Definition of a property. The definition contains\n the name of the property, the data type and the socket\n type.",
+      "description": "Definition of a property. The definition contains\nthe name of the property, the data type and the socket\ntype.",
       "properties": {
         "data_type": {
           "description": "The data type of the property",
@@ -196,7 +196,7 @@
   "$id": "https://schema.reactive-graph.io/schema/json/relation-type.schema.json",
   "$ref": "#/$defs/NamespacedType",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "A relation type defines the type of relation instance.\n\n The relation type defines the entity types of the outbound and inbound entity instances.\n Also, the relation type defines the properties of the relation instance.",
+  "description": "A relation type defines the type of relation instance.\n\nThe relation type defines the entity types of the outbound and inbound entity instances.\nAlso, the relation type defines the properties of the relation instance.",
   "properties": {
     "$id": {
       "default": "https://schema.reactive-graph.io/schema/json/relation-type.schema.json",

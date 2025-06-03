@@ -60,7 +60,7 @@
   "$id": "https://schema.reactive-graph.io/schema/json/relation-instance.schema.json",
   "$ref": "#/$defs/NamespacedType",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "Relation instances are edges from an outbound entity instance to an\n inbound entity instance.\n\n The relation instance is of a relation type. The relation type defines\n the entity types of the outbound entity instance and the inbound entity\n instance. Furthermore, the relation type defines which properties\n (name, data type, socket type) a relation instance have to have.\n\n In contrast to the relation type, the relation instance stores values/\n documents in its properties.",
+  "description": "Relation instances are edges from an outbound entity instance to an\ninbound entity instance.\n\nThe relation instance is of a relation type. The relation type defines\nthe entity types of the outbound entity instance and the inbound entity\ninstance. Furthermore, the relation type defines which properties\n(name, data type, socket type) a relation instance have to have.\n\nIn contrast to the relation type, the relation instance stores values/\ndocuments in its properties.",
   "properties": {
     "$id": {
       "default": "https://schema.reactive-graph.io/schema/json/relation-instance.schema.json",
@@ -104,7 +104,7 @@
     "properties": {
       "$ref": "#/$defs/PropertyInstances",
       "default": {},
-      "description": "The properties of then relation instance.\n\n Each property is represented by its name (String) and it's value. The value is\n a representation of a JSON. Therefore, the value can be boolean, number, string,\n array or an object. For more information about the data types please look at\n <https://docs.serde.rs/serde_json/value/enum.Value.html>"
+      "description": "The properties of then relation instance.\n\nEach property is represented by its name (String) and it's value. The value is\na representation of a JSON. Therefore, the value can be boolean, number, string,\narray or an object. For more information about the data types please look at\n<https://docs.serde.rs/serde_json/value/enum.Value.html>"
     }
   },
   "required": [

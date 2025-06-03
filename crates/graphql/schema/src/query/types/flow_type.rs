@@ -1,14 +1,16 @@
 use std::sync::Arc;
 
 use async_graphql::Context;
+use async_graphql::Error;
 use async_graphql::Object;
-
 use reactive_graph_graph::FlowType;
+use reactive_graph_graph::JsonSchemaIdGetter;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
 use reactive_graph_reactive_model_impl::ReactiveRelation;
 use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::FlowTypeManager;
+use serde_json::Value;
 
 use crate::mutation::ExtensionTypeIdDefinition;
 use crate::query::GraphQLEntityInstance;
@@ -17,6 +19,7 @@ use crate::query::GraphQLExtension;
 use crate::query::GraphQLPropertyInstance;
 use crate::query::GraphQLPropertyType;
 use crate::query::GraphQLRelationInstance;
+use async_graphql::Result;
 
 pub struct GraphQLFlowType {
     flow_type: FlowType,
@@ -197,6 +200,24 @@ impl GraphQLFlowType {
             Ok(flow_type_manager) => flow_type_manager.validate(&self.flow_type.ty),
             Err(_) => false,
         }
+    }
+
+    /// Returns the JSON schema of the flow type.
+    async fn json_schema(&self, context: &Context<'_>) -> Result<Value> {
+        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
+        let entity_ty = self.flow_type.wrapper_type();
+        let entity_type = entity_type_manager
+            .get(&entity_ty)
+            .ok_or(Error::new(format!("Missing wrapper entity type {entity_ty}")))?;
+        match self.flow_type.json_schema(&entity_type) {
+            Ok(schema) => Ok(schema.to_value()),
+            Err(e) => Err(e.into()),
+        }
+    }
+
+    /// Returns the JSON schema identifier ($id) of the flow type.
+    async fn json_schema_id(&self) -> String {
+        self.flow_type.json_schema_id().to_string()
     }
 }
 

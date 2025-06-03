@@ -4,15 +4,17 @@ use std::sync::Arc;
 use async_graphql::Context;
 use async_graphql::Object;
 use async_graphql::Result;
-
 use reactive_graph_behaviour_service_api::RelationBehaviourRegistry;
 use reactive_graph_graph::ComponentOrEntityTypeId;
+use reactive_graph_graph::JsonSchemaIdGetter;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::RelationType;
 use reactive_graph_graph::RelationTypes;
+use reactive_graph_graph::TypeDefinitionJsonSchemaGetter;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::RelationTypeManager;
+use serde_json::Value;
 
 use crate::mutation::ExtensionTypeIdDefinition;
 use crate::query::GraphQLComponent;
@@ -226,6 +228,16 @@ impl GraphQLRelationType {
             .map(|relation_behaviour_ty| GraphQLRelationBehaviour::from(relation_behaviour_ty.clone()))
             .collect();
         Ok(relation_behaviour_types)
+    }
+
+    /// Returns the JSON schema of the relation type.
+    async fn json_schema(&self) -> Value {
+        self.relation_type.json_schema().to_value()
+    }
+
+    /// Returns the JSON schema identifier ($id) of the relation type.
+    async fn json_schema_id(&self) -> String {
+        self.relation_type.json_schema_id().to_string()
     }
 }
 

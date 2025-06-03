@@ -2,6 +2,7 @@ use crate::AddEntityInstanceError;
 use crate::AddExtensionError;
 use crate::AddRelationInstanceError;
 use crate::AddVariableError;
+use crate::EntityTypeId;
 use crate::FlowTypeId;
 use crate::RemoveEntityInstanceError;
 use crate::RemoveExtensionError;
@@ -129,4 +130,12 @@ pub enum FlowTypeRemoveExtensionError {
 pub enum FlowTypeMergeExtensionsError {
     #[error("The flow type {0} does not exist")]
     FlowTypeDoesNotExist(FlowTypeId),
+}
+
+#[derive(Debug, Error)]
+pub enum FlowTypeJsonSchemaError {
+    #[error("The flow type {0} has a wrapper entity type {1} which does not exist")]
+    WrapperEntityTypeDoesNotExist(FlowTypeId, EntityTypeId),
+    #[error("The given entity type {2} does not match the wrapper entity type {1} of the flow type {0}")]
+    WrapperEntityTypeDoesNotMatch(FlowTypeId, EntityTypeId, EntityTypeId),
 }
