@@ -20,8 +20,8 @@
 <a href=#20 id=20 data-nosnippet>20</a><span class="kw">use </span><span class="kw">crate</span>::interface::component::get_interfaces;
 <a href=#21 id=21 data-nosnippet>21</a><span class="kw">use </span><span class="kw">crate</span>::object::entity::mutation::register_entity_type_mutation_objects;
 <a href=#22 id=22 data-nosnippet>22</a><span class="kw">use </span><span class="kw">crate</span>::object::entity::query::register_entity_type_query_objects;
-<a href=#23 id=23 data-nosnippet>23</a><span class="kw">use </span><span class="kw">crate</span>::object::flow::get_flow_mutation_types;
-<a href=#24 id=24 data-nosnippet>24</a><span class="kw">use </span><span class="kw">crate</span>::object::flow::get_flow_types;
+<a href=#23 id=23 data-nosnippet>23</a><span class="kw">use </span><span class="kw">crate</span>::object::flow::mutation::register_flow_type_mutation_objects;
+<a href=#24 id=24 data-nosnippet>24</a><span class="kw">use </span><span class="kw">crate</span>::object::flow::query::register_flow_type_query_objects;
 <a href=#25 id=25 data-nosnippet>25</a><span class="kw">use </span><span class="kw">crate</span>::object::relation::mutation::register_relation_type_mutation_objects;
 <a href=#26 id=26 data-nosnippet>26</a><span class="kw">use </span><span class="kw">crate</span>::object::relation::query::register_relation_type_query_objects;
 <a href=#27 id=27 data-nosnippet>27</a><span class="kw">use </span><span class="kw">crate</span>::root::get_mutation;
@@ -90,8 +90,8 @@
 <a href=#90 id=90 data-nosnippet>90</a>    schema = register_entity_type_mutation_objects(schema, <span class="kw-2">&amp;</span>context);
 <a href=#91 id=91 data-nosnippet>91</a>    schema = register_relation_type_query_objects(schema, <span class="kw-2">&amp;</span>context);
 <a href=#92 id=92 data-nosnippet>92</a>    schema = register_relation_type_mutation_objects(schema, <span class="kw-2">&amp;</span>context);
-<a href=#93 id=93 data-nosnippet>93</a>    schema = get_flow_types(schema, <span class="kw-2">&amp;</span>context);
-<a href=#94 id=94 data-nosnippet>94</a>    schema = get_flow_mutation_types(schema, <span class="kw-2">&amp;</span>context);
+<a href=#93 id=93 data-nosnippet>93</a>    schema = register_flow_type_query_objects(schema, <span class="kw-2">&amp;</span>context);
+<a href=#94 id=94 data-nosnippet>94</a>    schema = register_flow_type_mutation_objects(schema, <span class="kw-2">&amp;</span>context);
 <a href=#95 id=95 data-nosnippet>95</a>    schema = get_query(schema, <span class="kw-2">&amp;</span>context);
 <a href=#96 id=96 data-nosnippet>96</a>    schema = get_mutation(schema, <span class="kw-2">&amp;</span>context);
 <a href=#97 id=97 data-nosnippet>97</a>    schema.finish()
@@ -105,8 +105,8 @@
 <a href=#105 id=105 data-nosnippet>105</a>    schema = register_entity_type_mutation_objects(schema, <span class="kw-2">&amp;</span>context);
 <a href=#106 id=106 data-nosnippet>106</a>    schema = register_relation_type_query_objects(schema, <span class="kw-2">&amp;</span>context);
 <a href=#107 id=107 data-nosnippet>107</a>    schema = register_relation_type_mutation_objects(schema, <span class="kw-2">&amp;</span>context);
-<a href=#108 id=108 data-nosnippet>108</a>    schema = get_flow_types(schema, <span class="kw-2">&amp;</span>context);
-<a href=#109 id=109 data-nosnippet>109</a>    schema = get_flow_mutation_types(schema, <span class="kw-2">&amp;</span>context);
+<a href=#108 id=108 data-nosnippet>108</a>    schema = register_flow_type_query_objects(schema, <span class="kw-2">&amp;</span>context);
+<a href=#109 id=109 data-nosnippet>109</a>    schema = register_flow_type_mutation_objects(schema, <span class="kw-2">&amp;</span>context);
 <a href=#110 id=110 data-nosnippet>110</a>    schema = get_query(schema, <span class="kw-2">&amp;</span>context);
 <a href=#111 id=111 data-nosnippet>111</a>    schema = get_mutation(schema, <span class="kw-2">&amp;</span>context);
 <a href=#112 id=112 data-nosnippet>112</a>    schema.finish()

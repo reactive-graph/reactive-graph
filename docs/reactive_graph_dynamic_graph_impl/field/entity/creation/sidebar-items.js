@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["entity_creation_field"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["entity_outbound_relation_field"]};

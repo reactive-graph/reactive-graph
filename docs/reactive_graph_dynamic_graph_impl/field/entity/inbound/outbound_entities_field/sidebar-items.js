@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["create_inbound_entity_to_outbound_field","inbound_entity_to_outbound_components_field","inbound_entity_to_outbound_entities_field","inbound_entity_to_outbound_entities_union_field"]};
