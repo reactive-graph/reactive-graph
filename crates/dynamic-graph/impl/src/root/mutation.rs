@@ -1,6 +1,6 @@
 use crate::field::namespace_mutation_field;
 use crate::object::namespace::metrics::metrics_field;
-use crate::object::namespace::namespace_mutation;
+use crate::object::namespace::mutation::namespace_mutation;
 use async_graphql::dynamic::*;
 use itertools::Itertools;
 use reactive_graph_dynamic_graph_api::SchemaBuilderContext;

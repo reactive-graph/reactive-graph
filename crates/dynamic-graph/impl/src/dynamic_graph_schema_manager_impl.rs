@@ -20,8 +20,8 @@ use uuid::Uuid;
 use crate::interface::component::get_interfaces;
 use crate::object::entity::mutation::register_entity_type_mutation_objects;
 use crate::object::entity::query::register_entity_type_query_objects;
-use crate::object::flow::get_flow_mutation_types;
-use crate::object::flow::get_flow_types;
+use crate::object::flow::mutation::register_flow_type_mutation_objects;
+use crate::object::flow::query::register_flow_type_query_objects;
 use crate::object::relation::mutation::register_relation_type_mutation_objects;
 use crate::object::relation::query::register_relation_type_query_objects;
 use crate::root::get_mutation;
@@ -90,8 +90,8 @@ async fn build_dynamic_schema(context: SchemaBuilderContext, schema: SchemaBuild
     schema = register_entity_type_mutation_objects(schema, &context);
     schema = register_relation_type_query_objects(schema, &context);
     schema = register_relation_type_mutation_objects(schema, &context);
-    schema = get_flow_types(schema, &context);
-    schema = get_flow_mutation_types(schema, &context);
+    schema = register_flow_type_query_objects(schema, &context);
+    schema = register_flow_type_mutation_objects(schema, &context);
     schema = get_query(schema, &context);
     schema = get_mutation(schema, &context);
     schema.finish()
@@ -105,8 +105,8 @@ fn build_dynamic_schema_sync(context: SchemaBuilderContext, schema: SchemaBuilde
     schema = register_entity_type_mutation_objects(schema, &context);
     schema = register_relation_type_query_objects(schema, &context);
     schema = register_relation_type_mutation_objects(schema, &context);
-    schema = get_flow_types(schema, &context);
-    schema = get_flow_mutation_types(schema, &context);
+    schema = register_flow_type_query_objects(schema, &context);
+    schema = register_flow_type_mutation_objects(schema, &context);
     schema = get_query(schema, &context);
     schema = get_mutation(schema, &context);
     schema.finish()

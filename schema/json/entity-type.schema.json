@@ -54,7 +54,7 @@
     },
     "PropertyType": {
       "additionalProperties": false,
-      "description": "Definition of a property. The definition contains\n the name of the property, the data type and the socket\n type.",
+      "description": "Definition of a property. The definition contains\nthe name of the property, the data type and the socket\ntype.",
       "properties": {
         "data_type": {
           "description": "The data type of the property",

@@ -14,9 +14,12 @@ use async_graphql::Result;
 use reactive_graph_behaviour_service_api::EntityComponentBehaviourRegistry;
 use reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
 use reactive_graph_graph::Component;
+use reactive_graph_graph::JsonSchemaIdGetter;
 use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::TypeDefinitionJsonSchemaGetter;
 use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::RelationTypeManager;
+use serde_json::Value;
 
 pub struct GraphQLComponent {
     component: Component,
@@ -181,12 +184,15 @@ impl GraphQLComponent {
         Ok(component_behaviour_types)
     }
 
-    // /// Type category.
-    // async fn type_category(&self) -> Option<GraphQLTypeCategory> {
-    //     get_type_category_extension(&self.component)
-    //         .and_then(get_type_category)
-    //         .map(|category| category.into())
-    // }
+    /// Returns the JSON schema of the component.
+    async fn json_schema(&self) -> Value {
+        self.component.json_schema().to_value()
+    }
+
+    /// Returns the JSON schema identifier ($id) of the component.
+    async fn json_schema_id(&self) -> String {
+        self.component.json_schema_id().to_string()
+    }
 }
 
 impl From<Component> for GraphQLComponent {

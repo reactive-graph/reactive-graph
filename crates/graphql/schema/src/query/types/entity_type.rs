@@ -4,14 +4,16 @@ use std::sync::Arc;
 use async_graphql::Context;
 use async_graphql::Object;
 use async_graphql::Result;
-
 use reactive_graph_behaviour_service_api::EntityBehaviourRegistry;
 use reactive_graph_graph::EntityType;
 use reactive_graph_graph::EntityTypes;
+use reactive_graph_graph::JsonSchemaIdGetter;
 use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::TypeDefinitionJsonSchemaGetter;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::RelationTypeManager;
+use serde_json::Value;
 
 use crate::mutation::ExtensionTypeIdDefinition;
 use crate::query::GraphQLComponent;
@@ -219,12 +221,15 @@ impl GraphQLEntityType {
         Ok(entity_behaviour_types)
     }
 
-    // /// Type category.
-    // async fn type_category(&self) -> Option<GraphQLTypeCategory> {
-    //     get_type_category_extension(&self.entity_type)
-    //         .and_then(get_type_category)
-    //         .map(|category| category.into())
-    // }
+    /// Returns the JSON schema of the entity type.
+    async fn json_schema(&self) -> Value {
+        self.entity_type.json_schema().to_value()
+    }
+
+    /// Returns the JSON schema identifier ($id) of the entity type.
+    async fn json_schema_id(&self) -> String {
+        self.entity_type.json_schema_id().to_string()
+    }
 }
 
 impl From<EntityType> for GraphQLEntityType {

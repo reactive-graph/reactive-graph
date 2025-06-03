@@ -1,7 +1,7 @@
 use crate::field::namespace_query_field;
 use crate::object::namespace::metrics::metrics_field;
 use crate::object::namespace::metrics::metrics_object;
-use crate::object::namespace::namespace_query;
+use crate::object::namespace::query::namespace_query;
 use async_graphql::dynamic::*;
 use itertools::Itertools;
 use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
