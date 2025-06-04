@@ -23,8 +23,6 @@ updates:
     labels:
       - "p:dependencies"
     open-pull-requests-limit: 10
-    reviewers:
-      - "reactive-graph/code-contributors"
     groups:
       rust-dependencies:
         update-types:
