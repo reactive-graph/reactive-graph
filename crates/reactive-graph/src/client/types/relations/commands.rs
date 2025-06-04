@@ -25,6 +25,9 @@ pub(crate) enum RelationTypesCommands {
     /// List the components of an relation type.
     #[non_exhaustive]
     ListComponents(RelationTypeIdArgs),
+    /// Prints the JSON Schema of an relation type.
+    #[non_exhaustive]
+    GetJsonSchema(RelationTypeIdArgs),
     /// Creates a new relation type.
     #[non_exhaustive]
     Create(CreateRelationTypeArgs),

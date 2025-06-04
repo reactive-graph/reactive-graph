@@ -28,6 +28,7 @@ use cynic::http::ReqwestExt;
 use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::ExtensionTypeId;
+use serde_json::Value;
 use std::sync::Arc;
 
 pub struct Components {
@@ -65,6 +66,20 @@ impl Components {
             .and_then(|data| data.types.components.first().cloned())
             .map(From::from);
         Ok(component)
+    }
+
+    pub async fn json_schema_for_component_by_type<C: Into<ComponentTypeId>>(&self, ty: C) -> Result<Option<Value>, ReactiveGraphClientExecutionError> {
+        let json_schema = self
+            .client
+            .client
+            .post(self.client.url_reactive_graph())
+            .run_graphql(get_component_by_type_query(&ty.into()))
+            .await
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
+            .data
+            .and_then(|data| data.types.components.first().cloned())
+            .map(|component| component.json_schema);
+        Ok(json_schema)
     }
 
     pub async fn create_component<C: Into<Component>>(&self, component: C) -> Result<Option<Component>, ReactiveGraphClientExecutionError> {

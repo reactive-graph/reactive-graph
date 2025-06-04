@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - CLI: Added entity instances to flow types
 - CLI: Added introspection queries
+- CLI: Added command for getting the JSON Schema for each type in the type system
+- Client: Added request method for getting the JSON Schema for each type in the type system
 - Server CLI: Print GraphQL schemas
 - Server CLI: Print JSON schemas
 - GraphQL: Added entity instances to flow types

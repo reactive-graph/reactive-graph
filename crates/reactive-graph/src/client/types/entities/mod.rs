@@ -58,6 +58,11 @@ pub(crate) async fn entity_types(client: &Arc<ReactiveGraphClient>, entity_type_
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
+        EntityTypesCommands::GetJsonSchema(args) => match client.types().entities().json_schema_for_entity_type_by_type(args.clone()).await {
+            Ok(Some(json_schema)) => Ok(json_schema.into()),
+            Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
         EntityTypesCommands::Create(args) => match client.types().entities().create_entity_type_with_variables((&args).into()).await {
             Ok(Some(entity_type)) => output_format_wrapper.single(entity_type),
             Ok(None) => Err(NotCreated("Entity type wasn't created".to_string())),

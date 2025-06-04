@@ -8,6 +8,7 @@ use crate::schema_graphql::types::property_type::PropertyTypes;
 use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::NamespacedTypeGetter;
+use serde_json::Value;
 use std::ops::Deref;
 
 #[derive(cynic::InputObject, Clone, Debug)]
@@ -26,6 +27,12 @@ impl From<reactive_graph_graph::RelationTypeId> for RelationTypeId {
             name: ty.type_name(),
             namespace: ty.namespace(),
         }
+    }
+}
+
+impl From<&RelationTypeId> for reactive_graph_graph::RelationTypeId {
+    fn from(ty: &RelationTypeId) -> Self {
+        reactive_graph_graph::RelationTypeId::new_from_type(ty.namespace.clone(), ty.name.clone())
     }
 }
 
@@ -58,9 +65,19 @@ pub struct RelationType {
 
     /// The extensions.
     pub extensions: Vec<Extension>,
+
+    /// The JSON schema.
+    pub json_schema: Value,
 }
 
 impl RelationType {
+    pub fn ty(&self) -> RelationTypeId {
+        RelationTypeId {
+            namespace: self.namespace.clone(),
+            name: self.name.clone(),
+        }
+    }
+
     fn get_outbound_type(&self) -> ComponentOrEntityTypeId {
         self.outbound_types
             .first()
@@ -80,7 +97,7 @@ impl RelationType {
 
 impl From<RelationType> for reactive_graph_graph::RelationType {
     fn from(relation_type: RelationType) -> Self {
-        let ty = reactive_graph_graph::RelationTypeId::new_from_type(&relation_type.namespace, &relation_type.name);
+        let ty = (&relation_type.ty()).into();
         let components: reactive_graph_graph::ComponentTypeIds = Components(relation_type.components.clone()).into();
         let outbound_type = relation_type.get_outbound_type();
         let inbound_type = relation_type.get_inbound_type();

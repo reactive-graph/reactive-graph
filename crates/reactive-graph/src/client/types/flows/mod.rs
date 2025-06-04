@@ -48,6 +48,11 @@ pub(crate) async fn flow_types(client: &Arc<ReactiveGraphClient>, flow_type_args
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
+        FlowTypesCommands::GetJsonSchema(args) => match client.types().flows().json_schema_for_flow_type_by_type(args.clone()).await {
+            Ok(Some(json_schema)) => Ok(json_schema.into()),
+            Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
         FlowTypesCommands::Create(args) => match client.types().flows().create_flow_type_with_variables((&args).into()).await {
             Ok(Some(flow_type)) => output_format_wrapper.single(flow_type),
             Ok(None) => Err(NotCreated("Flow type wasn't created".to_string())),

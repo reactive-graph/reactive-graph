@@ -39,6 +39,7 @@ use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::RelationComponentTypeId;
 use reactive_graph_graph::RelationType;
 use reactive_graph_graph::RelationTypeId;
+use serde_json::Value;
 
 pub struct RelationTypes {
     client: Arc<ReactiveGraphClient>,
@@ -76,6 +77,21 @@ impl RelationTypes {
             .and_then(|data| data.types.relations.first().cloned())
             .map(From::from);
         Ok(relation_type)
+    }
+
+    pub async fn json_schema_for_relation_type_by_type<C: Into<RelationTypeId>>(&self, ty: C) -> Result<Option<Value>, ReactiveGraphClientExecutionError> {
+        let ty = ty.into();
+        let json_schema = self
+            .client
+            .client
+            .post(self.client.url_reactive_graph())
+            .run_graphql(get_relation_type_by_type_query(&ty))
+            .await
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
+            .data
+            .and_then(|data| data.types.relations.first().cloned())
+            .map(|relation_type| relation_type.json_schema);
+        Ok(json_schema)
     }
 
     pub async fn get_relation_type_components<C: Into<RelationTypeId>>(&self, ty: C) -> Result<Option<Vec<Component>>, ReactiveGraphClientExecutionError> {

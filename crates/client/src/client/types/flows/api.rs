@@ -36,6 +36,7 @@ use cynic::http::ReqwestExt;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::FlowType;
 use reactive_graph_graph::FlowTypeId;
+use serde_json::Value;
 use uuid::Uuid;
 
 pub struct FlowTypes {
@@ -74,6 +75,21 @@ impl FlowTypes {
             .and_then(|data| data.types.flows.first().cloned())
             .map(From::from);
         Ok(flow_type)
+    }
+
+    pub async fn json_schema_for_flow_type_by_type<C: Into<FlowTypeId>>(&self, ty: C) -> Result<Option<Value>, ReactiveGraphClientExecutionError> {
+        let ty = ty.into();
+        let json_schema = self
+            .client
+            .client
+            .post(self.client.url_reactive_graph())
+            .run_graphql(get_flow_type_by_type_query(&ty))
+            .await
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
+            .data
+            .and_then(|data| data.types.flows.first().cloned())
+            .map(|flow_type| flow_type.json_schema);
+        Ok(json_schema)
     }
 
     pub async fn create_flow_type(&self, flow_type: FlowType) -> Result<Option<FlowType>, ReactiveGraphClientExecutionError> {

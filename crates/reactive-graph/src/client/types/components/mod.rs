@@ -50,6 +50,11 @@ pub(crate) async fn components(client: &Arc<ReactiveGraphClient>, component_args
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
+        ComponentsCommands::GetJsonSchema(args) => match client.types().components().json_schema_for_component_by_type(args.clone()).await {
+            Ok(Some(json_schema)) => Ok(json_schema.into()),
+            Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
         ComponentsCommands::Create(args) => match client.types().components().create_component_with_variables((&args).into()).await {
             Ok(Some(component)) => output_format_wrapper.single(component),
             Ok(None) => Err(NotCreated("Component wasn't created".to_string())),

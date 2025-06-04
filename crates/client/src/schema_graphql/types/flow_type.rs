@@ -5,6 +5,7 @@ use crate::schema_graphql::types::extension::Extensions;
 use crate::schema_graphql::types::property_type::PropertyType;
 use crate::schema_graphql::types::property_type::PropertyTypes;
 use reactive_graph_graph::NamespacedTypeGetter;
+use serde_json::Value;
 use std::ops::Deref;
 
 #[derive(cynic::InputObject, Clone, Debug)]
@@ -23,6 +24,12 @@ impl From<reactive_graph_graph::FlowTypeId> for FlowTypeId {
             name: ty.type_name(),
             namespace: ty.namespace(),
         }
+    }
+}
+
+impl From<FlowTypeId> for reactive_graph_graph::FlowTypeId {
+    fn from(ty: FlowTypeId) -> Self {
+        reactive_graph_graph::FlowTypeId::new_from_type(ty.namespace.clone(), ty.name.clone())
     }
 }
 
@@ -55,13 +62,24 @@ pub struct FlowType {
 
     /// The extensions.
     pub extensions: Vec<Extension>,
+
+    /// The JSON schema.
+    pub json_schema: Value,
+}
+
+impl FlowType {
+    pub fn ty(&self) -> FlowTypeId {
+        FlowTypeId {
+            namespace: self.namespace.clone(),
+            name: self.name.clone(),
+        }
+    }
 }
 
 impl From<FlowType> for reactive_graph_graph::FlowType {
     fn from(flow_type: FlowType) -> Self {
-        let ty = reactive_graph_graph::FlowTypeId::new_from_type(flow_type.namespace, flow_type.name);
         reactive_graph_graph::FlowType {
-            ty,
+            ty: flow_type.ty().into(),
             description: flow_type.description,
             wrapper_entity_instance: flow_type.wrapper_entity_instance.into(),
             entity_instances: flow_type

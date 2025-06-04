@@ -3,6 +3,7 @@ use crate::schema_graphql::types::extension::Extensions;
 use crate::schema_graphql::types::property_type::PropertyType;
 use crate::schema_graphql::types::property_type::PropertyTypes;
 use reactive_graph_graph::NamespacedTypeGetter;
+use serde_json::Value;
 use std::fmt;
 use std::fmt::Formatter;
 use std::ops::Deref;
@@ -26,8 +27,8 @@ impl From<reactive_graph_graph::ComponentTypeId> for ComponentTypeId {
     }
 }
 
-impl From<ComponentTypeId> for reactive_graph_graph::ComponentTypeId {
-    fn from(ty: ComponentTypeId) -> Self {
+impl From<&ComponentTypeId> for reactive_graph_graph::ComponentTypeId {
+    fn from(ty: &ComponentTypeId) -> Self {
         reactive_graph_graph::ComponentTypeId::new_from_type(&ty.namespace, &ty.name)
     }
 }
@@ -51,8 +52,8 @@ impl From<ComponentTypeIds> for reactive_graph_graph::ComponentTypeIds {
     fn from(component_type_ids: ComponentTypeIds) -> Self {
         component_type_ids
             .0
-            .into_iter()
-            .map(|ty: ComponentTypeId| {
+            .iter()
+            .map(|ty| {
                 let ty: reactive_graph_graph::ComponentTypeId = ty.into();
                 ty
             })
@@ -80,7 +81,7 @@ impl FromIterator<Component> for reactive_graph_graph::ComponentTypeIds {
     fn from_iter<I: IntoIterator<Item = Component>>(iter: I) -> Self {
         let tys = reactive_graph_graph::ComponentTypeIds::new();
         for component in iter {
-            tys.insert(component.ty().into());
+            tys.insert((&component.ty()).into());
         }
         tys
     }
@@ -112,10 +113,13 @@ pub struct Component {
 
     /// The extensions.
     pub extensions: Vec<Extension>,
+
+    /// The JSON schema.
+    pub json_schema: Value,
 }
 
 impl Component {
-    pub fn ty(self) -> ComponentTypeId {
+    pub fn ty(&self) -> ComponentTypeId {
         ComponentTypeId {
             namespace: self.namespace.clone(),
             name: self.name.clone(),
@@ -125,9 +129,8 @@ impl Component {
 
 impl From<Component> for reactive_graph_graph::Component {
     fn from(component: Component) -> Self {
-        let ty = reactive_graph_graph::ComponentTypeId::new_from_type(component.namespace, component.name);
         reactive_graph_graph::Component {
-            ty,
+            ty: (&component.ty()).into(),
             description: component.description,
             properties: PropertyTypes(component.properties).into(),
             extensions: Extensions(component.extensions).into(),

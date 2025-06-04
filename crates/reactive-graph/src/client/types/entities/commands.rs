@@ -25,6 +25,9 @@ pub(crate) enum EntityTypesCommands {
     /// List the components of an entity type.
     #[non_exhaustive]
     ListComponents(EntityTypeIdArgs),
+    /// Prints the JSON Schema of an entity type.
+    #[non_exhaustive]
+    GetJsonSchema(EntityTypeIdArgs),
     /// Creates a new entity type.
     #[non_exhaustive]
     Create(CreateEntityTypeArgs),
