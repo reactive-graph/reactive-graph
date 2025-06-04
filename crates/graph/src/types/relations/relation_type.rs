@@ -286,6 +286,12 @@ impl From<&RelationType> for TypeDefinition {
     }
 }
 
+impl From<&RelationType> for Schema {
+    fn from(relation_type: &RelationType) -> Self {
+        relation_type.json_schema()
+    }
+}
+
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 // #[derive(Clone, Debug, Default, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema)]
 pub struct RelationTypes(DashMap<RelationTypeId, RelationType>);

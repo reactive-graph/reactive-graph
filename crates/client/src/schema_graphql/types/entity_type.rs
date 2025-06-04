@@ -6,6 +6,7 @@ use crate::schema_graphql::types::property_type::PropertyType;
 use crate::schema_graphql::types::property_type::PropertyTypes;
 use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::NamespacedTypeGetter;
+use serde_json::Value;
 use std::ops::Deref;
 
 #[derive(cynic::InputObject, Clone, Debug)]
@@ -24,6 +25,12 @@ impl From<reactive_graph_graph::EntityTypeId> for EntityTypeId {
             name: ty.type_name(),
             namespace: ty.namespace(),
         }
+    }
+}
+
+impl From<&EntityTypeId> for reactive_graph_graph::EntityTypeId {
+    fn from(ty: &EntityTypeId) -> Self {
+        reactive_graph_graph::EntityTypeId::new_from_type(ty.namespace.clone(), ty.name.clone())
     }
 }
 
@@ -50,13 +57,24 @@ pub struct EntityType {
 
     /// The extensions.
     pub extensions: Vec<Extension>,
+
+    /// The JSON schema.
+    pub json_schema: Value,
+}
+
+impl EntityType {
+    pub fn ty(&self) -> EntityTypeId {
+        EntityTypeId {
+            namespace: self.namespace.clone(),
+            name: self.name.clone(),
+        }
+    }
 }
 
 impl From<EntityType> for reactive_graph_graph::EntityType {
     fn from(entity_type: EntityType) -> Self {
-        let ty = reactive_graph_graph::EntityTypeId::new_from_type(entity_type.namespace, entity_type.name);
+        let ty = (&entity_type.ty()).into();
         let components: reactive_graph_graph::ComponentTypeIds = Components(entity_type.components).into();
-        // let tys: ComponentTypeIds = components.into();
         reactive_graph_graph::EntityType {
             ty,
             description: entity_type.description,

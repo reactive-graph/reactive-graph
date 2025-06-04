@@ -39,6 +39,7 @@ use reactive_graph_graph::EntityComponentTypeId;
 use reactive_graph_graph::EntityType;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::ExtensionTypeId;
+use serde_json::Value;
 
 pub struct EntityTypes {
     client: Arc<ReactiveGraphClient>,
@@ -76,6 +77,21 @@ impl EntityTypes {
             .and_then(|data| data.types.entities.first().cloned())
             .map(From::from);
         Ok(entity_type)
+    }
+
+    pub async fn json_schema_for_entity_type_by_type<C: Into<EntityTypeId>>(&self, ty: C) -> Result<Option<Value>, ReactiveGraphClientExecutionError> {
+        let ty = ty.into();
+        let json_schema = self
+            .client
+            .client
+            .post(self.client.url_reactive_graph())
+            .run_graphql(get_entity_type_by_type_query(&ty))
+            .await
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
+            .data
+            .and_then(|data| data.types.entities.first().cloned())
+            .map(|entity_type| entity_type.json_schema);
+        Ok(json_schema)
     }
 
     pub async fn get_entity_type_components<C: Into<EntityTypeId>>(&self, ty: C) -> Result<Option<Vec<Component>>, ReactiveGraphClientExecutionError> {

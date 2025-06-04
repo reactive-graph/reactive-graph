@@ -22,6 +22,9 @@ pub(crate) enum ComponentsCommands {
     /// List the extensions of a component.
     #[non_exhaustive]
     ListExtensions(ComponentTypeIdArgs),
+    /// Prints the JSON Schema of a component.
+    #[non_exhaustive]
+    GetJsonSchema(ComponentTypeIdArgs),
     /// Creates a new component.
     #[non_exhaustive]
     Create(CreateComponentArgs),

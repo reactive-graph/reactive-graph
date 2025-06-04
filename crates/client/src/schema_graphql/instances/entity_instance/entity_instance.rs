@@ -32,24 +32,13 @@ impl EntityInstance {
 
 impl From<EntityInstance> for reactive_graph_graph::EntityInstance {
     fn from(entity_instance: EntityInstance) -> Self {
-        let ty = entity_instance.ty();
-        let id = entity_instance.id.into();
-        let properties = PropertyInstances(entity_instance.properties).into();
-        let components = entity_instance
-            .components
-            .iter()
-            .map(|component| {
-                let ty: reactive_graph_graph::ComponentTypeId = component.clone().ty().into();
-                ty
-            })
-            .collect();
         reactive_graph_graph::EntityInstance {
-            ty,
-            id,
+            ty: entity_instance.ty(),
+            id: entity_instance.id.into(),
             name: entity_instance.name.clone(),
             description: entity_instance.description.clone(),
-            properties,
-            components,
+            properties: PropertyInstances(entity_instance.properties).into(),
+            components: reactive_graph_graph::ComponentTypeIds::from_iter(entity_instance.components),
             extensions: Default::default(),
         }
     }

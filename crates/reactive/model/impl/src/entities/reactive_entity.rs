@@ -395,3 +395,7 @@ impl Serialize for ReactiveEntity {
         serializer.collect_map(property_instances)
     }
 }
+
+// impl Deserialize for ReactiveEntity {
+//
+// }

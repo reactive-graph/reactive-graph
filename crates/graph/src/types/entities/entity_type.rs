@@ -273,6 +273,12 @@ impl From<&EntityType> for TypeDefinition {
     }
 }
 
+impl From<&EntityType> for Schema {
+    fn from(entity_type: &EntityType) -> Self {
+        entity_type.json_schema()
+    }
+}
+
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 // #[derive(Clone, Debug, Default, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema)]
 pub struct EntityTypes(DashMap<EntityTypeId, EntityType>);

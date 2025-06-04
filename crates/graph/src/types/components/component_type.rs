@@ -245,6 +245,12 @@ impl From<&Component> for ComponentTypeId {
     }
 }
 
+impl From<&Component> for Schema {
+    fn from(component: &Component) -> Self {
+        component.json_schema()
+    }
+}
+
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Components(DashMap<ComponentTypeId, Component>);
 

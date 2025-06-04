@@ -57,6 +57,11 @@ pub(crate) async fn relation_types(client: &Arc<ReactiveGraphClient>, relation_t
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
+        RelationTypesCommands::GetJsonSchema(args) => match client.types().relations().json_schema_for_relation_type_by_type(args.clone()).await {
+            Ok(Some(json_schema)) => Ok(json_schema.into()),
+            Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
         RelationTypesCommands::Create(args) => match client.types().relations().create_relation_type_with_variables((&args).into()).await {
             Ok(Some(relation_type)) => output_format_wrapper.single(relation_type),
             Ok(None) => Err(NotCreated("Relation type wasn't created".to_string())),

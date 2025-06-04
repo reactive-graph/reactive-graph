@@ -23,6 +23,9 @@ pub(crate) enum FlowTypesCommands {
     /// List the extensions of a flow type.
     #[non_exhaustive]
     ListExtensions(FlowTypeIdArgs),
+    /// Prints the JSON Schema of a flow type.
+    #[non_exhaustive]
+    GetJsonSchema(FlowTypeIdArgs),
     /// Creates a new flow type.
     #[non_exhaustive]
     Create(CreateFlowTypeArgs),

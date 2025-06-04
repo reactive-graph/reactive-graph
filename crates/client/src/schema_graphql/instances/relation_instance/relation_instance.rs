@@ -41,25 +41,14 @@ impl RelationInstance {
 impl From<RelationInstance> for reactive_graph_graph::RelationInstance {
     fn from(relation_instance: RelationInstance) -> Self {
         let ty = relation_instance.instance_ty();
-        let outbound_id = relation_instance.outbound.id.into();
-        let inbound_id = relation_instance.inbound.id.into();
-        let properties = PropertyInstances(relation_instance.properties).into();
-        let components = relation_instance
-            .components
-            .iter()
-            .map(|component| {
-                let ty: reactive_graph_graph::ComponentTypeId = component.clone().ty().into();
-                ty
-            })
-            .collect();
         reactive_graph_graph::RelationInstance {
-            outbound_id,
+            outbound_id: relation_instance.outbound.id.into(),
             ty,
-            inbound_id,
+            inbound_id: relation_instance.inbound.id.into(),
             name: relation_instance.name.clone(),
             description: relation_instance.description.clone(),
-            properties,
-            components,
+            properties: PropertyInstances(relation_instance.properties).into(),
+            components: reactive_graph_graph::ComponentTypeIds::from_iter(relation_instance.components),
             extensions: Default::default(),
         }
     }
