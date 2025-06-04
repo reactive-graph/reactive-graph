@@ -72,6 +72,14 @@ type Component {
 	"""
 	inboundOf: [RelationType!]!
 	"""
+	Returns the JSON schema of the component.
+	"""
+	jsonSchema: JSON!
+	"""
+	Returns the JSON schema identifier ($id) of the component.
+	"""
+	jsonSchemaId: String!
+	"""
 	The name of the component.
 	"""
 	name: String!
@@ -373,6 +381,14 @@ type EntityType {
 	"""
 	isValid: Boolean!
 	"""
+	Returns the JSON schema of the entity type.
+	"""
+	jsonSchema: JSON!
+	"""
+	Returns the JSON schema identifier ($id) of the entity type.
+	"""
+	jsonSchemaId: String!
+	"""
 	The name of the entity type.
 	
 	The name is the unique identifier for entity types.
@@ -602,6 +618,14 @@ type FlowType {
 	This means all components exists and the outbound and inbound entity types are valid.
 	"""
 	isValid: Boolean!
+	"""
+	Returns the JSON schema of the flow type.
+	"""
+	jsonSchema: JSON!
+	"""
+	Returns the JSON schema identifier ($id) of the flow type.
+	"""
+	jsonSchemaId: String!
 	"""
 	The name of the flow type.
 	
@@ -1896,6 +1920,14 @@ type RelationType {
 	This means all components exists and the outbound and inbound entity types are valid.
 	"""
 	isValid: Boolean!
+	"""
+	Returns the JSON schema of the relation type.
+	"""
+	jsonSchema: JSON!
+	"""
+	Returns the JSON schema identifier ($id) of the relation type.
+	"""
+	jsonSchemaId: String!
 	"""
 	The name of the relation type.
 	
