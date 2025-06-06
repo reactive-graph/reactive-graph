@@ -229,8 +229,8 @@ serde_json = "1.0"
 shellwords = "1.1"
 signal-hook = "0.3"
 similar = "2.7"
-springtime = { version = "1.0", git = "https://github.com/reactive-graph/springtime.git" }
-springtime-di = { version = "1.0", features = ["threadsafe", "derive"], git = "https://github.com/reactive-graph/springtime.git" }
+springtime = { version = "1.0.3" }
+springtime-di = { version = "1.0.3", features = ["threadsafe", "derive"] }
 stopwatch2 = "2.0"
 strum = { version = "0.27", features = ["derive"] }
 strum_macros = "0.27"
