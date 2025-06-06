@@ -191,6 +191,7 @@ dashmap = { version = "6.0", features = ["serde"] }
 default-test = "0.1"
 documented = "0.9"
 flate2 = "1.1"
+documented = "0.9"
 futures = "0.3"
 futures-timer = "3.0"
 futures-util = "0.3"
