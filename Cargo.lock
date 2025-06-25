@@ -6015,8 +6015,8 @@ dependencies = [
 
 [[package]]
 name = "schemars"
-version = "1.0.0"
-source = "git+https://github.com/GREsau/schemars.git#0134a2e2f99afe2b8307f6638042f874ce18a549"
+version = "1.0.1"
+source = "git+https://github.com/GREsau/schemars.git#d8efe5354345598004bf1b175a576faaa9fdca57"
 dependencies = [
  "dyn-clone",
  "ref-cast",
@@ -6028,8 +6028,8 @@ dependencies = [
 
 [[package]]
 name = "schemars_derive"
-version = "1.0.0"
-source = "git+https://github.com/GREsau/schemars.git#0134a2e2f99afe2b8307f6638042f874ce18a549"
+version = "1.0.1"
+source = "git+https://github.com/GREsau/schemars.git#d8efe5354345598004bf1b175a576faaa9fdca57"
 dependencies = [
  "proc-macro2",
  "quote",
