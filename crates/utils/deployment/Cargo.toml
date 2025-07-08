@@ -13,7 +13,7 @@ readme = "../../../README.md"
 glob = "0.3"
 serde = { workspace = true, features = ["derive"] }
 thiserror = { workspace = true }
-toml = "0.8"
+toml = "0.9"
 
 [lib]
 crate-type = ["lib"]
