@@ -66,13 +66,13 @@ reactive-graph-plugin-graphql-api = { version = "0.10.0", path = "../../plugin/g
 reactive-graph-plugin-graphql-impl = { version = "0.10.0", path = "../../plugin/graphql/impl" }
 
 [target.armv7-unknown-linux-gnueabihf.dependencies]
-aws-lc-rs = { version = "1.13.2", features = ["prebuilt-nasm", "bindgen"] }
+aws-lc-rs = { version = "1.13.3", features = ["prebuilt-nasm", "bindgen"] }
 
 [target.armv7-unknown-linux-musleabihf.dependencies]
-aws-lc-rs = { version = "1.13.2", features = ["prebuilt-nasm", "bindgen"] }
+aws-lc-rs = { version = "1.13.3", features = ["prebuilt-nasm", "bindgen"] }
 
 [target.powerpc64le-unknown-linux-gnu.dependencies]
-aws-lc-rs = { version = "1.13.2", features = ["prebuilt-nasm", "bindgen"] }
+aws-lc-rs = { version = "1.13.3", features = ["prebuilt-nasm", "bindgen"] }
 
 [dev-dependencies]
 log4rs = { workspace = true, features = ["console_appender", "ansi_writer"] }
