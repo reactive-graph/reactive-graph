@@ -13,7 +13,7 @@ docker pull ghcr.io/reactive-graph/reactive-graph:latest
 Create and start a container:
 
 ```shell
-docker run --name reactive-graph ghcr.io/reactive-graph/reactive-graph:latest -p 0.0.0.0:31415:31415
+docker run --name reactive-graph -p 0.0.0.0:31415:31415 ghcr.io/reactive-graph/reactive-graph:latest
 ```
 
 ### Ubuntu / Debian / Raspberry Pi OS
