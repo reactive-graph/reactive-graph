@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Fixed
+
+### Distribution
+
+### Infrastructure
+
+## [0.10.0-alpha-4] - 2025-07-28
+
+### Added
+
 - CLI: Added entity instances to flow types
 - CLI: Added introspection queries
 - CLI: Added command for getting the JSON Schema for each type in the type system
@@ -48,6 +60,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Distribution
+
+- Docker: Make debian bookworm slim the base image in order to allow plugins loading within the docker image
 
 ### Infrastructure
 
