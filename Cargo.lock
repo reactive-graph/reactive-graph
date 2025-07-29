@@ -1042,9 +1042,9 @@ checksum = "b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675"
 
 [[package]]
 name = "clap_mangen"
-version = "0.2.28"
+version = "0.2.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e2fb6d3f935bbb9819391528b0e7cf655e78a0bc7a7c3d227211a1d24fc11db1"
+checksum = "27b4c3c54b30f0d9adcb47f25f61fcce35c4dd8916638c6b82fbd5f4fb4179e2"
 dependencies = [
  "clap",
  "roff",
@@ -4550,7 +4550,7 @@ dependencies = [
  "tabled",
  "thiserror 2.0.12",
  "tokio",
- "toml 0.9.2",
+ "toml 0.9.3",
  "toml_edit",
  "typed-builder",
  "uuid",
@@ -4717,7 +4717,7 @@ dependencies = [
  "reactive-graph-config-model",
  "reactive-graph-lifecycle",
  "springtime-di",
- "toml 0.9.2",
+ "toml 0.9.3",
 ]
 
 [[package]]
@@ -5014,7 +5014,7 @@ dependencies = [
  "thiserror 2.0.12",
  "tokio",
  "tokio-stream",
- "toml 0.9.2",
+ "toml 0.9.3",
  "uuid",
 ]
 
@@ -5552,7 +5552,7 @@ dependencies = [
  "json5",
  "serde_json",
  "thiserror 2.0.12",
- "toml 0.9.2",
+ "toml 0.9.3",
 ]
 
 [[package]]
@@ -5584,7 +5584,7 @@ dependencies = [
  "serde_json",
  "springtime-di",
  "thiserror 2.0.12",
- "toml 0.9.2",
+ "toml 0.9.3",
  "uuid",
 ]
 
@@ -5620,7 +5620,7 @@ dependencies = [
  "serde_json",
  "springtime-di",
  "tokio",
- "toml 0.9.2",
+ "toml 0.9.3",
  "uuid",
 ]
 
@@ -5651,7 +5651,7 @@ dependencies = [
  "glob",
  "serde",
  "thiserror 2.0.12",
- "toml 0.9.2",
+ "toml 0.9.3",
 ]
 
 [[package]]
@@ -6762,9 +6762,9 @@ dependencies = [
 
 [[package]]
 name = "toml"
-version = "0.9.2"
+version = "0.9.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed0aee96c12fa71097902e0bb061a5e1ebd766a6636bb605ba401c45c1650eac"
+checksum = "e06723639aaded957e5a80be250c1f82f274b9d23ebb4d94163668470623461c"
 dependencies = [
  "indexmap",
  "serde",
