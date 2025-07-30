@@ -100,7 +100,10 @@ impl ReactiveGraphClient {
 
     pub fn new<A: Into<InstanceAddress>>(remote: A) -> Result<Arc<Self>, ReactiveGraphClientError> {
         let remote = remote.into();
-        let mut client_builder = Client::builder().user_agent(remote.user_agent.clone());
+        let mut client_builder = Client::builder()
+            .user_agent(remote.user_agent.clone())
+            .danger_accept_invalid_certs(remote.danger_accept_invalid_certs.unwrap_or_default())
+            .danger_accept_invalid_hostnames(remote.danger_accept_invalid_hostnames.unwrap_or_default());
         if let Some(bearer) = remote.bearer.clone() {
             let header_value = reqwest::header::HeaderValue::from_str(&format!("Bearer {bearer}")).map_err(ReactiveGraphClientError::InvalidBearer)?;
             client_builder = client_builder.default_headers(std::iter::once((reqwest::header::AUTHORIZATION, header_value)).collect());

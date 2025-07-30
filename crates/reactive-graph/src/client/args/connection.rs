@@ -40,6 +40,32 @@ pub struct ClientConnectionArguments {
     /// The authentication token.
     #[arg(long)]
     bearer: Option<String>,
+
+    /// Controls the use of certificate validation.
+    ///
+    /// Defaults to `false`.
+    ///
+    /// Warning:
+    ///
+    /// You should think very carefully before using this method. If
+    /// invalid certificates are trusted, *any* certificate for *any* site
+    /// will be trusted for use. This includes expired certificates. This
+    /// introduces significant vulnerabilities, and should only be used
+    /// as a last resort.
+    #[arg(long)]
+    danger_accept_invalid_certs: Option<bool>,
+
+    /// Controls the use of hostname verification.
+    ///
+    /// Defaults to `false`.
+    ///
+    /// Warning
+    ///
+    /// You should think very carefully before you use this method. If
+    /// hostname verification is not used, any valid certificate for any
+    /// site will be trusted for use from any other. This introduces a
+    /// significant vulnerability to man-in-the-middle attacks.
+    danger_accept_invalid_hostnames: Option<bool>,
 }
 
 impl From<&ClientConnectionArguments> for InstanceAddress {
@@ -53,6 +79,8 @@ impl From<&ClientConnectionArguments> for InstanceAddress {
             .endpoint_runtime(args.endpoint_runtime.clone().unwrap_or(DEFAULT_ENDPOINT_RUNTIME.to_string()))
             .endpoint_plugin(args.endpoint_plugins.clone().unwrap_or(DEFAULT_ENDPOINT_PLUGIN.to_string()))
             .bearer(args.bearer.clone())
+            .danger_accept_invalid_certs(args.danger_accept_invalid_certs)
+            .danger_accept_invalid_hostnames(args.danger_accept_invalid_hostnames)
             .build()
     }
 }
