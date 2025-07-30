@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- CLI: Added arguments `--danger_accept_invalid_certs` and `--danger_accept_invalid_hostnames`
+
 ### Changed
 
 ### Fixed

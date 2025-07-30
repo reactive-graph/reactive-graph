@@ -57,6 +57,33 @@ pub struct InstanceAddress {
     /// The authentication token.
     #[builder(default)]
     pub bearer: Option<String>,
+
+    /// Controls the use of certificate validation.
+    ///
+    /// Defaults to `false`.
+    ///
+    /// Warning
+    ///
+    /// You should think very carefully before using this method. If
+    /// invalid certificates are trusted, *any* certificate for *any* site
+    /// will be trusted for use. This includes expired certificates. This
+    /// introduces significant vulnerabilities, and should only be used
+    /// as a last resort.
+    #[builder(default)]
+    pub danger_accept_invalid_certs: Option<bool>,
+
+    /// Controls the use of hostname verification.
+    ///
+    /// Defaults to `false`.
+    ///
+    /// Warning
+    ///
+    /// You should think very carefully before you use this method. If
+    /// hostname verification is not used, any valid certificate for any
+    /// site will be trusted for use from any other. This introduces a
+    /// significant vulnerability to man-in-the-middle attacks.
+    #[builder(default)]
+    pub danger_accept_invalid_hostnames: Option<bool>,
 }
 
 impl InstanceAddress {
@@ -71,6 +98,8 @@ impl InstanceAddress {
             endpoint_runtime: DEFAULT_ENDPOINT_RUNTIME.to_string(),
             endpoint_plugin: DEFAULT_ENDPOINT_PLUGIN.to_string(),
             bearer: None,
+            danger_accept_invalid_certs: None,
+            danger_accept_invalid_hostnames: None,
         }
     }
 
@@ -126,6 +155,8 @@ impl Default for InstanceAddress {
             endpoint_runtime: DEFAULT_ENDPOINT_RUNTIME.to_string(),
             endpoint_plugin: DEFAULT_ENDPOINT_PLUGIN.to_string(),
             bearer: None,
+            danger_accept_invalid_certs: None,
+            danger_accept_invalid_hostnames: None,
         }
     }
 }
