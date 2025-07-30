@@ -984,9 +984,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.5.41"
+version = "4.5.42"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "be92d32e80243a54711e5d7ce823c35c41c9d929dc4ab58e1276f625841aadf9"
+checksum = "ed87a9d530bb41a67537289bafcac159cb3ee28460e0a4571123d2a778a6a882"
 dependencies = [
  "clap_builder",
  "clap_derive",
@@ -1003,9 +1003,9 @@ dependencies = [
 
 [[package]]
 name = "clap_builder"
-version = "4.5.41"
+version = "4.5.42"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "707eab41e9622f9139419d573eca0900137718000c517d47da73045f54331c3d"
+checksum = "64f4f3f3c77c94aff3c7e9aac9a2ca1974a5adf392a8bb751e827d6d127ab966"
 dependencies = [
  "anstream",
  "anstyle",
@@ -4550,7 +4550,7 @@ dependencies = [
  "tabled",
  "thiserror 2.0.12",
  "tokio",
- "toml 0.9.3",
+ "toml 0.9.4",
  "toml_edit",
  "typed-builder",
  "uuid",
@@ -4717,7 +4717,7 @@ dependencies = [
  "reactive-graph-config-model",
  "reactive-graph-lifecycle",
  "springtime-di",
- "toml 0.9.3",
+ "toml 0.9.4",
 ]
 
 [[package]]
@@ -5014,7 +5014,7 @@ dependencies = [
  "thiserror 2.0.12",
  "tokio",
  "tokio-stream",
- "toml 0.9.3",
+ "toml 0.9.4",
  "uuid",
 ]
 
@@ -5552,7 +5552,7 @@ dependencies = [
  "json5",
  "serde_json",
  "thiserror 2.0.12",
- "toml 0.9.3",
+ "toml 0.9.4",
 ]
 
 [[package]]
@@ -5584,7 +5584,7 @@ dependencies = [
  "serde_json",
  "springtime-di",
  "thiserror 2.0.12",
- "toml 0.9.3",
+ "toml 0.9.4",
  "uuid",
 ]
 
@@ -5620,7 +5620,7 @@ dependencies = [
  "serde_json",
  "springtime-di",
  "tokio",
- "toml 0.9.3",
+ "toml 0.9.4",
  "uuid",
 ]
 
@@ -5651,7 +5651,7 @@ dependencies = [
  "glob",
  "serde",
  "thiserror 2.0.12",
- "toml 0.9.3",
+ "toml 0.9.4",
 ]
 
 [[package]]
@@ -5909,9 +5909,9 @@ dependencies = [
 
 [[package]]
 name = "rustls"
-version = "0.23.29"
+version = "0.23.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2491382039b29b9b11ff08b76ff6c97cf287671dbb74f0be44bda389fffe9bd1"
+checksum = "c0ebcbd2f03de0fc1122ad9bb24b127a5a6cd51d72604a3f3c50ac459762b6cc"
 dependencies = [
  "aws-lc-rs",
  "log",
@@ -6762,9 +6762,9 @@ dependencies = [
 
 [[package]]
 name = "toml"
-version = "0.9.3"
+version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e06723639aaded957e5a80be250c1f82f274b9d23ebb4d94163668470623461c"
+checksum = "41ae868b5a0f67631c14589f7e250c1ea2c574ee5ba21c6c8dd4b1485705a5a1"
 dependencies = [
  "indexmap",
  "serde",
