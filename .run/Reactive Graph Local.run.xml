@@ -2,19 +2,27 @@
   <configuration default="false" name="Reactive Graph Local" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
     <deployment type="dockerfile">
       <settings>
-        <option name="imageTag" value="reactive-graph/reactive-graph:local" />
-        <option name="containerName" value="reactive-graph-local" />
+        <option name="imageTag" value="reactive-graph/reactive-graph:local"/>
+        <option name="containerName" value="reactive-graph-local"/>
         <option name="portBindings">
           <list>
             <DockerPortBindingImpl>
-              <option name="containerPort" value="31415" />
-              <option name="hostPort" value="31415" />
+              <option name="containerPort" value="31415"/>
+              <option name="hostPort" value="31415"/>
             </DockerPortBindingImpl>
           </list>
         </option>
-        <option name="sourceFilePath" value="Dockerfile" />
+        <option name="sourceFilePath" value="Dockerfile"/>
+        <option name="volumeBindings">
+          <list>
+            <DockerVolumeBindingImpl>
+              <option name="containerPath" value="/opt/reactive-graph/plugins/deploy"/>
+              <option name="hostPath" value="$PROJECT_DIR$/plugins/deploy"/>
+            </DockerVolumeBindingImpl>
+          </list>
+        </option>
       </settings>
     </deployment>
-    <method v="2" />
+    <method v="2"/>
   </configuration>
 </component>
