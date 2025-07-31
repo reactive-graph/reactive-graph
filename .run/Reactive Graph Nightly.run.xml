@@ -2,18 +2,26 @@
   <configuration default="false" name="Reactive Graph Nightly" type="docker-deploy" factoryName="docker-image" server-name="Docker">
     <deployment type="docker-image">
       <settings>
-        <option name="imageTag" value="ghcr.io/reactive-graph/reactive-graph:nightly" />
-        <option name="containerName" value="reactive-graph-nightly" />
+        <option name="imageTag" value="ghcr.io/reactive-graph/reactive-graph:nightly"/>
+        <option name="containerName" value="reactive-graph-nightly"/>
         <option name="portBindings">
           <list>
             <DockerPortBindingImpl>
-              <option name="containerPort" value="31415" />
-              <option name="hostPort" value="31415" />
+              <option name="containerPort" value="31415"/>
+              <option name="hostPort" value="31415"/>
             </DockerPortBindingImpl>
+          </list>
+        </option>
+        <option name="volumeBindings">
+          <list>
+            <DockerVolumeBindingImpl>
+              <option name="containerPath" value="/opt/reactive-graph/plugins/deploy"/>
+              <option name="hostPath" value="$PROJECT_DIR$/plugins/deploy"/>
+            </DockerVolumeBindingImpl>
           </list>
         </option>
       </settings>
     </deployment>
-    <method v="2" />
+    <method v="2"/>
   </configuration>
 </component>
