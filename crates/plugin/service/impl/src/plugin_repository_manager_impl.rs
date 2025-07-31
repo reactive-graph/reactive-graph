@@ -372,8 +372,8 @@ fn deploy_plugin(deploy_path: PathBuf) -> Result<PathBuf, HotDeployError> {
             debug!("Moved plugin from {} to {}", deploy_path.display(), install_path.display());
             Ok(install_path)
         }
-        Err(_) => {
-            error!("Failed to moved plugin from {} to {}", deploy_path.display(), install_path.display());
+        Err(e) => {
+            error!("Failed to moved plugin from {} to {}: {:?}", deploy_path.display(), install_path.display(), e);
             Err(HotDeployError::MoveError)
         }
     }
