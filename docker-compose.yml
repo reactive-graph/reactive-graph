@@ -1,0 +1,79 @@
+services:
+  reactive-graph:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # image: ghcr.io/reactive-graph/reactive-graph:latest
+    container_name: reactive-graph
+    volumes:
+      - reactive-graph-plugins-deploy:/opt/reactive-graph/plugins/deploy
+    networks:
+      - reactive-graph-network
+    user: "reactive-graph:reactive-graph"
+    ports:
+      - "31415:31415"
+
+  reactive-graph-plugin-provisioner:
+    image: debian:bookworm-slim
+    container_name: "reactive-graph-plugin-provisioner-${REPOSITORY}-${TAG}"
+    environment:
+      REPOSITORY: "std"
+      TAG: "nightly"
+      FILE_EXTENSION: ".tar.gz"
+    volumes:
+      - reactive-graph-plugins-deploy:/deploy
+    command: >
+      sh -c "
+      addgroup --gid 1000 reactive-graph;
+      useradd -d /deploy -s /bin/bash -g reactive-graph -u 1000 reactive-graph;
+      apt-get update && apt-get install -y --no-install-recommends wget tar dpkg ca-certificates && rm -rf /var/lib/apt/lists/*;
+      echo "REPOSITORY=${REPOSITORY}";
+      echo "TAG=${TAG}";
+      VERSION="$${TAG#v}";
+      echo "VERSION=$${VERSION}";
+      dpkg --print-architecture;
+      DEBIAN_ARCH=$(dpkg --print-architecture);
+      echo "DEBIAN_ARCH=$${DEBIAN_ARCH}";
+      RUST_TARGET_TRIPLE="";
+      if [ "$$DEBIAN_ARCH" = "amd64" ]; then
+        RUST_TARGET_TRIPLE="x86_64-unknown-linux-gnu";
+      elif [ "$$DEBIAN_ARCH" = "i386" ]; then
+        RUST_TARGET_TRIPLE="i686-unknown-linux-gnu";
+      elif [ "$$DEBIAN_ARCH" = "arm64" ]; then
+        RUST_TARGET_TRIPLE="aarch64-unknown-linux-gnu";
+      elif [ "$$DEBIAN_ARCH" = "armhf" ]; then
+        RUST_TARGET_TRIPLE="armv7-unknown-linux-gnueabihf";
+      elif [ "$$DEBIAN_ARCH" = "armel" ]; then
+        RUST_TARGET_TRIPLE="arm-unknown-linux-gnueabi";
+      elif [ "$$DEBIAN_ARCH" = "ppc64el" ]; then
+        RUST_TARGET_TRIPLE="powerpc64le-unknown-linux-gnu";
+      elif [ "$$DEBIAN_ARCH" = "riscv64" ]; then
+        RUST_TARGET_TRIPLE="riscv64gc-unknown-linux-gnu";
+      fi;
+      echo "RUST_TARGET_TRIPLE=$${RUST_TARGET_TRIPLE}";
+      LOCAL_FILENAME="reactive-graph-$${REPOSITORY}_$${VERSION}$${FILE_EXTENSION}";
+      echo "LOCAL_FILENAME=$${LOCAL_FILENAME}";
+      DOWNLOAD_URL="https://github.com/reactive-graph/$${REPOSITORY}/releases/download/$${TAG}/reactive-graph-$${REPOSITORY}_$${VERSION}_$${RUST_TARGET_TRIPLE}$${FILE_EXTENSION}";
+      echo "DOWNLOAD_URL=$${DOWNLOAD_URL}";
+      wget -O "$$LOCAL_FILENAME" "$$DOWNLOAD_URL";
+      TEMP_DIR=$(mktemp -d -t reactive-graph-plugins_XXXXXX);
+      echo "TEMP_DIR=$${TEMP_DIR}";
+      tar -xzf "$$LOCAL_FILENAME" -C "$$TEMP_DIR";
+      chown reactive-graph:reactive-graph "$$TEMP_DIR/*.so";
+      chmod 775 "$$TEMP_DIR/*.so";
+      cp -a "$$TEMP_DIR/*.so" "/deploy/";
+      rm -rf "$$TEMP_DIR";
+      "
+    depends_on:
+      - reactive-graph
+    networks:
+      - reactive-graph-network
+    restart: "no"
+
+volumes:
+  reactive-graph-plugins-deploy:
+    driver: local
+
+networks:
+  reactive-graph-network:
+    driver: bridge
