@@ -367,13 +367,28 @@ fn deploy_plugin(deploy_path: PathBuf) -> Result<PathBuf, HotDeployError> {
     let Some(install_path) = get_install_path(&deploy_path) else {
         return Err(HotDeployError::InvalidInstallPath);
     };
-    match fs::rename(&deploy_path, &install_path) {
+    let install_path = match fs::copy(&deploy_path, &install_path) {
         Ok(_) => {
-            debug!("Moved plugin from {} to {}", deploy_path.display(), install_path.display());
+            debug!("Copied plugin from {} to {}", deploy_path.display(), &install_path.display());
             Ok(install_path)
         }
         Err(e) => {
-            error!("Failed to moved plugin from {} to {}: {:?}", deploy_path.display(), install_path.display(), e);
+            error!(
+                "Failed to deploy plugin: Failed to copy plugin from {} to {}: {:?}",
+                deploy_path.display(),
+                install_path.display(),
+                e
+            );
+            Err(HotDeployError::MoveError)
+        }
+    }?;
+    match fs::remove_file(&deploy_path) {
+        Ok(_) => {
+            debug!("Removed plugin from {}", deploy_path.display());
+            Ok(install_path)
+        }
+        Err(e) => {
+            error!("Failed to deploy plugin: Failed to remove plugin from {}: {:?}", deploy_path.display(), e);
             Err(HotDeployError::MoveError)
         }
     }
