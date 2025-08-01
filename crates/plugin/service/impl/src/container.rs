@@ -83,7 +83,7 @@ impl PluginContainer {
         }
     }
 
-    /// Moves the file from the deploy directory to the installed directory
+    /// Moves the file from the folder `deploy` to the folder `installed`
     pub fn deploy_dll(&mut self) -> PluginTransitionResult {
         if self.state != PluginState::Refreshing(PluginRefreshingState::Deploying) {
             return NoChange;
@@ -99,15 +99,32 @@ impl PluginContainer {
         let Some(install_path) = get_install_path(&self.path) else {
             return NoChange;
         };
-        match fs::rename(&deploy_path, &install_path) {
+        match fs::copy(&deploy_path, &install_path) {
             Ok(_) => {
-                self.path = install_path.clone();
-                self.state = PluginState::Refreshing(PluginRefreshingState::Installed);
-                debug!("Plugin {} successfully deployed from {} to {}", self.id, deploy_path.display(), install_path.display());
-                Changed
+                trace!("Copied plugin from {} to {}", deploy_path.display(), &install_path.display());
+                match fs::remove_file(&deploy_path) {
+                    Ok(_) => {
+                        trace!("Removed plugin from {}", deploy_path.display());
+                        self.path = install_path.clone();
+                        self.state = PluginState::Refreshing(PluginRefreshingState::Installed);
+                        debug!("Plugin {} successfully deployed from {} to {}", self.id, deploy_path.display(), install_path.display());
+                        Changed
+                    }
+                    Err(e) => {
+                        error!("Failed to deploy plugin {}: Failed to remove plugin from {}: {:?}", self.id, deploy_path.display(), e);
+                        self.state = PluginState::Uninstalled;
+                        Changed
+                    }
+                }
             }
             Err(e) => {
-                error!("Failed to deploy plugin {} from {} to {}: {}", self.id, deploy_path.display(), install_path.display(), e);
+                error!(
+                    "Failed to deploy plugin {}: Failed to copy plugin from {} to {}: {:?}",
+                    self.id,
+                    deploy_path.display(),
+                    install_path.display(),
+                    e
+                );
                 self.state = PluginState::Uninstalled;
                 Changed
             }
