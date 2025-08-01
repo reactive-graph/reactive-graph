@@ -19,8 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.10.0-alpha-5] - 2025-08-01
 
-> [!NOTE]
-> Improves plugin support in docker containers
+### Summary / Highlights
+
+Improves plugin support in docker containers
 
 ### Added
 
@@ -47,6 +48,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The standard library plugins are now provided via [GitHub Releases](https://github.com/reactive-graph/std/releases/tag/nightly)
 
 ## [0.10.0-alpha-4] - 2025-07-28
+
+### Summary / Highlights
+
+Improved **schema support** for the type-system, with JSON Schemas for every type – both in the generic GraphQL API and in the Dynamic Graph.
+
+**GraphQL schemas and JSON schemas are published on:**
+[schema.reactive-graph.io](https://schema.reactive-graph.io/)
 
 ### Added
 
@@ -100,6 +108,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.10.0-alpha-3] - 2025-04-13
 
+### Summary / Highlights
+
+Migrated to Rust Edition 2024
+
 ### Added
 
 - Interfaces: Provide JSON schemas of the type system and instance system via GraphQL API
@@ -135,6 +147,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.10.0-alpha-2] - 2024-10-27
 
+### Summary / Highlights
+
+Provisioning instances
+
 ### Added
 
 - CLI: Provisioning config files `reactive-graph instances init`
@@ -160,6 +176,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.10.0-alpha-1] - 2024-10-20
 
+### Summary / Highlights
+
+Self updater, shell completions and building for more targets in CI
+
 ### Added
 
 - CLI: Print or install shell completions (bash, fish, zsh, powershell) and man pages
@@ -181,6 +201,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI: Automatic labeling
 
 ## [0.10.0-alpha-0] - 2024-03-24
+
+### Summary / Highlights
 
 This is a highly technical release with a lot of major refactorings and design changes.
 
