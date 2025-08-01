@@ -57,6 +57,7 @@ This document contains the help content for the `reactive-graph` command-line pr
 * [`reactive-graph components get`↴](#reactive-graph-components-get)
 * [`reactive-graph components list-properties`↴](#reactive-graph-components-list-properties)
 * [`reactive-graph components list-extensions`↴](#reactive-graph-components-list-extensions)
+* [`reactive-graph components get-json-schema`↴](#reactive-graph-components-get-json-schema)
 * [`reactive-graph components create`↴](#reactive-graph-components-create)
 * [`reactive-graph components delete`↴](#reactive-graph-components-delete)
 * [`reactive-graph components add-property`↴](#reactive-graph-components-add-property)
@@ -71,6 +72,7 @@ This document contains the help content for the `reactive-graph` command-line pr
 * [`reactive-graph entity-types list-properties`↴](#reactive-graph-entity-types-list-properties)
 * [`reactive-graph entity-types list-extensions`↴](#reactive-graph-entity-types-list-extensions)
 * [`reactive-graph entity-types list-components`↴](#reactive-graph-entity-types-list-components)
+* [`reactive-graph entity-types get-json-schema`↴](#reactive-graph-entity-types-get-json-schema)
 * [`reactive-graph entity-types create`↴](#reactive-graph-entity-types-create)
 * [`reactive-graph entity-types delete`↴](#reactive-graph-entity-types-delete)
 * [`reactive-graph entity-types add-property`↴](#reactive-graph-entity-types-add-property)
@@ -87,6 +89,7 @@ This document contains the help content for the `reactive-graph` command-line pr
 * [`reactive-graph relation-types list-properties`↴](#reactive-graph-relation-types-list-properties)
 * [`reactive-graph relation-types list-extensions`↴](#reactive-graph-relation-types-list-extensions)
 * [`reactive-graph relation-types list-components`↴](#reactive-graph-relation-types-list-components)
+* [`reactive-graph relation-types get-json-schema`↴](#reactive-graph-relation-types-get-json-schema)
 * [`reactive-graph relation-types create`↴](#reactive-graph-relation-types-create)
 * [`reactive-graph relation-types delete`↴](#reactive-graph-relation-types-delete)
 * [`reactive-graph relation-types add-property`↴](#reactive-graph-relation-types-add-property)
@@ -102,6 +105,7 @@ This document contains the help content for the `reactive-graph` command-line pr
 * [`reactive-graph flow-types get`↴](#reactive-graph-flow-types-get)
 * [`reactive-graph flow-types list-variables`↴](#reactive-graph-flow-types-list-variables)
 * [`reactive-graph flow-types list-extensions`↴](#reactive-graph-flow-types-list-extensions)
+* [`reactive-graph flow-types get-json-schema`↴](#reactive-graph-flow-types-get-json-schema)
 * [`reactive-graph flow-types create`↴](#reactive-graph-flow-types-create)
 * [`reactive-graph flow-types delete`↴](#reactive-graph-flow-types-delete)
 * [`reactive-graph flow-types add-variable`↴](#reactive-graph-flow-types-add-variable)
@@ -174,7 +178,7 @@ This document contains the help content for the `reactive-graph` command-line pr
 
 Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software.
 
-**Usage:** `reactive-graph [OPTIONS] [COMMAND]`
+**Usage:** `reactive-graph [OPTIONS] [DANGER_ACCEPT_INVALID_HOSTNAMES] [COMMAND]`
 
 ###### **Subcommands:**
 
@@ -201,6 +205,17 @@ Reactive Graph is a reactive runtime based on a graph database, empowering every
 * `instances` — Manage instances
 * `update` — Update the Reactive Graph binary
 
+###### **Arguments:**
+
+* `<DANGER_ACCEPT_INVALID_HOSTNAMES>` — Controls the use of hostname verification.
+
+   Defaults to `false`.
+
+   Warning: You should think very carefully before you use this method. If hostname verification is not used, any valid certificate for any site will be trusted for use from any other. This introduces a significant vulnerability to man-in-the-middle attacks.
+
+  Possible values: `true`, `false`
+
+
 ###### **Options:**
 
 * `--logging-config <LOGGING_CONFIG>` — The logging config location
@@ -217,8 +232,7 @@ Reactive Graph is a reactive runtime based on a graph database, empowering every
 
 * `--ssl-certificate-path <SSL_CERTIFICATE_PATH>` — The location of the certificate
 * `--ssl-private-key-path <SSL_PRIVATE_KEY_PATH>` — The location of the private key
-* `--shutdown-timeout <SHUTDOWN_TIMEOUT>` — Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to
-  finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds
+* `--shutdown-timeout <SHUTDOWN_TIMEOUT>` — Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds
 * `-w`, `--workers <WORKERS>` — The number of workers to start. The default worker count is the number of physical CPU cores available
 * `-c`, `--default-context-path <DEFAULT_CONTEXT_PATH>` — The default context path which redirects the root context to a web resource provider
 * `-x`, `--disable-all-plugins <DISABLE_ALL_PLUGINS>` — If true, all plugins will be disabled
@@ -252,7 +266,17 @@ Reactive Graph is a reactive runtime based on a graph database, empowering every
 * `--endpoint-runtime <ENDPOINT_RUNTIME>` — The endpoint to use
 * `--endpoint-plugins <ENDPOINT_PLUGINS>` — The endpoint to use
 * `--bearer <BEARER>` — The authentication token
+* `--danger-accept-invalid-certs <DANGER_ACCEPT_INVALID_CERTS>` — Controls the use of certificate validation.
+
+   Defaults to `false`.
+
+   Warning: You should think very carefully before using this method. If invalid certificates are trusted, *any* certificate for *any* site will be trusted for use. This includes expired certificates. This introduces significant vulnerabilities, and should only be used as a last resort.
+
+  Possible values: `true`, `false`
+
 * `-i`, `--interactive` — Enter the interactive client mode
+
+
 
 ## `reactive-graph shell-completions`
 
@@ -264,6 +288,8 @@ Prints or installs Shell completions
 
 * `print` — Prints the shell completions to stdout
 * `install` — Installs the shell completions
+
+
 
 ## `reactive-graph shell-completions print`
 
@@ -277,6 +303,9 @@ Prints the shell completions to stdout
 
   Possible values: `bash`, `elvish`, `fish`, `powershell`, `zsh`
 
+
+
+
 ## `reactive-graph shell-completions install`
 
 Installs the shell completions
@@ -289,6 +318,9 @@ Installs the shell completions
 
   Possible values: `bash`, `elvish`, `fish`, `powershell`, `zsh`
 
+
+
+
 ## `reactive-graph man-pages`
 
 Prints or installs man pages
@@ -300,11 +332,15 @@ Prints or installs man pages
 * `print` — Prints the man pages to stdout
 * `install` — Installs the man pages
 
+
+
 ## `reactive-graph man-pages print`
 
 Prints the man pages to stdout
 
 **Usage:** `reactive-graph man-pages print`
+
+
 
 ## `reactive-graph man-pages install`
 
@@ -312,11 +348,15 @@ Installs the man pages
 
 **Usage:** `reactive-graph man-pages install`
 
+
+
 ## `reactive-graph print-markdown-help`
 
 Prints the markdown help to stdout
 
 **Usage:** `reactive-graph print-markdown-help`
+
+
 
 ## `reactive-graph info`
 
@@ -329,6 +369,9 @@ Prints info about this binary
 * `--output-format <OUTPUT_FORMAT>` — The output format
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
+
+
+
 
 ## `reactive-graph daemon`
 
@@ -346,6 +389,8 @@ Runs the server as daemon
 * `--daemon-user <DAEMON_USER>` — If set will drop privileges to the specified user. Note: Both must be given: user and group
 * `--daemon-group <DAEMON_GROUP>` — If set will drop privileges to the specified group. Note: Both must be given: user and group
 
+
+
 ## `reactive-graph graphql-schema`
 
 Prints the GraphQL schema and exits
@@ -359,11 +404,15 @@ Prints the GraphQL schema and exits
 * `reactive-graph-plugin-schema` — Prints the GraphQL schema of the plugin system of the reactive graph
 * `reactive-graph-runtime-schema` — Prints the GraphQL schema of the runtime of the reactive graph
 
+
+
 ## `reactive-graph graphql-schema reactive-graph-schema`
 
 Prints the GraphQL schema of the reactive graph
 
 **Usage:** `reactive-graph graphql-schema reactive-graph-schema`
+
+
 
 ## `reactive-graph graphql-schema dynamic-graph-schema`
 
@@ -371,17 +420,23 @@ Prints the GraphQL schema of the dynamic graph
 
 **Usage:** `reactive-graph graphql-schema dynamic-graph-schema`
 
+
+
 ## `reactive-graph graphql-schema reactive-graph-plugin-schema`
 
 Prints the GraphQL schema of the plugin system of the reactive graph
 
 **Usage:** `reactive-graph graphql-schema reactive-graph-plugin-schema`
 
+
+
 ## `reactive-graph graphql-schema reactive-graph-runtime-schema`
 
 Prints the GraphQL schema of the runtime of the reactive graph
 
 **Usage:** `reactive-graph graphql-schema reactive-graph-runtime-schema`
+
+
 
 ## `reactive-graph json-schema`
 
@@ -393,6 +448,8 @@ Prints the JSON schema and exits
 
 * `types` — Prints the JSON schema of the type system
 * `instances` — Prints the JSON schema of the instance system
+
+
 
 ## `reactive-graph json-schema types`
 
@@ -407,11 +464,15 @@ Prints the JSON schema of the type system
 * `relations` — Prints the JSON schema of the relation types
 * `flows` — Prints the JSON schema of the flow types
 
+
+
 ## `reactive-graph json-schema types components`
 
 Prints the JSON schema of the component types
 
 **Usage:** `reactive-graph json-schema types components`
+
+
 
 ## `reactive-graph json-schema types entities`
 
@@ -419,17 +480,23 @@ Prints the JSON schema of the entity types
 
 **Usage:** `reactive-graph json-schema types entities`
 
+
+
 ## `reactive-graph json-schema types relations`
 
 Prints the JSON schema of the relation types
 
 **Usage:** `reactive-graph json-schema types relations`
 
+
+
 ## `reactive-graph json-schema types flows`
 
 Prints the JSON schema of the flow types
 
 **Usage:** `reactive-graph json-schema types flows`
+
+
 
 ## `reactive-graph json-schema instances`
 
@@ -443,11 +510,15 @@ Prints the JSON schema of the instance system
 * `relations` — Prints the JSON schema of the relation instances
 * `flows` — Prints the JSON schema of the flow instances
 
+
+
 ## `reactive-graph json-schema instances entities`
 
 Prints the JSON schema of the entity instances
 
 **Usage:** `reactive-graph json-schema instances entities`
+
+
 
 ## `reactive-graph json-schema instances relations`
 
@@ -455,11 +526,15 @@ Prints the JSON schema of the relation instances
 
 **Usage:** `reactive-graph json-schema instances relations`
 
+
+
 ## `reactive-graph json-schema instances flows`
 
 Prints the JSON schema of the flow instances
 
 **Usage:** `reactive-graph json-schema instances flows`
+
+
 
 ## `reactive-graph execute-command`
 
@@ -472,6 +547,8 @@ Executes a command on the client
 * `<COMMAND_NAME>` — The command name
 * `<COMMAND_ARGUMENTS>` — The command arguments
 
+
+
 ## `reactive-graph instance-info`
 
 Prints information about the instance
@@ -482,11 +559,15 @@ Prints information about the instance
 
 * `get` — Get instance information
 
+
+
 ## `reactive-graph instance-info get`
 
 Get instance information
 
 **Usage:** `reactive-graph instance-info get`
+
+
 
 ## `reactive-graph plugins`
 
@@ -506,11 +587,15 @@ Manage plugins
 * `restart` — Restarts a plugin
 * `uninstall` — Uninstall a plugin
 
+
+
 ## `reactive-graph plugins list`
 
 Lists all plugins
 
 **Usage:** `reactive-graph plugins list`
+
+
 
 ## `reactive-graph plugins search`
 
@@ -524,6 +609,8 @@ Search for plugins by name, state or stem
 * `--state <STATE>` — The plugin state
 * `--stem <STEM>` — The plugin file stem
 
+
+
 ## `reactive-graph plugins get`
 
 Prints a single plugin
@@ -533,6 +620,8 @@ Prints a single plugin
 ###### **Arguments:**
 
 * `<NAME>` — The plugin name
+
+
 
 ## `reactive-graph plugins dependencies`
 
@@ -544,6 +633,8 @@ Depends on
 
 * `<NAME>` — The plugin name
 
+
+
 ## `reactive-graph plugins dependents`
 
 Dependent plugins
@@ -553,6 +644,8 @@ Dependent plugins
 ###### **Arguments:**
 
 * `<NAME>` — The plugin name
+
+
 
 ## `reactive-graph plugins start`
 
@@ -564,6 +657,8 @@ Starts a plugin
 
 * `<NAME>` — The plugin name
 
+
+
 ## `reactive-graph plugins stop`
 
 Stops a plugin
@@ -573,6 +668,8 @@ Stops a plugin
 ###### **Arguments:**
 
 * `<NAME>` — The plugin name
+
+
 
 ## `reactive-graph plugins restart`
 
@@ -584,6 +681,8 @@ Restarts a plugin
 
 * `<NAME>` — The plugin name
 
+
+
 ## `reactive-graph plugins uninstall`
 
 Uninstall a plugin
@@ -593,6 +692,8 @@ Uninstall a plugin
 ###### **Arguments:**
 
 * `<NAME>` — The plugin name
+
+
 
 ## `reactive-graph remotes`
 
@@ -611,11 +712,15 @@ Manage remotes
 * `fetch-remotes-from-remote` — Fetches the remotes from the given remote
 * `fetch-remotes-from-all-remotes` — Fetches all remotes from all remotes
 
+
+
 ## `reactive-graph remotes list`
 
 Lists the remotes
 
 **Usage:** `reactive-graph remotes list`
+
+
 
 ## `reactive-graph remotes add`
 
@@ -631,6 +736,9 @@ Adds a remote
 
   Possible values: `true`, `false`
 
+
+
+
 ## `reactive-graph remotes remove`
 
 Removes a remote
@@ -645,11 +753,16 @@ Removes a remote
 
   Possible values: `true`, `false`
 
+
+
+
 ## `reactive-graph remotes remove-all`
 
 Removes all remotes
 
 **Usage:** `reactive-graph remotes remove-all`
+
+
 
 ## `reactive-graph remotes update`
 
@@ -665,11 +778,16 @@ Updates a remote
 
   Possible values: `true`, `false`
 
+
+
+
 ## `reactive-graph remotes update-all`
 
 Updates all remotes
 
 **Usage:** `reactive-graph remotes update-all`
+
+
 
 ## `reactive-graph remotes fetch-remotes-from-remote`
 
@@ -685,17 +803,24 @@ Fetches the remotes from the given remote
 
   Possible values: `true`, `false`
 
+
+
+
 ## `reactive-graph remotes fetch-remotes-from-all-remotes`
 
 Fetches all remotes from all remotes
 
 **Usage:** `reactive-graph remotes fetch-remotes-from-all-remotes`
 
+
+
 ## `reactive-graph shutdown`
 
 Shutdown the runtime
 
 **Usage:** `reactive-graph shutdown`
+
+
 
 ## `reactive-graph components`
 
@@ -709,6 +834,7 @@ Manage components
 * `get` — Prints a single component
 * `list-properties` — List the properties of a component
 * `list-extensions` — List the extensions of a component
+* `get-json-schema` — Prints the JSON Schema of a component
 * `create` — Creates a new component
 * `delete` — Deletes a component
 * `add-property` — Adds a property to a component
@@ -724,11 +850,16 @@ Manage components
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
 
+
+
+
 ## `reactive-graph components list`
 
 List all components
 
 **Usage:** `reactive-graph components list`
+
+
 
 ## `reactive-graph components get`
 
@@ -741,6 +872,8 @@ Prints a single component
 * `<NAMESPACE>` — The component namespace
 * `<NAME>` — The component name
 
+
+
 ## `reactive-graph components list-properties`
 
 List the properties of a component
@@ -752,6 +885,8 @@ List the properties of a component
 * `<NAMESPACE>` — The component namespace
 * `<NAME>` — The component name
 
+
+
 ## `reactive-graph components list-extensions`
 
 List the extensions of a component
@@ -762,6 +897,21 @@ List the extensions of a component
 
 * `<NAMESPACE>` — The component namespace
 * `<NAME>` — The component name
+
+
+
+## `reactive-graph components get-json-schema`
+
+Prints the JSON Schema of a component
+
+**Usage:** `reactive-graph components get-json-schema <NAMESPACE> <NAME>`
+
+###### **Arguments:**
+
+* `<NAMESPACE>` — The component namespace
+* `<NAME>` — The component name
+
+
 
 ## `reactive-graph components create`
 
@@ -775,6 +925,8 @@ Creates a new component
 * `<NAME>` — The component name
 * `<DESCRIPTION>` — The component description
 
+
+
 ## `reactive-graph components delete`
 
 Deletes a component
@@ -785,6 +937,8 @@ Deletes a component
 
 * `<NAMESPACE>` — The component namespace
 * `<NAME>` — The component name
+
+
 
 ## `reactive-graph components add-property`
 
@@ -802,6 +956,8 @@ Adds a property to a component
 * `<MUTABILITY>` — If the property is mutable or not
 * `<DESCRIPTION>` — Description of the property
 
+
+
 ## `reactive-graph components remove-property`
 
 Removes a property from a component
@@ -813,6 +969,8 @@ Removes a property from a component
 * `<NAMESPACE>` — The component namespace
 * `<NAME>` — The component name
 * `<PROPERTY_NAME>` — The name of the property
+
+
 
 ## `reactive-graph components add-extension`
 
@@ -829,6 +987,8 @@ Adds an extension to a component
 * `<DESCRIPTION>` — Textual description of the extension
 * `<EXTENSION>` — The extension as JSON representation
 
+
+
 ## `reactive-graph components remove-extension`
 
 Removes an extension from a component
@@ -842,6 +1002,8 @@ Removes an extension from a component
 * `<EXTENSION_NAMESPACE>` — The extension namespace
 * `<EXTENSION_NAME>` — The extension name
 
+
+
 ## `reactive-graph components update-description`
 
 Updates the description of a component
@@ -854,11 +1016,15 @@ Updates the description of a component
 * `<NAME>` — The component name
 * `<DESCRIPTION>` — The description to update
 
+
+
 ## `reactive-graph components json-schema`
 
 Prints the JSON Schema of components
 
 **Usage:** `reactive-graph components json-schema`
+
+
 
 ## `reactive-graph entity-types`
 
@@ -873,6 +1039,7 @@ Manage entity types
 * `list-properties` — List the properties of an entity type
 * `list-extensions` — List the extensions of an entity type
 * `list-components` — List the components of an entity type
+* `get-json-schema` — Prints the JSON Schema of an entity type
 * `create` — Creates a new entity type
 * `delete` — Deletes a entity type
 * `add-property` — Adds a property to an entity type
@@ -890,11 +1057,16 @@ Manage entity types
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
 
+
+
+
 ## `reactive-graph entity-types list`
 
 List all entity types
 
 **Usage:** `reactive-graph entity-types list`
+
+
 
 ## `reactive-graph entity-types get`
 
@@ -907,6 +1079,8 @@ Prints a single entity type
 * `<NAMESPACE>` — The entity type namespace
 * `<NAME>` — The entity type name
 
+
+
 ## `reactive-graph entity-types list-properties`
 
 List the properties of an entity type
@@ -917,6 +1091,8 @@ List the properties of an entity type
 
 * `<NAMESPACE>` — The entity type namespace
 * `<NAME>` — The entity type name
+
+
 
 ## `reactive-graph entity-types list-extensions`
 
@@ -929,6 +1105,8 @@ List the extensions of an entity type
 * `<NAMESPACE>` — The entity type namespace
 * `<NAME>` — The entity type name
 
+
+
 ## `reactive-graph entity-types list-components`
 
 List the components of an entity type
@@ -939,6 +1117,21 @@ List the components of an entity type
 
 * `<NAMESPACE>` — The entity type namespace
 * `<NAME>` — The entity type name
+
+
+
+## `reactive-graph entity-types get-json-schema`
+
+Prints the JSON Schema of an entity type
+
+**Usage:** `reactive-graph entity-types get-json-schema <NAMESPACE> <NAME>`
+
+###### **Arguments:**
+
+* `<NAMESPACE>` — The entity type namespace
+* `<NAME>` — The entity type name
+
+
 
 ## `reactive-graph entity-types create`
 
@@ -952,6 +1145,8 @@ Creates a new entity type
 * `<NAME>` — The entity type name
 * `<DESCRIPTION>` — The entity type description
 
+
+
 ## `reactive-graph entity-types delete`
 
 Deletes a entity type
@@ -962,6 +1157,8 @@ Deletes a entity type
 
 * `<NAMESPACE>` — The entity type namespace
 * `<NAME>` — The entity type name
+
+
 
 ## `reactive-graph entity-types add-property`
 
@@ -979,6 +1176,8 @@ Adds a property to an entity type
 * `<MUTABILITY>` — If the property is mutable or not
 * `<DESCRIPTION>` — Description of the property
 
+
+
 ## `reactive-graph entity-types remove-property`
 
 Removes a property from an entity type
@@ -990,6 +1189,8 @@ Removes a property from an entity type
 * `<NAMESPACE>` — The entity type namespace
 * `<NAME>` — The entity type name
 * `<PROPERTY_NAME>` — The name of the property
+
+
 
 ## `reactive-graph entity-types add-extension`
 
@@ -1006,6 +1207,8 @@ Adds an extension to an entity type
 * `<DESCRIPTION>` — Textual description of the extension
 * `<EXTENSION>` — The extension as JSON representation
 
+
+
 ## `reactive-graph entity-types remove-extension`
 
 Removes an extension from an entity type
@@ -1018,6 +1221,8 @@ Removes an extension from an entity type
 * `<NAME>` — The entity type name
 * `<EXTENSION_NAMESPACE>` — The extension namespace
 * `<EXTENSION_NAME>` — The extension name
+
+
 
 ## `reactive-graph entity-types add-component`
 
@@ -1032,6 +1237,8 @@ Adds a component to an entity type
 * `<COMPONENT_NAMESPACE>` — The component namespace
 * `<COMPONENT_NAME>` — The component name
 
+
+
 ## `reactive-graph entity-types remove-component`
 
 Removes a component from an entity type
@@ -1045,6 +1252,8 @@ Removes a component from an entity type
 * `<COMPONENT_NAMESPACE>` — The component namespace
 * `<COMPONENT_NAME>` — The component name
 
+
+
 ## `reactive-graph entity-types update-description`
 
 Updates the description of an entity type
@@ -1057,11 +1266,15 @@ Updates the description of an entity type
 * `<NAME>` — The entity type name
 * `<DESCRIPTION>` — The description to update
 
+
+
 ## `reactive-graph entity-types json-schema`
 
 Prints the JSON Schema of entity types
 
 **Usage:** `reactive-graph entity-types json-schema`
+
+
 
 ## `reactive-graph relation-types`
 
@@ -1076,6 +1289,7 @@ Manage entity types
 * `list-properties` — List the properties of an relation type
 * `list-extensions` — List the extensions of an relation type
 * `list-components` — List the components of an relation type
+* `get-json-schema` — Prints the JSON Schema of an relation type
 * `create` — Creates a new relation type
 * `delete` — Deletes a relation type
 * `add-property` — Adds a property to a relation type
@@ -1093,11 +1307,16 @@ Manage entity types
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
 
+
+
+
 ## `reactive-graph relation-types list`
 
 List all relation types
 
 **Usage:** `reactive-graph relation-types list`
+
+
 
 ## `reactive-graph relation-types get`
 
@@ -1110,6 +1329,8 @@ Prints a single relation type
 * `<NAMESPACE>` — The relation type namespace
 * `<NAME>` — The relation type name
 
+
+
 ## `reactive-graph relation-types list-properties`
 
 List the properties of an relation type
@@ -1120,6 +1341,8 @@ List the properties of an relation type
 
 * `<NAMESPACE>` — The relation type namespace
 * `<NAME>` — The relation type name
+
+
 
 ## `reactive-graph relation-types list-extensions`
 
@@ -1132,6 +1355,8 @@ List the extensions of an relation type
 * `<NAMESPACE>` — The relation type namespace
 * `<NAME>` — The relation type name
 
+
+
 ## `reactive-graph relation-types list-components`
 
 List the components of an relation type
@@ -1143,12 +1368,26 @@ List the components of an relation type
 * `<NAMESPACE>` — The relation type namespace
 * `<NAME>` — The relation type name
 
+
+
+## `reactive-graph relation-types get-json-schema`
+
+Prints the JSON Schema of an relation type
+
+**Usage:** `reactive-graph relation-types get-json-schema <NAMESPACE> <NAME>`
+
+###### **Arguments:**
+
+* `<NAMESPACE>` — The relation type namespace
+* `<NAME>` — The relation type name
+
+
+
 ## `reactive-graph relation-types create`
 
 Creates a new relation type
 
-**Usage:**
-`reactive-graph relation-types create <OUTBOUND_TYPE_NAMESPACE> <OUTBOUND_TYPE_NAME> <NAMESPACE> <NAME> <INBOUND_TYPE_NAMESPACE> <INBOUND_TYPE_NAME> [DESCRIPTION]`
+**Usage:** `reactive-graph relation-types create <OUTBOUND_TYPE_NAMESPACE> <OUTBOUND_TYPE_NAME> <NAMESPACE> <NAME> <INBOUND_TYPE_NAMESPACE> <INBOUND_TYPE_NAME> [DESCRIPTION]`
 
 ###### **Arguments:**
 
@@ -1160,6 +1399,8 @@ Creates a new relation type
 * `<INBOUND_TYPE_NAME>` — The inbound entity type name
 * `<DESCRIPTION>` — The relation type description
 
+
+
 ## `reactive-graph relation-types delete`
 
 Deletes a relation type
@@ -1170,6 +1411,8 @@ Deletes a relation type
 
 * `<NAMESPACE>` — The relation type namespace
 * `<NAME>` — The relation type name
+
+
 
 ## `reactive-graph relation-types add-property`
 
@@ -1187,6 +1430,8 @@ Adds a property to a relation type
 * `<MUTABILITY>` — If the property is mutable or not
 * `<DESCRIPTION>` — Description of the property
 
+
+
 ## `reactive-graph relation-types remove-property`
 
 Removes a property from a relation type
@@ -1198,6 +1443,8 @@ Removes a property from a relation type
 * `<NAMESPACE>` — The relation type namespace
 * `<NAME>` — The relation type name
 * `<PROPERTY_NAME>` — The name of the property
+
+
 
 ## `reactive-graph relation-types add-extension`
 
@@ -1214,6 +1461,8 @@ Adds an extension to a relation type
 * `<DESCRIPTION>` — Textual description of the extension
 * `<EXTENSION>` — The extension as JSON representation
 
+
+
 ## `reactive-graph relation-types remove-extension`
 
 Removes an extension from a relation type
@@ -1226,6 +1475,8 @@ Removes an extension from a relation type
 * `<NAME>` — The relation type name
 * `<EXTENSION_NAMESPACE>` — The extension namespace
 * `<EXTENSION_NAME>` — The extension name
+
+
 
 ## `reactive-graph relation-types add-component`
 
@@ -1240,6 +1491,8 @@ Adds a component to a relation type
 * `<COMPONENT_NAMESPACE>` — The component namespace
 * `<COMPONENT_NAME>` — The component name
 
+
+
 ## `reactive-graph relation-types remove-component`
 
 Removes a component from a relation type
@@ -1253,6 +1506,8 @@ Removes a component from a relation type
 * `<COMPONENT_NAMESPACE>` — The component namespace
 * `<COMPONENT_NAME>` — The component name
 
+
+
 ## `reactive-graph relation-types update-description`
 
 Updates the description of a relation type
@@ -1265,11 +1520,15 @@ Updates the description of a relation type
 * `<NAME>` — The relation type name
 * `<DESCRIPTION>` — The description to update
 
+
+
 ## `reactive-graph relation-types json-schema`
 
 Prints the JSON Schema of relation types
 
 **Usage:** `reactive-graph relation-types json-schema`
+
+
 
 ## `reactive-graph flow-types`
 
@@ -1283,6 +1542,7 @@ Manage entity types
 * `get` — Prints a single flow type
 * `list-variables` — List the variables of a flow type
 * `list-extensions` — List the extensions of a flow type
+* `get-json-schema` — Prints the JSON Schema of a flow type
 * `create` — Creates a new flow type
 * `delete` — Deletes a flow type
 * `add-variable` — Adds a property to a flow type
@@ -1300,11 +1560,16 @@ Manage entity types
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
 
+
+
+
 ## `reactive-graph flow-types list`
 
 List all flow types
 
 **Usage:** `reactive-graph flow-types list`
+
+
 
 ## `reactive-graph flow-types get`
 
@@ -1317,6 +1582,8 @@ Prints a single flow type
 * `<NAMESPACE>` — The flow type namespace
 * `<NAME>` — The flow type name
 
+
+
 ## `reactive-graph flow-types list-variables`
 
 List the variables of a flow type
@@ -1327,6 +1594,8 @@ List the variables of a flow type
 
 * `<NAMESPACE>` — The flow type namespace
 * `<NAME>` — The flow type name
+
+
 
 ## `reactive-graph flow-types list-extensions`
 
@@ -1339,12 +1608,26 @@ List the extensions of a flow type
 * `<NAMESPACE>` — The flow type namespace
 * `<NAME>` — The flow type name
 
+
+
+## `reactive-graph flow-types get-json-schema`
+
+Prints the JSON Schema of a flow type
+
+**Usage:** `reactive-graph flow-types get-json-schema <NAMESPACE> <NAME>`
+
+###### **Arguments:**
+
+* `<NAMESPACE>` — The flow type namespace
+* `<NAME>` — The flow type name
+
+
+
 ## `reactive-graph flow-types create`
 
 Creates a new flow type
 
-**Usage:**
-`reactive-graph flow-types create <NAMESPACE> <NAME> <ENTITY_TYPE_NAMESPACE> <ENTITY_TYPE_NAME> <WRAPPER_ENTITY_INSTANCE_ID> [DESCRIPTION] [WRAPPER_ENTITY_INSTANCE_DESCRIPTION]`
+**Usage:** `reactive-graph flow-types create <NAMESPACE> <NAME> <ENTITY_TYPE_NAMESPACE> <ENTITY_TYPE_NAME> <WRAPPER_ENTITY_INSTANCE_ID> [DESCRIPTION] [WRAPPER_ENTITY_INSTANCE_DESCRIPTION]`
 
 ###### **Arguments:**
 
@@ -1356,6 +1639,8 @@ Creates a new flow type
 * `<DESCRIPTION>` — The flow type description
 * `<WRAPPER_ENTITY_INSTANCE_DESCRIPTION>` — The description of the wrapper entity instance
 
+
+
 ## `reactive-graph flow-types delete`
 
 Deletes a flow type
@@ -1366,6 +1651,8 @@ Deletes a flow type
 
 * `<NAMESPACE>` — The flow type namespace
 * `<NAME>` — The flow type name
+
+
 
 ## `reactive-graph flow-types add-variable`
 
@@ -1383,6 +1670,8 @@ Adds a property to a flow type
 * `<MUTABILITY>` — If the property is mutable or not
 * `<DESCRIPTION>` — Description of the property
 
+
+
 ## `reactive-graph flow-types remove-variable`
 
 Removes a property from a flow type
@@ -1394,6 +1683,8 @@ Removes a property from a flow type
 * `<NAMESPACE>` — The flow type namespace
 * `<NAME>` — The flow type name
 * `<VARIABLE_NAME>` — The name of the variable
+
+
 
 ## `reactive-graph flow-types add-extension`
 
@@ -1410,6 +1701,8 @@ Adds an extension to a flow type
 * `<DESCRIPTION>` — Textual description of the extension
 * `<EXTENSION>` — The extension as JSON representation
 
+
+
 ## `reactive-graph flow-types remove-extension`
 
 Removes an extension from a flow type
@@ -1423,6 +1716,8 @@ Removes an extension from a flow type
 * `<EXTENSION_NAMESPACE>` — The extension namespace
 * `<EXTENSION_NAME>` — The extension name
 
+
+
 ## `reactive-graph flow-types update-description`
 
 Updates the description of a flow type
@@ -1434,6 +1729,8 @@ Updates the description of a flow type
 * `<NAMESPACE>` — The flow type namespace
 * `<NAME>` — The flow type name
 * `<DESCRIPTION>` — The description to update
+
+
 
 ## `reactive-graph flow-types add-entity-instance`
 
@@ -1454,6 +1751,8 @@ Adds a new entity instance to a flow type
 * `-d`, `--description <DESCRIPTION>` — The entity instance description
 * `-p`, `--properties <PROPERTIES>` — The entity instance properties
 
+
+
 ## `reactive-graph flow-types remove-entity-instance`
 
 Removes an entity instance to a flow type
@@ -1466,11 +1765,15 @@ Removes an entity instance to a flow type
 * `<NAME>` — The flow type name
 * `<ID>` — The entity instance to remove from the flow type
 
+
+
 ## `reactive-graph flow-types json-schema`
 
 Prints the JSON Schema of flow types
 
 **Usage:** `reactive-graph flow-types json-schema`
+
+
 
 ## `reactive-graph entity-instances`
 
@@ -1501,6 +1804,9 @@ Manage entity instances
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
 
+
+
+
 ## `reactive-graph entity-instances list`
 
 List all entity instances
@@ -1516,6 +1822,8 @@ List all entity instances
 * `-p`, `--properties <PROPERTIES>` — The properties to search for
 * `-c`, `--components <COMPONENTS>` — The components to search for
 
+
+
 ## `reactive-graph entity-instances get`
 
 Prints a single entity instance
@@ -1525,6 +1833,8 @@ Prints a single entity instance
 ###### **Arguments:**
 
 * `<ID>` — The id of the entity instance
+
+
 
 ## `reactive-graph entity-instances get-by-label`
 
@@ -1536,6 +1846,8 @@ Prints a single entity instance
 
 * `<LABEL>` — The label of the reactive instance
 
+
+
 ## `reactive-graph entity-instances list-properties`
 
 Lists the properties of an entity instance
@@ -1545,6 +1857,8 @@ Lists the properties of an entity instance
 ###### **Arguments:**
 
 * `<ID>` — The id of the entity instance
+
+
 
 ## `reactive-graph entity-instances get-property`
 
@@ -1556,6 +1870,8 @@ Prints the value of a property of an entity instance
 
 * `<ID>` — The id of the entity instance
 * `<PROPERTY_NAME>` — The name of the property
+
+
 
 ## `reactive-graph entity-instances set-property`
 
@@ -1569,7 +1885,9 @@ Sets the value of a property of an entity instance
 * `<NAME>` — The name of the property
 * `<VALUE>` — The new JSON value of the property.
 
-  'true' is boolean true, '"true"' is the string "true"
+   'true' is boolean true, '"true"' is the string "true"
+
+
 
 ## `reactive-graph entity-instances add-property`
 
@@ -1586,6 +1904,8 @@ Adds a new property to an entity instance
 * `<MUTABILITY>` — If the property is mutable or not
 * `<DESCRIPTION>` — Description of the property
 
+
+
 ## `reactive-graph entity-instances remove-property`
 
 Removes a property from an entity instance
@@ -1597,6 +1917,8 @@ Removes a property from an entity instance
 * `<ID>` — The id of the entity instance
 * `<PROPERTY_NAME>` — The name of the property
 
+
+
 ## `reactive-graph entity-instances list-components`
 
 Lists the components of an entity instance
@@ -1606,6 +1928,8 @@ Lists the components of an entity instance
 ###### **Arguments:**
 
 * `<ID>` — The id of the entity instance
+
+
 
 ## `reactive-graph entity-instances add-component`
 
@@ -1619,6 +1943,8 @@ Adds a component to an entity instance
 * `<NAMESPACE>` — The component namespace
 * `<NAME>` — The component name
 
+
+
 ## `reactive-graph entity-instances remove-component`
 
 Removes a component from an entity instance
@@ -1630,6 +1956,8 @@ Removes a component from an entity instance
 * `<ID>` — The id of the reactive instance
 * `<NAMESPACE>` — The component namespace
 * `<NAME>` — The component name
+
+
 
 ## `reactive-graph entity-instances create`
 
@@ -1648,6 +1976,8 @@ Creates a new entity type
 * `-d`, `--description <DESCRIPTION>` — The entity instance description
 * `-p`, `--properties <PROPERTIES>` — The entity instance properties
 
+
+
 ## `reactive-graph entity-instances delete`
 
 CLI argument which identifies an entity instance by its id
@@ -1658,11 +1988,15 @@ CLI argument which identifies an entity instance by its id
 
 * `<ID>` — The id of the entity instance
 
+
+
 ## `reactive-graph entity-instances json-schema`
 
 Prints the JSON Schema of entity instances
 
 **Usage:** `reactive-graph entity-instances json-schema`
+
+
 
 ## `reactive-graph relation-instances`
 
@@ -1692,6 +2026,9 @@ Manage relation instances
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
 
+
+
+
 ## `reactive-graph relation-instances list`
 
 List all relation instances
@@ -1706,6 +2043,8 @@ List all relation instances
 * `-i`, `--inbound-id <INBOUND_ID>` — The id of the inbound entity instance
 * `-p`, `--properties <PROPERTIES>` — The properties to search for
 * `-c`, `--components <COMPONENTS>` — The components to search for
+
+
 
 ## `reactive-graph relation-instances get`
 
@@ -1724,6 +2063,8 @@ Prints a single relation instance
 * `--outbound-id <OUTBOUND_ID>` — The id of the outbound entity instance
 * `-i`, `--inbound-id <INBOUND_ID>` — The id of the inbound entity instance
 
+
+
 ## `reactive-graph relation-instances list-properties`
 
 Lists the properties of a relation instance
@@ -1741,12 +2082,13 @@ Lists the properties of a relation instance
 * `--outbound-id <OUTBOUND_ID>` — The id of the outbound entity instance
 * `-i`, `--inbound-id <INBOUND_ID>` — The id of the inbound entity instance
 
+
+
 ## `reactive-graph relation-instances get-property`
 
 Prints the value of a property of a relation instance
 
-**Usage:**
-`reactive-graph relation-instances get-property --outbound-id <OUTBOUND_ID> --inbound-id <INBOUND_ID> <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME>`
+**Usage:** `reactive-graph relation-instances get-property --outbound-id <OUTBOUND_ID> --inbound-id <INBOUND_ID> <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME>`
 
 ###### **Arguments:**
 
@@ -1760,12 +2102,13 @@ Prints the value of a property of a relation instance
 * `--outbound-id <OUTBOUND_ID>` — The id of the outbound entity instance
 * `-i`, `--inbound-id <INBOUND_ID>` — The id of the inbound entity instance
 
+
+
 ## `reactive-graph relation-instances set-property`
 
 Sets the value of a property of a relation instance
 
-**Usage:**
-`reactive-graph relation-instances set-property --outbound-id <OUTBOUND_ID> --inbound-id <INBOUND_ID> <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME> <PROPERTY_VALUE>`
+**Usage:** `reactive-graph relation-instances set-property --outbound-id <OUTBOUND_ID> --inbound-id <INBOUND_ID> <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME> <PROPERTY_VALUE>`
 
 ###### **Arguments:**
 
@@ -1775,19 +2118,20 @@ Sets the value of a property of a relation instance
 * `<PROPERTY_NAME>` — The name of the property
 * `<PROPERTY_VALUE>` — The JSON value of the property.
 
-  'true' is boolean true, '"true"' is the string "true"
+   'true' is boolean true, '"true"' is the string "true"
 
 ###### **Options:**
 
 * `--outbound-id <OUTBOUND_ID>` — The id of the outbound entity instance
 * `-i`, `--inbound-id <INBOUND_ID>` — The id of the inbound entity instance
 
+
+
 ## `reactive-graph relation-instances add-property`
 
 Adds a new property to a relation instance
 
-**Usage:**
-`reactive-graph relation-instances add-property --outbound-id <OUTBOUND_ID> --inbound-id <INBOUND_ID> <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]`
+**Usage:** `reactive-graph relation-instances add-property --outbound-id <OUTBOUND_ID> --inbound-id <INBOUND_ID> <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]`
 
 ###### **Arguments:**
 
@@ -1805,12 +2149,13 @@ Adds a new property to a relation instance
 * `--outbound-id <OUTBOUND_ID>` — The id of the outbound entity instance
 * `-i`, `--inbound-id <INBOUND_ID>` — The id of the inbound entity instance
 
+
+
 ## `reactive-graph relation-instances remove-property`
 
 Removes a property from a relation instance
 
-**Usage:**
-`reactive-graph relation-instances remove-property --outbound-id <OUTBOUND_ID> --inbound-id <INBOUND_ID> <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME>`
+**Usage:** `reactive-graph relation-instances remove-property --outbound-id <OUTBOUND_ID> --inbound-id <INBOUND_ID> <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME>`
 
 ###### **Arguments:**
 
@@ -1823,6 +2168,8 @@ Removes a property from a relation instance
 
 * `--outbound-id <OUTBOUND_ID>` — The id of the outbound entity instance
 * `-i`, `--inbound-id <INBOUND_ID>` — The id of the inbound entity instance
+
+
 
 ## `reactive-graph relation-instances list-components`
 
@@ -1841,12 +2188,13 @@ Lists the components of a relation instance
 * `--outbound-id <OUTBOUND_ID>` — The id of the outbound entity instance
 * `-i`, `--inbound-id <INBOUND_ID>` — The id of the inbound entity instance
 
+
+
 ## `reactive-graph relation-instances add-component`
 
 Adds a component to a relation instance
 
-**Usage:**
-`reactive-graph relation-instances add-component --outbound-id <OUTBOUND_ID> --inbound-id <INBOUND_ID> <NAMESPACE> <NAME> <INSTANCE_ID> <COMPONENT_NAMESPACE> <COMPONENT_NAME>`
+**Usage:** `reactive-graph relation-instances add-component --outbound-id <OUTBOUND_ID> --inbound-id <INBOUND_ID> <NAMESPACE> <NAME> <INSTANCE_ID> <COMPONENT_NAMESPACE> <COMPONENT_NAME>`
 
 ###### **Arguments:**
 
@@ -1860,13 +2208,14 @@ Adds a component to a relation instance
 
 * `--outbound-id <OUTBOUND_ID>` — The id of the outbound entity instance
 * `-i`, `--inbound-id <INBOUND_ID>` — The id of the inbound entity instance
+
+
 
 ## `reactive-graph relation-instances remove-component`
 
 Removes a component from a relation instance
 
-**Usage:**
-`reactive-graph relation-instances remove-component --outbound-id <OUTBOUND_ID> --inbound-id <INBOUND_ID> <NAMESPACE> <NAME> <INSTANCE_ID> <COMPONENT_NAMESPACE> <COMPONENT_NAME>`
+**Usage:** `reactive-graph relation-instances remove-component --outbound-id <OUTBOUND_ID> --inbound-id <INBOUND_ID> <NAMESPACE> <NAME> <INSTANCE_ID> <COMPONENT_NAMESPACE> <COMPONENT_NAME>`
 
 ###### **Arguments:**
 
@@ -1880,6 +2229,8 @@ Removes a component from a relation instance
 
 * `--outbound-id <OUTBOUND_ID>` — The id of the outbound entity instance
 * `-i`, `--inbound-id <INBOUND_ID>` — The id of the inbound entity instance
+
+
 
 ## `reactive-graph relation-instances create`
 
@@ -1900,6 +2251,8 @@ Creates a new relation type
 * `-d`, `--description <DESCRIPTION>` — The relation instance description
 * `-p`, `--properties <PROPERTIES>` — The relation instance properties
 
+
+
 ## `reactive-graph relation-instances delete`
 
 CLI argument which identifies an relation instance by its id
@@ -1917,11 +2270,15 @@ CLI argument which identifies an relation instance by its id
 * `--outbound-id <OUTBOUND_ID>` — The id of the outbound entity instance
 * `-i`, `--inbound-id <INBOUND_ID>` — The id of the inbound entity instance
 
+
+
 ## `reactive-graph relation-instances json-schema`
 
 Prints the JSON Schema of relation instances
 
 **Usage:** `reactive-graph relation-instances json-schema`
+
+
 
 ## `reactive-graph flow-instances`
 
@@ -1944,6 +2301,9 @@ Manage flow instances
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
 
+
+
+
 ## `reactive-graph flow-instances list`
 
 List all flow instances
@@ -1957,6 +2317,8 @@ List all flow instances
 * `-i`, `--id <ID>` — The id of the entity instance
 * `-l`, `--label <LABEL>` — The label of the entity instance
 
+
+
 ## `reactive-graph flow-instances get`
 
 Prints a single flow instance
@@ -1967,6 +2329,8 @@ Prints a single flow instance
 
 * `<ID>` — The id of the flow instance
 
+
+
 ## `reactive-graph flow-instances get-by-label`
 
 Prints a single flow instance
@@ -1976,6 +2340,8 @@ Prints a single flow instance
 ###### **Arguments:**
 
 * `<LABEL>` — The label of the reactive instance
+
+
 
 ## `reactive-graph flow-instances create-from-type`
 
@@ -1994,6 +2360,8 @@ Creates a new flow from the given type
 * `-v`, `--variables <VARIABLES>` — The entity instance properties
 * `-p`, `--properties <PROPERTIES>` — The entity instance properties
 
+
+
 ## `reactive-graph flow-instances delete`
 
 CLI argument which identifies a flow instance by its id
@@ -2004,11 +2372,15 @@ CLI argument which identifies a flow instance by its id
 
 * `<ID>` — The id of the flow instance
 
+
+
 ## `reactive-graph flow-instances json-schema`
 
 Prints the JSON Schema of flow instances
 
 **Usage:** `reactive-graph flow-instances json-schema`
+
+
 
 ## `reactive-graph introspection`
 
@@ -2023,11 +2395,15 @@ Execute GraphQL introspection queries
 * `reactive-graph-runtime` — Get the GraphQL schema of the reactive graph runtime
 * `reactive-graph-plugins` — Get the GraphQL schema of the plugin system of reactive graph
 
+
+
 ## `reactive-graph introspection reactive-graph`
 
 Get the GraphQL schema of the reactive graph
 
 **Usage:** `reactive-graph introspection reactive-graph`
+
+
 
 ## `reactive-graph introspection dynamic-graph`
 
@@ -2035,17 +2411,23 @@ Get the GraphQL schema of the dynamic graph
 
 **Usage:** `reactive-graph introspection dynamic-graph`
 
+
+
 ## `reactive-graph introspection reactive-graph-runtime`
 
 Get the GraphQL schema of the reactive graph runtime
 
 **Usage:** `reactive-graph introspection reactive-graph-runtime`
 
+
+
 ## `reactive-graph introspection reactive-graph-plugins`
 
 Get the GraphQL schema of the plugin system of reactive graph
 
 **Usage:** `reactive-graph introspection reactive-graph-plugins`
+
+
 
 ## `reactive-graph instances`
 
@@ -2065,6 +2447,8 @@ Manage instances
 
 * `<WORKING_DIRECTORY>` — The working directory of the instance. Defaults to the current directory
 
+
+
 ## `reactive-graph instances config`
 
 Configures a local instance,
@@ -2076,6 +2460,8 @@ Configures a local instance,
 * `graphql` — Configures the GraphQL server
 * `instance` — Configures the instance
 * `plugins` — Configures the instance
+
+
 
 ## `reactive-graph instances config graphql`
 
@@ -2093,10 +2479,11 @@ Configures the GraphQL server
 
 * `--ssl-certificate-path <SSL_CERTIFICATE_PATH>` — The location of the certificate
 * `--ssl-private-key-path <SSL_PRIVATE_KEY_PATH>` — The location of the private key
-* `--shutdown-timeout <SHUTDOWN_TIMEOUT>` — Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to
-  finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds
+* `--shutdown-timeout <SHUTDOWN_TIMEOUT>` — Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds
 * `-w`, `--workers <WORKERS>` — The number of workers to start. The default worker count is the number of physical CPU cores available
 * `-c`, `--default-context-path <DEFAULT_CONTEXT_PATH>` — The default context path which redirects the root context to a web resource provider
+
+
 
 ## `reactive-graph instances config instance`
 
@@ -2108,6 +2495,8 @@ Configures the instance
 
 * `-n`, `--instance-name <NAME>` — The name of the instance
 * `-d`, `--instance-description <DESCRIPTION>` — The description of the instance
+
+
 
 ## `reactive-graph instances config plugins`
 
@@ -2130,6 +2519,8 @@ Configures the instance
 * `--hot-deploy-location <HOT_DEPLOY_LOCATION>` — The folder which is watched for hot deployment
 * `--install-location <INSTALL_LOCATION>` — The folder which plugins are installed permanently
 
+
+
 ## `reactive-graph instances generate-certificate`
 
 Generates certificate of a local instance
@@ -2141,6 +2532,8 @@ Generates certificate of a local instance
 * `<COUNTRY_NAME>` — Country name
 * `<ORGANIZATION_NAME>` — Organization name
 * `<COMMON_NAME>` — Common name
+
+
 
 ## `reactive-graph instances init`
 
@@ -2159,6 +2552,8 @@ Initialize the filesystem structure of a new local instance
 * `--uid <UID>` — The numeric user id of the owner user
 * `--gid <GID>` — The numeric group id of the owner group
 
+
+
 ## `reactive-graph instances plugins`
 
 Manage the plugins of a local instance
@@ -2170,6 +2565,8 @@ Manage the plugins of a local instance
 * `install` — Installs a plugin
 * `uninstall` — Uninstalls a plugin
 
+
+
 ## `reactive-graph instances plugins install`
 
 Installs a plugin
@@ -2179,6 +2576,8 @@ Installs a plugin
 ###### **Arguments:**
 
 * `<PLUGIN_NAME>` — The name of the plugin
+
+
 
 ## `reactive-graph instances plugins uninstall`
 
@@ -2190,6 +2589,8 @@ Uninstalls a plugin
 
 * `<PLUGIN_NAME>` — The name of the plugin
 
+
+
 ## `reactive-graph instances repository`
 
 Manage the repositories of a local instance
@@ -2200,6 +2601,8 @@ Manage the repositories of a local instance
 
 * `init` — Initializes a new local repository in a local instance
 * `remove` — Removes a local repository
+
+
 
 ## `reactive-graph instances repository init`
 
@@ -2217,6 +2620,8 @@ Initializes a new local repository in a local instance
 * `--uid <UID>` — The numeric user id of the owner user
 * `--gid <GID>` — The numeric group id of the owner group
 
+
+
 ## `reactive-graph instances repository remove`
 
 Removes a local repository
@@ -2229,6 +2634,9 @@ Removes a local repository
 * `<FORCE>` — If true, the default repository will be deleted
 
   Possible values: `true`, `false`
+
+
+
 
 ## `reactive-graph update`
 
@@ -2252,6 +2660,8 @@ Update the Reactive Graph binary
 * `-q`, `--quiet` — Hides the download progress and the output
 * `-y`, `--no-confirm` — Don't ask
 
+
+
 ## `reactive-graph update info`
 
 Shows information about the selected release
@@ -2263,6 +2673,9 @@ Shows information about the selected release
 * `--output-format <OUTPUT_FORMAT>` — The output format
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
+
+
+
 
 ## `reactive-graph update list`
 
@@ -2276,9 +2689,13 @@ Lists the releases
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
 
+
+
+
 <hr/>
 
 <small><i>
-This document was generated automatically by
-<a href="https://crates.io/crates/clap-markdown"><code>clap-markdown</code></a>.
+    This document was generated automatically by
+    <a href="https://crates.io/crates/clap-markdown"><code>clap-markdown</code></a>.
 </i></small>
+
