@@ -62,9 +62,7 @@ pub struct InstanceAddress {
     ///
     /// Defaults to `false`.
     ///
-    /// Warning
-    ///
-    /// You should think very carefully before using this method. If
+    /// Warning: You should think very carefully before using this method. If
     /// invalid certificates are trusted, *any* certificate for *any* site
     /// will be trusted for use. This includes expired certificates. This
     /// introduces significant vulnerabilities, and should only be used
@@ -76,9 +74,7 @@ pub struct InstanceAddress {
     ///
     /// Defaults to `false`.
     ///
-    /// Warning
-    ///
-    /// You should think very carefully before you use this method. If
+    /// Warning: You should think very carefully before you use this method. If
     /// hostname verification is not used, any valid certificate for any
     /// site will be trusted for use from any other. This introduces a
     /// significant vulnerability to man-in-the-middle attacks.
