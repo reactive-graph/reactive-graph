@@ -220,21 +220,21 @@ _arguments "${_arguments_options[@]}" : \
 '--version[Print version]' \
 && ret=0
 ;;
-(schema)
+(graphql-schema)
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-":: :_reactive-graph-server__schema_commands" \
-"*::: :->schema" \
+":: :_reactive-graph-server__graphql-schema_commands" \
+"*::: :->graphql-schema" \
 && ret=0
 
     case $state in
-    (schema)
+    (graphql-schema)
         words=($line[1] "${words[@]}")
         (( CURRENT += 1 ))
-        curcontext="${curcontext%:*:*}:reactive-graph-server-schema-command-$line[1]:"
+        curcontext="${curcontext%:*:*}:reactive-graph-server-graphql-schema-command-$line[1]:"
         case $line[1] in
             (reactive-graph-schema)
 _arguments "${_arguments_options[@]}" : \
@@ -270,7 +270,7 @@ _arguments "${_arguments_options[@]}" : \
 ;;
 (help)
 _arguments "${_arguments_options[@]}" : \
-":: :_reactive-graph-server__schema__help_commands" \
+":: :_reactive-graph-server__graphql-schema__help_commands" \
 "*::: :->help" \
 && ret=0
 
@@ -278,7 +278,7 @@ _arguments "${_arguments_options[@]}" : \
     (help)
         words=($line[1] "${words[@]}")
         (( CURRENT += 1 ))
-        curcontext="${curcontext%:*:*}:reactive-graph-server-schema-help-command-$line[1]:"
+        curcontext="${curcontext%:*:*}:reactive-graph-server-graphql-schema-help-command-$line[1]:"
         case $line[1] in
             (reactive-graph-schema)
 _arguments "${_arguments_options[@]}" : \
@@ -295,6 +295,270 @@ _arguments "${_arguments_options[@]}" : \
 (reactive-graph-runtime-schema)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph-server__json-schema_commands" \
+"*::: :->json-schema" \
+&& ret=0
+
+    case $state in
+    (json-schema)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-json-schema-command-$line[1]:"
+        case $line[1] in
+            (types)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph-server__json-schema__types_commands" \
+"*::: :->types" \
+&& ret=0
+
+    case $state in
+    (types)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-json-schema-types-command-$line[1]:"
+        case $line[1] in
+            (components)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(entities)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(relations)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(flows)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-server__json-schema__types__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-json-schema-types-help-command-$line[1]:"
+        case $line[1] in
+            (components)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(entities)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(relations)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(flows)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(instances)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph-server__json-schema__instances_commands" \
+"*::: :->instances" \
+&& ret=0
+
+    case $state in
+    (instances)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-json-schema-instances-command-$line[1]:"
+        case $line[1] in
+            (entities)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(relations)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(flows)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-server__json-schema__instances__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-json-schema-instances-help-command-$line[1]:"
+        case $line[1] in
+            (entities)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(relations)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(flows)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-server__json-schema__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-json-schema-help-command-$line[1]:"
+        case $line[1] in
+            (types)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-server__json-schema__help__types_commands" \
+"*::: :->types" \
+&& ret=0
+
+    case $state in
+    (types)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-json-schema-help-types-command-$line[1]:"
+        case $line[1] in
+            (components)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(entities)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(relations)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(flows)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(instances)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-server__json-schema__help__instances_commands" \
+"*::: :->instances" \
+&& ret=0
+
+    case $state in
+    (instances)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-json-schema-help-instances-command-$line[1]:"
+        case $line[1] in
+            (entities)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(relations)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(flows)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
 ;;
 (help)
 _arguments "${_arguments_options[@]}" : \
@@ -380,17 +644,17 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
-(schema)
+(graphql-schema)
 _arguments "${_arguments_options[@]}" : \
-":: :_reactive-graph-server__help__schema_commands" \
-"*::: :->schema" \
+":: :_reactive-graph-server__help__graphql-schema_commands" \
+"*::: :->graphql-schema" \
 && ret=0
 
     case $state in
-    (schema)
+    (graphql-schema)
         words=($line[1] "${words[@]}")
         (( CURRENT += 1 ))
-        curcontext="${curcontext%:*:*}:reactive-graph-server-help-schema-command-$line[1]:"
+        curcontext="${curcontext%:*:*}:reactive-graph-server-help-graphql-schema-command-$line[1]:"
         case $line[1] in
             (reactive-graph-schema)
 _arguments "${_arguments_options[@]}" : \
@@ -407,6 +671,82 @@ _arguments "${_arguments_options[@]}" : \
 (reactive-graph-runtime-schema)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-server__help__json-schema_commands" \
+"*::: :->json-schema" \
+&& ret=0
+
+    case $state in
+    (json-schema)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-help-json-schema-command-$line[1]:"
+        case $line[1] in
+            (types)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-server__help__json-schema__types_commands" \
+"*::: :->types" \
+&& ret=0
+
+    case $state in
+    (types)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-help-json-schema-types-command-$line[1]:"
+        case $line[1] in
+            (components)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(entities)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(relations)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(flows)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(instances)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-server__help__json-schema__instances_commands" \
+"*::: :->instances" \
+&& ret=0
+
+    case $state in
+    (instances)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-help-json-schema-instances-command-$line[1]:"
+        case $line[1] in
+            (entities)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(relations)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(flows)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
 ;;
         esac
     ;;
@@ -433,7 +773,8 @@ _reactive-graph-server_commands() {
 'print-markdown-help:Prints the markdown help to stdout' \
 'info:Prints info about this binary' \
 'daemon:Runs the server as daemon' \
-'schema:Prints the GraphQL schema and exits' \
+'graphql-schema:Prints the GraphQL schema and exits' \
+'json-schema:Prints the JSON schema and exits' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph-server commands' commands "$@"
@@ -443,6 +784,73 @@ _reactive-graph-server__daemon_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-server daemon commands' commands "$@"
 }
+(( $+functions[_reactive-graph-server__graphql-schema_commands] )) ||
+_reactive-graph-server__graphql-schema_commands() {
+    local commands; commands=(
+'reactive-graph-schema:Prints the GraphQL schema of the reactive graph' \
+'dynamic-graph-schema:Prints the GraphQL schema of the dynamic graph' \
+'reactive-graph-plugin-schema:Prints the GraphQL schema of the plugin system of the reactive graph' \
+'reactive-graph-runtime-schema:Prints the GraphQL schema of the runtime of the reactive graph' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server graphql-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__graphql-schema__dynamic-graph-schema_commands] )) ||
+_reactive-graph-server__graphql-schema__dynamic-graph-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server graphql-schema dynamic-graph-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__graphql-schema__help_commands] )) ||
+_reactive-graph-server__graphql-schema__help_commands() {
+    local commands; commands=(
+'reactive-graph-schema:Prints the GraphQL schema of the reactive graph' \
+'dynamic-graph-schema:Prints the GraphQL schema of the dynamic graph' \
+'reactive-graph-plugin-schema:Prints the GraphQL schema of the plugin system of the reactive graph' \
+'reactive-graph-runtime-schema:Prints the GraphQL schema of the runtime of the reactive graph' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server graphql-schema help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__graphql-schema__help__dynamic-graph-schema_commands] )) ||
+_reactive-graph-server__graphql-schema__help__dynamic-graph-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server graphql-schema help dynamic-graph-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__graphql-schema__help__help_commands] )) ||
+_reactive-graph-server__graphql-schema__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server graphql-schema help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__graphql-schema__help__reactive-graph-plugin-schema_commands] )) ||
+_reactive-graph-server__graphql-schema__help__reactive-graph-plugin-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server graphql-schema help reactive-graph-plugin-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__graphql-schema__help__reactive-graph-runtime-schema_commands] )) ||
+_reactive-graph-server__graphql-schema__help__reactive-graph-runtime-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server graphql-schema help reactive-graph-runtime-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__graphql-schema__help__reactive-graph-schema_commands] )) ||
+_reactive-graph-server__graphql-schema__help__reactive-graph-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server graphql-schema help reactive-graph-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__graphql-schema__reactive-graph-plugin-schema_commands] )) ||
+_reactive-graph-server__graphql-schema__reactive-graph-plugin-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server graphql-schema reactive-graph-plugin-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__graphql-schema__reactive-graph-runtime-schema_commands] )) ||
+_reactive-graph-server__graphql-schema__reactive-graph-runtime-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server graphql-schema reactive-graph-runtime-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__graphql-schema__reactive-graph-schema_commands] )) ||
+_reactive-graph-server__graphql-schema__reactive-graph-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server graphql-schema reactive-graph-schema commands' commands "$@"
+}
 (( $+functions[_reactive-graph-server__help_commands] )) ||
 _reactive-graph-server__help_commands() {
     local commands; commands=(
@@ -451,7 +859,8 @@ _reactive-graph-server__help_commands() {
 'print-markdown-help:Prints the markdown help to stdout' \
 'info:Prints info about this binary' \
 'daemon:Runs the server as daemon' \
-'schema:Prints the GraphQL schema and exits' \
+'graphql-schema:Prints the GraphQL schema and exits' \
+'json-schema:Prints the JSON schema and exits' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph-server help commands' commands "$@"
@@ -460,6 +869,36 @@ _reactive-graph-server__help_commands() {
 _reactive-graph-server__help__daemon_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-server help daemon commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__graphql-schema_commands] )) ||
+_reactive-graph-server__help__graphql-schema_commands() {
+    local commands; commands=(
+'reactive-graph-schema:Prints the GraphQL schema of the reactive graph' \
+'dynamic-graph-schema:Prints the GraphQL schema of the dynamic graph' \
+'reactive-graph-plugin-schema:Prints the GraphQL schema of the plugin system of the reactive graph' \
+'reactive-graph-runtime-schema:Prints the GraphQL schema of the runtime of the reactive graph' \
+    )
+    _describe -t commands 'reactive-graph-server help graphql-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__graphql-schema__dynamic-graph-schema_commands] )) ||
+_reactive-graph-server__help__graphql-schema__dynamic-graph-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help graphql-schema dynamic-graph-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__graphql-schema__reactive-graph-plugin-schema_commands] )) ||
+_reactive-graph-server__help__graphql-schema__reactive-graph-plugin-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help graphql-schema reactive-graph-plugin-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__graphql-schema__reactive-graph-runtime-schema_commands] )) ||
+_reactive-graph-server__help__graphql-schema__reactive-graph-runtime-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help graphql-schema reactive-graph-runtime-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__graphql-schema__reactive-graph-schema_commands] )) ||
+_reactive-graph-server__help__graphql-schema__reactive-graph-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help graphql-schema reactive-graph-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph-server__help__help_commands] )) ||
 _reactive-graph-server__help__help_commands() {
@@ -470,6 +909,68 @@ _reactive-graph-server__help__help_commands() {
 _reactive-graph-server__help__info_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-server help info commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__json-schema_commands] )) ||
+_reactive-graph-server__help__json-schema_commands() {
+    local commands; commands=(
+'types:Prints the JSON schema of the type system' \
+'instances:Prints the JSON schema of the instance system' \
+    )
+    _describe -t commands 'reactive-graph-server help json-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__json-schema__instances_commands] )) ||
+_reactive-graph-server__help__json-schema__instances_commands() {
+    local commands; commands=(
+'entities:Prints the JSON schema of the entity instances' \
+'relations:Prints the JSON schema of the relation instances' \
+'flows:Prints the JSON schema of the flow instances' \
+    )
+    _describe -t commands 'reactive-graph-server help json-schema instances commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__json-schema__instances__entities_commands] )) ||
+_reactive-graph-server__help__json-schema__instances__entities_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help json-schema instances entities commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__json-schema__instances__flows_commands] )) ||
+_reactive-graph-server__help__json-schema__instances__flows_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help json-schema instances flows commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__json-schema__instances__relations_commands] )) ||
+_reactive-graph-server__help__json-schema__instances__relations_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help json-schema instances relations commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__json-schema__types_commands] )) ||
+_reactive-graph-server__help__json-schema__types_commands() {
+    local commands; commands=(
+'components:Prints the JSON schema of the component types' \
+'entities:Prints the JSON schema of the entity types' \
+'relations:Prints the JSON schema of the relation types' \
+'flows:Prints the JSON schema of the flow types' \
+    )
+    _describe -t commands 'reactive-graph-server help json-schema types commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__json-schema__types__components_commands] )) ||
+_reactive-graph-server__help__json-schema__types__components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help json-schema types components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__json-schema__types__entities_commands] )) ||
+_reactive-graph-server__help__json-schema__types__entities_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help json-schema types entities commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__json-schema__types__flows_commands] )) ||
+_reactive-graph-server__help__json-schema__types__flows_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help json-schema types flows commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__json-schema__types__relations_commands] )) ||
+_reactive-graph-server__help__json-schema__types__relations_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help json-schema types relations commands' commands "$@"
 }
 (( $+functions[_reactive-graph-server__help__man-pages_commands] )) ||
 _reactive-graph-server__help__man-pages_commands() {
@@ -494,36 +995,6 @@ _reactive-graph-server__help__print-markdown-help_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-server help print-markdown-help commands' commands "$@"
 }
-(( $+functions[_reactive-graph-server__help__schema_commands] )) ||
-_reactive-graph-server__help__schema_commands() {
-    local commands; commands=(
-'reactive-graph-schema:Prints the GraphQL schema of the reactive graph' \
-'dynamic-graph-schema:Prints the GraphQL schema of the dynamic graph' \
-'reactive-graph-plugin-schema:Prints the GraphQL schema of the plugin system of the reactive graph' \
-'reactive-graph-runtime-schema:Prints the GraphQL schema of the runtime of the reactive graph' \
-    )
-    _describe -t commands 'reactive-graph-server help schema commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__help__schema__dynamic-graph-schema_commands] )) ||
-_reactive-graph-server__help__schema__dynamic-graph-schema_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph-server help schema dynamic-graph-schema commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__help__schema__reactive-graph-plugin-schema_commands] )) ||
-_reactive-graph-server__help__schema__reactive-graph-plugin-schema_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph-server help schema reactive-graph-plugin-schema commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__help__schema__reactive-graph-runtime-schema_commands] )) ||
-_reactive-graph-server__help__schema__reactive-graph-runtime-schema_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph-server help schema reactive-graph-runtime-schema commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__help__schema__reactive-graph-schema_commands] )) ||
-_reactive-graph-server__help__schema__reactive-graph-schema_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph-server help schema reactive-graph-schema commands' commands "$@"
-}
 (( $+functions[_reactive-graph-server__help__shell-completions_commands] )) ||
 _reactive-graph-server__help__shell-completions_commands() {
     local commands; commands=(
@@ -546,6 +1017,205 @@ _reactive-graph-server__help__shell-completions__print_commands() {
 _reactive-graph-server__info_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-server info commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema_commands] )) ||
+_reactive-graph-server__json-schema_commands() {
+    local commands; commands=(
+'types:Prints the JSON schema of the type system' \
+'instances:Prints the JSON schema of the instance system' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server json-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__help_commands] )) ||
+_reactive-graph-server__json-schema__help_commands() {
+    local commands; commands=(
+'types:Prints the JSON schema of the type system' \
+'instances:Prints the JSON schema of the instance system' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server json-schema help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__help__help_commands] )) ||
+_reactive-graph-server__json-schema__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__help__instances_commands] )) ||
+_reactive-graph-server__json-schema__help__instances_commands() {
+    local commands; commands=(
+'entities:Prints the JSON schema of the entity instances' \
+'relations:Prints the JSON schema of the relation instances' \
+'flows:Prints the JSON schema of the flow instances' \
+    )
+    _describe -t commands 'reactive-graph-server json-schema help instances commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__help__instances__entities_commands] )) ||
+_reactive-graph-server__json-schema__help__instances__entities_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema help instances entities commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__help__instances__flows_commands] )) ||
+_reactive-graph-server__json-schema__help__instances__flows_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema help instances flows commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__help__instances__relations_commands] )) ||
+_reactive-graph-server__json-schema__help__instances__relations_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema help instances relations commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__help__types_commands] )) ||
+_reactive-graph-server__json-schema__help__types_commands() {
+    local commands; commands=(
+'components:Prints the JSON schema of the component types' \
+'entities:Prints the JSON schema of the entity types' \
+'relations:Prints the JSON schema of the relation types' \
+'flows:Prints the JSON schema of the flow types' \
+    )
+    _describe -t commands 'reactive-graph-server json-schema help types commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__help__types__components_commands] )) ||
+_reactive-graph-server__json-schema__help__types__components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema help types components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__help__types__entities_commands] )) ||
+_reactive-graph-server__json-schema__help__types__entities_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema help types entities commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__help__types__flows_commands] )) ||
+_reactive-graph-server__json-schema__help__types__flows_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema help types flows commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__help__types__relations_commands] )) ||
+_reactive-graph-server__json-schema__help__types__relations_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema help types relations commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__instances_commands] )) ||
+_reactive-graph-server__json-schema__instances_commands() {
+    local commands; commands=(
+'entities:Prints the JSON schema of the entity instances' \
+'relations:Prints the JSON schema of the relation instances' \
+'flows:Prints the JSON schema of the flow instances' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server json-schema instances commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__instances__entities_commands] )) ||
+_reactive-graph-server__json-schema__instances__entities_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema instances entities commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__instances__flows_commands] )) ||
+_reactive-graph-server__json-schema__instances__flows_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema instances flows commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__instances__help_commands] )) ||
+_reactive-graph-server__json-schema__instances__help_commands() {
+    local commands; commands=(
+'entities:Prints the JSON schema of the entity instances' \
+'relations:Prints the JSON schema of the relation instances' \
+'flows:Prints the JSON schema of the flow instances' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server json-schema instances help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__instances__help__entities_commands] )) ||
+_reactive-graph-server__json-schema__instances__help__entities_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema instances help entities commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__instances__help__flows_commands] )) ||
+_reactive-graph-server__json-schema__instances__help__flows_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema instances help flows commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__instances__help__help_commands] )) ||
+_reactive-graph-server__json-schema__instances__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema instances help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__instances__help__relations_commands] )) ||
+_reactive-graph-server__json-schema__instances__help__relations_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema instances help relations commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__instances__relations_commands] )) ||
+_reactive-graph-server__json-schema__instances__relations_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema instances relations commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__types_commands] )) ||
+_reactive-graph-server__json-schema__types_commands() {
+    local commands; commands=(
+'components:Prints the JSON schema of the component types' \
+'entities:Prints the JSON schema of the entity types' \
+'relations:Prints the JSON schema of the relation types' \
+'flows:Prints the JSON schema of the flow types' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server json-schema types commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__types__components_commands] )) ||
+_reactive-graph-server__json-schema__types__components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema types components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__types__entities_commands] )) ||
+_reactive-graph-server__json-schema__types__entities_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema types entities commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__types__flows_commands] )) ||
+_reactive-graph-server__json-schema__types__flows_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema types flows commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__types__help_commands] )) ||
+_reactive-graph-server__json-schema__types__help_commands() {
+    local commands; commands=(
+'components:Prints the JSON schema of the component types' \
+'entities:Prints the JSON schema of the entity types' \
+'relations:Prints the JSON schema of the relation types' \
+'flows:Prints the JSON schema of the flow types' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server json-schema types help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__types__help__components_commands] )) ||
+_reactive-graph-server__json-schema__types__help__components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema types help components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__types__help__entities_commands] )) ||
+_reactive-graph-server__json-schema__types__help__entities_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema types help entities commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__types__help__flows_commands] )) ||
+_reactive-graph-server__json-schema__types__help__flows_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema types help flows commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__types__help__help_commands] )) ||
+_reactive-graph-server__json-schema__types__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema types help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__types__help__relations_commands] )) ||
+_reactive-graph-server__json-schema__types__help__relations_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema types help relations commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__json-schema__types__relations_commands] )) ||
+_reactive-graph-server__json-schema__types__relations_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server json-schema types relations commands' commands "$@"
 }
 (( $+functions[_reactive-graph-server__man-pages_commands] )) ||
 _reactive-graph-server__man-pages_commands() {
@@ -594,73 +1264,6 @@ _reactive-graph-server__man-pages__print_commands() {
 _reactive-graph-server__print-markdown-help_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-server print-markdown-help commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__schema_commands] )) ||
-_reactive-graph-server__schema_commands() {
-    local commands; commands=(
-'reactive-graph-schema:Prints the GraphQL schema of the reactive graph' \
-'dynamic-graph-schema:Prints the GraphQL schema of the dynamic graph' \
-'reactive-graph-plugin-schema:Prints the GraphQL schema of the plugin system of the reactive graph' \
-'reactive-graph-runtime-schema:Prints the GraphQL schema of the runtime of the reactive graph' \
-'help:Print this message or the help of the given subcommand(s)' \
-    )
-    _describe -t commands 'reactive-graph-server schema commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__schema__dynamic-graph-schema_commands] )) ||
-_reactive-graph-server__schema__dynamic-graph-schema_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph-server schema dynamic-graph-schema commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__schema__help_commands] )) ||
-_reactive-graph-server__schema__help_commands() {
-    local commands; commands=(
-'reactive-graph-schema:Prints the GraphQL schema of the reactive graph' \
-'dynamic-graph-schema:Prints the GraphQL schema of the dynamic graph' \
-'reactive-graph-plugin-schema:Prints the GraphQL schema of the plugin system of the reactive graph' \
-'reactive-graph-runtime-schema:Prints the GraphQL schema of the runtime of the reactive graph' \
-'help:Print this message or the help of the given subcommand(s)' \
-    )
-    _describe -t commands 'reactive-graph-server schema help commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__schema__help__dynamic-graph-schema_commands] )) ||
-_reactive-graph-server__schema__help__dynamic-graph-schema_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph-server schema help dynamic-graph-schema commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__schema__help__help_commands] )) ||
-_reactive-graph-server__schema__help__help_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph-server schema help help commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__schema__help__reactive-graph-plugin-schema_commands] )) ||
-_reactive-graph-server__schema__help__reactive-graph-plugin-schema_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph-server schema help reactive-graph-plugin-schema commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__schema__help__reactive-graph-runtime-schema_commands] )) ||
-_reactive-graph-server__schema__help__reactive-graph-runtime-schema_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph-server schema help reactive-graph-runtime-schema commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__schema__help__reactive-graph-schema_commands] )) ||
-_reactive-graph-server__schema__help__reactive-graph-schema_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph-server schema help reactive-graph-schema commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__schema__reactive-graph-plugin-schema_commands] )) ||
-_reactive-graph-server__schema__reactive-graph-plugin-schema_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph-server schema reactive-graph-plugin-schema commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__schema__reactive-graph-runtime-schema_commands] )) ||
-_reactive-graph-server__schema__reactive-graph-runtime-schema_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph-server schema reactive-graph-runtime-schema commands' commands "$@"
-}
-(( $+functions[_reactive-graph-server__schema__reactive-graph-schema_commands] )) ||
-_reactive-graph-server__schema__reactive-graph-schema_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph-server schema reactive-graph-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph-server__shell-completions_commands] )) ||
 _reactive-graph-server__shell-completions_commands() {
