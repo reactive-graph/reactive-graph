@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry --mount=type=cache,targe
 COPY . .
 RUN --mount=type=cache,target=/usr/local/cargo/registry --mount=type=cache,target=/usr/local/cargo/git --mount=type=cache,target=$SCCACHE_DIR,sharing=locked cargo build --release --bin reactive-graph
 
-FROM debian:bookworm-slim AS reactive-graph
+FROM ubuntu:24.04 AS reactive-graph
 LABEL org.opencontainers.image.title="Reactive Graph"
 LABEL org.opencontainers.image.description="Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software"
 LABEL org.opencontainers.image.vendor="Reactive Graph"
@@ -24,8 +24,9 @@ LABEL org.opencontainers.image.source="https://github.com/reactive-graph/reactiv
 LABEL org.opencontainers.image.authors="info@reactive-graph.io"
 LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.documentation="https://docs.reactive-graph.io/book/"
-RUN apt update && apt install -y zsh nano curl
-RUN addgroup --gid 1000 reactive-graph
+RUN apt update && apt install -y zsh nano curl wget ca-certificates bash-completion
+RUN userdel -r ubuntu
+RUN groupadd --gid 1000 reactive-graph
 RUN useradd -d /opt/reactive-graph -s /bin/bash -g reactive-graph -u 1000 reactive-graph
 WORKDIR /opt/reactive-graph
 RUN chown -R reactive-graph:reactive-graph .
