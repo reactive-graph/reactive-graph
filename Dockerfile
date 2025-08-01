@@ -31,6 +31,8 @@ RUN useradd -d /opt/reactive-graph -s /bin/bash -g reactive-graph -u 1000 reacti
 WORKDIR /opt/reactive-graph
 RUN chown -R reactive-graph:reactive-graph .
 COPY --from=builder --chown=reactive-graph:reactive-graph /app/target/release/reactive-graph .
+RUN ./reactive-graph shell-completions install bash
+RUN ./reactive-graph shell-completions install zsh
 USER reactive-graph
 RUN ./reactive-graph instances init --uid 1000 --gid 1000
 RUN ./reactive-graph instances config graphql --hostname "0.0.0.0" --secure true
