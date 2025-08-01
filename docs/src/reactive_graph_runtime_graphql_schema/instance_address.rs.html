@@ -43,42 +43,38 @@
 <a href=#43 id=43 data-nosnippet>43</a>    ///
 <a href=#44 id=44 data-nosnippet>44</a>    /// Defaults to `false`.
 <a href=#45 id=45 data-nosnippet>45</a>    ///
-<a href=#46 id=46 data-nosnippet>46</a>    /// Warning
-<a href=#47 id=47 data-nosnippet>47</a>    ///
-<a href=#48 id=48 data-nosnippet>48</a>    /// You should think very carefully before using this method. If
-<a href=#49 id=49 data-nosnippet>49</a>    /// invalid certificates are trusted, *any* certificate for *any* site
-<a href=#50 id=50 data-nosnippet>50</a>    /// will be trusted for use. This includes expired certificates. This
-<a href=#51 id=51 data-nosnippet>51</a>    /// introduces significant vulnerabilities, and should only be used
-<a href=#52 id=52 data-nosnippet>52</a>    /// as a last resort.
-<a href=#53 id=53 data-nosnippet>53</a>    </span>danger_accept_invalid_certs: <span class="prelude-ty">Option</span>&lt;bool&gt;,
-<a href=#54 id=54 data-nosnippet>54</a>
-<a href=#55 id=55 data-nosnippet>55</a>    <span class="doccomment">/// Controls the use of hostname verification.
+<a href=#46 id=46 data-nosnippet>46</a>    /// Warning: You should think very carefully before using this method. If
+<a href=#47 id=47 data-nosnippet>47</a>    /// invalid certificates are trusted, *any* certificate for *any* site
+<a href=#48 id=48 data-nosnippet>48</a>    /// will be trusted for use. This includes expired certificates. This
+<a href=#49 id=49 data-nosnippet>49</a>    /// introduces significant vulnerabilities, and should only be used
+<a href=#50 id=50 data-nosnippet>50</a>    /// as a last resort.
+<a href=#51 id=51 data-nosnippet>51</a>    </span>danger_accept_invalid_certs: <span class="prelude-ty">Option</span>&lt;bool&gt;,
+<a href=#52 id=52 data-nosnippet>52</a>
+<a href=#53 id=53 data-nosnippet>53</a>    <span class="doccomment">/// Controls the use of hostname verification.
+<a href=#54 id=54 data-nosnippet>54</a>    ///
+<a href=#55 id=55 data-nosnippet>55</a>    /// Defaults to `false`.
 <a href=#56 id=56 data-nosnippet>56</a>    ///
-<a href=#57 id=57 data-nosnippet>57</a>    /// Defaults to `false`.
-<a href=#58 id=58 data-nosnippet>58</a>    ///
-<a href=#59 id=59 data-nosnippet>59</a>    /// Warning
-<a href=#60 id=60 data-nosnippet>60</a>    ///
-<a href=#61 id=61 data-nosnippet>61</a>    /// You should think very carefully before you use this method. If
-<a href=#62 id=62 data-nosnippet>62</a>    /// hostname verification is not used, any valid certificate for any
-<a href=#63 id=63 data-nosnippet>63</a>    /// site will be trusted for use from any other. This introduces a
-<a href=#64 id=64 data-nosnippet>64</a>    /// significant vulnerability to man-in-the-middle attacks.
-<a href=#65 id=65 data-nosnippet>65</a>    </span>danger_accept_invalid_hostnames: <span class="prelude-ty">Option</span>&lt;bool&gt;,
-<a href=#66 id=66 data-nosnippet>66</a>}
-<a href=#67 id=67 data-nosnippet>67</a>
-<a href=#68 id=68 data-nosnippet>68</a><span class="kw">impl </span>From&lt;InstanceAddressDefinition&gt; <span class="kw">for </span>InstanceAddress {
-<a href=#69 id=69 data-nosnippet>69</a>    <span class="kw">fn </span>from(address: InstanceAddressDefinition) -&gt; <span class="self">Self </span>{
-<a href=#70 id=70 data-nosnippet>70</a>        InstanceAddress {
-<a href=#71 id=71 data-nosnippet>71</a>            hostname: address.hostname,
-<a href=#72 id=72 data-nosnippet>72</a>            port: address.port,
-<a href=#73 id=73 data-nosnippet>73</a>            secure: address.secure.unwrap_or(<span class="bool-val">false</span>),
-<a href=#74 id=74 data-nosnippet>74</a>            user_agent: address.user_agent.unwrap_or(DEFAULT_USER_AGENT.to_owned()),
-<a href=#75 id=75 data-nosnippet>75</a>            endpoint_graphql: address.endpoint_graphql.unwrap_or(DEFAULT_ENDPOINT_GRAPHQL.to_owned()),
-<a href=#76 id=76 data-nosnippet>76</a>            endpoint_dynamic_graph: address.endpoint_dynamic_graph.unwrap_or(DEFAULT_ENDPOINT_DYNAMIC_GRAPH.to_owned()),
-<a href=#77 id=77 data-nosnippet>77</a>            endpoint_runtime: address.endpoint_runtime.unwrap_or(DEFAULT_ENDPOINT_RUNTIME.to_owned()),
-<a href=#78 id=78 data-nosnippet>78</a>            endpoint_plugin: address.endpoint_plugin.unwrap_or(DEFAULT_ENDPOINT_PLUGIN.to_owned()),
-<a href=#79 id=79 data-nosnippet>79</a>            bearer: address.bearer,
-<a href=#80 id=80 data-nosnippet>80</a>            danger_accept_invalid_certs: address.danger_accept_invalid_certs,
-<a href=#81 id=81 data-nosnippet>81</a>            danger_accept_invalid_hostnames: address.danger_accept_invalid_hostnames,
-<a href=#82 id=82 data-nosnippet>82</a>        }
-<a href=#83 id=83 data-nosnippet>83</a>    }
-<a href=#84 id=84 data-nosnippet>84</a>}</code></pre></div></section></main></body></html>
+<a href=#57 id=57 data-nosnippet>57</a>    /// Warning: You should think very carefully before you use this method. If
+<a href=#58 id=58 data-nosnippet>58</a>    /// hostname verification is not used, any valid certificate for any
+<a href=#59 id=59 data-nosnippet>59</a>    /// site will be trusted for use from any other. This introduces a
+<a href=#60 id=60 data-nosnippet>60</a>    /// significant vulnerability to man-in-the-middle attacks.
+<a href=#61 id=61 data-nosnippet>61</a>    </span>danger_accept_invalid_hostnames: <span class="prelude-ty">Option</span>&lt;bool&gt;,
+<a href=#62 id=62 data-nosnippet>62</a>}
+<a href=#63 id=63 data-nosnippet>63</a>
+<a href=#64 id=64 data-nosnippet>64</a><span class="kw">impl </span>From&lt;InstanceAddressDefinition&gt; <span class="kw">for </span>InstanceAddress {
+<a href=#65 id=65 data-nosnippet>65</a>    <span class="kw">fn </span>from(address: InstanceAddressDefinition) -&gt; <span class="self">Self </span>{
+<a href=#66 id=66 data-nosnippet>66</a>        InstanceAddress {
+<a href=#67 id=67 data-nosnippet>67</a>            hostname: address.hostname,
+<a href=#68 id=68 data-nosnippet>68</a>            port: address.port,
+<a href=#69 id=69 data-nosnippet>69</a>            secure: address.secure.unwrap_or(<span class="bool-val">false</span>),
+<a href=#70 id=70 data-nosnippet>70</a>            user_agent: address.user_agent.unwrap_or(DEFAULT_USER_AGENT.to_owned()),
+<a href=#71 id=71 data-nosnippet>71</a>            endpoint_graphql: address.endpoint_graphql.unwrap_or(DEFAULT_ENDPOINT_GRAPHQL.to_owned()),
+<a href=#72 id=72 data-nosnippet>72</a>            endpoint_dynamic_graph: address.endpoint_dynamic_graph.unwrap_or(DEFAULT_ENDPOINT_DYNAMIC_GRAPH.to_owned()),
+<a href=#73 id=73 data-nosnippet>73</a>            endpoint_runtime: address.endpoint_runtime.unwrap_or(DEFAULT_ENDPOINT_RUNTIME.to_owned()),
+<a href=#74 id=74 data-nosnippet>74</a>            endpoint_plugin: address.endpoint_plugin.unwrap_or(DEFAULT_ENDPOINT_PLUGIN.to_owned()),
+<a href=#75 id=75 data-nosnippet>75</a>            bearer: address.bearer,
+<a href=#76 id=76 data-nosnippet>76</a>            danger_accept_invalid_certs: address.danger_accept_invalid_certs,
+<a href=#77 id=77 data-nosnippet>77</a>            danger_accept_invalid_hostnames: address.danger_accept_invalid_hostnames,
+<a href=#78 id=78 data-nosnippet>78</a>        }
+<a href=#79 id=79 data-nosnippet>79</a>    }
+<a href=#80 id=80 data-nosnippet>80</a>}</code></pre></div></section></main></body></html>

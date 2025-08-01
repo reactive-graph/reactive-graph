@@ -367,14 +367,29 @@
 <a href=#367 id=367 data-nosnippet>367</a>    <span class="kw">let </span><span class="prelude-val">Some</span>(install_path) = get_install_path(<span class="kw-2">&amp;</span>deploy_path) <span class="kw">else </span>{
 <a href=#368 id=368 data-nosnippet>368</a>        <span class="kw">return </span><span class="prelude-val">Err</span>(HotDeployError::InvalidInstallPath);
 <a href=#369 id=369 data-nosnippet>369</a>    };
-<a href=#370 id=370 data-nosnippet>370</a>    <span class="kw">match </span>fs::rename(<span class="kw-2">&amp;</span>deploy_path, <span class="kw-2">&amp;</span>install_path) {
+<a href=#370 id=370 data-nosnippet>370</a>    <span class="kw">let </span>install_path = <span class="kw">match </span>fs::copy(<span class="kw-2">&amp;</span>deploy_path, <span class="kw-2">&amp;</span>install_path) {
 <a href=#371 id=371 data-nosnippet>371</a>        <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
-<a href=#372 id=372 data-nosnippet>372</a>            <span class="macro">debug!</span>(<span class="string">"Moved plugin from {} to {}"</span>, deploy_path.display(), install_path.display());
+<a href=#372 id=372 data-nosnippet>372</a>            <span class="macro">debug!</span>(<span class="string">"Copied plugin from {} to {}"</span>, deploy_path.display(), <span class="kw-2">&amp;</span>install_path.display());
 <a href=#373 id=373 data-nosnippet>373</a>            <span class="prelude-val">Ok</span>(install_path)
 <a href=#374 id=374 data-nosnippet>374</a>        }
-<a href=#375 id=375 data-nosnippet>375</a>        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
-<a href=#376 id=376 data-nosnippet>376</a>            <span class="macro">error!</span>(<span class="string">"Failed to moved plugin from {} to {}"</span>, deploy_path.display(), install_path.display());
-<a href=#377 id=377 data-nosnippet>377</a>            <span class="prelude-val">Err</span>(HotDeployError::MoveError)
-<a href=#378 id=378 data-nosnippet>378</a>        }
-<a href=#379 id=379 data-nosnippet>379</a>    }
-<a href=#380 id=380 data-nosnippet>380</a>}</code></pre></div></section></main></body></html>
+<a href=#375 id=375 data-nosnippet>375</a>        <span class="prelude-val">Err</span>(e) =&gt; {
+<a href=#376 id=376 data-nosnippet>376</a>            <span class="macro">error!</span>(
+<a href=#377 id=377 data-nosnippet>377</a>                <span class="string">"Failed to deploy plugin: Failed to copy plugin from {} to {}: {:?}"</span>,
+<a href=#378 id=378 data-nosnippet>378</a>                deploy_path.display(),
+<a href=#379 id=379 data-nosnippet>379</a>                install_path.display(),
+<a href=#380 id=380 data-nosnippet>380</a>                e
+<a href=#381 id=381 data-nosnippet>381</a>            );
+<a href=#382 id=382 data-nosnippet>382</a>            <span class="prelude-val">Err</span>(HotDeployError::MoveError)
+<a href=#383 id=383 data-nosnippet>383</a>        }
+<a href=#384 id=384 data-nosnippet>384</a>    }<span class="question-mark">?</span>;
+<a href=#385 id=385 data-nosnippet>385</a>    <span class="kw">match </span>fs::remove_file(<span class="kw-2">&amp;</span>deploy_path) {
+<a href=#386 id=386 data-nosnippet>386</a>        <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
+<a href=#387 id=387 data-nosnippet>387</a>            <span class="macro">debug!</span>(<span class="string">"Removed plugin from {}"</span>, deploy_path.display());
+<a href=#388 id=388 data-nosnippet>388</a>            <span class="prelude-val">Ok</span>(install_path)
+<a href=#389 id=389 data-nosnippet>389</a>        }
+<a href=#390 id=390 data-nosnippet>390</a>        <span class="prelude-val">Err</span>(e) =&gt; {
+<a href=#391 id=391 data-nosnippet>391</a>            <span class="macro">error!</span>(<span class="string">"Failed to deploy plugin: Failed to remove plugin from {}: {:?}"</span>, deploy_path.display(), e);
+<a href=#392 id=392 data-nosnippet>392</a>            <span class="prelude-val">Err</span>(HotDeployError::MoveError)
+<a href=#393 id=393 data-nosnippet>393</a>        }
+<a href=#394 id=394 data-nosnippet>394</a>    }
+<a href=#395 id=395 data-nosnippet>395</a>}</code></pre></div></section></main></body></html>

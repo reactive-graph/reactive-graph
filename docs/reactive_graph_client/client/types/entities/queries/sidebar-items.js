@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["get_all","get_by_type","get_components"]};

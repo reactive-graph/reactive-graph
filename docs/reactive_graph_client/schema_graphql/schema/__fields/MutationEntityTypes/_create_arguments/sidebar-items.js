@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["components","description","extensions","properties","type"]};

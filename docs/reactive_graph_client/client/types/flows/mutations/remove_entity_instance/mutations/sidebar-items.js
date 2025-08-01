@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["remove_entity_instance_mutation","remove_entity_instance_with_variables"],"struct":["MutationFlowTypes","MutationTypes","RemoveEntityInstance"]};
