@@ -45,6 +45,8 @@ Reactive Graph is a reactive runtime based on a graph database, empowering every
 * `instances` — Manage instances
 * `update` — Update the Reactive Graph binary
 
+
+
 ## `reactive-graph-tooling shell-completions`
 
 Prints or installs Shell completions
@@ -55,6 +57,8 @@ Prints or installs Shell completions
 
 * `print` — Prints the shell completions to stdout
 * `install` — Installs the shell completions
+
+
 
 ## `reactive-graph-tooling shell-completions print`
 
@@ -68,6 +72,9 @@ Prints the shell completions to stdout
 
   Possible values: `bash`, `elvish`, `fish`, `powershell`, `zsh`
 
+
+
+
 ## `reactive-graph-tooling shell-completions install`
 
 Installs the shell completions
@@ -80,6 +87,9 @@ Installs the shell completions
 
   Possible values: `bash`, `elvish`, `fish`, `powershell`, `zsh`
 
+
+
+
 ## `reactive-graph-tooling man-pages`
 
 Prints or installs man pages
@@ -91,11 +101,15 @@ Prints or installs man pages
 * `print` — Prints the man pages to stdout
 * `install` — Installs the man pages
 
+
+
 ## `reactive-graph-tooling man-pages print`
 
 Prints the man pages to stdout
 
 **Usage:** `reactive-graph-tooling man-pages print`
+
+
 
 ## `reactive-graph-tooling man-pages install`
 
@@ -103,11 +117,15 @@ Installs the man pages
 
 **Usage:** `reactive-graph-tooling man-pages install`
 
+
+
 ## `reactive-graph-tooling print-markdown-help`
 
 Prints the markdown help to stdout
 
 **Usage:** `reactive-graph-tooling print-markdown-help`
+
+
 
 ## `reactive-graph-tooling info`
 
@@ -120,6 +138,9 @@ Prints info about this binary
 * `--output-format <OUTPUT_FORMAT>` — The output format
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
+
+
+
 
 ## `reactive-graph-tooling instances`
 
@@ -139,6 +160,8 @@ Manage instances
 
 * `<WORKING_DIRECTORY>` — The working directory of the instance. Defaults to the current directory
 
+
+
 ## `reactive-graph-tooling instances config`
 
 Configures a local instance,
@@ -150,6 +173,8 @@ Configures a local instance,
 * `graphql` — Configures the GraphQL server
 * `instance` — Configures the instance
 * `plugins` — Configures the instance
+
+
 
 ## `reactive-graph-tooling instances config graphql`
 
@@ -167,10 +192,11 @@ Configures the GraphQL server
 
 * `--ssl-certificate-path <SSL_CERTIFICATE_PATH>` — The location of the certificate
 * `--ssl-private-key-path <SSL_PRIVATE_KEY_PATH>` — The location of the private key
-* `--shutdown-timeout <SHUTDOWN_TIMEOUT>` — Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to
-  finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds
+* `--shutdown-timeout <SHUTDOWN_TIMEOUT>` — Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds
 * `-w`, `--workers <WORKERS>` — The number of workers to start. The default worker count is the number of physical CPU cores available
 * `-c`, `--default-context-path <DEFAULT_CONTEXT_PATH>` — The default context path which redirects the root context to a web resource provider
+
+
 
 ## `reactive-graph-tooling instances config instance`
 
@@ -182,6 +208,8 @@ Configures the instance
 
 * `-n`, `--instance-name <NAME>` — The name of the instance
 * `-d`, `--instance-description <DESCRIPTION>` — The description of the instance
+
+
 
 ## `reactive-graph-tooling instances config plugins`
 
@@ -204,6 +232,8 @@ Configures the instance
 * `--hot-deploy-location <HOT_DEPLOY_LOCATION>` — The folder which is watched for hot deployment
 * `--install-location <INSTALL_LOCATION>` — The folder which plugins are installed permanently
 
+
+
 ## `reactive-graph-tooling instances generate-certificate`
 
 Generates certificate of a local instance
@@ -215,6 +245,8 @@ Generates certificate of a local instance
 * `<COUNTRY_NAME>` — Country name
 * `<ORGANIZATION_NAME>` — Organization name
 * `<COMMON_NAME>` — Common name
+
+
 
 ## `reactive-graph-tooling instances init`
 
@@ -233,6 +265,8 @@ Initialize the filesystem structure of a new local instance
 * `--uid <UID>` — The numeric user id of the owner user
 * `--gid <GID>` — The numeric group id of the owner group
 
+
+
 ## `reactive-graph-tooling instances plugins`
 
 Manage the plugins of a local instance
@@ -244,6 +278,8 @@ Manage the plugins of a local instance
 * `install` — Installs a plugin
 * `uninstall` — Uninstalls a plugin
 
+
+
 ## `reactive-graph-tooling instances plugins install`
 
 Installs a plugin
@@ -253,6 +289,8 @@ Installs a plugin
 ###### **Arguments:**
 
 * `<PLUGIN_NAME>` — The name of the plugin
+
+
 
 ## `reactive-graph-tooling instances plugins uninstall`
 
@@ -264,6 +302,8 @@ Uninstalls a plugin
 
 * `<PLUGIN_NAME>` — The name of the plugin
 
+
+
 ## `reactive-graph-tooling instances repository`
 
 Manage the repositories of a local instance
@@ -274,6 +314,8 @@ Manage the repositories of a local instance
 
 * `init` — Initializes a new local repository in a local instance
 * `remove` — Removes a local repository
+
+
 
 ## `reactive-graph-tooling instances repository init`
 
@@ -291,6 +333,8 @@ Initializes a new local repository in a local instance
 * `--uid <UID>` — The numeric user id of the owner user
 * `--gid <GID>` — The numeric group id of the owner group
 
+
+
 ## `reactive-graph-tooling instances repository remove`
 
 Removes a local repository
@@ -303,6 +347,9 @@ Removes a local repository
 * `<FORCE>` — If true, the default repository will be deleted
 
   Possible values: `true`, `false`
+
+
+
 
 ## `reactive-graph-tooling update`
 
@@ -326,6 +373,8 @@ Update the Reactive Graph binary
 * `-q`, `--quiet` — Hides the download progress and the output
 * `-y`, `--no-confirm` — Don't ask
 
+
+
 ## `reactive-graph-tooling update info`
 
 Shows information about the selected release
@@ -337,6 +386,9 @@ Shows information about the selected release
 * `--output-format <OUTPUT_FORMAT>` — The output format
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
+
+
+
 
 ## `reactive-graph-tooling update list`
 
@@ -350,9 +402,13 @@ Lists the releases
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
 
+
+
+
 <hr/>
 
 <small><i>
-This document was generated automatically by
-<a href="https://crates.io/crates/clap-markdown"><code>clap-markdown</code></a>.
+    This document was generated automatically by
+    <a href="https://crates.io/crates/clap-markdown"><code>clap-markdown</code></a>.
 </i></small>
+

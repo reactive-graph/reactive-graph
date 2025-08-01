@@ -62,8 +62,7 @@ Reactive Graph is a reactive runtime based on a graph database, empowering every
 
 * `--ssl-certificate-path <SSL_CERTIFICATE_PATH>` — The location of the certificate
 * `--ssl-private-key-path <SSL_PRIVATE_KEY_PATH>` — The location of the private key
-* `--shutdown-timeout <SHUTDOWN_TIMEOUT>` — Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to
-  finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds
+* `--shutdown-timeout <SHUTDOWN_TIMEOUT>` — Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds
 * `-w`, `--workers <WORKERS>` — The number of workers to start. The default worker count is the number of physical CPU cores available
 * `-c`, `--default-context-path <DEFAULT_CONTEXT_PATH>` — The default context path which redirects the root context to a web resource provider
 * `-x`, `--disable-all-plugins <DISABLE_ALL_PLUGINS>` — If true, all plugins will be disabled
@@ -86,6 +85,9 @@ Reactive Graph is a reactive runtime based on a graph database, empowering every
 
   Possible values: `true`, `false`
 
+
+
+
 ## `reactive-graph-server shell-completions`
 
 Prints or installs Shell completions
@@ -96,6 +98,8 @@ Prints or installs Shell completions
 
 * `print` — Prints the shell completions to stdout
 * `install` — Installs the shell completions
+
+
 
 ## `reactive-graph-server shell-completions print`
 
@@ -109,6 +113,9 @@ Prints the shell completions to stdout
 
   Possible values: `bash`, `elvish`, `fish`, `powershell`, `zsh`
 
+
+
+
 ## `reactive-graph-server shell-completions install`
 
 Installs the shell completions
@@ -121,6 +128,9 @@ Installs the shell completions
 
   Possible values: `bash`, `elvish`, `fish`, `powershell`, `zsh`
 
+
+
+
 ## `reactive-graph-server man-pages`
 
 Prints or installs man pages
@@ -132,11 +142,15 @@ Prints or installs man pages
 * `print` — Prints the man pages to stdout
 * `install` — Installs the man pages
 
+
+
 ## `reactive-graph-server man-pages print`
 
 Prints the man pages to stdout
 
 **Usage:** `reactive-graph-server man-pages print`
+
+
 
 ## `reactive-graph-server man-pages install`
 
@@ -144,11 +158,15 @@ Installs the man pages
 
 **Usage:** `reactive-graph-server man-pages install`
 
+
+
 ## `reactive-graph-server print-markdown-help`
 
 Prints the markdown help to stdout
 
 **Usage:** `reactive-graph-server print-markdown-help`
+
+
 
 ## `reactive-graph-server info`
 
@@ -161,6 +179,9 @@ Prints info about this binary
 * `--output-format <OUTPUT_FORMAT>` — The output format
 
   Possible values: `table`, `html-table`, `markdown-table`, `count`, `json`, `json5`, `toml`
+
+
+
 
 ## `reactive-graph-server daemon`
 
@@ -178,6 +199,8 @@ Runs the server as daemon
 * `--daemon-user <DAEMON_USER>` — If set will drop privileges to the specified user. Note: Both must be given: user and group
 * `--daemon-group <DAEMON_GROUP>` — If set will drop privileges to the specified group. Note: Both must be given: user and group
 
+
+
 ## `reactive-graph-server graphql-schema`
 
 Prints the GraphQL schema and exits
@@ -191,11 +214,15 @@ Prints the GraphQL schema and exits
 * `reactive-graph-plugin-schema` — Prints the GraphQL schema of the plugin system of the reactive graph
 * `reactive-graph-runtime-schema` — Prints the GraphQL schema of the runtime of the reactive graph
 
+
+
 ## `reactive-graph-server graphql-schema reactive-graph-schema`
 
 Prints the GraphQL schema of the reactive graph
 
 **Usage:** `reactive-graph-server graphql-schema reactive-graph-schema`
+
+
 
 ## `reactive-graph-server graphql-schema dynamic-graph-schema`
 
@@ -203,17 +230,23 @@ Prints the GraphQL schema of the dynamic graph
 
 **Usage:** `reactive-graph-server graphql-schema dynamic-graph-schema`
 
+
+
 ## `reactive-graph-server graphql-schema reactive-graph-plugin-schema`
 
 Prints the GraphQL schema of the plugin system of the reactive graph
 
 **Usage:** `reactive-graph-server graphql-schema reactive-graph-plugin-schema`
 
+
+
 ## `reactive-graph-server graphql-schema reactive-graph-runtime-schema`
 
 Prints the GraphQL schema of the runtime of the reactive graph
 
 **Usage:** `reactive-graph-server graphql-schema reactive-graph-runtime-schema`
+
+
 
 ## `reactive-graph-server json-schema`
 
@@ -225,6 +258,8 @@ Prints the JSON schema and exits
 
 * `types` — Prints the JSON schema of the type system
 * `instances` — Prints the JSON schema of the instance system
+
+
 
 ## `reactive-graph-server json-schema types`
 
@@ -239,11 +274,15 @@ Prints the JSON schema of the type system
 * `relations` — Prints the JSON schema of the relation types
 * `flows` — Prints the JSON schema of the flow types
 
+
+
 ## `reactive-graph-server json-schema types components`
 
 Prints the JSON schema of the component types
 
 **Usage:** `reactive-graph-server json-schema types components`
+
+
 
 ## `reactive-graph-server json-schema types entities`
 
@@ -251,17 +290,23 @@ Prints the JSON schema of the entity types
 
 **Usage:** `reactive-graph-server json-schema types entities`
 
+
+
 ## `reactive-graph-server json-schema types relations`
 
 Prints the JSON schema of the relation types
 
 **Usage:** `reactive-graph-server json-schema types relations`
 
+
+
 ## `reactive-graph-server json-schema types flows`
 
 Prints the JSON schema of the flow types
 
 **Usage:** `reactive-graph-server json-schema types flows`
+
+
 
 ## `reactive-graph-server json-schema instances`
 
@@ -275,17 +320,23 @@ Prints the JSON schema of the instance system
 * `relations` — Prints the JSON schema of the relation instances
 * `flows` — Prints the JSON schema of the flow instances
 
+
+
 ## `reactive-graph-server json-schema instances entities`
 
 Prints the JSON schema of the entity instances
 
 **Usage:** `reactive-graph-server json-schema instances entities`
 
+
+
 ## `reactive-graph-server json-schema instances relations`
 
 Prints the JSON schema of the relation instances
 
 **Usage:** `reactive-graph-server json-schema instances relations`
+
+
 
 ## `reactive-graph-server json-schema instances flows`
 
@@ -298,6 +349,7 @@ Prints the JSON schema of the flow instances
 <hr/>
 
 <small><i>
-This document was generated automatically by
-<a href="https://crates.io/crates/clap-markdown"><code>clap-markdown</code></a>.
+    This document was generated automatically by
+    <a href="https://crates.io/crates/clap-markdown"><code>clap-markdown</code></a>.
 </i></small>
+
