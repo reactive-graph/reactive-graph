@@ -362,6 +362,7 @@
 <li><a href="#reactive-graph-client-components-get"><code>reactive-graph-client components get</code>↴</a></li>
 <li><a href="#reactive-graph-client-components-list-properties"><code>reactive-graph-client components list-properties</code>↴</a></li>
 <li><a href="#reactive-graph-client-components-list-extensions"><code>reactive-graph-client components list-extensions</code>↴</a></li>
+<li><a href="#reactive-graph-client-components-get-json-schema"><code>reactive-graph-client components get-json-schema</code>↴</a></li>
 <li><a href="#reactive-graph-client-components-create"><code>reactive-graph-client components create</code>↴</a></li>
 <li><a href="#reactive-graph-client-components-delete"><code>reactive-graph-client components delete</code>↴</a></li>
 <li><a href="#reactive-graph-client-components-add-property"><code>reactive-graph-client components add-property</code>↴</a></li>
@@ -376,6 +377,7 @@
 <li><a href="#reactive-graph-client-entity-types-list-properties"><code>reactive-graph-client entity-types list-properties</code>↴</a></li>
 <li><a href="#reactive-graph-client-entity-types-list-extensions"><code>reactive-graph-client entity-types list-extensions</code>↴</a></li>
 <li><a href="#reactive-graph-client-entity-types-list-components"><code>reactive-graph-client entity-types list-components</code>↴</a></li>
+<li><a href="#reactive-graph-client-entity-types-get-json-schema"><code>reactive-graph-client entity-types get-json-schema</code>↴</a></li>
 <li><a href="#reactive-graph-client-entity-types-create"><code>reactive-graph-client entity-types create</code>↴</a></li>
 <li><a href="#reactive-graph-client-entity-types-delete"><code>reactive-graph-client entity-types delete</code>↴</a></li>
 <li><a href="#reactive-graph-client-entity-types-add-property"><code>reactive-graph-client entity-types add-property</code>↴</a></li>
@@ -392,6 +394,7 @@
 <li><a href="#reactive-graph-client-relation-types-list-properties"><code>reactive-graph-client relation-types list-properties</code>↴</a></li>
 <li><a href="#reactive-graph-client-relation-types-list-extensions"><code>reactive-graph-client relation-types list-extensions</code>↴</a></li>
 <li><a href="#reactive-graph-client-relation-types-list-components"><code>reactive-graph-client relation-types list-components</code>↴</a></li>
+<li><a href="#reactive-graph-client-relation-types-get-json-schema"><code>reactive-graph-client relation-types get-json-schema</code>↴</a></li>
 <li><a href="#reactive-graph-client-relation-types-create"><code>reactive-graph-client relation-types create</code>↴</a></li>
 <li><a href="#reactive-graph-client-relation-types-delete"><code>reactive-graph-client relation-types delete</code>↴</a></li>
 <li><a href="#reactive-graph-client-relation-types-add-property"><code>reactive-graph-client relation-types add-property</code>↴</a></li>
@@ -407,6 +410,7 @@
 <li><a href="#reactive-graph-client-flow-types-get"><code>reactive-graph-client flow-types get</code>↴</a></li>
 <li><a href="#reactive-graph-client-flow-types-list-variables"><code>reactive-graph-client flow-types list-variables</code>↴</a></li>
 <li><a href="#reactive-graph-client-flow-types-list-extensions"><code>reactive-graph-client flow-types list-extensions</code>↴</a></li>
+<li><a href="#reactive-graph-client-flow-types-get-json-schema"><code>reactive-graph-client flow-types get-json-schema</code>↴</a></li>
 <li><a href="#reactive-graph-client-flow-types-create"><code>reactive-graph-client flow-types create</code>↴</a></li>
 <li><a href="#reactive-graph-client-flow-types-delete"><code>reactive-graph-client flow-types delete</code>↴</a></li>
 <li><a href="#reactive-graph-client-flow-types-add-variable"><code>reactive-graph-client flow-types add-variable</code>↴</a></li>
@@ -461,7 +465,7 @@
 </ul>
 <h2 id="reactive-graph-client"><a class="header" href="#reactive-graph-client"><code>reactive-graph-client</code></a></h2>
 <p>Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software.</p>
-<p><strong>Usage:</strong> <code>reactive-graph-client [OPTIONS] [COMMAND]</code></p>
+<p><strong>Usage:</strong> <code>reactive-graph-client [OPTIONS] [DANGER_ACCEPT_INVALID_HOSTNAMES] [COMMAND]</code></p>
 <h6 id="subcommands"><a class="header" href="#subcommands"><strong>Subcommands:</strong></a></h6>
 <ul>
 <li><code>shell-completions</code> — Prints or installs Shell completions</li>
@@ -481,6 +485,15 @@
 <li><code>relation-instances</code> — Manage relation instances</li>
 <li><code>flow-instances</code> — Manage flow instances</li>
 <li><code>introspection</code> — Execute GraphQL introspection queries</li>
+</ul>
+<h6 id="arguments"><a class="header" href="#arguments"><strong>Arguments:</strong></a></h6>
+<ul>
+<li>
+<p><code>&lt;DANGER_ACCEPT_INVALID_HOSTNAMES&gt;</code> — Controls the use of hostname verification.</p>
+<p>Defaults to <code>false</code>.</p>
+<p>Warning: You should think very carefully before you use this method. If hostname verification is not used, any valid certificate for any site will be trusted for use from any other. This introduces a significant vulnerability to man-in-the-middle attacks.</p>
+<p>Possible values: <code>true</code>, <code>false</code></p>
+</li>
 </ul>
 <h6 id="options"><a class="header" href="#options"><strong>Options:</strong></a></h6>
 <ul>
@@ -509,6 +522,12 @@
 <li>
 <p><code>--bearer &lt;BEARER&gt;</code> — The authentication token</p>
 </li>
+<li>
+<p><code>--danger-accept-invalid-certs &lt;DANGER_ACCEPT_INVALID_CERTS&gt;</code> — Controls the use of certificate validation.</p>
+<p>Defaults to <code>false</code>.</p>
+<p>Warning: You should think very carefully before using this method. If invalid certificates are trusted, <em>any</em> certificate for <em>any</em> site will be trusted for use. This includes expired certificates. This introduces significant vulnerabilities, and should only be used as a last resort.</p>
+<p>Possible values: <code>true</code>, <code>false</code></p>
+</li>
 </ul>
 <h2 id="reactive-graph-client-shell-completions"><a class="header" href="#reactive-graph-client-shell-completions"><code>reactive-graph-client shell-completions</code></a></h2>
 <p>Prints or installs Shell completions</p>
@@ -521,7 +540,7 @@
 <h2 id="reactive-graph-client-shell-completions-print"><a class="header" href="#reactive-graph-client-shell-completions-print"><code>reactive-graph-client shell-completions print</code></a></h2>
 <p>Prints the shell completions to stdout</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client shell-completions print &lt;SHELL&gt;</code></p>
-<h6 id="arguments"><a class="header" href="#arguments"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-1"><a class="header" href="#arguments-1"><strong>Arguments:</strong></a></h6>
 <ul>
 <li>
 <p><code>&lt;SHELL&gt;</code> — The shell</p>
@@ -531,7 +550,7 @@
 <h2 id="reactive-graph-client-shell-completions-install"><a class="header" href="#reactive-graph-client-shell-completions-install"><code>reactive-graph-client shell-completions install</code></a></h2>
 <p>Installs the shell completions</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client shell-completions install &lt;SHELL&gt;</code></p>
-<h6 id="arguments-1"><a class="header" href="#arguments-1"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-2"><a class="header" href="#arguments-2"><strong>Arguments:</strong></a></h6>
 <ul>
 <li>
 <p><code>&lt;SHELL&gt;</code> — The shell</p>
@@ -568,7 +587,7 @@
 <h2 id="reactive-graph-client-execute-command"><a class="header" href="#reactive-graph-client-execute-command"><code>reactive-graph-client execute-command</code></a></h2>
 <p>Executes a command on the client</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client execute-command &lt;COMMAND_NAME&gt; [COMMAND_ARGUMENTS]...</code></p>
-<h6 id="arguments-2"><a class="header" href="#arguments-2"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-3"><a class="header" href="#arguments-3"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;COMMAND_NAME&gt;</code> — The command name</li>
 <li><code>&lt;COMMAND_ARGUMENTS&gt;</code> — The command arguments</li>
@@ -613,49 +632,49 @@
 <h2 id="reactive-graph-client-plugins-get"><a class="header" href="#reactive-graph-client-plugins-get"><code>reactive-graph-client plugins get</code></a></h2>
 <p>Prints a single plugin</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client plugins get &lt;NAME&gt;</code></p>
-<h6 id="arguments-3"><a class="header" href="#arguments-3"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-4"><a class="header" href="#arguments-4"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAME&gt;</code> — The plugin name</li>
 </ul>
 <h2 id="reactive-graph-client-plugins-dependencies"><a class="header" href="#reactive-graph-client-plugins-dependencies"><code>reactive-graph-client plugins dependencies</code></a></h2>
 <p>Depends on</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client plugins dependencies &lt;NAME&gt;</code></p>
-<h6 id="arguments-4"><a class="header" href="#arguments-4"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-5"><a class="header" href="#arguments-5"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAME&gt;</code> — The plugin name</li>
 </ul>
 <h2 id="reactive-graph-client-plugins-dependents"><a class="header" href="#reactive-graph-client-plugins-dependents"><code>reactive-graph-client plugins dependents</code></a></h2>
 <p>Dependent plugins</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client plugins dependents &lt;NAME&gt;</code></p>
-<h6 id="arguments-5"><a class="header" href="#arguments-5"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-6"><a class="header" href="#arguments-6"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAME&gt;</code> — The plugin name</li>
 </ul>
 <h2 id="reactive-graph-client-plugins-start"><a class="header" href="#reactive-graph-client-plugins-start"><code>reactive-graph-client plugins start</code></a></h2>
 <p>Starts a plugin</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client plugins start &lt;NAME&gt;</code></p>
-<h6 id="arguments-6"><a class="header" href="#arguments-6"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-7"><a class="header" href="#arguments-7"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAME&gt;</code> — The plugin name</li>
 </ul>
 <h2 id="reactive-graph-client-plugins-stop"><a class="header" href="#reactive-graph-client-plugins-stop"><code>reactive-graph-client plugins stop</code></a></h2>
 <p>Stops a plugin</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client plugins stop &lt;NAME&gt;</code></p>
-<h6 id="arguments-7"><a class="header" href="#arguments-7"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-8"><a class="header" href="#arguments-8"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAME&gt;</code> — The plugin name</li>
 </ul>
 <h2 id="reactive-graph-client-plugins-restart"><a class="header" href="#reactive-graph-client-plugins-restart"><code>reactive-graph-client plugins restart</code></a></h2>
 <p>Restarts a plugin</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client plugins restart &lt;NAME&gt;</code></p>
-<h6 id="arguments-8"><a class="header" href="#arguments-8"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-9"><a class="header" href="#arguments-9"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAME&gt;</code> — The plugin name</li>
 </ul>
 <h2 id="reactive-graph-client-plugins-uninstall"><a class="header" href="#reactive-graph-client-plugins-uninstall"><code>reactive-graph-client plugins uninstall</code></a></h2>
 <p>Uninstall a plugin</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client plugins uninstall &lt;NAME&gt;</code></p>
-<h6 id="arguments-9"><a class="header" href="#arguments-9"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-10"><a class="header" href="#arguments-10"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAME&gt;</code> — The plugin name</li>
 </ul>
@@ -761,6 +780,7 @@
 <li><code>get</code> — Prints a single component</li>
 <li><code>list-properties</code> — List the properties of a component</li>
 <li><code>list-extensions</code> — List the extensions of a component</li>
+<li><code>get-json-schema</code> — Prints the JSON Schema of a component</li>
 <li><code>create</code> — Creates a new component</li>
 <li><code>delete</code> — Deletes a component</li>
 <li><code>add-property</code> — Adds a property to a component</li>
@@ -783,7 +803,7 @@
 <h2 id="reactive-graph-client-components-get"><a class="header" href="#reactive-graph-client-components-get"><code>reactive-graph-client components get</code></a></h2>
 <p>Prints a single component</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client components get &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-10"><a class="header" href="#arguments-10"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-11"><a class="header" href="#arguments-11"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The component namespace</li>
 <li><code>&lt;NAME&gt;</code> — The component name</li>
@@ -791,7 +811,7 @@
 <h2 id="reactive-graph-client-components-list-properties"><a class="header" href="#reactive-graph-client-components-list-properties"><code>reactive-graph-client components list-properties</code></a></h2>
 <p>List the properties of a component</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client components list-properties &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-11"><a class="header" href="#arguments-11"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-12"><a class="header" href="#arguments-12"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The component namespace</li>
 <li><code>&lt;NAME&gt;</code> — The component name</li>
@@ -799,7 +819,15 @@
 <h2 id="reactive-graph-client-components-list-extensions"><a class="header" href="#reactive-graph-client-components-list-extensions"><code>reactive-graph-client components list-extensions</code></a></h2>
 <p>List the extensions of a component</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client components list-extensions &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-12"><a class="header" href="#arguments-12"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-13"><a class="header" href="#arguments-13"><strong>Arguments:</strong></a></h6>
+<ul>
+<li><code>&lt;NAMESPACE&gt;</code> — The component namespace</li>
+<li><code>&lt;NAME&gt;</code> — The component name</li>
+</ul>
+<h2 id="reactive-graph-client-components-get-json-schema"><a class="header" href="#reactive-graph-client-components-get-json-schema"><code>reactive-graph-client components get-json-schema</code></a></h2>
+<p>Prints the JSON Schema of a component</p>
+<p><strong>Usage:</strong> <code>reactive-graph-client components get-json-schema &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
+<h6 id="arguments-14"><a class="header" href="#arguments-14"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The component namespace</li>
 <li><code>&lt;NAME&gt;</code> — The component name</li>
@@ -807,7 +835,7 @@
 <h2 id="reactive-graph-client-components-create"><a class="header" href="#reactive-graph-client-components-create"><code>reactive-graph-client components create</code></a></h2>
 <p>Creates a new component</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client components create &lt;NAMESPACE&gt; &lt;NAME&gt; [DESCRIPTION]</code></p>
-<h6 id="arguments-13"><a class="header" href="#arguments-13"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-15"><a class="header" href="#arguments-15"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The component namespace</li>
 <li><code>&lt;NAME&gt;</code> — The component name</li>
@@ -816,7 +844,7 @@
 <h2 id="reactive-graph-client-components-delete"><a class="header" href="#reactive-graph-client-components-delete"><code>reactive-graph-client components delete</code></a></h2>
 <p>Deletes a component</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client components delete &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-14"><a class="header" href="#arguments-14"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-16"><a class="header" href="#arguments-16"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The component namespace</li>
 <li><code>&lt;NAME&gt;</code> — The component name</li>
@@ -824,7 +852,7 @@
 <h2 id="reactive-graph-client-components-add-property"><a class="header" href="#reactive-graph-client-components-add-property"><code>reactive-graph-client components add-property</code></a></h2>
 <p>Adds a property to a component</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client components add-property &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;PROPERTY_NAME&gt; &lt;DATA_TYPE&gt; &lt;SOCKET_TYPE&gt; &lt;MUTABILITY&gt; [DESCRIPTION]</code></p>
-<h6 id="arguments-15"><a class="header" href="#arguments-15"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-17"><a class="header" href="#arguments-17"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The component namespace</li>
 <li><code>&lt;NAME&gt;</code> — The component name</li>
@@ -837,7 +865,7 @@
 <h2 id="reactive-graph-client-components-remove-property"><a class="header" href="#reactive-graph-client-components-remove-property"><code>reactive-graph-client components remove-property</code></a></h2>
 <p>Removes a property from a component</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client components remove-property &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;PROPERTY_NAME&gt;</code></p>
-<h6 id="arguments-16"><a class="header" href="#arguments-16"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-18"><a class="header" href="#arguments-18"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The component namespace</li>
 <li><code>&lt;NAME&gt;</code> — The component name</li>
@@ -846,7 +874,7 @@
 <h2 id="reactive-graph-client-components-add-extension"><a class="header" href="#reactive-graph-client-components-add-extension"><code>reactive-graph-client components add-extension</code></a></h2>
 <p>Adds an extension to a component</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client components add-extension &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;EXTENSION_NAMESPACE&gt; &lt;EXTENSION_NAME&gt; &lt;DESCRIPTION&gt; &lt;EXTENSION&gt;</code></p>
-<h6 id="arguments-17"><a class="header" href="#arguments-17"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-19"><a class="header" href="#arguments-19"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The component namespace</li>
 <li><code>&lt;NAME&gt;</code> — The component name</li>
@@ -858,7 +886,7 @@
 <h2 id="reactive-graph-client-components-remove-extension"><a class="header" href="#reactive-graph-client-components-remove-extension"><code>reactive-graph-client components remove-extension</code></a></h2>
 <p>Removes an extension from a component</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client components remove-extension &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;EXTENSION_NAMESPACE&gt; &lt;EXTENSION_NAME&gt;</code></p>
-<h6 id="arguments-18"><a class="header" href="#arguments-18"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-20"><a class="header" href="#arguments-20"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The component namespace</li>
 <li><code>&lt;NAME&gt;</code> — The component name</li>
@@ -868,7 +896,7 @@
 <h2 id="reactive-graph-client-components-update-description"><a class="header" href="#reactive-graph-client-components-update-description"><code>reactive-graph-client components update-description</code></a></h2>
 <p>Updates the description of a component</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client components update-description &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;DESCRIPTION&gt;</code></p>
-<h6 id="arguments-19"><a class="header" href="#arguments-19"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-21"><a class="header" href="#arguments-21"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The component namespace</li>
 <li><code>&lt;NAME&gt;</code> — The component name</li>
@@ -887,6 +915,7 @@
 <li><code>list-properties</code> — List the properties of an entity type</li>
 <li><code>list-extensions</code> — List the extensions of an entity type</li>
 <li><code>list-components</code> — List the components of an entity type</li>
+<li><code>get-json-schema</code> — Prints the JSON Schema of an entity type</li>
 <li><code>create</code> — Creates a new entity type</li>
 <li><code>delete</code> — Deletes a entity type</li>
 <li><code>add-property</code> — Adds a property to an entity type</li>
@@ -911,7 +940,7 @@
 <h2 id="reactive-graph-client-entity-types-get"><a class="header" href="#reactive-graph-client-entity-types-get"><code>reactive-graph-client entity-types get</code></a></h2>
 <p>Prints a single entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-types get &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-20"><a class="header" href="#arguments-20"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-22"><a class="header" href="#arguments-22"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -919,7 +948,7 @@
 <h2 id="reactive-graph-client-entity-types-list-properties"><a class="header" href="#reactive-graph-client-entity-types-list-properties"><code>reactive-graph-client entity-types list-properties</code></a></h2>
 <p>List the properties of an entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-types list-properties &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-21"><a class="header" href="#arguments-21"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-23"><a class="header" href="#arguments-23"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -927,7 +956,7 @@
 <h2 id="reactive-graph-client-entity-types-list-extensions"><a class="header" href="#reactive-graph-client-entity-types-list-extensions"><code>reactive-graph-client entity-types list-extensions</code></a></h2>
 <p>List the extensions of an entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-types list-extensions &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-22"><a class="header" href="#arguments-22"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-24"><a class="header" href="#arguments-24"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -935,7 +964,15 @@
 <h2 id="reactive-graph-client-entity-types-list-components"><a class="header" href="#reactive-graph-client-entity-types-list-components"><code>reactive-graph-client entity-types list-components</code></a></h2>
 <p>List the components of an entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-types list-components &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-23"><a class="header" href="#arguments-23"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-25"><a class="header" href="#arguments-25"><strong>Arguments:</strong></a></h6>
+<ul>
+<li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
+<li><code>&lt;NAME&gt;</code> — The entity type name</li>
+</ul>
+<h2 id="reactive-graph-client-entity-types-get-json-schema"><a class="header" href="#reactive-graph-client-entity-types-get-json-schema"><code>reactive-graph-client entity-types get-json-schema</code></a></h2>
+<p>Prints the JSON Schema of an entity type</p>
+<p><strong>Usage:</strong> <code>reactive-graph-client entity-types get-json-schema &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
+<h6 id="arguments-26"><a class="header" href="#arguments-26"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -943,7 +980,7 @@
 <h2 id="reactive-graph-client-entity-types-create"><a class="header" href="#reactive-graph-client-entity-types-create"><code>reactive-graph-client entity-types create</code></a></h2>
 <p>Creates a new entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-types create &lt;NAMESPACE&gt; &lt;NAME&gt; [DESCRIPTION]</code></p>
-<h6 id="arguments-24"><a class="header" href="#arguments-24"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-27"><a class="header" href="#arguments-27"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -952,7 +989,7 @@
 <h2 id="reactive-graph-client-entity-types-delete"><a class="header" href="#reactive-graph-client-entity-types-delete"><code>reactive-graph-client entity-types delete</code></a></h2>
 <p>Deletes a entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-types delete &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-25"><a class="header" href="#arguments-25"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-28"><a class="header" href="#arguments-28"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -960,7 +997,7 @@
 <h2 id="reactive-graph-client-entity-types-add-property"><a class="header" href="#reactive-graph-client-entity-types-add-property"><code>reactive-graph-client entity-types add-property</code></a></h2>
 <p>Adds a property to an entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-types add-property &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;PROPERTY_NAME&gt; &lt;DATA_TYPE&gt; &lt;SOCKET_TYPE&gt; &lt;MUTABILITY&gt; [DESCRIPTION]</code></p>
-<h6 id="arguments-26"><a class="header" href="#arguments-26"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-29"><a class="header" href="#arguments-29"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -973,7 +1010,7 @@
 <h2 id="reactive-graph-client-entity-types-remove-property"><a class="header" href="#reactive-graph-client-entity-types-remove-property"><code>reactive-graph-client entity-types remove-property</code></a></h2>
 <p>Removes a property from an entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-types remove-property &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;PROPERTY_NAME&gt;</code></p>
-<h6 id="arguments-27"><a class="header" href="#arguments-27"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-30"><a class="header" href="#arguments-30"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -982,7 +1019,7 @@
 <h2 id="reactive-graph-client-entity-types-add-extension"><a class="header" href="#reactive-graph-client-entity-types-add-extension"><code>reactive-graph-client entity-types add-extension</code></a></h2>
 <p>Adds an extension to an entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-types add-extension &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;EXTENSION_NAMESPACE&gt; &lt;EXTENSION_NAME&gt; &lt;DESCRIPTION&gt; &lt;EXTENSION&gt;</code></p>
-<h6 id="arguments-28"><a class="header" href="#arguments-28"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-31"><a class="header" href="#arguments-31"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -994,7 +1031,7 @@
 <h2 id="reactive-graph-client-entity-types-remove-extension"><a class="header" href="#reactive-graph-client-entity-types-remove-extension"><code>reactive-graph-client entity-types remove-extension</code></a></h2>
 <p>Removes an extension from an entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-types remove-extension &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;EXTENSION_NAMESPACE&gt; &lt;EXTENSION_NAME&gt;</code></p>
-<h6 id="arguments-29"><a class="header" href="#arguments-29"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-32"><a class="header" href="#arguments-32"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -1004,7 +1041,7 @@
 <h2 id="reactive-graph-client-entity-types-add-component"><a class="header" href="#reactive-graph-client-entity-types-add-component"><code>reactive-graph-client entity-types add-component</code></a></h2>
 <p>Adds a component to an entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-types add-component &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;COMPONENT_NAMESPACE&gt; &lt;COMPONENT_NAME&gt;</code></p>
-<h6 id="arguments-30"><a class="header" href="#arguments-30"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-33"><a class="header" href="#arguments-33"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -1014,7 +1051,7 @@
 <h2 id="reactive-graph-client-entity-types-remove-component"><a class="header" href="#reactive-graph-client-entity-types-remove-component"><code>reactive-graph-client entity-types remove-component</code></a></h2>
 <p>Removes a component from an entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-types remove-component &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;COMPONENT_NAMESPACE&gt; &lt;COMPONENT_NAME&gt;</code></p>
-<h6 id="arguments-31"><a class="header" href="#arguments-31"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-34"><a class="header" href="#arguments-34"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -1024,7 +1061,7 @@
 <h2 id="reactive-graph-client-entity-types-update-description"><a class="header" href="#reactive-graph-client-entity-types-update-description"><code>reactive-graph-client entity-types update-description</code></a></h2>
 <p>Updates the description of an entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-types update-description &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;DESCRIPTION&gt;</code></p>
-<h6 id="arguments-32"><a class="header" href="#arguments-32"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-35"><a class="header" href="#arguments-35"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -1043,6 +1080,7 @@
 <li><code>list-properties</code> — List the properties of an relation type</li>
 <li><code>list-extensions</code> — List the extensions of an relation type</li>
 <li><code>list-components</code> — List the components of an relation type</li>
+<li><code>get-json-schema</code> — Prints the JSON Schema of an relation type</li>
 <li><code>create</code> — Creates a new relation type</li>
 <li><code>delete</code> — Deletes a relation type</li>
 <li><code>add-property</code> — Adds a property to a relation type</li>
@@ -1067,7 +1105,7 @@
 <h2 id="reactive-graph-client-relation-types-get"><a class="header" href="#reactive-graph-client-relation-types-get"><code>reactive-graph-client relation-types get</code></a></h2>
 <p>Prints a single relation type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-types get &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-33"><a class="header" href="#arguments-33"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-36"><a class="header" href="#arguments-36"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1075,7 +1113,7 @@
 <h2 id="reactive-graph-client-relation-types-list-properties"><a class="header" href="#reactive-graph-client-relation-types-list-properties"><code>reactive-graph-client relation-types list-properties</code></a></h2>
 <p>List the properties of an relation type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-types list-properties &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-34"><a class="header" href="#arguments-34"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-37"><a class="header" href="#arguments-37"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1083,7 +1121,7 @@
 <h2 id="reactive-graph-client-relation-types-list-extensions"><a class="header" href="#reactive-graph-client-relation-types-list-extensions"><code>reactive-graph-client relation-types list-extensions</code></a></h2>
 <p>List the extensions of an relation type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-types list-extensions &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-35"><a class="header" href="#arguments-35"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-38"><a class="header" href="#arguments-38"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1091,16 +1129,23 @@
 <h2 id="reactive-graph-client-relation-types-list-components"><a class="header" href="#reactive-graph-client-relation-types-list-components"><code>reactive-graph-client relation-types list-components</code></a></h2>
 <p>List the components of an relation type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-types list-components &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-36"><a class="header" href="#arguments-36"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-39"><a class="header" href="#arguments-39"><strong>Arguments:</strong></a></h6>
+<ul>
+<li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
+<li><code>&lt;NAME&gt;</code> — The relation type name</li>
+</ul>
+<h2 id="reactive-graph-client-relation-types-get-json-schema"><a class="header" href="#reactive-graph-client-relation-types-get-json-schema"><code>reactive-graph-client relation-types get-json-schema</code></a></h2>
+<p>Prints the JSON Schema of an relation type</p>
+<p><strong>Usage:</strong> <code>reactive-graph-client relation-types get-json-schema &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
+<h6 id="arguments-40"><a class="header" href="#arguments-40"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
 </ul>
 <h2 id="reactive-graph-client-relation-types-create"><a class="header" href="#reactive-graph-client-relation-types-create"><code>reactive-graph-client relation-types create</code></a></h2>
 <p>Creates a new relation type</p>
-<p><strong>Usage:</strong>
-<code>reactive-graph-client relation-types create &lt;OUTBOUND_TYPE_NAMESPACE&gt; &lt;OUTBOUND_TYPE_NAME&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INBOUND_TYPE_NAMESPACE&gt; &lt;INBOUND_TYPE_NAME&gt; [DESCRIPTION]</code></p>
-<h6 id="arguments-37"><a class="header" href="#arguments-37"><strong>Arguments:</strong></a></h6>
+<p><strong>Usage:</strong> <code>reactive-graph-client relation-types create &lt;OUTBOUND_TYPE_NAMESPACE&gt; &lt;OUTBOUND_TYPE_NAME&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INBOUND_TYPE_NAMESPACE&gt; &lt;INBOUND_TYPE_NAME&gt; [DESCRIPTION]</code></p>
+<h6 id="arguments-41"><a class="header" href="#arguments-41"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;OUTBOUND_TYPE_NAMESPACE&gt;</code> — The outbound entity type namespace</li>
 <li><code>&lt;OUTBOUND_TYPE_NAME&gt;</code> — The outbound entity type name</li>
@@ -1113,7 +1158,7 @@
 <h2 id="reactive-graph-client-relation-types-delete"><a class="header" href="#reactive-graph-client-relation-types-delete"><code>reactive-graph-client relation-types delete</code></a></h2>
 <p>Deletes a relation type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-types delete &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-38"><a class="header" href="#arguments-38"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-42"><a class="header" href="#arguments-42"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1121,7 +1166,7 @@
 <h2 id="reactive-graph-client-relation-types-add-property"><a class="header" href="#reactive-graph-client-relation-types-add-property"><code>reactive-graph-client relation-types add-property</code></a></h2>
 <p>Adds a property to a relation type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-types add-property &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;PROPERTY_NAME&gt; &lt;DATA_TYPE&gt; &lt;SOCKET_TYPE&gt; &lt;MUTABILITY&gt; [DESCRIPTION]</code></p>
-<h6 id="arguments-39"><a class="header" href="#arguments-39"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-43"><a class="header" href="#arguments-43"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1134,7 +1179,7 @@
 <h2 id="reactive-graph-client-relation-types-remove-property"><a class="header" href="#reactive-graph-client-relation-types-remove-property"><code>reactive-graph-client relation-types remove-property</code></a></h2>
 <p>Removes a property from a relation type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-types remove-property &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;PROPERTY_NAME&gt;</code></p>
-<h6 id="arguments-40"><a class="header" href="#arguments-40"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-44"><a class="header" href="#arguments-44"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1143,7 +1188,7 @@
 <h2 id="reactive-graph-client-relation-types-add-extension"><a class="header" href="#reactive-graph-client-relation-types-add-extension"><code>reactive-graph-client relation-types add-extension</code></a></h2>
 <p>Adds an extension to a relation type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-types add-extension &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;EXTENSION_NAMESPACE&gt; &lt;EXTENSION_NAME&gt; &lt;DESCRIPTION&gt; &lt;EXTENSION&gt;</code></p>
-<h6 id="arguments-41"><a class="header" href="#arguments-41"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-45"><a class="header" href="#arguments-45"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1155,7 +1200,7 @@
 <h2 id="reactive-graph-client-relation-types-remove-extension"><a class="header" href="#reactive-graph-client-relation-types-remove-extension"><code>reactive-graph-client relation-types remove-extension</code></a></h2>
 <p>Removes an extension from a relation type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-types remove-extension &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;EXTENSION_NAMESPACE&gt; &lt;EXTENSION_NAME&gt;</code></p>
-<h6 id="arguments-42"><a class="header" href="#arguments-42"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-46"><a class="header" href="#arguments-46"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1165,7 +1210,7 @@
 <h2 id="reactive-graph-client-relation-types-add-component"><a class="header" href="#reactive-graph-client-relation-types-add-component"><code>reactive-graph-client relation-types add-component</code></a></h2>
 <p>Adds a component to a relation type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-types add-component &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;COMPONENT_NAMESPACE&gt; &lt;COMPONENT_NAME&gt;</code></p>
-<h6 id="arguments-43"><a class="header" href="#arguments-43"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-47"><a class="header" href="#arguments-47"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1175,7 +1220,7 @@
 <h2 id="reactive-graph-client-relation-types-remove-component"><a class="header" href="#reactive-graph-client-relation-types-remove-component"><code>reactive-graph-client relation-types remove-component</code></a></h2>
 <p>Removes a component from a relation type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-types remove-component &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;COMPONENT_NAMESPACE&gt; &lt;COMPONENT_NAME&gt;</code></p>
-<h6 id="arguments-44"><a class="header" href="#arguments-44"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-48"><a class="header" href="#arguments-48"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1185,7 +1230,7 @@
 <h2 id="reactive-graph-client-relation-types-update-description"><a class="header" href="#reactive-graph-client-relation-types-update-description"><code>reactive-graph-client relation-types update-description</code></a></h2>
 <p>Updates the description of a relation type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-types update-description &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;DESCRIPTION&gt;</code></p>
-<h6 id="arguments-45"><a class="header" href="#arguments-45"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-49"><a class="header" href="#arguments-49"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1203,6 +1248,7 @@
 <li><code>get</code> — Prints a single flow type</li>
 <li><code>list-variables</code> — List the variables of a flow type</li>
 <li><code>list-extensions</code> — List the extensions of a flow type</li>
+<li><code>get-json-schema</code> — Prints the JSON Schema of a flow type</li>
 <li><code>create</code> — Creates a new flow type</li>
 <li><code>delete</code> — Deletes a flow type</li>
 <li><code>add-variable</code> — Adds a property to a flow type</li>
@@ -1227,7 +1273,7 @@
 <h2 id="reactive-graph-client-flow-types-get"><a class="header" href="#reactive-graph-client-flow-types-get"><code>reactive-graph-client flow-types get</code></a></h2>
 <p>Prints a single flow type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-types get &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-46"><a class="header" href="#arguments-46"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-50"><a class="header" href="#arguments-50"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The flow type name</li>
@@ -1235,7 +1281,7 @@
 <h2 id="reactive-graph-client-flow-types-list-variables"><a class="header" href="#reactive-graph-client-flow-types-list-variables"><code>reactive-graph-client flow-types list-variables</code></a></h2>
 <p>List the variables of a flow type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-types list-variables &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-47"><a class="header" href="#arguments-47"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-51"><a class="header" href="#arguments-51"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The flow type name</li>
@@ -1243,16 +1289,23 @@
 <h2 id="reactive-graph-client-flow-types-list-extensions"><a class="header" href="#reactive-graph-client-flow-types-list-extensions"><code>reactive-graph-client flow-types list-extensions</code></a></h2>
 <p>List the extensions of a flow type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-types list-extensions &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-48"><a class="header" href="#arguments-48"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-52"><a class="header" href="#arguments-52"><strong>Arguments:</strong></a></h6>
+<ul>
+<li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
+<li><code>&lt;NAME&gt;</code> — The flow type name</li>
+</ul>
+<h2 id="reactive-graph-client-flow-types-get-json-schema"><a class="header" href="#reactive-graph-client-flow-types-get-json-schema"><code>reactive-graph-client flow-types get-json-schema</code></a></h2>
+<p>Prints the JSON Schema of a flow type</p>
+<p><strong>Usage:</strong> <code>reactive-graph-client flow-types get-json-schema &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
+<h6 id="arguments-53"><a class="header" href="#arguments-53"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The flow type name</li>
 </ul>
 <h2 id="reactive-graph-client-flow-types-create"><a class="header" href="#reactive-graph-client-flow-types-create"><code>reactive-graph-client flow-types create</code></a></h2>
 <p>Creates a new flow type</p>
-<p><strong>Usage:</strong>
-<code>reactive-graph-client flow-types create &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;ENTITY_TYPE_NAMESPACE&gt; &lt;ENTITY_TYPE_NAME&gt; &lt;WRAPPER_ENTITY_INSTANCE_ID&gt; [DESCRIPTION] [WRAPPER_ENTITY_INSTANCE_DESCRIPTION]</code></p>
-<h6 id="arguments-49"><a class="header" href="#arguments-49"><strong>Arguments:</strong></a></h6>
+<p><strong>Usage:</strong> <code>reactive-graph-client flow-types create &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;ENTITY_TYPE_NAMESPACE&gt; &lt;ENTITY_TYPE_NAME&gt; &lt;WRAPPER_ENTITY_INSTANCE_ID&gt; [DESCRIPTION] [WRAPPER_ENTITY_INSTANCE_DESCRIPTION]</code></p>
+<h6 id="arguments-54"><a class="header" href="#arguments-54"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The flow type name</li>
@@ -1265,7 +1318,7 @@
 <h2 id="reactive-graph-client-flow-types-delete"><a class="header" href="#reactive-graph-client-flow-types-delete"><code>reactive-graph-client flow-types delete</code></a></h2>
 <p>Deletes a flow type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-types delete &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-50"><a class="header" href="#arguments-50"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-55"><a class="header" href="#arguments-55"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The flow type name</li>
@@ -1273,7 +1326,7 @@
 <h2 id="reactive-graph-client-flow-types-add-variable"><a class="header" href="#reactive-graph-client-flow-types-add-variable"><code>reactive-graph-client flow-types add-variable</code></a></h2>
 <p>Adds a property to a flow type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-types add-variable &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;PROPERTY_NAME&gt; &lt;DATA_TYPE&gt; &lt;SOCKET_TYPE&gt; &lt;MUTABILITY&gt; [DESCRIPTION]</code></p>
-<h6 id="arguments-51"><a class="header" href="#arguments-51"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-56"><a class="header" href="#arguments-56"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The flow type name</li>
@@ -1286,7 +1339,7 @@
 <h2 id="reactive-graph-client-flow-types-remove-variable"><a class="header" href="#reactive-graph-client-flow-types-remove-variable"><code>reactive-graph-client flow-types remove-variable</code></a></h2>
 <p>Removes a property from a flow type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-types remove-variable &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;VARIABLE_NAME&gt;</code></p>
-<h6 id="arguments-52"><a class="header" href="#arguments-52"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-57"><a class="header" href="#arguments-57"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The flow type name</li>
@@ -1295,7 +1348,7 @@
 <h2 id="reactive-graph-client-flow-types-add-extension"><a class="header" href="#reactive-graph-client-flow-types-add-extension"><code>reactive-graph-client flow-types add-extension</code></a></h2>
 <p>Adds an extension to a flow type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-types add-extension &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;EXTENSION_NAMESPACE&gt; &lt;EXTENSION_NAME&gt; &lt;DESCRIPTION&gt; &lt;EXTENSION&gt;</code></p>
-<h6 id="arguments-53"><a class="header" href="#arguments-53"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-58"><a class="header" href="#arguments-58"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The flow type name</li>
@@ -1307,7 +1360,7 @@
 <h2 id="reactive-graph-client-flow-types-remove-extension"><a class="header" href="#reactive-graph-client-flow-types-remove-extension"><code>reactive-graph-client flow-types remove-extension</code></a></h2>
 <p>Removes an extension from a flow type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-types remove-extension &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;EXTENSION_NAMESPACE&gt; &lt;EXTENSION_NAME&gt;</code></p>
-<h6 id="arguments-54"><a class="header" href="#arguments-54"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-59"><a class="header" href="#arguments-59"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The flow type name</li>
@@ -1317,7 +1370,7 @@
 <h2 id="reactive-graph-client-flow-types-update-description"><a class="header" href="#reactive-graph-client-flow-types-update-description"><code>reactive-graph-client flow-types update-description</code></a></h2>
 <p>Updates the description of a flow type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-types update-description &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;DESCRIPTION&gt;</code></p>
-<h6 id="arguments-55"><a class="header" href="#arguments-55"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-60"><a class="header" href="#arguments-60"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The flow type name</li>
@@ -1326,7 +1379,7 @@
 <h2 id="reactive-graph-client-flow-types-add-entity-instance"><a class="header" href="#reactive-graph-client-flow-types-add-entity-instance"><code>reactive-graph-client flow-types add-entity-instance</code></a></h2>
 <p>Adds a new entity instance to a flow type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-types add-entity-instance [OPTIONS] &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;ENTITY_TYPE_NAMESPACE&gt; &lt;ENTITY_TYPE_NAME&gt;</code></p>
-<h6 id="arguments-56"><a class="header" href="#arguments-56"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-61"><a class="header" href="#arguments-61"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The flow type name</li>
@@ -1342,7 +1395,7 @@
 <h2 id="reactive-graph-client-flow-types-remove-entity-instance"><a class="header" href="#reactive-graph-client-flow-types-remove-entity-instance"><code>reactive-graph-client flow-types remove-entity-instance</code></a></h2>
 <p>Removes an entity instance to a flow type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-types remove-entity-instance &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;ID&gt;</code></p>
-<h6 id="arguments-57"><a class="header" href="#arguments-57"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-62"><a class="header" href="#arguments-62"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The flow type name</li>
@@ -1393,28 +1446,28 @@
 <h2 id="reactive-graph-client-entity-instances-get"><a class="header" href="#reactive-graph-client-entity-instances-get"><code>reactive-graph-client entity-instances get</code></a></h2>
 <p>Prints a single entity instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-instances get &lt;ID&gt;</code></p>
-<h6 id="arguments-58"><a class="header" href="#arguments-58"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-63"><a class="header" href="#arguments-63"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;ID&gt;</code> — The id of the entity instance</li>
 </ul>
 <h2 id="reactive-graph-client-entity-instances-get-by-label"><a class="header" href="#reactive-graph-client-entity-instances-get-by-label"><code>reactive-graph-client entity-instances get-by-label</code></a></h2>
 <p>Prints a single entity instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-instances get-by-label &lt;LABEL&gt;</code></p>
-<h6 id="arguments-59"><a class="header" href="#arguments-59"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-64"><a class="header" href="#arguments-64"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;LABEL&gt;</code> — The label of the reactive instance</li>
 </ul>
 <h2 id="reactive-graph-client-entity-instances-list-properties"><a class="header" href="#reactive-graph-client-entity-instances-list-properties"><code>reactive-graph-client entity-instances list-properties</code></a></h2>
 <p>Lists the properties of an entity instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-instances list-properties &lt;ID&gt;</code></p>
-<h6 id="arguments-60"><a class="header" href="#arguments-60"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-65"><a class="header" href="#arguments-65"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;ID&gt;</code> — The id of the entity instance</li>
 </ul>
 <h2 id="reactive-graph-client-entity-instances-get-property"><a class="header" href="#reactive-graph-client-entity-instances-get-property"><code>reactive-graph-client entity-instances get-property</code></a></h2>
 <p>Prints the value of a property of an entity instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-instances get-property &lt;ID&gt; &lt;PROPERTY_NAME&gt;</code></p>
-<h6 id="arguments-61"><a class="header" href="#arguments-61"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-66"><a class="header" href="#arguments-66"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;ID&gt;</code> — The id of the entity instance</li>
 <li><code>&lt;PROPERTY_NAME&gt;</code> — The name of the property</li>
@@ -1422,7 +1475,7 @@
 <h2 id="reactive-graph-client-entity-instances-set-property"><a class="header" href="#reactive-graph-client-entity-instances-set-property"><code>reactive-graph-client entity-instances set-property</code></a></h2>
 <p>Sets the value of a property of an entity instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-instances set-property &lt;ID&gt; &lt;NAME&gt; &lt;VALUE&gt;</code></p>
-<h6 id="arguments-62"><a class="header" href="#arguments-62"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-67"><a class="header" href="#arguments-67"><strong>Arguments:</strong></a></h6>
 <ul>
 <li>
 <p><code>&lt;ID&gt;</code> — The id of the reactive instance</p>
@@ -1438,7 +1491,7 @@
 <h2 id="reactive-graph-client-entity-instances-add-property"><a class="header" href="#reactive-graph-client-entity-instances-add-property"><code>reactive-graph-client entity-instances add-property</code></a></h2>
 <p>Adds a new property to an entity instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-instances add-property &lt;ID&gt; &lt;PROPERTY_NAME&gt; &lt;DATA_TYPE&gt; &lt;SOCKET_TYPE&gt; &lt;MUTABILITY&gt; [DESCRIPTION]</code></p>
-<h6 id="arguments-63"><a class="header" href="#arguments-63"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-68"><a class="header" href="#arguments-68"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;ID&gt;</code> — The id of the reactive instance</li>
 <li><code>&lt;PROPERTY_NAME&gt;</code> — The name of the property</li>
@@ -1450,7 +1503,7 @@
 <h2 id="reactive-graph-client-entity-instances-remove-property"><a class="header" href="#reactive-graph-client-entity-instances-remove-property"><code>reactive-graph-client entity-instances remove-property</code></a></h2>
 <p>Removes a property from an entity instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-instances remove-property &lt;ID&gt; &lt;PROPERTY_NAME&gt;</code></p>
-<h6 id="arguments-64"><a class="header" href="#arguments-64"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-69"><a class="header" href="#arguments-69"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;ID&gt;</code> — The id of the entity instance</li>
 <li><code>&lt;PROPERTY_NAME&gt;</code> — The name of the property</li>
@@ -1458,14 +1511,14 @@
 <h2 id="reactive-graph-client-entity-instances-list-components"><a class="header" href="#reactive-graph-client-entity-instances-list-components"><code>reactive-graph-client entity-instances list-components</code></a></h2>
 <p>Lists the components of an entity instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-instances list-components &lt;ID&gt;</code></p>
-<h6 id="arguments-65"><a class="header" href="#arguments-65"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-70"><a class="header" href="#arguments-70"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;ID&gt;</code> — The id of the entity instance</li>
 </ul>
 <h2 id="reactive-graph-client-entity-instances-add-component"><a class="header" href="#reactive-graph-client-entity-instances-add-component"><code>reactive-graph-client entity-instances add-component</code></a></h2>
 <p>Adds a component to an entity instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-instances add-component &lt;ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-66"><a class="header" href="#arguments-66"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-71"><a class="header" href="#arguments-71"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;ID&gt;</code> — The id of the reactive instance</li>
 <li><code>&lt;NAMESPACE&gt;</code> — The component namespace</li>
@@ -1474,7 +1527,7 @@
 <h2 id="reactive-graph-client-entity-instances-remove-component"><a class="header" href="#reactive-graph-client-entity-instances-remove-component"><code>reactive-graph-client entity-instances remove-component</code></a></h2>
 <p>Removes a component from an entity instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-instances remove-component &lt;ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-67"><a class="header" href="#arguments-67"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-72"><a class="header" href="#arguments-72"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;ID&gt;</code> — The id of the reactive instance</li>
 <li><code>&lt;NAMESPACE&gt;</code> — The component namespace</li>
@@ -1483,7 +1536,7 @@
 <h2 id="reactive-graph-client-entity-instances-create"><a class="header" href="#reactive-graph-client-entity-instances-create"><code>reactive-graph-client entity-instances create</code></a></h2>
 <p>Creates a new entity type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-instances create [OPTIONS] &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-68"><a class="header" href="#arguments-68"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-73"><a class="header" href="#arguments-73"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The entity type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The entity type name</li>
@@ -1497,7 +1550,7 @@
 <h2 id="reactive-graph-client-entity-instances-delete"><a class="header" href="#reactive-graph-client-entity-instances-delete"><code>reactive-graph-client entity-instances delete</code></a></h2>
 <p>CLI argument which identifies an entity instance by its id</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client entity-instances delete &lt;ID&gt;</code></p>
-<h6 id="arguments-69"><a class="header" href="#arguments-69"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-74"><a class="header" href="#arguments-74"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;ID&gt;</code> — The id of the entity instance</li>
 </ul>
@@ -1545,7 +1598,7 @@
 <h2 id="reactive-graph-client-relation-instances-get"><a class="header" href="#reactive-graph-client-relation-instances-get"><code>reactive-graph-client relation-instances get</code></a></h2>
 <p>Prints a single relation instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-instances get --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt;</code></p>
-<h6 id="arguments-70"><a class="header" href="#arguments-70"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-75"><a class="header" href="#arguments-75"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1559,7 +1612,7 @@
 <h2 id="reactive-graph-client-relation-instances-list-properties"><a class="header" href="#reactive-graph-client-relation-instances-list-properties"><code>reactive-graph-client relation-instances list-properties</code></a></h2>
 <p>Lists the properties of a relation instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-instances list-properties --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt;</code></p>
-<h6 id="arguments-71"><a class="header" href="#arguments-71"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-76"><a class="header" href="#arguments-76"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1572,9 +1625,8 @@
 </ul>
 <h2 id="reactive-graph-client-relation-instances-get-property"><a class="header" href="#reactive-graph-client-relation-instances-get-property"><code>reactive-graph-client relation-instances get-property</code></a></h2>
 <p>Prints the value of a property of a relation instance</p>
-<p><strong>Usage:</strong>
-<code>reactive-graph-client relation-instances get-property --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt; &lt;PROPERTY_NAME&gt;</code></p>
-<h6 id="arguments-72"><a class="header" href="#arguments-72"><strong>Arguments:</strong></a></h6>
+<p><strong>Usage:</strong> <code>reactive-graph-client relation-instances get-property --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt; &lt;PROPERTY_NAME&gt;</code></p>
+<h6 id="arguments-77"><a class="header" href="#arguments-77"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1588,9 +1640,8 @@
 </ul>
 <h2 id="reactive-graph-client-relation-instances-set-property"><a class="header" href="#reactive-graph-client-relation-instances-set-property"><code>reactive-graph-client relation-instances set-property</code></a></h2>
 <p>Sets the value of a property of a relation instance</p>
-<p><strong>Usage:</strong>
-<code>reactive-graph-client relation-instances set-property --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt; &lt;PROPERTY_NAME&gt; &lt;PROPERTY_VALUE&gt;</code></p>
-<h6 id="arguments-73"><a class="header" href="#arguments-73"><strong>Arguments:</strong></a></h6>
+<p><strong>Usage:</strong> <code>reactive-graph-client relation-instances set-property --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt; &lt;PROPERTY_NAME&gt; &lt;PROPERTY_VALUE&gt;</code></p>
+<h6 id="arguments-78"><a class="header" href="#arguments-78"><strong>Arguments:</strong></a></h6>
 <ul>
 <li>
 <p><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</p>
@@ -1616,9 +1667,8 @@
 </ul>
 <h2 id="reactive-graph-client-relation-instances-add-property"><a class="header" href="#reactive-graph-client-relation-instances-add-property"><code>reactive-graph-client relation-instances add-property</code></a></h2>
 <p>Adds a new property to a relation instance</p>
-<p><strong>Usage:</strong>
-<code>reactive-graph-client relation-instances add-property --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt; &lt;PROPERTY_NAME&gt; &lt;DATA_TYPE&gt; &lt;SOCKET_TYPE&gt; &lt;MUTABILITY&gt; [DESCRIPTION]</code></p>
-<h6 id="arguments-74"><a class="header" href="#arguments-74"><strong>Arguments:</strong></a></h6>
+<p><strong>Usage:</strong> <code>reactive-graph-client relation-instances add-property --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt; &lt;PROPERTY_NAME&gt; &lt;DATA_TYPE&gt; &lt;SOCKET_TYPE&gt; &lt;MUTABILITY&gt; [DESCRIPTION]</code></p>
+<h6 id="arguments-79"><a class="header" href="#arguments-79"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1636,9 +1686,8 @@
 </ul>
 <h2 id="reactive-graph-client-relation-instances-remove-property"><a class="header" href="#reactive-graph-client-relation-instances-remove-property"><code>reactive-graph-client relation-instances remove-property</code></a></h2>
 <p>Removes a property from a relation instance</p>
-<p><strong>Usage:</strong>
-<code>reactive-graph-client relation-instances remove-property --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt; &lt;PROPERTY_NAME&gt;</code></p>
-<h6 id="arguments-75"><a class="header" href="#arguments-75"><strong>Arguments:</strong></a></h6>
+<p><strong>Usage:</strong> <code>reactive-graph-client relation-instances remove-property --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt; &lt;PROPERTY_NAME&gt;</code></p>
+<h6 id="arguments-80"><a class="header" href="#arguments-80"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1653,7 +1702,7 @@
 <h2 id="reactive-graph-client-relation-instances-list-components"><a class="header" href="#reactive-graph-client-relation-instances-list-components"><code>reactive-graph-client relation-instances list-components</code></a></h2>
 <p>Lists the components of a relation instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-instances list-components --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt;</code></p>
-<h6 id="arguments-76"><a class="header" href="#arguments-76"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-81"><a class="header" href="#arguments-81"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1666,9 +1715,8 @@
 </ul>
 <h2 id="reactive-graph-client-relation-instances-add-component"><a class="header" href="#reactive-graph-client-relation-instances-add-component"><code>reactive-graph-client relation-instances add-component</code></a></h2>
 <p>Adds a component to a relation instance</p>
-<p><strong>Usage:</strong>
-<code>reactive-graph-client relation-instances add-component --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt; &lt;COMPONENT_NAMESPACE&gt; &lt;COMPONENT_NAME&gt;</code></p>
-<h6 id="arguments-77"><a class="header" href="#arguments-77"><strong>Arguments:</strong></a></h6>
+<p><strong>Usage:</strong> <code>reactive-graph-client relation-instances add-component --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt; &lt;COMPONENT_NAMESPACE&gt; &lt;COMPONENT_NAME&gt;</code></p>
+<h6 id="arguments-82"><a class="header" href="#arguments-82"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1683,9 +1731,8 @@
 </ul>
 <h2 id="reactive-graph-client-relation-instances-remove-component"><a class="header" href="#reactive-graph-client-relation-instances-remove-component"><code>reactive-graph-client relation-instances remove-component</code></a></h2>
 <p>Removes a component from a relation instance</p>
-<p><strong>Usage:</strong>
-<code>reactive-graph-client relation-instances remove-component --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt; &lt;COMPONENT_NAMESPACE&gt; &lt;COMPONENT_NAME&gt;</code></p>
-<h6 id="arguments-78"><a class="header" href="#arguments-78"><strong>Arguments:</strong></a></h6>
+<p><strong>Usage:</strong> <code>reactive-graph-client relation-instances remove-component --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt; &lt;COMPONENT_NAMESPACE&gt; &lt;COMPONENT_NAME&gt;</code></p>
+<h6 id="arguments-83"><a class="header" href="#arguments-83"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1701,7 +1748,7 @@
 <h2 id="reactive-graph-client-relation-instances-create"><a class="header" href="#reactive-graph-client-relation-instances-create"><code>reactive-graph-client relation-instances create</code></a></h2>
 <p>Creates a new relation type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-instances create [OPTIONS] --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt;</code></p>
-<h6 id="arguments-79"><a class="header" href="#arguments-79"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-84"><a class="header" href="#arguments-84"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1717,7 +1764,7 @@
 <h2 id="reactive-graph-client-relation-instances-delete"><a class="header" href="#reactive-graph-client-relation-instances-delete"><code>reactive-graph-client relation-instances delete</code></a></h2>
 <p>CLI argument which identifies an relation instance by its id</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client relation-instances delete --outbound-id &lt;OUTBOUND_ID&gt; --inbound-id &lt;INBOUND_ID&gt; &lt;NAMESPACE&gt; &lt;NAME&gt; &lt;INSTANCE_ID&gt;</code></p>
-<h6 id="arguments-80"><a class="header" href="#arguments-80"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-85"><a class="header" href="#arguments-85"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The relation type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The relation type name</li>
@@ -1763,21 +1810,21 @@
 <h2 id="reactive-graph-client-flow-instances-get"><a class="header" href="#reactive-graph-client-flow-instances-get"><code>reactive-graph-client flow-instances get</code></a></h2>
 <p>Prints a single flow instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-instances get &lt;ID&gt;</code></p>
-<h6 id="arguments-81"><a class="header" href="#arguments-81"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-86"><a class="header" href="#arguments-86"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;ID&gt;</code> — The id of the flow instance</li>
 </ul>
 <h2 id="reactive-graph-client-flow-instances-get-by-label"><a class="header" href="#reactive-graph-client-flow-instances-get-by-label"><code>reactive-graph-client flow-instances get-by-label</code></a></h2>
 <p>Prints a single flow instance</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-instances get-by-label &lt;LABEL&gt;</code></p>
-<h6 id="arguments-82"><a class="header" href="#arguments-82"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-87"><a class="header" href="#arguments-87"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;LABEL&gt;</code> — The label of the reactive instance</li>
 </ul>
 <h2 id="reactive-graph-client-flow-instances-create-from-type"><a class="header" href="#reactive-graph-client-flow-instances-create-from-type"><code>reactive-graph-client flow-instances create-from-type</code></a></h2>
 <p>Creates a new flow from the given type</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-instances create-from-type [OPTIONS] &lt;NAMESPACE&gt; &lt;NAME&gt;</code></p>
-<h6 id="arguments-83"><a class="header" href="#arguments-83"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-88"><a class="header" href="#arguments-88"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;NAMESPACE&gt;</code> — The flow type namespace</li>
 <li><code>&lt;NAME&gt;</code> — The flow type name</li>
@@ -1791,7 +1838,7 @@
 <h2 id="reactive-graph-client-flow-instances-delete"><a class="header" href="#reactive-graph-client-flow-instances-delete"><code>reactive-graph-client flow-instances delete</code></a></h2>
 <p>CLI argument which identifies a flow instance by its id</p>
 <p><strong>Usage:</strong> <code>reactive-graph-client flow-instances delete &lt;ID&gt;</code></p>
-<h6 id="arguments-84"><a class="header" href="#arguments-84"><strong>Arguments:</strong></a></h6>
+<h6 id="arguments-89"><a class="header" href="#arguments-89"><strong>Arguments:</strong></a></h6>
 <ul>
 <li><code>&lt;ID&gt;</code> — The id of the flow instance</li>
 </ul>

@@ -327,15 +327,41 @@
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h2 id="unreleased"><a class="header" href="#unreleased">Unreleased</a></h2>
 <h3 id="added"><a class="header" href="#added">Added</a></h3>
-<ul>
-<li>CLI: Added arguments <code>--danger_accept_invalid_certs</code> and <code>--danger_accept_invalid_hostnames</code></li>
-</ul>
 <h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
 <h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
 <h3 id="distribution"><a class="header" href="#distribution">Distribution</a></h3>
 <h3 id="infrastructure"><a class="header" href="#infrastructure">Infrastructure</a></h3>
-<h2 id="0100-alpha-4---2025-07-28"><a class="header" href="#0100-alpha-4---2025-07-28">[0.10.0-alpha-4] - 2025-07-28</a></h2>
+<h2 id="0100-alpha-5---2025-08-01"><a class="header" href="#0100-alpha-5---2025-08-01">[0.10.0-alpha-5] - 2025-08-01</a></h2>
+<blockquote>
+<p>[!NOTE]
+Improves plugin support in docker containers</p>
+</blockquote>
 <h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
+<ul>
+<li>CLI: Added arguments <code>--danger_accept_invalid_certs</code> and <code>--danger_accept_invalid_hostnames</code></li>
+</ul>
+<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<ul>
+<li>Plugins: Improved error message if moving plugin from <code>plugins/deploy</code> to <code>plugins/installed</code> failed</li>
+</ul>
+<h3 id="fixed-1"><a class="header" href="#fixed-1">Fixed</a></h3>
+<ul>
+<li>Docker: Run configurations for docker containers mount the plugin deploy folder of the workspace on the container (note: this works only if you're running a
+single container)</li>
+<li>Docker: Plugin system now correctly handles deploying plugins when the deploy folder is mounted as volume</li>
+</ul>
+<h3 id="distribution-1"><a class="header" href="#distribution-1">Distribution</a></h3>
+<ul>
+<li>Docker: Dockerfile now uses ubuntu 24.04 as runtime image</li>
+<li>Docker: Added Dockerfile.debian which uses bookworm-slim as base image</li>
+<li>Docker: Added docker-compose which contains an init container for installing plugins (respects arch + configurable with a tag/version)</li>
+</ul>
+<h3 id="infrastructure-1"><a class="header" href="#infrastructure-1">Infrastructure</a></h3>
+<ul>
+<li>The standard library plugins are now provided via <a href="https://github.com/reactive-graph/std/releases/tag/nightly">GitHub Releases</a></li>
+</ul>
+<h2 id="0100-alpha-4---2025-07-28"><a class="header" href="#0100-alpha-4---2025-07-28">[0.10.0-alpha-4] - 2025-07-28</a></h2>
+<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
 <ul>
 <li>CLI: Added entity instances to flow types</li>
 <li>CLI: Added introspection queries</li>
@@ -362,7 +388,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Reactive: Implemented json serialization for reactive entities and reactive relations</li>
 <li>Type System: Added traits JsonSchemaGetter and JsonSchemaIdGetter</li>
 </ul>
-<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
 <ul>
 <li>Extended binary info with rustc_host_triple and rustc_commit_date</li>
 <li>Renamed test-utils to utils-test</li>
@@ -373,19 +399,19 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>JSON schema: Refactored REST services</li>
 <li>Reactive: When creating a reactive flow from type a id can be provided</li>
 </ul>
-<h3 id="fixed-1"><a class="header" href="#fixed-1">Fixed</a></h3>
-<h3 id="distribution-1"><a class="header" href="#distribution-1">Distribution</a></h3>
+<h3 id="fixed-2"><a class="header" href="#fixed-2">Fixed</a></h3>
+<h3 id="distribution-2"><a class="header" href="#distribution-2">Distribution</a></h3>
 <ul>
 <li>Docker: Make debian bookworm slim the base image in order to allow plugins loading within the docker image</li>
 </ul>
-<h3 id="infrastructure-1"><a class="header" href="#infrastructure-1">Infrastructure</a></h3>
+<h3 id="infrastructure-2"><a class="header" href="#infrastructure-2">Infrastructure</a></h3>
 <ul>
 <li>CI: Synchronize labels from config file</li>
 <li>CI: Publish graphql and json schemas to https://schema.reactive-graph.io/</li>
 <li>CI: Check for breaking changes in the GraphQL schemas</li>
 </ul>
 <h2 id="0100-alpha-3---2025-04-13"><a class="header" href="#0100-alpha-3---2025-04-13">[0.10.0-alpha-3] - 2025-04-13</a></h2>
-<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
+<h3 id="added-3"><a class="header" href="#added-3">Added</a></h3>
 <ul>
 <li>Interfaces: Provide JSON schemas of the type system and instance system via GraphQL API</li>
 <li>Interfaces: Query for JSON Schemas of the type system and instance system via the Rust Client</li>
@@ -395,21 +421,21 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>GraphQL: Manage flow types</li>
 <li>GraphQL: Manage flow instances</li>
 </ul>
-<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
+<h3 id="changed-3"><a class="header" href="#changed-3">Changed</a></h3>
 <ul>
 <li>Migrated to Rust Edition 2024</li>
 <li>Fixed clippy lints for Rust 1.85.0</li>
 </ul>
-<h3 id="fixed-2"><a class="header" href="#fixed-2">Fixed</a></h3>
+<h3 id="fixed-3"><a class="header" href="#fixed-3">Fixed</a></h3>
 <ul>
 <li><code>#[unsafe(no_mangle)]</code></li>
 </ul>
-<h3 id="distribution-2"><a class="header" href="#distribution-2">Distribution</a></h3>
+<h3 id="distribution-3"><a class="header" href="#distribution-3">Distribution</a></h3>
 <ul>
 <li>Docker: Added static labels (org.opencontainers.image)</li>
 <li>Docker: Added multi platform docker image (amd64 + arm64)</li>
 </ul>
-<h3 id="infrastructure-2"><a class="header" href="#infrastructure-2">Infrastructure</a></h3>
+<h3 id="infrastructure-3"><a class="header" href="#infrastructure-3">Infrastructure</a></h3>
 <ul>
 <li>CI: Update rust nightly toolchain to nightly-2025-03-14</li>
 <li>CI: Added GitHub Actions runner for arm64 ubuntu-22.04-arm</li>
@@ -419,7 +445,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>CI: Automatically assign assignee and reviewers</li>
 </ul>
 <h2 id="0100-alpha-2---2024-10-27"><a class="header" href="#0100-alpha-2---2024-10-27">[0.10.0-alpha-2] - 2024-10-27</a></h2>
-<h3 id="added-3"><a class="header" href="#added-3">Added</a></h3>
+<h3 id="added-4"><a class="header" href="#added-4">Added</a></h3>
 <ul>
 <li>CLI: Provisioning config files <code>reactive-graph instances init</code></li>
 <li>CLI: Generate and provisioning certificates using <code>reactive-graph instances generate-certificate</code></li>
@@ -428,28 +454,28 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Distribution: Dockerfile and run configurations for docker</li>
 <li>Docs: Documented installation via docker</li>
 </ul>
-<h3 id="changed-3"><a class="header" href="#changed-3">Changed</a></h3>
+<h3 id="changed-4"><a class="header" href="#changed-4">Changed</a></h3>
 <ul>
 <li>Docs: Moved book to root folder</li>
 <li>Docs: Applied Reactive Graph Design System</li>
 </ul>
-<h3 id="fixed-3"><a class="header" href="#fixed-3">Fixed</a></h3>
+<h3 id="fixed-4"><a class="header" href="#fixed-4">Fixed</a></h3>
 <ul>
 <li>CLI: Self-Updater</li>
 </ul>
-<h3 id="infrastructure-3"><a class="header" href="#infrastructure-3">Infrastructure</a></h3>
+<h3 id="infrastructure-4"><a class="header" href="#infrastructure-4">Infrastructure</a></h3>
 <ul>
 <li>CI: Update rust nightly toolchain to nightly-2024-10-19</li>
 <li>CI: Auto-merge dependabot PRs</li>
 </ul>
 <h2 id="0100-alpha-1---2024-10-20"><a class="header" href="#0100-alpha-1---2024-10-20">[0.10.0-alpha-1] - 2024-10-20</a></h2>
-<h3 id="added-4"><a class="header" href="#added-4">Added</a></h3>
+<h3 id="added-5"><a class="header" href="#added-5">Added</a></h3>
 <ul>
 <li>CLI: Print or install shell completions (bash, fish, zsh, powershell) and man pages</li>
 <li>CLI: Self Update <code>reactive-graph update</code></li>
 <li>CLI: Init instance <code>reactive-graph instances init &lt;path&gt;</code></li>
 </ul>
-<h3 id="infrastructure-4"><a class="header" href="#infrastructure-4">Infrastructure</a></h3>
+<h3 id="infrastructure-5"><a class="header" href="#infrastructure-5">Infrastructure</a></h3>
 <ul>
 <li>CI: Create tag nightly after merge and successful build on main branch</li>
 <li>CI: Publish nightly releases to GitHub Releases</li>
@@ -471,7 +497,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>API separation</li>
 <li>Replaced dependency injection framework</li>
 </ul>
-<h3 id="added-5"><a class="header" href="#added-5">Added</a></h3>
+<h3 id="added-6"><a class="header" href="#added-6">Added</a></h3>
 <ul>
 <li>Added plural types (<code>EntityTypes</code> for a set of <code>EntityType</code>s) + Changed API to use plural types</li>
 <li>Handle reactive instances ReactiveEntity + ReactiveRelation like smart pointers (is this an anti-pattern?)</li>
@@ -486,7 +512,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>JSON-Schemas</li>
 <li>CLI REPL + Improved CLI</li>
 </ul>
-<h3 id="changed-4"><a class="header" href="#changed-4">Changed</a></h3>
+<h3 id="changed-5"><a class="header" href="#changed-5">Changed</a></h3>
 <ul>
 <li>Use TypedBuilder in core-model + migrate all calls to the new builders</li>
 <li>Refactored reactive layer out of core-model</li>
@@ -520,7 +546,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>CLI REPL + Improved CLI</li>
 <li>Documentation</li>
 </ul>
-<h3 id="added-6"><a class="header" href="#added-6">Added</a></h3>
+<h3 id="added-7"><a class="header" href="#added-7">Added</a></h3>
 <ul>
 <li>Remotes Management</li>
 <li>JSON-Schemas for all types and instances</li>
@@ -537,7 +563,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Documentation: Cross compilation and supported platforms</li>
 <li>Documentation: Packaging for debian</li>
 </ul>
-<h3 id="changed-5"><a class="header" href="#changed-5">Changed</a></h3>
+<h3 id="changed-6"><a class="header" href="#changed-6">Changed</a></h3>
 <ul>
 <li>All APIs: Delete methods returns boolean</li>
 <li>CLI: refactored CLI tables from the client to the CLI crate</li>
@@ -547,33 +573,33 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Documentation: Updated lots of GraphQL examples</li>
 <li>Documentation: Updated installation instructions</li>
 </ul>
-<h3 id="fixed-4"><a class="header" href="#fixed-4">Fixed</a></h3>
+<h3 id="fixed-5"><a class="header" href="#fixed-5">Fixed</a></h3>
 <ul>
 <li>Don't block runtime shutdown at a specific situation</li>
 </ul>
 <h2 id="091-22---2023-05-07"><a class="header" href="#091-22---2023-05-07">[0.9.1-22] - 2023-05-07</a></h2>
-<h3 id="added-7"><a class="header" href="#added-7">Added</a></h3>
+<h3 id="added-8"><a class="header" href="#added-8">Added</a></h3>
 <ul>
 <li>Publish debian package for x86_64, aarch64 and armv7</li>
 </ul>
 <h2 id="091-14---2023-05-07"><a class="header" href="#091-14---2023-05-07">[0.9.1-14] - 2023-05-07</a></h2>
-<h3 id="added-8"><a class="header" href="#added-8">Added</a></h3>
+<h3 id="added-9"><a class="header" href="#added-9">Added</a></h3>
 <ul>
 <li>Publish binaries for more targets, including Raspberry Pi</li>
 </ul>
 <h2 id="091-4---2023-05-07"><a class="header" href="#091-4---2023-05-07">[0.9.1-4] - 2023-05-07</a></h2>
-<h3 id="added-9"><a class="header" href="#added-9">Added</a></h3>
+<h3 id="added-10"><a class="header" href="#added-10">Added</a></h3>
 <ul>
 <li>Configure the application using environment variables</li>
 <li>Generate Debian Package</li>
 </ul>
 <h2 id="091---2023-05-01"><a class="header" href="#091---2023-05-01">[0.9.1] - 2023-05-01</a></h2>
-<h3 id="added-10"><a class="header" href="#added-10">Added</a></h3>
+<h3 id="added-11"><a class="header" href="#added-11">Added</a></h3>
 <ul>
 <li>First public release on crates.io</li>
 </ul>
 <h2 id="090-15---2023-03-26"><a class="header" href="#090-15---2023-03-26">[0.9.0-15] - 2023-03-26</a></h2>
-<h3 id="added-11"><a class="header" href="#added-11">Added</a></h3>
+<h3 id="added-12"><a class="header" href="#added-12">Added</a></h3>
 <ul>
 <li>Configuration: Configure the instance</li>
 <li>Configuration: Configure the graphql server</li>
@@ -594,7 +620,7 @@ changes</li>
 <li>GraphQL: Allow sorting of type properties</li>
 <li>GraphQL: Allow sorting of type extensions</li>
 </ul>
-<h3 id="changed-6"><a class="header" href="#changed-6">Changed</a></h3>
+<h3 id="changed-7"><a class="header" href="#changed-7">Changed</a></h3>
 <ul>
 <li>Workspace: Create mono repository</li>
 <li>Workspace: Migrate repository frp into workspace</li>
@@ -608,7 +634,7 @@ changes</li>
 <li>GraphQL: Generate dynamic GraphQL schema using async-graphql 5.0.0</li>
 </ul>
 <h2 id="080---2022-02-01"><a class="header" href="#080---2022-02-01">[0.8.0] - 2022-02-01</a></h2>
-<h3 id="added-12"><a class="header" href="#added-12">Added</a></h3>
+<h3 id="added-13"><a class="header" href="#added-13">Added</a></h3>
 <ul>
 <li>Plugins: Plugin resolver state machine</li>
 <li>Plugins: Plugin dependencies and plugin versioning</li>
@@ -630,7 +656,7 @@ changes</li>
 <li>Model: Use concrete type system identifiers instead of strings</li>
 <li>API: Validate types on construction (validate that components or entity types are present)</li>
 </ul>
-<h3 id="changed-7"><a class="header" href="#changed-7">Changed</a></h3>
+<h3 id="changed-8"><a class="header" href="#changed-8">Changed</a></h3>
 <ul>
 <li>Behaviours: Centralized behaviour storage (no more store behaviours in the plugins)</li>
 <li>Behaviours: Reimplemented lots of reactive behaviours</li>
@@ -639,7 +665,7 @@ changes</li>
 <li>Tooling: rustfmt uses separate lines per import</li>
 </ul>
 <h2 id="070---2022-09-25"><a class="header" href="#070---2022-09-25">[0.7.0] - 2022-09-25</a></h2>
-<h3 id="added-13"><a class="header" href="#added-13">Added</a></h3>
+<h3 id="added-14"><a class="header" href="#added-14">Added</a></h3>
 <ul>
 <li>Flow Types: Replicate and instantiate flows multiple times (like flow templates)</li>
 <li>Dynamic Graph: A second GraphQL api make the access to the instance system more intuitive</li>
@@ -648,14 +674,14 @@ changes</li>
 <li>Plugins: Dependency information</li>
 <li>Plugins: Expose GraphQL query service to plugins</li>
 </ul>
-<h3 id="changed-8"><a class="header" href="#changed-8">Changed</a></h3>
+<h3 id="changed-9"><a class="header" href="#changed-9">Changed</a></h3>
 <ul>
 <li>Plugin: Dedicated error messages for the plugin API</li>
 <li>Plugin: Default trait implementations for the plugin API to reduce boilerplate</li>
 <li>Plugin: Return option none if a plugin doesn't use certain functionality</li>
 </ul>
 <h2 id="060---2022-02-26"><a class="header" href="#060---2022-02-26">[0.6.0] - 2022-02-26</a></h2>
-<h3 id="added-14"><a class="header" href="#added-14">Added</a></h3>
+<h3 id="added-15"><a class="header" href="#added-15">Added</a></h3>
 <ul>
 <li>Documentation: Added initial documentation as book (using mdBook)</li>
 <li>GraphQL: Navigate from components to entity types and to relation types</li>
@@ -670,7 +696,7 @@ changes</li>
 <li>Core: Provide required components and entity types in the application core</li>
 <li>Core: Event System for Type System and Instance System</li>
 </ul>
-<h3 id="changed-9"><a class="header" href="#changed-9">Changed</a></h3>
+<h3 id="changed-10"><a class="header" href="#changed-10">Changed</a></h3>
 <ul>
 <li>GraphQL: Rename mutation types (Remove prefix GraphQl)</li>
 <li>GraphQL: Rename type_name to type</li>
@@ -684,12 +710,12 @@ changes</li>
 <li>Documentation: Added code of conduct and changelog to book</li>
 </ul>
 <h2 id="050---2022-01-20"><a class="header" href="#050---2022-01-20">[0.5.0] - 2022-01-20</a></h2>
-<h3 id="added-15"><a class="header" href="#added-15">Added</a></h3>
+<h3 id="added-16"><a class="header" href="#added-16">Added</a></h3>
 <ul>
 <li>Plugin API: Added find, import &amp; export methods for all managers</li>
 <li>Core: Search for type names with wildcards</li>
 </ul>
-<h3 id="changed-10"><a class="header" href="#changed-10">Changed</a></h3>
+<h3 id="changed-11"><a class="header" href="#changed-11">Changed</a></h3>
 <ul>
 <li>Refactored dependency injection library</li>
 <li>Updated dependencies of the dependency injection library</li>
