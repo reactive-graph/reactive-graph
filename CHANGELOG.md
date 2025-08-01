@@ -9,8 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- CLI: Added arguments `--danger_accept_invalid_certs` and `--danger_accept_invalid_hostnames`
-
 ### Changed
 
 ### Fixed
@@ -18,6 +16,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Distribution
 
 ### Infrastructure
+
+## [0.10.0-alpha-5] - 2025-08-01
+
+> [!NOTE]
+> Improves plugin support in docker containers
+
+### Added
+
+- CLI: Added arguments `--danger_accept_invalid_certs` and `--danger_accept_invalid_hostnames`
+
+### Changed
+
+- Plugins: Improved error message if moving plugin from `plugins/deploy` to `plugins/installed` failed
+
+### Fixed
+
+- Docker: Run configurations for docker containers mount the plugin deploy folder of the workspace on the container (note: this works only if you're running a
+  single container)
+- Docker: Plugin system now correctly handles deploying plugins when the deploy folder is mounted as volume
+
+### Distribution
+
+- Docker: Dockerfile now uses ubuntu 24.04 as runtime image
+- Docker: Added Dockerfile.debian which uses bookworm-slim as base image
+- Docker: Added docker-compose which contains an init container for installing plugins (respects arch + configurable with a tag/version)
+
+### Infrastructure
+
+- The standard library plugins are now provided via [GitHub Releases](https://github.com/reactive-graph/std/releases/tag/nightly)
 
 ## [0.10.0-alpha-4] - 2025-07-28
 
