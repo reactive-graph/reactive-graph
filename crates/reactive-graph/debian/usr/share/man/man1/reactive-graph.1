@@ -4,60 +4,60 @@
 .SH NAME
 reactive\-graph \- Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software.
 .SH SYNOPSIS
-\fBreactive\-graph\fR [\fB\-\-logging\-config\fR] [\fB\-\-instance\-config\fR] [\fB\-\-graphql\-config\fR] [\fB\-\-plugins\-config\fR] [\fB\-n\fR|\fB\-\-instance\-name\fR] [\fB\-d\fR|\fB\-\-instance\-description\fR] [\fB\-\-hostname\fR] [\fB\-\-port\fR] [\fB\-\-secure\fR] [\fB\-\-ssl\-certificate\-path\fR] [\fB\-\-ssl\-private\-key\-path\fR] [\fB\-\-shutdown\-timeout\fR] [\fB\-w\fR|\fB\-\-workers\fR] [\fB\-c\fR|\fB\-\-default\-context\-path\fR] [\fB\-x\fR|\fB\-\-disable\-all\-plugins\fR] [\fB\-p\fR|\fB\-\-disabled\-plugins\fR] [\fB\-P\fR|\fB\-\-enabled\-plugins\fR] [\fB\-\-disable\-hot\-deploy\fR] [\fB\-\-hot\-deploy\-location\fR] [\fB\-\-install\-location\fR] [\fB\-\-stop\-immediately\fR] [\fB\-q\fR|\fB\-\-quiet\fR] [\fB\-\-client\-hostname\fR] [\fB\-\-client\-port\fR] [\fB\-\-client\-secure\fR] [\fB\-\-endpoint\-graphql\fR] [\fB\-\-endpoint\-dynamic\-graph\fR] [\fB\-\-endpoint\-runtime\fR] [\fB\-\-endpoint\-plugins\fR] [\fB\-\-bearer\fR] [\fB\-i\fR|\fB\-\-interactive\fR] [\fB\-h\fR|\fB\-\-help\fR] [\fB\-V\fR|\fB\-\-version\fR] [\fIsubcommands\fR]
+\fBreactive\-graph\fR [\fB\-\-logging\-config\fR] [\fB\-\-instance\-config\fR] [\fB\-\-graphql\-config\fR] [\fB\-\-plugins\-config\fR] [\fB\-n\fR|\fB\-\-instance\-name\fR] [\fB\-d\fR|\fB\-\-instance\-description\fR] [\fB\-\-hostname\fR] [\fB\-\-port\fR] [\fB\-\-secure\fR] [\fB\-\-ssl\-certificate\-path\fR] [\fB\-\-ssl\-private\-key\-path\fR] [\fB\-\-shutdown\-timeout\fR] [\fB\-w\fR|\fB\-\-workers\fR] [\fB\-c\fR|\fB\-\-default\-context\-path\fR] [\fB\-x\fR|\fB\-\-disable\-all\-plugins\fR] [\fB\-p\fR|\fB\-\-disabled\-plugins\fR] [\fB\-P\fR|\fB\-\-enabled\-plugins\fR] [\fB\-\-disable\-hot\-deploy\fR] [\fB\-\-hot\-deploy\-location\fR] [\fB\-\-install\-location\fR] [\fB\-\-stop\-immediately\fR] [\fB\-q\fR|\fB\-\-quiet\fR] [\fB\-\-client\-hostname\fR] [\fB\-\-client\-port\fR] [\fB\-\-client\-secure\fR] [\fB\-\-endpoint\-graphql\fR] [\fB\-\-endpoint\-dynamic\-graph\fR] [\fB\-\-endpoint\-runtime\fR] [\fB\-\-endpoint\-plugins\fR] [\fB\-\-bearer\fR] [\fB\-\-danger\-accept\-invalid\-certs\fR] [\fB\-i\fR|\fB\-\-interactive\fR] [\fB\-h\fR|\fB\-\-help\fR] [\fB\-V\fR|\fB\-\-version\fR] [\fIDANGER_ACCEPT_INVALID_HOSTNAMES\fR] [\fIsubcommands\fR]
 .SH DESCRIPTION
 Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software.
 .SH OPTIONS
 .TP
-\fB\-\-logging\-config\fR=\fILOGGING_CONFIG\fR
+\fB\-\-logging\-config\fR \fI<LOGGING_CONFIG>\fR
 The logging config location
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_LOGGING_CONFIG\fR environment variable. 
 .RE
 .TP
-\fB\-\-instance\-config\fR=\fIINSTANCE_CONFIG\fR
+\fB\-\-instance\-config\fR \fI<INSTANCE_CONFIG>\fR
 The instance config location
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_INSTANCE_CONFIG\fR environment variable. 
 .RE
 .TP
-\fB\-\-graphql\-config\fR=\fIGRAPHQL_CONFIG\fR
+\fB\-\-graphql\-config\fR \fI<GRAPHQL_CONFIG>\fR
 The GraphQL config location
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_GRAPHQL_CONFIG\fR environment variable. 
 .RE
 .TP
-\fB\-\-plugins\-config\fR=\fIPLUGINS_CONFIG\fR
+\fB\-\-plugins\-config\fR \fI<PLUGINS_CONFIG>\fR
 The plugins config location
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_PLUGINS_CONFIG\fR environment variable. 
 .RE
 .TP
-\fB\-n\fR, \fB\-\-instance\-name\fR=\fINAME\fR
+\fB\-n\fR, \fB\-\-instance\-name\fR \fI<NAME>\fR
 The name of the instance
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_INSTANCE_NAME\fR environment variable. 
 .RE
 .TP
-\fB\-d\fR, \fB\-\-instance\-description\fR=\fIDESCRIPTION\fR
+\fB\-d\fR, \fB\-\-instance\-description\fR \fI<DESCRIPTION>\fR
 The description of the instance
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_INSTANCE_DESCRIPTION\fR environment variable. 
 .RE
 .TP
-\fB\-\-hostname\fR=\fIHOSTNAME\fR
+\fB\-\-hostname\fR \fI<HOSTNAME>\fR
 The hostname to bind the GraphQL HTTP server
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_HOSTNAME\fR environment variable. 
 .RE
 .TP
-\fB\-\-port\fR=\fIPORT\fR
+\fB\-\-port\fR \fI<PORT>\fR
 The port to bind the GraphQL HTTP server
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_PORT\fR environment variable. 
 .RE
 .TP
-\fB\-\-secure\fR=\fISECURE\fR
+\fB\-\-secure\fR \fI<SECURE>\fR
 If true, HTTPS is enabled
 .br
 
@@ -67,37 +67,37 @@ If true, HTTPS is enabled
 May also be specified with the \fBREACTIVE_GRAPH_SECURE\fR environment variable. 
 .RE
 .TP
-\fB\-\-ssl\-certificate\-path\fR=\fISSL_CERTIFICATE_PATH\fR
+\fB\-\-ssl\-certificate\-path\fR \fI<SSL_CERTIFICATE_PATH>\fR
 The location of the certificate
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_SSL_CERTIFICATE_PATH\fR environment variable. 
 .RE
 .TP
-\fB\-\-ssl\-private\-key\-path\fR=\fISSL_PRIVATE_KEY_PATH\fR
+\fB\-\-ssl\-private\-key\-path\fR \fI<SSL_PRIVATE_KEY_PATH>\fR
 The location of the private key
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_SSL_PRIVATE_KEY_PATH\fR environment variable. 
 .RE
 .TP
-\fB\-\-shutdown\-timeout\fR=\fISHUTDOWN_TIMEOUT\fR
+\fB\-\-shutdown\-timeout\fR \fI<SHUTDOWN_TIMEOUT>\fR
 Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_INSTANCE_SHUTDOWN_TIMEOUT\fR environment variable. 
 .RE
 .TP
-\fB\-w\fR, \fB\-\-workers\fR=\fIWORKERS\fR
+\fB\-w\fR, \fB\-\-workers\fR \fI<WORKERS>\fR
 The number of workers to start. The default worker count is the number of physical CPU cores available
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_WORKERS\fR environment variable. 
 .RE
 .TP
-\fB\-c\fR, \fB\-\-default\-context\-path\fR=\fIDEFAULT_CONTEXT_PATH\fR
+\fB\-c\fR, \fB\-\-default\-context\-path\fR \fI<DEFAULT_CONTEXT_PATH>\fR
 The default context path which redirects the root context to a web resource provider
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_DEFAULT_CONTEXT_PATH\fR environment variable. 
 .RE
 .TP
-\fB\-x\fR, \fB\-\-disable\-all\-plugins\fR=\fIDISABLE_ALL_PLUGINS\fR
+\fB\-x\fR, \fB\-\-disable\-all\-plugins\fR \fI<DISABLE_ALL_PLUGINS>\fR
 If true, all plugins will be disabled
 .br
 
@@ -107,13 +107,13 @@ If true, all plugins will be disabled
 May also be specified with the \fBREACTIVE_GRAPH_DISABLE_ALL_PLUGINS\fR environment variable. 
 .RE
 .TP
-\fB\-p\fR, \fB\-\-disabled\-plugins\fR=\fIDISABLED_PLUGINS\fR
+\fB\-p\fR, \fB\-\-disabled\-plugins\fR \fI<DISABLED_PLUGINS>\fR
 The list of plugins to disable
 .TP
-\fB\-P\fR, \fB\-\-enabled\-plugins\fR=\fIENABLED_PLUGINS\fR
+\fB\-P\fR, \fB\-\-enabled\-plugins\fR \fI<ENABLED_PLUGINS>\fR
 The list of plugins to enable
 .TP
-\fB\-\-disable\-hot\-deploy\fR=\fIDISABLE_HOT_DEPLOY\fR
+\fB\-\-disable\-hot\-deploy\fR \fI<DISABLE_HOT_DEPLOY>\fR
 If true, hot deployment will be disabled
 .br
 
@@ -123,19 +123,19 @@ If true, hot deployment will be disabled
 May also be specified with the \fBREACTIVE_GRAPH_DISABLE_HOT_DEPLOY\fR environment variable. 
 .RE
 .TP
-\fB\-\-hot\-deploy\-location\fR=\fIHOT_DEPLOY_LOCATION\fR
+\fB\-\-hot\-deploy\-location\fR \fI<HOT_DEPLOY_LOCATION>\fR
 The folder which is watched for hot deployment
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_HOT_DEPLOY_LOCATION\fR environment variable. 
 .RE
 .TP
-\fB\-\-install\-location\fR=\fIINSTALL_LOCATION\fR
+\fB\-\-install\-location\fR \fI<INSTALL_LOCATION>\fR
 The folder which plugins are installed permanently
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_INSTALL_LOCATION\fR environment variable. 
 .RE
 .TP
-\fB\-\-stop\-immediately\fR=\fISTOP_IMMEDIATELY\fR
+\fB\-\-stop\-immediately\fR \fI<STOP_IMMEDIATELY>\fR
 If true, the runtime does not wait before exiting
 .br
 
@@ -145,7 +145,7 @@ If true, the runtime does not wait before exiting
 May also be specified with the \fBREACTIVE_GRAPH_STOP_IMMEDIATELY\fR environment variable. 
 .RE
 .TP
-\fB\-q\fR, \fB\-\-quiet\fR=\fIQUIET\fR
+\fB\-q\fR, \fB\-\-quiet\fR \fI<QUIET>\fR
 If true, logging is disabled completely
 .br
 
@@ -155,42 +155,64 @@ If true, logging is disabled completely
 May also be specified with the \fBREACTIVE_GRAPH_QUIET\fR environment variable. 
 .RE
 .TP
-\fB\-\-client\-hostname\fR=\fICLIENT_HOSTNAME\fR
+\fB\-\-client\-hostname\fR \fI<CLIENT_HOSTNAME>\fR
 The hostname to connect to
 .TP
-\fB\-\-client\-port\fR=\fICLIENT_PORT\fR
+\fB\-\-client\-port\fR \fI<CLIENT_PORT>\fR
 The port to connect to
 .TP
-\fB\-\-client\-secure\fR=\fICLIENT_SECURE\fR
+\fB\-\-client\-secure\fR \fI<CLIENT_SECURE>\fR
 If true, connects via HTTPS
 .br
 
 .br
 [\fIpossible values: \fRtrue, false]
 .TP
-\fB\-\-endpoint\-graphql\fR=\fIENDPOINT_GRAPHQL\fR
+\fB\-\-endpoint\-graphql\fR \fI<ENDPOINT_GRAPHQL>\fR
 The endpoint to use
 .TP
-\fB\-\-endpoint\-dynamic\-graph\fR=\fIENDPOINT_DYNAMIC_GRAPH\fR
+\fB\-\-endpoint\-dynamic\-graph\fR \fI<ENDPOINT_DYNAMIC_GRAPH>\fR
 The endpoint to use
 .TP
-\fB\-\-endpoint\-runtime\fR=\fIENDPOINT_RUNTIME\fR
+\fB\-\-endpoint\-runtime\fR \fI<ENDPOINT_RUNTIME>\fR
 The endpoint to use
 .TP
-\fB\-\-endpoint\-plugins\fR=\fIENDPOINT_PLUGINS\fR
+\fB\-\-endpoint\-plugins\fR \fI<ENDPOINT_PLUGINS>\fR
 The endpoint to use
 .TP
-\fB\-\-bearer\fR=\fIBEARER\fR
+\fB\-\-bearer\fR \fI<BEARER>\fR
 The authentication token
+.TP
+\fB\-\-danger\-accept\-invalid\-certs\fR \fI<DANGER_ACCEPT_INVALID_CERTS>\fR
+Controls the use of certificate validation.
+
+Defaults to `false`.
+
+Warning: You should think very carefully before using this method. If invalid certificates are trusted, *any* certificate for *any* site will be trusted for use. This includes expired certificates. This introduces significant vulnerabilities, and should only be used as a last resort.
+.br
+
+.br
+[\fIpossible values: \fRtrue, false]
 .TP
 \fB\-i\fR, \fB\-\-interactive\fR
 Enter the interactive client mode
 .TP
 \fB\-h\fR, \fB\-\-help\fR
-Print help
+Print help (see a summary with \*(Aq\-h\*(Aq)
 .TP
 \fB\-V\fR, \fB\-\-version\fR
 Print version
+.TP
+[\fIDANGER_ACCEPT_INVALID_HOSTNAMES\fR]
+Controls the use of hostname verification.
+
+Defaults to `false`.
+
+Warning: You should think very carefully before you use this method. If hostname verification is not used, any valid certificate for any site will be trusted for use from any other. This introduces a significant vulnerability to man\-in\-the\-middle attacks.
+.br
+
+.br
+[\fIpossible values: \fRtrue, false]
 .SH SUBCOMMANDS
 .TP
 reactive\-graph\-shell\-completions(1)
@@ -208,8 +230,11 @@ Prints info about this binary
 reactive\-graph\-daemon(1)
 Runs the server as daemon
 .TP
-reactive\-graph\-schema(1)
+reactive\-graph\-graphql\-schema(1)
 Prints the GraphQL schema and exits
+.TP
+reactive\-graph\-json\-schema(1)
+Prints the JSON schema and exits
 .TP
 reactive\-graph\-execute\-command(1)
 Executes a command on the client
@@ -246,6 +271,9 @@ Manage relation instances
 .TP
 reactive\-graph\-flow\-instances(1)
 Manage flow instances
+.TP
+reactive\-graph\-introspection(1)
+Execute GraphQL introspection queries
 .TP
 reactive\-graph\-instances(1)
 Manage instances

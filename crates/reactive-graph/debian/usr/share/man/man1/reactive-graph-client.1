@@ -4,44 +4,66 @@
 .SH NAME
 reactive\-graph\-client \- Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software.
 .SH SYNOPSIS
-\fBreactive\-graph\-client\fR [\fB\-\-client\-hostname\fR] [\fB\-\-client\-port\fR] [\fB\-\-client\-secure\fR] [\fB\-\-endpoint\-graphql\fR] [\fB\-\-endpoint\-dynamic\-graph\fR] [\fB\-\-endpoint\-runtime\fR] [\fB\-\-endpoint\-plugins\fR] [\fB\-\-bearer\fR] [\fB\-h\fR|\fB\-\-help\fR] [\fB\-V\fR|\fB\-\-version\fR] [\fIsubcommands\fR]
+\fBreactive\-graph\-client\fR [\fB\-\-client\-hostname\fR] [\fB\-\-client\-port\fR] [\fB\-\-client\-secure\fR] [\fB\-\-endpoint\-graphql\fR] [\fB\-\-endpoint\-dynamic\-graph\fR] [\fB\-\-endpoint\-runtime\fR] [\fB\-\-endpoint\-plugins\fR] [\fB\-\-bearer\fR] [\fB\-\-danger\-accept\-invalid\-certs\fR] [\fB\-h\fR|\fB\-\-help\fR] [\fB\-V\fR|\fB\-\-version\fR] [\fIDANGER_ACCEPT_INVALID_HOSTNAMES\fR] [\fIsubcommands\fR]
 .SH DESCRIPTION
 Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software.
 .SH OPTIONS
 .TP
-\fB\-\-client\-hostname\fR=\fICLIENT_HOSTNAME\fR
+\fB\-\-client\-hostname\fR \fI<CLIENT_HOSTNAME>\fR
 The hostname to connect to
 .TP
-\fB\-\-client\-port\fR=\fICLIENT_PORT\fR
+\fB\-\-client\-port\fR \fI<CLIENT_PORT>\fR
 The port to connect to
 .TP
-\fB\-\-client\-secure\fR=\fICLIENT_SECURE\fR
+\fB\-\-client\-secure\fR \fI<CLIENT_SECURE>\fR
 If true, connects via HTTPS
 .br
 
 .br
 [\fIpossible values: \fRtrue, false]
 .TP
-\fB\-\-endpoint\-graphql\fR=\fIENDPOINT_GRAPHQL\fR
+\fB\-\-endpoint\-graphql\fR \fI<ENDPOINT_GRAPHQL>\fR
 The endpoint to use
 .TP
-\fB\-\-endpoint\-dynamic\-graph\fR=\fIENDPOINT_DYNAMIC_GRAPH\fR
+\fB\-\-endpoint\-dynamic\-graph\fR \fI<ENDPOINT_DYNAMIC_GRAPH>\fR
 The endpoint to use
 .TP
-\fB\-\-endpoint\-runtime\fR=\fIENDPOINT_RUNTIME\fR
+\fB\-\-endpoint\-runtime\fR \fI<ENDPOINT_RUNTIME>\fR
 The endpoint to use
 .TP
-\fB\-\-endpoint\-plugins\fR=\fIENDPOINT_PLUGINS\fR
+\fB\-\-endpoint\-plugins\fR \fI<ENDPOINT_PLUGINS>\fR
 The endpoint to use
 .TP
-\fB\-\-bearer\fR=\fIBEARER\fR
+\fB\-\-bearer\fR \fI<BEARER>\fR
 The authentication token
 .TP
+\fB\-\-danger\-accept\-invalid\-certs\fR \fI<DANGER_ACCEPT_INVALID_CERTS>\fR
+Controls the use of certificate validation.
+
+Defaults to `false`.
+
+Warning: You should think very carefully before using this method. If invalid certificates are trusted, *any* certificate for *any* site will be trusted for use. This includes expired certificates. This introduces significant vulnerabilities, and should only be used as a last resort.
+.br
+
+.br
+[\fIpossible values: \fRtrue, false]
+.TP
 \fB\-h\fR, \fB\-\-help\fR
-Print help
+Print help (see a summary with \*(Aq\-h\*(Aq)
 .TP
 \fB\-V\fR, \fB\-\-version\fR
 Print version
+.TP
+[\fIDANGER_ACCEPT_INVALID_HOSTNAMES\fR]
+Controls the use of hostname verification.
+
+Defaults to `false`.
+
+Warning: You should think very carefully before you use this method. If hostname verification is not used, any valid certificate for any site will be trusted for use from any other. This introduces a significant vulnerability to man\-in\-the\-middle attacks.
+.br
+
+.br
+[\fIpossible values: \fRtrue, false]
 .SH SUBCOMMANDS
 .TP
 reactive\-graph\-client\-shell\-completions(1)
@@ -91,6 +113,9 @@ Manage relation instances
 .TP
 reactive\-graph\-client\-flow\-instances(1)
 Manage flow instances
+.TP
+reactive\-graph\-client\-introspection(1)
+Execute GraphQL introspection queries
 .TP
 reactive\-graph\-client\-help(1)
 Print this message or the help of the given subcommand(s)
