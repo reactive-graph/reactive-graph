@@ -61,6 +61,7 @@ pub struct ClientConnectionArguments {
     /// hostname verification is not used, any valid certificate for any
     /// site will be trusted for use from any other. This introduces a
     /// significant vulnerability to man-in-the-middle attacks.
+    #[arg(long)]
     danger_accept_invalid_hostnames: Option<bool>,
 }
 
