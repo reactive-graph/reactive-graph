@@ -327,15 +327,17 @@
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h2 id="unreleased"><a class="header" href="#unreleased">Unreleased</a></h2>
 <h3 id="added"><a class="header" href="#added">Added</a></h3>
+<ul>
+<li>Plugins: Hot deploy archives (.tar.gz and .zip) containing plugins placed in the deploy folder</li>
+<li>CLI: Install plugins from a plugin repository (GitHub Releases)</li>
+</ul>
 <h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
 <h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
 <h3 id="distribution"><a class="header" href="#distribution">Distribution</a></h3>
 <h3 id="infrastructure"><a class="header" href="#infrastructure">Infrastructure</a></h3>
 <h2 id="0100-alpha-5---2025-08-01"><a class="header" href="#0100-alpha-5---2025-08-01">[0.10.0-alpha-5] - 2025-08-01</a></h2>
-<blockquote>
-<p>[!NOTE]
-Improves plugin support in docker containers</p>
-</blockquote>
+<h3 id="summary--highlights"><a class="header" href="#summary--highlights">Summary / Highlights</a></h3>
+<p>Improves plugin support in docker containers</p>
 <h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
 <ul>
 <li>CLI: Added arguments <code>--danger_accept_invalid_certs</code> and <code>--danger_accept_invalid_hostnames</code></li>
@@ -361,6 +363,10 @@ single container)</li>
 <li>The standard library plugins are now provided via <a href="https://github.com/reactive-graph/std/releases/tag/nightly">GitHub Releases</a></li>
 </ul>
 <h2 id="0100-alpha-4---2025-07-28"><a class="header" href="#0100-alpha-4---2025-07-28">[0.10.0-alpha-4] - 2025-07-28</a></h2>
+<h3 id="summary--highlights-1"><a class="header" href="#summary--highlights-1">Summary / Highlights</a></h3>
+<p>Improved <strong>schema support</strong> for the type-system, with JSON Schemas for every type – both in the generic GraphQL API and in the Dynamic Graph.</p>
+<p><strong>GraphQL schemas and JSON schemas are published on:</strong>
+<a href="https://schema.reactive-graph.io/">schema.reactive-graph.io</a></p>
 <h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
 <ul>
 <li>CLI: Added entity instances to flow types</li>
@@ -411,6 +417,8 @@ single container)</li>
 <li>CI: Check for breaking changes in the GraphQL schemas</li>
 </ul>
 <h2 id="0100-alpha-3---2025-04-13"><a class="header" href="#0100-alpha-3---2025-04-13">[0.10.0-alpha-3] - 2025-04-13</a></h2>
+<h3 id="summary--highlights-2"><a class="header" href="#summary--highlights-2">Summary / Highlights</a></h3>
+<p>Migrated to Rust Edition 2024</p>
 <h3 id="added-3"><a class="header" href="#added-3">Added</a></h3>
 <ul>
 <li>Interfaces: Provide JSON schemas of the type system and instance system via GraphQL API</li>
@@ -445,6 +453,8 @@ single container)</li>
 <li>CI: Automatically assign assignee and reviewers</li>
 </ul>
 <h2 id="0100-alpha-2---2024-10-27"><a class="header" href="#0100-alpha-2---2024-10-27">[0.10.0-alpha-2] - 2024-10-27</a></h2>
+<h3 id="summary--highlights-3"><a class="header" href="#summary--highlights-3">Summary / Highlights</a></h3>
+<p>Provisioning instances</p>
 <h3 id="added-4"><a class="header" href="#added-4">Added</a></h3>
 <ul>
 <li>CLI: Provisioning config files <code>reactive-graph instances init</code></li>
@@ -469,6 +479,8 @@ single container)</li>
 <li>CI: Auto-merge dependabot PRs</li>
 </ul>
 <h2 id="0100-alpha-1---2024-10-20"><a class="header" href="#0100-alpha-1---2024-10-20">[0.10.0-alpha-1] - 2024-10-20</a></h2>
+<h3 id="summary--highlights-4"><a class="header" href="#summary--highlights-4">Summary / Highlights</a></h3>
+<p>Self updater, shell completions and building for more targets in CI</p>
 <h3 id="added-5"><a class="header" href="#added-5">Added</a></h3>
 <ul>
 <li>CLI: Print or install shell completions (bash, fish, zsh, powershell) and man pages</li>
@@ -490,6 +502,7 @@ single container)</li>
 <li>CI: Automatic labeling</li>
 </ul>
 <h2 id="0100-alpha-0---2024-03-24"><a class="header" href="#0100-alpha-0---2024-03-24">[0.10.0-alpha-0] - 2024-03-24</a></h2>
+<h3 id="summary--highlights-5"><a class="header" href="#summary--highlights-5">Summary / Highlights</a></h3>
 <p>This is a highly technical release with a lot of major refactorings and design changes.</p>
 <h3 id="highlights"><a class="header" href="#highlights">Highlights</a></h3>
 <ul>
