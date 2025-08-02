@@ -9,6 +9,10 @@ fn get_timestamp() -> u64 {
     SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs()
 }
 
+pub fn get_deploy_folder(path: &Path) -> Option<PathBuf> {
+    path.parent().and_then(|path| path.parent()).map(|path| path.join("deploy"))
+}
+
 // TODO: replace relative with absolute path replacement
 pub fn get_deploy_path(path: &Path) -> Option<PathBuf> {
     file_prefix(path).and_then(|file_prefix| {

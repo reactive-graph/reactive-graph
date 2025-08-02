@@ -12,15 +12,18 @@ readme = "../../../../README.md"
 [dependencies]
 async-trait = { workspace = true }
 dashmap = { workspace = true }
+flate2 = { workspace = true }
 futures = { workspace = true }
 libloading = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
 notify = { workspace = true }
 semver = { workspace = true }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
+tar = { workspace = true }
 tokio = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 walkdir = { workspace = true }
+zip = { workspace = true }
 
 reactive-graph-di = { version = "0.10.0", path = "../../../di" }
 reactive-graph-plugin-api = { version = "0.10.0", path = "../../api" }

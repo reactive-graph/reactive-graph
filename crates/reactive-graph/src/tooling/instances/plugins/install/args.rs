@@ -1,11 +1,11 @@
+use crate::tooling::instances::plugins::install::commands::InstallPluginsFromRepositoryCommands;
 use crate::tooling::releases::args::ReleaseArgs;
 use crate::tooling::repository::args::RepositoryArgs;
-use crate::tooling::update::commands::UpdateCommands;
 use clap::Parser;
 
 #[derive(Parser, Debug)]
 #[clap(disable_version_flag = true)]
-pub struct UpdateArgs {
+pub struct InstallPluginsFromRepositoryArgs {
     #[clap(flatten)]
     pub release: ReleaseArgs,
 
@@ -13,5 +13,5 @@ pub struct UpdateArgs {
     pub repository: RepositoryArgs,
 
     #[command(subcommand)]
-    pub commands: Option<UpdateCommands>,
+    pub commands: Option<InstallPluginsFromRepositoryCommands>,
 }

@@ -1,11 +1,11 @@
-use crate::tooling::instances::plugins::args::InstallPluginArgs;
-use crate::tooling::instances::plugins::args::UninstallPluginArgs;
+use crate::tooling::instances::plugins::install::args::InstallPluginsFromRepositoryArgs;
+use crate::tooling::instances::plugins::uninstall::args::UninstallPluginArgs;
 use clap::Subcommand;
 
 #[derive(Subcommand, Debug)]
 pub enum PluginsCommands {
-    /// Installs a plugin.
-    Install(InstallPluginArgs),
+    /// Installs plugins from a plugin repository.
+    Install(InstallPluginsFromRepositoryArgs),
     /// Uninstalls a plugin.
     Uninstall(UninstallPluginArgs),
 }

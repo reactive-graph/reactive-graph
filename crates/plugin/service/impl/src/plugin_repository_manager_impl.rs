@@ -1,6 +1,9 @@
 use std::collections::HashMap;
 use std::env::consts::DLL_EXTENSION;
+use std::ffi::OsStr;
 use std::fs;
+use std::fs::File;
+use std::fs::create_dir_all;
 use std::path::Path;
 use std::path::PathBuf;
 use std::sync::Arc;
@@ -34,10 +37,19 @@ use reactive_graph_plugin_service_api::PluginContainerManager;
 use reactive_graph_plugin_service_api::PluginRepositoryManager;
 use reactive_graph_plugin_service_api::PluginResolver;
 
-use crate::plugin_paths::get_install_path;
-use crate::plugin_paths::get_stem;
+use flate2::read::GzDecoder;
+use reactive_graph_plugin_service_api::get_deploy_folder;
+use reactive_graph_plugin_service_api::get_install_path;
+use reactive_graph_plugin_service_api::get_stem;
+use tar::Archive;
+use zip::ZipArchive;
 
 pub type HotDeployWatcher = RwLock<Option<RecommendedWatcher>>;
+
+enum ArchiveType {
+    TarGz,
+    Zip,
+}
 
 fn create_hot_deploy_watcher() -> HotDeployWatcher {
     RwLock::new(None)
@@ -83,6 +95,17 @@ impl PluginRepositoryManagerImpl {
                             let Some(stem) = get_stem(&path) else {
                                 continue;
                             };
+                            if let Some(archive_type) = is_archive(&path) {
+                                match archive_type {
+                                    ArchiveType::TarGz => {
+                                        let _ = extract_tar_gz(&path);
+                                    }
+                                    ArchiveType::Zip => {
+                                        let _ = extract_zip(&path);
+                                    }
+                                }
+                                continue;
+                            }
                             if !is_dll(&path) {
                                 continue;
                             }
@@ -220,7 +243,19 @@ impl PluginRepositoryManager for PluginRepositoryManagerImpl {
                 if !file_type.is_file() {
                     continue;
                 }
-                let _ = deploy_plugin(entry.path());
+                let path = entry.path();
+                if let Some(archive_type) = is_archive(&path) {
+                    match archive_type {
+                        ArchiveType::TarGz => {
+                            let _ = extract_tar_gz(&path);
+                        }
+                        ArchiveType::Zip => {
+                            let _ = extract_zip(&path);
+                        }
+                    }
+                    continue;
+                }
+                let _ = deploy_plugin(path);
             }
         }
     }
@@ -357,6 +392,54 @@ fn is_dll(path: &Path) -> bool {
         return extension == DLL_EXTENSION;
     }
     false
+}
+
+fn is_archive(path: &Path) -> Option<ArchiveType> {
+    path.file_name().and_then(OsStr::to_str).and_then(|file_name| {
+        if file_name.ends_with(".tar.gz") {
+            Some(ArchiveType::TarGz)
+        } else if file_name.ends_with(".zip") {
+            Some(ArchiveType::Zip)
+        } else {
+            None
+        }
+    })
+}
+
+fn extract_tar_gz(archive_path: &Path) -> Result<(), HotDeployError> {
+    let deploy_folder = get_deploy_folder(archive_path).ok_or(HotDeployError::ArchiveError)?;
+    let archive_file = File::open(archive_path).map_err(|_| HotDeployError::ArchiveError)?;
+    let decoder = GzDecoder::new(archive_file);
+    let mut archive = Archive::new(decoder);
+    archive.unpack(deploy_folder).map_err(|_| HotDeployError::ArchiveError)?;
+    fs::remove_file(archive_path).map_err(|_| HotDeployError::ArchiveError)?;
+    Ok(())
+}
+
+fn extract_zip(archive_path: &Path) -> Result<(), HotDeployError> {
+    let deploy_folder = get_deploy_folder(archive_path).ok_or(HotDeployError::ArchiveError)?;
+    let archive_file = File::open(archive_path).map_err(|_| HotDeployError::ArchiveError)?;
+    let mut zip_archive = ZipArchive::new(archive_file).map_err(|_| HotDeployError::ArchiveError)?;
+    for i in 0..zip_archive.len() {
+        let mut zip_file = zip_archive.by_index(i).map_err(|_| HotDeployError::ArchiveError)?;
+        let plugin_path = match zip_file.enclosed_name() {
+            Some(path) => Path::new(&deploy_folder).join(path),
+            None => continue,
+        };
+        if (*zip_file.name()).ends_with('/') {
+            create_dir_all(&plugin_path).map_err(|_| HotDeployError::ArchiveError)?;
+        } else {
+            if let Some(plugin_path_parent) = plugin_path.parent() {
+                if !plugin_path_parent.exists() {
+                    create_dir_all(plugin_path_parent).map_err(|_| HotDeployError::ArchiveError)?;
+                }
+            }
+            let mut outfile = File::create(&plugin_path).map_err(|_| HotDeployError::ArchiveError)?;
+            std::io::copy(&mut zip_file, &mut outfile).map_err(|_| HotDeployError::ArchiveError)?;
+        }
+    }
+    fs::remove_file(archive_path).map_err(|_| HotDeployError::ArchiveError)?;
+    Ok(())
 }
 
 fn deploy_plugin(deploy_path: PathBuf) -> Result<PathBuf, HotDeployError> {

@@ -1,4 +1,4 @@
-use crate::tooling::update::args::UpdateArgs;
+use crate::tooling::releases::args::ReleaseArgs;
 use self_update::cargo_crate_version;
 use std::fmt::Display;
 use std::fmt::Formatter;
@@ -31,8 +31,8 @@ impl ReleaseTag {
     }
 }
 
-impl From<&UpdateArgs> for ReleaseTag {
-    fn from(args: &UpdateArgs) -> Self {
+impl From<&ReleaseArgs> for ReleaseTag {
+    fn from(args: &ReleaseArgs) -> Self {
         if args.nightly.unwrap_or_default() {
             return ReleaseTag::Nightly;
         }

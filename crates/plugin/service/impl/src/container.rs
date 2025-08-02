@@ -12,8 +12,6 @@ use log::trace;
 use springtime_di::instance_provider::ComponentInstanceProviderError;
 use uuid::Uuid;
 
-use crate::plugin_paths::get_deploy_path;
-use crate::plugin_paths::get_install_path;
 use reactive_graph_plugin_api::PLUGIN_API_VERSION;
 use reactive_graph_plugin_api::PLUGIN_NAME_PREFIX;
 use reactive_graph_plugin_api::Plugin;
@@ -36,6 +34,8 @@ use reactive_graph_plugin_api::RUSTC_VERSION;
 use reactive_graph_plugin_service_api::PluginTransitionResult;
 use reactive_graph_plugin_service_api::PluginTransitionResult::Changed;
 use reactive_graph_plugin_service_api::PluginTransitionResult::NoChange;
+use reactive_graph_plugin_service_api::get_deploy_path;
+use reactive_graph_plugin_service_api::get_install_path;
 
 use crate::PluginProxy;
 use crate::PluginRegistrar;
