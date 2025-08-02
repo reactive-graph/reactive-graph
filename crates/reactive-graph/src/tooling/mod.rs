@@ -7,6 +7,8 @@ use anyhow::Result;
 pub mod args;
 pub mod commands;
 pub mod instances;
+pub mod releases;
+pub mod repository;
 pub mod update;
 
 pub fn tooling(args: ToolingArguments) -> Result<()> {

@@ -116,6 +116,7 @@ daemonize-me = "2.0"
 darling = "0.20"
 dashmap = { version = "6.0", features = ["serde"] }
 default-test = "0.1"
+flate2 = "1.1"
 futures = "0.3"
 futures-timer = "3.0"
 futures-util = "0.3"
@@ -163,6 +164,7 @@ strum_macros = "0.27"
 syn = { version = "2.0", features = ["full"] }
 tabled = "0.19"
 table_to_html = "0.8"
+tar = "0.4"
 thiserror = "2.0"
 tokio = { version = "1", features = ["time", "rt"] }
 tokio-stream = "0.1"
@@ -175,6 +177,7 @@ walkdir = "2.5"
 wildmatch = "2.4"
 workspace_root = "0.1.2"
 xdg = "3.0"
+zip = "4.3"
 
 [workspace.lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)', 'cfg(fn_traits)', 'cfg(unboxed_closures)'] }

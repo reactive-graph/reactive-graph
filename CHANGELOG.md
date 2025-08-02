@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Plugins: Hot deploy archives (.tar.gz and .zip) containing plugins placed in the deploy folder
+- CLI: Install plugins from a plugin repository (GitHub Releases)
+
 ### Changed
 
 ### Fixed
