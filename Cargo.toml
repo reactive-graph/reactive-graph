@@ -131,7 +131,7 @@ libloading = "0.8"
 log = { version = "0.4", features = ["std", "serde"] }
 log4rs = { version = "1.3", features = ["console_appender", "file_appender", "toml_format", "ansi_writer"] }
 mime = "0.3"
-notify = "8.0"
+notify = "8.2"
 num_cpus = "1.17"
 path-tree = "0.8"
 portpicker = "0.1.1"
