@@ -7,10 +7,10 @@ use clap::Parser;
 #[clap(disable_version_flag = true)]
 pub struct InstallPluginsFromRepositoryArgs {
     #[clap(flatten)]
-    pub release: ReleaseArgs,
+    pub repository: RepositoryArgs,
 
     #[clap(flatten)]
-    pub repository: RepositoryArgs,
+    pub release: ReleaseArgs,
 
     #[command(subcommand)]
     pub commands: Option<InstallPluginsFromRepositoryCommands>,

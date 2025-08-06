@@ -6,6 +6,7 @@ use crate::tooling::instances::config::get_config_dir;
 use crate::tooling::instances::init::args::InitInstanceArgs;
 use crate::tooling::instances::logging::LOG_DIR_NAME;
 use crate::tooling::instances::logging::create_log_files;
+use crate::tooling::instances::plugins::install::execute_install;
 use crate::tooling::instances::provisioning::create_dir;
 use crate::tooling::instances::provisioning::write_file;
 use crate::tooling::instances::repositories::args::InitRepositoryArgs;
@@ -48,7 +49,8 @@ pub fn init_instance(instance_dir: &PathBuf, args: InitInstanceArgs) -> Result<(
     let keys_dir = get_keys_dir(instance_dir);
     generate_certificate(&keys_dir, args.certificate)?;
 
-    // TODO: Provisioning standard library plugins
+    // Provisioning standard library plugins
+    execute_install(instance_dir, &args.repository, &args.release)?;
 
     // exit(0);
     Ok(())

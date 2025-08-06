@@ -1,11 +1,13 @@
 use crate::tooling::instances::plugins::install::args::InstallPluginsFromRepositoryArgs;
 use crate::tooling::instances::plugins::install::commands::InstallPluginsFromRepositoryCommands;
 use crate::tooling::instances::plugins::install::repositories::std::PLUGINS_REPOSITORY_STD;
+use crate::tooling::releases::args::ReleaseArgs;
 use crate::tooling::releases::release_info::print_release_info;
 use crate::tooling::releases::release_info::print_release_list;
 use crate::tooling::releases::release_tag::RELEASE_TAG_NIGHTLY;
 use crate::tooling::releases::release_tag::ReleaseTag;
 use crate::tooling::releases::update_from_github::update_from_github;
+use crate::tooling::repository::args::RepositoryArgs;
 use anyhow::Result;
 use anyhow::anyhow;
 use self_update::cargo_crate_version;
@@ -20,14 +22,14 @@ pub fn install_plugin(instance_dir: &Path, install_args: InstallPluginsFromRepos
     if let Some(commands) = &install_args.commands {
         return match commands {
             InstallPluginsFromRepositoryCommands::Info(release_info_args) => {
-                print_release_info(&install_args.release, &install_args.repository, release_info_args, &PLUGINS_REPOSITORY_STD)
+                print_release_info(&install_args.repository, &PLUGINS_REPOSITORY_STD, &install_args.release, release_info_args)
             }
             InstallPluginsFromRepositoryCommands::List(release_list_args) => {
-                print_release_list(&install_args.repository, release_list_args, &PLUGINS_REPOSITORY_STD)
+                print_release_list(&install_args.repository, &PLUGINS_REPOSITORY_STD, release_list_args)
             }
         };
     };
-    execute_install(instance_dir, &install_args)?;
+    execute_install(instance_dir, &install_args.repository, &install_args.release)?;
     println!(
         "Successfully installed plugins from repository {}/{}",
         install_args.repository.repository_owner(&PLUGINS_REPOSITORY_STD),
@@ -36,9 +38,8 @@ pub fn install_plugin(instance_dir: &Path, install_args: InstallPluginsFromRepos
     Ok(())
 }
 
-fn execute_install(instance_dir: &Path, install_args: &InstallPluginsFromRepositoryArgs) -> Result<()> {
-    let release_args = &install_args.release;
-    let release_update = update_from_github(&release_args, &install_args.repository, &PLUGINS_REPOSITORY_STD)?;
+pub fn execute_install(instance_dir: &Path, repository_args: &RepositoryArgs, release_args: &ReleaseArgs) -> Result<()> {
+    let release_update = update_from_github(repository_args, &PLUGINS_REPOSITORY_STD, release_args)?;
     let release_tag = ReleaseTag::from(release_args);
     if release_args.show_output() {
         println!("Release tag: {}", release_tag);
