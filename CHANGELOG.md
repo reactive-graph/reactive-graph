@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Upgrade log4rs to 1.4.0
+
 ### Fixed
 
 - Avoid conflicting json schema fields in the dynamic graph
