@@ -12,12 +12,12 @@ use anyhow::Result;
 use self_update::cargo_crate_version;
 
 pub fn print_release_info(
-    release_args: &ReleaseArgs,
     repository_args: &RepositoryArgs,
-    release_info_args: &ReleaseInfoArgs,
     default_repository: &Box<dyn Repository>,
+    release_args: &ReleaseArgs,
+    release_info_args: &ReleaseInfoArgs,
 ) -> Result<()> {
-    let release_update = update_from_github(release_args, repository_args, default_repository)?;
+    let release_update = update_from_github(repository_args, default_repository, release_args)?;
     let release_info = match ReleaseTag::from(release_args) {
         ReleaseTag::Nightly => release_update.get_release_version(RELEASE_TAG_NIGHTLY),
         ReleaseTag::Latest => release_update.get_latest_release(),
@@ -27,7 +27,7 @@ pub fn print_release_info(
     vec![Release::from(&release_info)].print_table_and_exit(&release_info_args.output_format)
 }
 
-pub fn print_release_list(repository_args: &RepositoryArgs, release_list_args: &ReleaseListArgs, default_repository: &Box<dyn Repository>) -> Result<()> {
+pub fn print_release_list(repository_args: &RepositoryArgs, default_repository: &Box<dyn Repository>, release_list_args: &ReleaseListArgs) -> Result<()> {
     self_update::backends::github::ReleaseList::configure()
         .repo_owner(&repository_args.repository_owner(default_repository))
         .repo_name(&repository_args.repository_name(default_repository))

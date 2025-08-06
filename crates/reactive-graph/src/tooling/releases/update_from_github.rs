@@ -7,9 +7,9 @@ use self_update::cargo_crate_version;
 use self_update::update::ReleaseUpdate;
 
 pub fn update_from_github(
-    release_args: &ReleaseArgs,
     repository_args: &RepositoryArgs,
     default_repository: &Box<dyn Repository>,
+    release_args: &ReleaseArgs,
 ) -> anyhow::Result<Box<dyn ReleaseUpdate>> {
     let current_bin_name = env!("CARGO_BIN_NAME");
     let release_tag = ReleaseTag::from(release_args);

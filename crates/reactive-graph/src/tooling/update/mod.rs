@@ -15,8 +15,8 @@ pub mod repository;
 pub fn handle_update(args: UpdateArgs) -> Result<()> {
     if let Some(commands) = &args.commands {
         return match commands {
-            UpdateCommands::Info(release_info_args) => print_release_info(&args.release, &args.repository, release_info_args, &REACTIVE_GRAPH_REPOSITORY),
-            UpdateCommands::List(release_list_args) => print_release_list(&args.repository, release_list_args, &REACTIVE_GRAPH_REPOSITORY),
+            UpdateCommands::Info(release_info_args) => print_release_info(&args.repository, &REACTIVE_GRAPH_REPOSITORY, &args.release, release_info_args),
+            UpdateCommands::List(release_list_args) => print_release_list(&args.repository, &REACTIVE_GRAPH_REPOSITORY, release_list_args),
         };
     };
     let status = execute_update(&args)?;
@@ -25,7 +25,7 @@ pub fn handle_update(args: UpdateArgs) -> Result<()> {
 }
 
 fn execute_update(args: &UpdateArgs) -> Result<Status> {
-    update_from_github(&args.release, &args.repository, &REACTIVE_GRAPH_REPOSITORY)?
+    update_from_github(&args.repository, &REACTIVE_GRAPH_REPOSITORY, &args.release)?
         .update()
         .map_err(Into::into)
 }
