@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["InstallPluginArgs","PluginsArgs","UninstallPluginArgs"]};
+window.SIDEBAR_ITEMS = {"struct":["PluginsArgs"]};

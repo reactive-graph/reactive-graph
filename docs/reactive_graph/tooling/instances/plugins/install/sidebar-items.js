@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["install_plugin"]};
+window.SIDEBAR_ITEMS = {"fn":["execute_install","install_plugin"],"mod":["args","commands","repositories"]};

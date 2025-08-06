@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["uninstall_plugin"]};
+window.SIDEBAR_ITEMS = {"fn":["uninstall_plugin"],"mod":["args"]};

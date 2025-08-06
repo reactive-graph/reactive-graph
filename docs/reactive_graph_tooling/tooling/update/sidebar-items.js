@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["REPO_NAME","REPO_OWNER","TARGET_TRIPLE"],"fn":["execute_update","handle_update","update_from_github"],"mod":["args","commands","release","release_info","release_tag"]};
+window.SIDEBAR_ITEMS = {"fn":["execute_update","handle_update"],"mod":["args","commands","repository"]};

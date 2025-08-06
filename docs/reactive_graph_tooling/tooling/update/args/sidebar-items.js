@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["UpdateArgs","UpdateInfoArgs","UpdateListArgs"]};
+window.SIDEBAR_ITEMS = {"struct":["UpdateArgs"]};

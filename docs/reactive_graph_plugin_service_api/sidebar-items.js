@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["config","plugin_container_manager","plugin_context_factory","plugin_repository_manager","plugin_resolver","plugin_system","resolver","transition"]};
+window.SIDEBAR_ITEMS = {"mod":["config","plugin_container_manager","plugin_context_factory","plugin_paths","plugin_repository_manager","plugin_resolver","plugin_system","resolver","transition"]};

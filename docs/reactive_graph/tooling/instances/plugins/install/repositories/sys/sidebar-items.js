@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"static":["PLUGINS_REPOSITORY_SYS"],"struct":["SysRepository"]};

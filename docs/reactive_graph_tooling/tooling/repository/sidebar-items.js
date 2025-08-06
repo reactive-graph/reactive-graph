@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["DEFAULT_REPOSITORY_OWNER"],"mod":["args"],"trait":["Repository"]};
