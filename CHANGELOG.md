@@ -18,7 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Distribution
 
+- Provisioning standard library plugins or another set of plugins
+
 ### Infrastructure
+
+- CI: Update rust nightly toolchain to nightly-2025-08-05
 
 ## [0.10.0-alpha-5] - 2025-08-01
 
