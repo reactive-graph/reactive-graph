@@ -41,7 +41,7 @@ jobs:
       - name: Install latest nightly
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: nightly-2025-03-14
+          toolchain: nightly-2025-08-05
           components: rustfmt
       - name: Run cargo fmt
         run: cargo fmt --all -- --check
@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        toolchain: [ stable, nightly-2025-03-14 ]
+        toolchain: [ stable, nightly-2025-08-05 ]
         target: [ x86_64-unknown-linux-gnu, x86_64-unknown-linux-musl ]
     steps:
       - name: VCS Checkout
@@ -106,7 +106,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-22.04, ubuntu-22.04-arm, macos-latest, windows-latest ]
-        toolchain: [ stable, nightly-2025-03-14 ]
+        toolchain: [ stable, nightly-2025-08-05 ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: VCS Checkout
@@ -127,7 +127,7 @@ jobs:
     if: always() && (!contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled'))
     strategy:
       matrix:
-        toolchain: [ stable, nightly-2025-03-14 ]
+        toolchain: [ stable, nightly-2025-08-05 ]
         target: [ x86_64-unknown-linux-gnu, x86_64-unknown-linux-musl ]
     runs-on: ubuntu-22.04
     steps:
