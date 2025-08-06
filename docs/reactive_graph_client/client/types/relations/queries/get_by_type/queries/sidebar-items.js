@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_relation_type_by_type_query"],"struct":["GetRelationTypeByType","GetRelationTypeByTypeTypes"]};

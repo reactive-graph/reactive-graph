@@ -8,8 +8,12 @@
 <a href=#8 id=8 data-nosnippet>8</a><span class="kw">pub const </span>FIELD_JSON_SCHEMA_APPENDIX: <span class="kw-2">&amp;</span>str = <span class="string">"JsonSchema"</span>;
 <a href=#9 id=9 data-nosnippet>9</a>
 <a href=#10 id=10 data-nosnippet>10</a><span class="kw">pub fn </span>json_schema_field&lt;TY: Into&lt;DynamicGraphTypeDefinition&gt;&gt;(ty: TY, schema: Schema) -&gt; Field {
-<a href=#11 id=11 data-nosnippet>11</a>    Field::new(ty.into().field_name_with_appendix(FIELD_JSON_SCHEMA_APPENDIX), TypeRef::named_nn(<span class="string">"JSON"</span>), <span class="kw">move </span>|_ctx| {
-<a href=#12 id=12 data-nosnippet>12</a>        <span class="kw">let </span>schema = schema.clone();
-<a href=#13 id=13 data-nosnippet>13</a>        FieldFuture::new(<span class="kw">async move </span>{ <span class="prelude-val">Ok</span>(to_field_value(schema.as_value().clone())) })
-<a href=#14 id=14 data-nosnippet>14</a>    })
-<a href=#15 id=15 data-nosnippet>15</a>}</code></pre></div></section></main></body></html>
+<a href=#11 id=11 data-nosnippet>11</a>    Field::new(
+<a href=#12 id=12 data-nosnippet>12</a>        ty.into().field_name_with_suffix_and_appendix(FIELD_JSON_SCHEMA_APPENDIX),
+<a href=#13 id=13 data-nosnippet>13</a>        TypeRef::named_nn(<span class="string">"JSON"</span>),
+<a href=#14 id=14 data-nosnippet>14</a>        <span class="kw">move </span>|_ctx| {
+<a href=#15 id=15 data-nosnippet>15</a>            <span class="kw">let </span>schema = schema.clone();
+<a href=#16 id=16 data-nosnippet>16</a>            FieldFuture::new(<span class="kw">async move </span>{ <span class="prelude-val">Ok</span>(to_field_value(schema.as_value().clone())) })
+<a href=#17 id=17 data-nosnippet>17</a>        },
+<a href=#18 id=18 data-nosnippet>18</a>    )
+<a href=#19 id=19 data-nosnippet>19</a>}</code></pre></div></section></main></body></html>

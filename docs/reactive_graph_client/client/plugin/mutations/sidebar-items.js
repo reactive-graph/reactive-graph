@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["restart","start","stop","uninstall"]};
