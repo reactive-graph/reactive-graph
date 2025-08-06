@@ -33,6 +33,10 @@ impl DynamicGraphTypeDefinition {
         format!("{}{}", self.field_name(), self.ty.type_id_type.full_name())
     }
 
+    pub fn field_name_with_suffix_and_appendix(&self, appendix: &str) -> String {
+        format!("{}{}{}", self.ty.type_name.to_case(Pascal), self.ty.type_id_type.full_name(), appendix)
+    }
+
     pub fn outbound_type_name(&self) -> String {
         format!("outbound_{}_{}", &self.ty.namespace, &self.ty.type_name)
     }
