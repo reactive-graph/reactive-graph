@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["update"],"struct":["UpdateRemote","UpdateRemoteMutationRemotes"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["_extensions_arguments","_properties_arguments"],"struct":["__typename","behaviours","countExtensions","countProperties","description","entityTypes","extensions","inboundOf","jsonSchema","jsonSchemaId","name","namespace","outboundOf","properties","relationTypes"]};

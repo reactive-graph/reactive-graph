@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["add_extension","container"]};
