@@ -163,7 +163,7 @@ strum = { version = "0.27", features = ["derive"] }
 strum_macros = "0.27"
 syn = { version = "2.0", features = ["full"] }
 tabled = "0.19"
-table_to_html = "0.8"
+table_to_html = "0.9"
 tar = "0.4"
 thiserror = "2.0"
 tokio = { version = "1", features = ["time", "rt"] }
