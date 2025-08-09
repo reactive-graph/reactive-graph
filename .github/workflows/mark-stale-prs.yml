@@ -21,7 +21,5 @@ jobs:
           stale-pr-label: o:stale
           stale-pr-message: >
             This PR has not had activity in the past 4 weeks, labeling it as stale.
-            If the PR is waiting for review, notify the dev@lucene.apache.org list.
-            Thank you for your contribution!
           debug-only: false             # turn on to run the action without applying changes
           operations-per-run: 500       # operations budget
