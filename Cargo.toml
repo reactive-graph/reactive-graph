@@ -1,5 +1,7 @@
 [workspace]
 
+resolver = "3"
+
 members = [
     "crates/di",
     "crates/utils/deployment",
@@ -74,7 +76,6 @@ members = [
     "crates/type-system/rest",
     "crates/reactive-graph",
 ]
-resolver = "2"
 
 [workspace.package]
 version = "0.10.0"
