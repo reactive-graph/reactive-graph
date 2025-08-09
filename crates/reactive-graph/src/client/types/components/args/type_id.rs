@@ -3,7 +3,7 @@ use crate::client::error::CommandError::NotFound;
 use clap::Args;
 use reactive_graph_client::types::common::variables::type_id::variables::TypeIdVariables;
 use reactive_graph_graph::ComponentTypeId;
-use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
+use reactive_graph_graph::NAMESPACE_SEPARATOR;
 use std::fmt::Display;
 use std::fmt::Formatter;
 
@@ -19,7 +19,7 @@ pub(crate) struct ComponentTypeIdArgs {
 
 impl ComponentTypeIdArgs {
     pub fn not_found(&self) -> CommandError {
-        NotFound(format!("Component {}{}{} not found", &self.namespace, TYPE_ID_TYPE_SEPARATOR, &self.name))
+        NotFound(format!("Component {}{}{} not found", &self.namespace, NAMESPACE_SEPARATOR, &self.name))
     }
 }
 
@@ -38,7 +38,7 @@ impl From<&ComponentTypeIdArgs> for TypeIdVariables {
 
 impl Display for ComponentTypeIdArgs {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}{}{}", &self.namespace, TYPE_ID_TYPE_SEPARATOR, &self.name)
+        write!(f, "{}{}{}", &self.namespace, NAMESPACE_SEPARATOR, &self.name)
     }
 }
 

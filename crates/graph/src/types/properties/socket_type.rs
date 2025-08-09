@@ -1,19 +1,26 @@
 use core::fmt;
-use std::fmt::Display;
-use std::fmt::Formatter;
-
 use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
+use std::fmt::Display;
+use std::fmt::Formatter;
 
 #[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "docs"))]
+use documented::DocumentedVariants;
+#[cfg(any(test, feature = "test"))]
 use rand_derive3::RandGen;
+#[cfg(any(test, feature = "table"))]
+use tabled::Tabled;
 
 /// The socket type defines if the property acts as an input or output socket
 /// or is an hidden property
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Copy, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "lowercase")]
 #[cfg_attr(any(test, feature = "test"), derive(RandGen))]
+#[cfg_attr(any(test, feature = "table"), derive(Tabled))]
+#[cfg_attr(any(test, feature = "docs"), derive(DocumentedVariants))]
 pub enum SocketType {
     /// The property doesn't act as input or output socket.
     None,
@@ -53,9 +60,6 @@ impl Display for SocketType {
         write!(f, "{self:?}")
     }
 }
-
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
 
 #[cfg(any(test, feature = "test"))]
 impl DefaultTest for SocketType {

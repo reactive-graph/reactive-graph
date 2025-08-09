@@ -1,6 +1,8 @@
 use crate::AddExtensionError;
 use crate::AddPropertyError;
 use crate::ComponentTypeId;
+use crate::EntityTypeId;
+use crate::RelationComponentTypeIds;
 use crate::RelationTypeId;
 use crate::RemoveExtensionError;
 use crate::RemovePropertyError;
@@ -77,6 +79,12 @@ pub enum RelationTypeMergePropertiesError {
 }
 
 #[derive(Debug, Error)]
+pub enum RelationTypeMergeComponentPropertiesError {
+    #[error("Missing components {0:?} while merging properties from components into a relation type")]
+    ComponentDoesNotExist(RelationComponentTypeIds),
+}
+
+#[derive(Debug, Error)]
 pub enum RelationTypeAddExtensionError {
     #[error("The relation type {0} does not exist")]
     RelationTypeDoesNotExist(RelationTypeId),
@@ -104,4 +112,10 @@ pub enum RelationTypeRemoveExtensionError {
 pub enum RelationTypeMergeExtensionsError {
     #[error("The relation type {0} does not exist")]
     RelationTypeDoesNotExist(RelationTypeId),
+}
+
+#[derive(Debug, Error)]
+pub enum RelationTypeOutboundInboundError {
+    #[error("The entity type {0} does not exist")]
+    EntityTypeDoesNotExist(EntityTypeId),
 }

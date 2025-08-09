@@ -37,7 +37,7 @@ impl RelationInstanceIdArgs {
 
 impl From<&RelationInstanceIdArgs> for RelationInstanceId {
     fn from(id: &RelationInstanceIdArgs) -> Self {
-        let ty = RelationInstanceTypeId::new_unique_for_instance_id(id.ty.clone(), id.instance_id.clone());
+        let ty = RelationInstanceTypeId::new(id.ty.clone(), id.instance_id.clone());
         Self {
             outbound_id: id.outbound_id,
             ty,

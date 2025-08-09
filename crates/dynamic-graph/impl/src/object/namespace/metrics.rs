@@ -88,10 +88,12 @@ pub fn metrics_object() -> Object {
 
 pub fn metrics_field(namespace: Option<String>) -> Field {
     let namespace = namespace.clone().unwrap_or("root".to_string());
+    let description = format!("Metrics for {namespace}");
     Field::new("_metrics", metrics_type_name(), move |_ctx| {
         let namespace = namespace.clone();
         FieldFuture::new(async move { Ok(Some(FieldValue::value(namespace))) })
     })
+    .description(description)
 }
 
 fn extract_namespace_from_parent_value(ctx: &ResolverContext) -> ResolvedNamespace {

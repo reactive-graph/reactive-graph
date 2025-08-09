@@ -6,7 +6,11 @@ members = [
     "crates/di",
     "crates/utils/deployment",
     "crates/utils/test",
-    "crates/utils/schema-generator",
+    "crates/generator/book",
+    "crates/generator/codegen",
+    "crates/generator/documentation",
+    "crates/generator/schema/graphql",
+    "crates/generator/schema/json",
     "crates/behaviour/model/api",
     "crates/behaviour/model/impl",
     "crates/behaviour/service/api",
@@ -17,6 +21,7 @@ members = [
     "crates/command/api",
     "crates/command/model",
     "crates/command/impl",
+    "crates/command/type-provider",
     "crates/dynamic-graph/api",
     "crates/dynamic-graph/impl",
     "crates/dynamic-graph/model",
@@ -64,6 +69,7 @@ members = [
     "crates/runtime/service/api",
     "crates/runtime/service/impl",
     "crates/runtime/service/test",
+    "crates/runtime/type-provider",
     "crates/runtime/web/api",
     "crates/runtime/web/impl",
     "crates/client",
@@ -209,6 +215,7 @@ num_cpus = "1.17"
 path-tree = "0.8"
 portpicker = "0.1.1"
 proc-macro2 = "1.0"
+proc-macro-error2 = "2.0"
 quote = "1.0"
 rand = "0.9"
 rand_derive3 = { version = "0.2", git = "https://github.com/reactive-graph/rand_derive3.git", branch = "rust-edition-2024" }

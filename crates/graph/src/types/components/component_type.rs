@@ -28,6 +28,9 @@ use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::Extensions;
 use crate::JSON_SCHEMA_ID_URI_PREFIX;
+use crate::Namespace;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
 use crate::NamespacedTypeContainer;
 use crate::NamespacedTypeGetter;
 use crate::Namespaces;
@@ -40,9 +43,18 @@ use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeDefinitionJsonSchema;
 use crate::TypeDefinitionJsonSchemaGetter;
+use crate::TypeDescriptionGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
+use crate::divergent::DivergentPropertyTypes;
+
+#[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_utils_test::r_string;
 
 pub const JSON_SCHEMA_ID_COMPONENT: &str = formatcp!("{}/component.schema.json", JSON_SCHEMA_ID_URI_PREFIX);
 
@@ -97,22 +109,6 @@ impl Component {
     }
 
     /// Constructs a new component with the given name and properties
-    pub fn new_from_type<S: Into<String>, T: Into<String>, D: Into<String>, P: Into<PropertyTypes>, E: Into<Extensions>>(
-        namespace: S,
-        type_name: T,
-        description: D,
-        properties: P,
-        extensions: E,
-    ) -> Component {
-        Component {
-            ty: ComponentTypeId::new_from_type(namespace.into(), type_name.into()),
-            description: description.into(),
-            properties: properties.into(),
-            extensions: extensions.into(),
-        }
-    }
-
-    /// Constructs a new component with the given name and properties
     pub fn new_without_extensions<T: Into<ComponentTypeId>, D: Into<String>, P: Into<PropertyTypes>>(ty: T, description: D, properties: P) -> Component {
         Component {
             ty: ty.into(),
@@ -155,11 +151,15 @@ impl PropertyTypeContainer for Component {
     }
 
     fn merge_properties<P: Into<PropertyTypes>>(&mut self, properties_to_merge: P) {
-        self.properties.merge_properties(properties_to_merge);
+        self.properties.merge_properties(properties_to_merge)
     }
 
-    fn get_own_properties(&self) -> &PropertyTypes {
-        &self.properties
+    fn merge_non_existent_properties<P: Into<PropertyTypes>>(&self, properties_to_merge: P) -> DivergentPropertyTypes {
+        self.properties.merge_non_existent_properties(properties_to_merge)
+    }
+
+    fn get_own_properties_cloned(&self) -> PropertyTypes {
+        self.properties.clone()
     }
 }
 
@@ -187,14 +187,26 @@ impl ExtensionContainer for Component {
     fn merge_extensions<E: Into<Extensions>>(&mut self, extensions_to_merge: E) {
         self.extensions.merge_extensions(extensions_to_merge)
     }
+
+    fn get_own_extensions_cloned(&self) -> Extensions {
+        self.extensions.clone()
+    }
 }
 
 impl NamespacedTypeGetter for Component {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -202,6 +214,16 @@ impl NamespacedTypeGetter for Component {
 impl TypeDefinitionGetter for Component {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::Component
+    }
+}
+
+impl TypeDescriptionGetter for Component {
+    fn description(&self) -> String {
+        self.description.clone()
     }
 }
 
@@ -231,11 +253,7 @@ impl Ord for Component {
 
 impl From<Component> for TypeDefinition {
     fn from(component: Component) -> Self {
-        TypeDefinition {
-            type_id_type: TypeIdType::Component,
-            namespace: component.ty.namespace(),
-            type_name: component.ty.type_name(),
-        }
+        component.type_definition()
     }
 }
 
@@ -255,6 +273,20 @@ impl From<&Component> for Schema {
 pub struct Components(DashMap<ComponentTypeId, Component>);
 
 impl Components {
+    #[inline]
+    pub fn new() -> Self {
+        NamespacedTypeContainer::new()
+    }
+
+    // pub fn new_singleton<C: Into<Component>>(&self, component: C) -> Self {
+    //     Self::new().push(component)
+    // }
+
+    #[inline]
+    pub fn push<C: Into<Component>>(&self, component: C) {
+        NamespacedTypeContainer::push(self, component)
+    }
+
     pub fn merge<C: Into<Component>>(&self, component_to_merge: C) -> Result<Component, ComponentMergeError> {
         let component_to_merge = component_to_merge.into();
         let Some(mut component) = self.get_mut(&component_to_merge.ty) else {
@@ -267,7 +299,7 @@ impl Components {
     }
 
     pub fn namespaces(&self) -> Namespaces {
-        self.iter().map(|component| component.namespace()).collect()
+        self.iter().map(|component| component.path()).collect()
     }
 
     pub fn get<T: Into<ComponentTypeId>>(&self, ty: T) -> Option<Component> {
@@ -275,9 +307,9 @@ impl Components {
         self.0.iter().find(|component| component.ty == ty).map(|component| component.clone())
     }
 
-    pub fn get_by_namespace<N: Into<String>>(&self, namespace: N) -> Components {
+    pub fn get_by_namespace<N: Into<Namespace>>(&self, namespace: N) -> Components {
         let namespace = namespace.into();
-        self.filter_by(|component| component.ty.namespace() == namespace)
+        self.filter_by(|component| component.ty.path() == namespace)
     }
 
     pub fn get_by_types<C: Into<ComponentTypeIds>>(&self, tys: C) -> Components {
@@ -287,12 +319,12 @@ impl Components {
 
     pub fn find_by_type_name(&self, search: &str) -> Components {
         let matcher = WildMatch::new(search);
-        self.filter_by(|component| matcher.matches(component.type_name().as_str()))
+        self.filter_by(|component| matcher.matches(component.type_name().as_ref()))
     }
 
-    pub fn count_by_namespace<N: Into<String>>(&self, namespace: N) -> usize {
+    pub fn count_by_namespace<N: Into<Namespace>>(&self, namespace: N) -> usize {
         let namespace = namespace.into();
-        self.count_by(|component| component.ty.namespace() == namespace)
+        self.count_by(|component| component.ty.path() == namespace)
     }
 
     #[inline]
@@ -309,6 +341,12 @@ impl Components {
         P: FnMut(&RefMulti<ComponentTypeId, Component>) -> bool,
     {
         self.0.iter().filter(predicate).count()
+    }
+
+    pub fn push_all<C: Into<Self>>(&self, components: C) {
+        for (ty, component) in components.into() {
+            self.insert(ty, component);
+        }
     }
 }
 
@@ -356,13 +394,13 @@ impl PartialEq for Components {
     }
 }
 
-impl Eq for Components {}
-
 impl Hash for Components {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.to_vec().hash(state);
     }
 }
+
+impl Eq for Components {}
 
 impl JsonSchema for Components {
     fn schema_name() -> Cow<'static, str> {
@@ -445,13 +483,6 @@ macro_rules! component_model {
         }
     };
 }
-
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
-#[cfg(any(test, feature = "test"))]
-use reactive_graph_utils_test::r_string;
 
 #[cfg(any(test, feature = "test"))]
 impl DefaultTest for Component {

@@ -6,6 +6,7 @@ use async_trait::async_trait;
 use dashmap::DashMap;
 use log::debug;
 use log::error;
+use log::info;
 use log::trace;
 use path_tree::PathTree;
 use springtime_di::Component;
@@ -166,6 +167,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
         variables: PropertyInstances,
         properties: PropertyInstances,
     ) -> Result<ReactiveFlow, ReactiveFlowCreationError> {
+        info!("create_from_type");
         let flow_type = self
             .flow_type_manager
             .get(ty)
@@ -323,7 +325,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
         let flow_instance = FlowInstance::builder()
             .ty(flow_type.wrapper_type())
             .id(wrapper_entity_instance_id)
-            .name(flow_type.type_name()) // Default name for the flow instance is the flow type name.
+            .name(flow_type.type_name().to_string()) // Default name for the flow instance is the flow type name.
             .description(flow_type.description.clone())
             .entity_instances(entity_instances)
             .relation_instances(relation_instances)

@@ -29,6 +29,7 @@ use reactive_graph_graph::FlowTypeUpdateExtensionError;
 use reactive_graph_graph::FlowTypeUpdateRelationInstanceError;
 use reactive_graph_graph::FlowTypeUpdateVariableError;
 use reactive_graph_graph::FlowTypes;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::NamespacedTypeContainer;
 use reactive_graph_graph::NamespacedTypeEntityInstanceContainer;
 use reactive_graph_graph::NamespacedTypeExtensionContainer;
@@ -103,11 +104,11 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         self.flow_types.namespaces()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> FlowTypes {
+    fn get_by_namespace(&self, namespace: &Namespace) -> FlowTypes {
         self.flow_types.get_by_namespace(namespace)
     }
 
-    fn get_types_by_namespace(&self, namespace: &str) -> FlowTypeIds {
+    fn get_types_by_namespace(&self, namespace: &Namespace) -> FlowTypeIds {
         self.flow_types.get_types_by_namespace(namespace)
     }
 
@@ -115,27 +116,19 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         self.flow_types.contains_key(ty)
     }
 
-    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool {
-        self.has(&FlowTypeId::new_from_type(namespace, type_name))
-    }
-
     fn get(&self, ty: &FlowTypeId) -> Option<FlowType> {
         self.flow_types.get(ty).map(|entity_type| entity_type.value().clone())
     }
 
-    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<FlowType> {
-        self.get(&FlowTypeId::new_from_type(namespace, type_name))
-    }
-
-    fn find_by_type_name(&self, search: &str) -> FlowTypes {
-        self.flow_types.find_by_type_name(search)
+    fn find(&self, search: &str) -> FlowTypes {
+        self.flow_types.find(search)
     }
 
     fn count(&self) -> usize {
         self.flow_types.len()
     }
 
-    fn count_by_namespace(&self, namespace: &str) -> usize {
+    fn count_by_namespace(&self, namespace: &Namespace) -> usize {
         self.flow_types.count_by_namespace(namespace)
     }
 

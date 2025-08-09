@@ -1,9 +1,10 @@
-use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::ComponentTypeIds;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::Extensions;
+use reactive_graph_graph::InboundOutboundType;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypes;
 use reactive_graph_graph::RelationType;
@@ -30,7 +31,7 @@ pub trait RelationTypeManager: Send + Sync {
     fn get_all(&self) -> RelationTypes;
 
     /// Returns all relation types of the given namespace.
-    fn get_by_namespace(&self, namespace: &str) -> RelationTypes;
+    fn get_by_namespace(&self, namespace: &Namespace) -> RelationTypes;
 
     /// Returns true, if a relation type with the given name exists.
     fn has(&self, ty: &RelationTypeId) -> bool;
@@ -45,21 +46,21 @@ pub trait RelationTypeManager: Send + Sync {
     fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<RelationType>;
 
     /// Returns all relation types whose names matches the given search string.
-    fn find_by_type_name(&self, search: &str) -> RelationTypes;
+    fn find(&self, search: &str) -> RelationTypes;
 
     /// Returns the count of relation types.
     fn count(&self) -> usize;
 
     /// Returns the count of relation types of the given namespace.
-    fn count_by_namespace(&self, namespace: &str) -> usize;
+    fn count_by_namespace(&self, namespace: &Namespace) -> usize;
 
     /// Creates a new relation type.
     #[allow(clippy::too_many_arguments)]
     fn create(
         &self,
-        outbound_type: &ComponentOrEntityTypeId,
+        outbound_type: &InboundOutboundType,
         ty: &RelationTypeId,
-        inbound_type: &ComponentOrEntityTypeId,
+        inbound_type: &InboundOutboundType,
         description: &str,
         components: ComponentTypeIds,
         properties: PropertyTypes,

@@ -1,17 +1,17 @@
-use async_graphql::*;
+use async_graphql::InputObject;
 use serde::Deserialize;
 use serde::Serialize;
-use uuid::Uuid;
 
+use crate::mutation::GraphQLExtensionDefinition;
+use crate::mutation::GraphQLRelationInstanceId;
+use crate::query::GraphQLExtension;
+use crate::query::GraphQLPropertyInstance;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::Extensions;
 use reactive_graph_graph::PropertyInstances;
 use reactive_graph_graph::RelationInstance;
 use reactive_graph_graph::RelationInstanceTypeId;
 use reactive_graph_graph::RelationInstances;
-
-use crate::query::GraphQLExtension;
-use crate::query::GraphQLPropertyInstance;
 
 /// Relation instances are edges from an outbound entity instance to an
 /// inbound entity instance.
@@ -26,20 +26,11 @@ use crate::query::GraphQLPropertyInstance;
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "RelationInstanceDefinition")]
 pub struct GraphQLRelationInstanceDefinition {
-    /// The id of the outbound vertex.
-    pub outbound_id: Uuid,
+    /// The fully qualified namespace, outbound id, inbound id and instance id of the relation instance
+    pub relation_instance_id: GraphQLRelationInstanceId,
 
-    /// The namespace the relation type belongs to.
-    pub namespace: String,
-
-    /// The name of the relation type.
-    pub type_name: String,
-
-    /// The instance id of the relation instance type.
-    pub instance_id: String,
-
-    /// The id of the inbound vertex.
-    pub inbound_id: Uuid,
+    /// The name of the relation instance.
+    pub name: String,
 
     /// Textual description of the relation instance.
     pub description: String,
@@ -53,34 +44,34 @@ pub struct GraphQLRelationInstanceDefinition {
     pub properties: Vec<GraphQLPropertyInstance>,
 
     /// Relation instance specific extensions.
-    pub extensions: Vec<GraphQLExtension>,
+    pub extensions: Vec<GraphQLExtensionDefinition>,
 }
 
-impl From<GraphQLRelationInstanceDefinition> for RelationInstance {
-    fn from(relation_instance: GraphQLRelationInstanceDefinition) -> Self {
-        let ty = RelationInstanceTypeId::new_from_type_unique_for_instance_id(
-            relation_instance.namespace,
-            relation_instance.type_name,
-            relation_instance.instance_id,
-        );
-        let properties: PropertyInstances = relation_instance
-            .properties
-            .iter()
-            .map(|property_instance| (property_instance.name.clone(), property_instance.value.clone()))
-            .collect();
-        // let components; relation_instance.components.iter().map(|e| ComponentTypeId::from(e.clone())).collect();
-        let extensions: Extensions = relation_instance.extensions.iter().map(|e| Extension::from(e.clone())).collect();
-        RelationInstance::builder()
-            .outbound_id(relation_instance.outbound_id)
-            .ty(ty)
-            .inbound_id(relation_instance.inbound_id)
-            .description(relation_instance.description)
-            .properties(properties)
-            // .components(components) ???
-            .extensions(extensions)
-            .build()
-    }
-}
+// impl From<GraphQLRelationInstanceDefinition> for RelationInstance {
+//     fn from(relation_instance: GraphQLRelationInstanceDefinition) -> Self {
+//         let ty = RelationInstanceTypeId::new_from_type_unique_for_instance_id(
+//             relation_instance.namespace,
+//             relation_instance.type_name,
+//             relation_instance.instance_id,
+//         );
+//         let properties: PropertyInstances = relation_instance
+//             .properties
+//             .iter()
+//             .map(|property_instance| (property_instance.name.clone(), property_instance.value.clone()))
+//             .collect();
+//         // let components; relation_instance.components.iter().map(|e| ComponentTypeId::from(e.clone())).collect();
+//         let extensions: Extensions = relation_instance.extensions.iter().map(|e| Extension::from(e.clone())).collect();
+//         RelationInstance::builder()
+//             .outbound_id(relation_instance.outbound_id)
+//             .ty(ty)
+//             .inbound_id(relation_instance.inbound_id)
+//             .description(relation_instance.description)
+//             .properties(properties)
+//             // .components(components) ???
+//             .extensions(extensions)
+//             .build()
+//     }
+// }
 
 #[derive(Default)]
 pub struct GraphQLRelationInstanceDefinitions(pub Vec<GraphQLRelationInstanceDefinition>);

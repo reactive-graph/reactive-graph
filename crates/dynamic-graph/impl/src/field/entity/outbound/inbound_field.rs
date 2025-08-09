@@ -9,7 +9,7 @@ use crate::union::entity::namespace_entities_union_type_name;
 use async_graphql::dynamic::Field;
 use log::trace;
 use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
-use reactive_graph_graph::ComponentOrEntityTypeId;
+use reactive_graph_graph::InboundOutboundType;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::RelationType;
 
@@ -27,7 +27,7 @@ pub fn outbound_entity_to_inbound_field(
     let field_description = field_descriptions.from_outbound_entity_to_inbound_entity.clone();
 
     match &relation_type.inbound_type {
-        ComponentOrEntityTypeId::EntityType(ty) => {
+        InboundOutboundType::EntityType(ty) => {
             if ty.namespace() == "*" {
                 optional_field_to_vec(outbound_entity_to_inbound_entities_union_field(
                     &relation_type.ty,
@@ -46,7 +46,7 @@ pub fn outbound_entity_to_inbound_field(
                 optional_field_to_vec(outbound_entity_to_inbound_entities_field(&relation_type.ty, ty, field_name, field_description))
             }
         }
-        ComponentOrEntityTypeId::Component(ty) => {
+        InboundOutboundType::Component(ty) => {
             if ty.namespace() == "*" {
                 context
                     .component_manager

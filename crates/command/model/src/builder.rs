@@ -65,8 +65,8 @@ impl From<CommandDefinition> for Command {
     fn from(definition: CommandDefinition) -> Self {
         let handle_id = Uuid::new_v4().as_u128();
 
-        let namespace = definition.namespace.unwrap_or_else(|| definition.ty.namespace());
-        let name = definition.name.unwrap_or_else(|| definition.ty.type_name());
+        let namespace = definition.namespace.unwrap_or_else(|| definition.ty.path().to_string());
+        let name = definition.name.unwrap_or_else(|| definition.ty.type_name().to_string());
 
         let label = format!("/io/reactive-graph/commands/{namespace}/{name}");
 
@@ -74,8 +74,6 @@ impl From<CommandDefinition> for Command {
             .component(COMPONENT_LABELED.deref())
             .component(COMPONENT_ACTION.deref())
             .component(COMPONENT_COMMAND.deref());
-        // components.insert(COMPONENT_ACTION.clone());
-        // components.insert(COMPONENT_COMMAND.clone());
 
         // let properties = PropertyTypes::new()
         //     .property(PropertyType::string("help"));

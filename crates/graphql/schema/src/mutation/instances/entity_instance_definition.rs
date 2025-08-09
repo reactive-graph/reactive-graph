@@ -1,17 +1,17 @@
-use async_graphql::*;
+use async_graphql::InputObject;
 use serde::Deserialize;
 use serde::Serialize;
 use uuid::Uuid;
 
+use crate::mutation::GraphQLExtensionDefinition;
+use crate::query::GraphQLExtension;
+use crate::query::GraphQLPropertyInstance;
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityInstances;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::Extensions;
 use reactive_graph_graph::PropertyInstances;
-
-use crate::query::GraphQLExtension;
-use crate::query::GraphQLPropertyInstance;
 
 /// Entity instances represents a typed object which contains properties.
 ///
@@ -22,9 +22,6 @@ use crate::query::GraphQLPropertyInstance;
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "EntityInstanceDefinition")]
 pub struct GraphQLEntityInstanceDefinition {
-    /// The namespace the entity type belongs to.
-    pub namespace: String,
-
     /// The name of the entity type.
     pub type_name: String,
 
@@ -44,7 +41,7 @@ pub struct GraphQLEntityInstanceDefinition {
     pub properties: Vec<GraphQLPropertyInstance>,
 
     /// Entity instance specific extensions.
-    pub extensions: Vec<GraphQLExtension>,
+    pub extensions: Vec<GraphQLExtensionDefinition>,
 }
 
 impl From<GraphQLEntityInstanceDefinition> for EntityInstance {

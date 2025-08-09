@@ -14,7 +14,6 @@ async-trait = { workspace = true }
 dashmap = { workspace = true }
 json5 = { workspace = true, optional = true }
 log = { workspace = true, features = ["std", "serde"] }
-rust-embed = { workspace = true, features = ["debug-embed", "compression"] }
 serde_json = { workspace = true }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"], optional = true }
 toml = { workspace = true, optional = true }

@@ -4,7 +4,7 @@ use crate::schema_graphql::types::extension::Extension;
 use crate::schema_graphql::types::extension::Extensions;
 use crate::schema_graphql::types::property_type::PropertyType;
 use crate::schema_graphql::types::property_type::PropertyTypes;
-use reactive_graph_graph::ComponentOrEntityTypeId;
+use reactive_graph_graph::InboundOutboundType;
 use reactive_graph_graph::NamespacedTypeGetter;
 use serde_json::Value;
 use std::ops::Deref;
@@ -101,9 +101,9 @@ impl From<EntityTypes> for Vec<reactive_graph_graph::EntityType> {
     }
 }
 
-impl From<EntityType> for ComponentOrEntityTypeId {
+impl From<EntityType> for InboundOutboundType {
     fn from(entity_type: EntityType) -> Self {
         let entity_type: reactive_graph_graph::EntityType = entity_type.into();
-        ComponentOrEntityTypeId::EntityType(entity_type.ty)
+        InboundOutboundType::EntityType(entity_type.ty)
     }
 }

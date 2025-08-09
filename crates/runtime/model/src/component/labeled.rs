@@ -1,7 +1,7 @@
-use crate::NAMESPACE_CORE;
-use reactive_graph_graph::component_ty;
+use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::properties;
+use std::sync::LazyLock;
 
 properties!(LabeledProperties, (LABEL, "label", ""));
 
-component_ty!(COMPONENT_LABELED, NAMESPACE_CORE, COMPONENT_NAME_LABELED, "labeled");
+pub static COMPONENT_LABELED: LazyLock<ComponentTypeId> = LazyLock::new(|| ComponentTypeId::try_from("reactive_graph::core::Labeled").unwrap());

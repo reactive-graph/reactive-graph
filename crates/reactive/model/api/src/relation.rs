@@ -92,7 +92,7 @@ macro_rules! relation_model {
         }
 
         impl reactive_graph_graph::NamespacedTypeGetter for $ident {
-            fn namespace(&self) -> String {
+            fn namespace(&self) -> Namespace {
                 self.0.ty.namespace()
             }
 

@@ -13,11 +13,13 @@ readme = "../../README.md"
 const_format = { workspace = true }
 dashmap = { workspace = true, features = ["serde"] }
 default-test = { workspace = true, optional = true }
+documented = { workspace = true, optional = true }
 rand = { workspace = true, optional = true }
 rand_derive3 = { workspace = true, optional = true }
 schemars = { workspace = true, features = ["uuid1"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
+tabled = { workspace = true, optional = true }
 thiserror = { workspace = true }
 typed-builder = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4", "v5"] }
@@ -27,14 +29,16 @@ reactive-graph-utils-test = { version = "0.10.0", path = "../utils/test", option
 
 [dev-dependencies]
 default-test = { workspace = true }
-#random-string = { workspace = true }
+documented = { workspace = true }
 rand = { workspace = true }
 rand_derive3 = { workspace = true }
 
 reactive-graph-utils-test = { version = "0.10.0", path = "../utils/test" }
 
 [features]
+table = ["tabled"]
 test = ["default-test", "rand", "rand_derive3", "reactive-graph-utils-test"]
+docs = ["documented", "table"]
 
 [lib]
 crate-type = ["lib"]

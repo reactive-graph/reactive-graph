@@ -1,10 +1,11 @@
 use std::sync::Arc;
 
 use async_graphql::Context;
-use async_graphql::Error;
 use async_graphql::Object;
 use async_graphql::Result;
 
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::ComponentTypeIds;
 use reactive_graph_graph::EntityType;
 use reactive_graph_graph::EntityTypeAddComponentError;
 use reactive_graph_graph::EntityTypeAddExtensionError;
@@ -13,21 +14,18 @@ use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::EntityTypeRemoveComponentError;
 use reactive_graph_graph::EntityTypeRemoveExtensionError;
 use reactive_graph_graph::EntityTypeRemovePropertyError;
-use reactive_graph_graph::EntityTypeUpdateError;
 use reactive_graph_graph::EntityTypeUpdateExtensionError;
 use reactive_graph_graph::EntityTypeUpdatePropertyError;
 use reactive_graph_graph::Extension;
+use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::NamespacedTypeIdContainer;
 use reactive_graph_type_system_api::EntityTypeManager;
 
-use crate::mutation::ComponentTypeIdDefinition;
-use crate::mutation::ComponentTypeIdDefinitions;
-use crate::mutation::EntityTypeIdDefinition;
-use crate::mutation::ExtensionTypeIdDefinition;
+use crate::mutation::GraphQLExtensionDefinition;
+use crate::mutation::GraphQLExtensionDefinitions;
 use crate::mutation::PropertyTypeDefinition;
 use crate::mutation::PropertyTypeDefinitions;
 use crate::query::GraphQLEntityType;
-use crate::query::GraphQLExtension;
-use crate::query::GraphQLExtensions;
 
 #[derive(Default)]
 pub struct MutationEntityTypes;
@@ -39,22 +37,26 @@ impl MutationEntityTypes {
     async fn create(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
-        #[graphql(desc = "Describes the entity type.")] description: Option<String>,
-        components: Option<Vec<ComponentTypeIdDefinition>>,
+        #[graphql(name = "name", desc = "The fully qualified namespace of the entity type.")] namespace: String,
+        #[graphql(desc = "Textual description of the entity type.")] description: Option<String>,
+        #[graphql(desc = "Adds the given components to the newly created entity type.")] components: Option<Vec<String>>,
         #[graphql(desc = "The definitions of properties. These are added additionally to the properties provided by the given components.")] properties: Option<
             Vec<PropertyTypeDefinition>,
         >,
-        #[graphql(desc = "The extension on the entity type.")] extensions: Option<Vec<GraphQLExtension>>,
+        #[graphql(desc = "The extensions of the entity type.")] extensions: Option<Vec<GraphQLExtensionDefinition>>,
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
-        let ty = ty.into();
+        let ty = EntityTypeId::parse_namespace(&namespace)?;
+        let components = ComponentTypeIds::parse_optional_namespaces(components)?;
+        let properties = PropertyTypeDefinitions::parse_optional_definitions(properties)?;
+        let extensions = GraphQLExtensionDefinitions::parse_optional_definitions(extensions)?;
+
         let entity_type = EntityType::builder()
             .ty(&ty)
             .description(description.unwrap_or_default())
-            .components(ComponentTypeIdDefinitions::new(components.unwrap_or_default()))
-            .properties(PropertyTypeDefinitions::new(properties.unwrap_or_default()))
-            .extensions(GraphQLExtensions::new(extensions.unwrap_or_default()))
+            .components(components)
+            .properties(properties)
+            .extensions(extensions)
             .build();
         match entity_type_manager.register(entity_type) {
             Ok(entity_type) => Ok(entity_type.into()),
@@ -66,72 +68,59 @@ impl MutationEntityTypes {
     async fn update_description(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
+        #[graphql(name = "name", desc = "The fully qualified namespace of the entity type.")] namespace: String,
         description: String,
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
-        let ty = ty.into();
-        match entity_type_manager.update_description(&ty, &description) {
-            Ok(_) => entity_type_manager
-                .get(&ty)
-                .map(|entity_type| entity_type.into())
-                .ok_or_else(|| Error::new(format!("Entity Type {ty} not found"))),
-            Err(EntityTypeUpdateError::EntityTypeDoesNotExist(ty)) => {
-                Err(Error::new(format!("Failed to update description of entity type {ty}: Entity type does not exist")))
-            }
-        }
+        let ty = EntityTypeId::parse_namespace(&namespace)?;
+        Ok(entity_type_manager.update_description(&ty, &description)?.into())
     }
 
     /// Adds the component with the given component_name to the entity type with the given name.
     async fn add_component(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
-        component: ComponentTypeIdDefinition,
+        #[graphql(name = "name", desc = "The fully qualified namespace of the entity type.")] entity_namespace: String,
+        #[graphql(name = "component", desc = "The fully qualified namespace of the component.")] component_namespace: String,
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
-        let ty = ty.into();
-        let component_ty = component.into();
-        if let Err(e) = entity_type_manager.add_component(&ty, &component_ty) {
-            return Err(e.into());
-        }
+        let entity_ty = EntityTypeId::parse_namespace(&entity_namespace)?;
+        let component_ty = ComponentTypeId::parse_namespace(&component_namespace)?;
+        entity_type_manager.add_component(&entity_ty, &component_ty)?;
         entity_type_manager
-            .get(&ty)
+            .get(&entity_ty)
             .map(|entity_type| entity_type.into())
-            .ok_or(EntityTypeAddComponentError::EntityTypeDoesNotExist(ty.clone()).into())
+            .ok_or(EntityTypeAddComponentError::EntityTypeDoesNotExist(entity_ty.clone()).into())
     }
 
     /// Remove the component with the given component_name from the entity type with the given name.
     async fn remove_component(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
-        component: ComponentTypeIdDefinition,
+        #[graphql(name = "name", desc = "The fully qualified namespace of the entity type.")] entity_namespace: String,
+        #[graphql(name = "component", desc = "The fully qualified namespace of the component.")] component_namespace: String,
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
-        let ty = ty.into();
-        let component_ty = component.into();
-        if let Err(e) = entity_type_manager.remove_component(&ty, &component_ty) {
-            return Err(e.into());
-        }
+        let entity_ty = EntityTypeId::parse_namespace(&entity_namespace)?;
+        let component_ty = ComponentTypeId::parse_namespace(&component_namespace)?;
+        entity_type_manager.remove_component(&entity_ty, &component_ty)?;
         entity_type_manager
-            .get(&ty)
+            .get(&entity_ty)
             .map(|entity_type| entity_type.into())
-            .ok_or(EntityTypeRemoveComponentError::EntityTypeDoesNotExist(ty.clone()).into())
+            .ok_or(EntityTypeRemoveComponentError::EntityTypeDoesNotExist(entity_ty.clone()).into())
     }
 
     /// Adds a property to the entity type with the given name.
     async fn add_property(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
+        #[graphql(name = "name", desc = "The fully qualified namespace of the entity type.")] namespace: String,
         property: PropertyTypeDefinition,
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
-        let ty = ty.into();
-        if let Err(e) = entity_type_manager.add_property(&ty, property.into()) {
-            return Err(e.into());
-        }
+        let ty = EntityTypeId::parse_namespace(&namespace)?;
+        let property = property.try_into()?;
+        entity_type_manager.add_property(&ty, property)?;
         entity_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())
@@ -142,16 +131,14 @@ impl MutationEntityTypes {
     async fn update_property(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
+        #[graphql(name = "name", desc = "The fully qualified namespace of the entity type.")] namespace: String,
         property_name: String,
         property: PropertyTypeDefinition,
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
-        let ty = ty.into();
-        let property = property.into();
-        if let Err(e) = entity_type_manager.update_property(&ty, property_name.as_str(), property) {
-            return Err(e.into());
-        }
+        let ty = EntityTypeId::parse_namespace(&namespace)?;
+        let property = property.try_into()?;
+        entity_type_manager.update_property(&ty, property_name.as_str(), property)?;
         entity_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())
@@ -162,14 +149,12 @@ impl MutationEntityTypes {
     async fn remove_property(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
+        #[graphql(name = "name", desc = "The fully qualified namespace of the entity type.")] namespace: String,
         property_name: String,
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
-        let ty = ty.into();
-        if let Err(e) = entity_type_manager.remove_property(&ty, property_name.as_str()) {
-            return Err(e.into());
-        }
+        let ty = EntityTypeId::parse_namespace(&namespace)?;
+        entity_type_manager.remove_property(&ty, property_name.as_str())?;
         entity_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())
@@ -180,62 +165,63 @@ impl MutationEntityTypes {
     async fn add_extension(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
-        extension: GraphQLExtension,
+        #[graphql(name = "name", desc = "The fully qualified namespace of the entity type.")] namespace: String,
+        extension: GraphQLExtensionDefinition,
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
-        let ty = ty.into();
-        // let extension: Extension = extension.into();
-        if let Err(e) = entity_type_manager.add_extension(&ty, extension.into()) {
-            return Err(e.into());
-        }
+        let ty = EntityTypeId::parse_namespace(&namespace)?;
+        let extension = Extension::try_from(extension)?;
+        entity_type_manager.add_extension(&ty, extension)?;
         entity_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())
             .ok_or(EntityTypeAddExtensionError::EntityTypeDoesNotExist(ty.clone()).into())
     }
 
-    /// Updates the extension with the given name of the flow type with the given name.
+    /// Updates the extension with the given name of the entity type with the given name.
     async fn update_extension(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
-        extension: GraphQLExtension,
+        #[graphql(name = "name", desc = "The fully qualified namespace of the entity type.")] entity_namespace: String,
+        #[graphql(name = "extension", desc = "The fully qualified namespace of the extension.")] extension_namespace: String,
+        extension: GraphQLExtensionDefinition,
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
-        let ty: EntityTypeId = ty.into();
-        let extension: Extension = extension.into();
-        if let Err(e) = entity_type_manager.update_extension(&ty, &extension.ty.clone(), extension) {
-            return Err(e.into());
-        }
+        let entity_ty = EntityTypeId::parse_namespace(&entity_namespace)?;
+        let extension_ty = ExtensionTypeId::parse_namespace(&extension_namespace)?;
+        let extension = Extension::try_from(extension)?;
+        entity_type_manager.update_extension(&entity_ty, &extension_ty, extension)?;
         entity_type_manager
-            .get(&ty)
+            .get(&entity_ty)
             .map(|entity_type| entity_type.into())
-            .ok_or(EntityTypeUpdateExtensionError::EntityTypeDoesNotExist(ty.clone()).into())
+            .ok_or(EntityTypeUpdateExtensionError::EntityTypeDoesNotExist(entity_ty.clone()).into())
     }
 
     /// Removes the extension with the given extension_name from the entity type with the given name.
     async fn remove_extension(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
-        #[graphql(name = "extension")] extension_ty: ExtensionTypeIdDefinition,
+        #[graphql(name = "name", desc = "The fully qualified namespace of the entity type.")] entity_namespace: String,
+        #[graphql(name = "extension", desc = "The fully qualified namespace of the extension.")] extension_namespace: String,
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
-        let ty = ty.into();
-        let extension_ty = extension_ty.into();
-        if let Err(e) = entity_type_manager.remove_extension(&ty, &extension_ty) {
-            return Err(e.into());
-        }
+        let entity_ty = EntityTypeId::parse_namespace(&entity_namespace)?;
+        let extension_ty = ExtensionTypeId::parse_namespace(&extension_namespace)?;
+        entity_type_manager.remove_extension(&entity_ty, &extension_ty)?;
         entity_type_manager
-            .get(&ty)
+            .get(&entity_ty)
             .map(|entity_type| entity_type.into())
-            .ok_or(EntityTypeRemoveExtensionError::EntityTypeDoesNotExist(ty.clone()).into())
+            .ok_or(EntityTypeRemoveExtensionError::EntityTypeDoesNotExist(entity_ty.clone()).into())
     }
 
     /// Deletes the entity type with the given name.
-    async fn delete(&self, context: &Context<'_>, #[graphql(name = "type")] ty: EntityTypeIdDefinition) -> Result<bool> {
+    async fn delete(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "name", desc = "The fully qualified namespace of the entity type.")] namespace: String,
+    ) -> Result<bool> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
+        let ty = EntityTypeId::parse_namespace(&namespace)?;
         Ok(entity_type_manager.delete(&ty.into()).is_some())
     }
 }

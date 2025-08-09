@@ -99,8 +99,8 @@ impl TableInlineFormatSetter for FlowType {
 impl From<reactive_graph_graph::FlowType> for FlowType {
     fn from(flow_type: reactive_graph_graph::FlowType) -> Self {
         // let x = flow_type.wrapper_entity_instance;
-        let namespace = flow_type.namespace();
-        let name = flow_type.type_name();
+        let namespace = flow_type.namespace().to_string();
+        let name = flow_type.type_name().to_string();
         let variables = Variables::from(flow_type.variables.clone());
         let entity_instances = flow_type
             .entity_instances
