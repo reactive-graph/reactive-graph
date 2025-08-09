@@ -1,4 +1,4 @@
-use async_graphql::*;
+use async_graphql::Object;
 
 use crate::mutation::MutationEntityInstances;
 use crate::mutation::MutationFlowInstances;

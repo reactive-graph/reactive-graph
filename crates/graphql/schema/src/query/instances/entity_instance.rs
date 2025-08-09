@@ -13,7 +13,6 @@ use reactive_graph_reactive_service_api::ReactiveRelationManager;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::EntityTypeManager;
 
-use crate::mutation::RelationTypeIdDefinition;
 use crate::query::GraphQLComponent;
 use crate::query::GraphQLComponentBehaviour;
 use crate::query::GraphQLEntityBehaviour;
@@ -149,14 +148,21 @@ impl GraphQLEntityInstance {
     async fn outbound(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type", desc = "The outbound relation type")] outbound_ty: Option<RelationTypeIdDefinition>,
+        #[graphql(name = "type", desc = "The outbound relation type")] outbound_namespace: Option<String>,
     ) -> Result<Vec<GraphQLRelationInstance>> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
-        let outbound_ty: Option<RelationTypeId> = outbound_ty.map(|outbound_ty| outbound_ty.into());
+        let outbound_ty = if let Some(outbound_namespace) = outbound_namespace {
+            Some(RelationTypeId::parse_namespace(&outbound_namespace)?)
+        } else {
+            None
+        };
         let relation_instances = relation_instance_manager
             .get_by_outbound_entity(self.entity_instance.id)
             .iter()
-            .filter(|relation_instance| outbound_ty.is_none() || outbound_ty.clone().unwrap() == relation_instance.relation_type_id())
+            .filter(|relation_instance| match &outbound_ty {
+                Some(outbound_ty) => outbound_ty == &relation_instance.relation_type_id(),
+                None => true,
+            })
             .map(|relation_instance| relation_instance.clone().into())
             .collect();
         Ok(relation_instances)
@@ -166,14 +172,21 @@ impl GraphQLEntityInstance {
     async fn inbound(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type", desc = "The inbound relation type")] inbound_ty: Option<RelationTypeIdDefinition>,
+        #[graphql(name = "type", desc = "The inbound relation type")] inbound_namespace: Option<String>,
     ) -> Result<Vec<GraphQLRelationInstance>> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
-        let inbound_ty: Option<RelationTypeId> = inbound_ty.map(|inbound_ty| inbound_ty.into());
+        let inbound_ty = if let Some(inbound_namespace) = inbound_namespace {
+            Some(RelationTypeId::parse_namespace(&inbound_namespace)?)
+        } else {
+            None
+        };
         let relation_instances = relation_instance_manager
             .get_by_inbound_entity(self.entity_instance.id)
             .iter()
-            .filter(|relation_instance| inbound_ty.is_none() || inbound_ty.clone().unwrap() == relation_instance.relation_type_id())
+            .filter(|relation_instance| match &inbound_ty {
+                Some(inbound_ty) => inbound_ty == &relation_instance.relation_type_id(),
+                None => true,
+            })
             .map(|relation_instance| relation_instance.clone().into())
             .collect();
         Ok(relation_instances)

@@ -1,5 +1,6 @@
 use async_trait::async_trait;
 use serde_json::json;
+use std::ops::Deref;
 use std::sync::Arc;
 
 use reactive_graph_command_api::CommandManager;
@@ -7,9 +8,9 @@ use reactive_graph_command_api::CommandRegistrationError;
 use reactive_graph_command_model::component::COMPONENT_COMMAND;
 use reactive_graph_command_model::component::CommandProperties::COMMAND_NAME;
 use reactive_graph_command_model::entity::Command;
+use reactive_graph_command_model::entity::num_commands::ENTITY_TYPE_COMMAND_NUM_COMMANDS;
 use reactive_graph_command_model::error::NoSuchCommand;
 use reactive_graph_graph::EntityType;
-use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
@@ -80,7 +81,7 @@ impl Lifecycle for CommandManagerImpl {
 
         let executor = Box::new(move |_: &ReactiveEntity| json!(reactive_entity_manager.get_by_component(&COMPONENT_COMMAND).len()));
         let command = Command::builder()
-            .ty(EntityTypeId::new_from_type("core", "num_commands"))
+            .ty(ENTITY_TYPE_COMMAND_NUM_COMMANDS.deref())
             .help("Number of commands")
             .description("Number of commands")
             .executor(executor)

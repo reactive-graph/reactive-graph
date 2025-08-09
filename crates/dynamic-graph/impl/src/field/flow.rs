@@ -1,4 +1,5 @@
 use crate::field::create_properties_from_field_arguments;
+use crate::field::property::field_arguments::add_entity_type_properties_as_field_arguments;
 use crate::field::to_field_value;
 use crate::field::to_input_type_ref;
 use crate::field::to_type_ref;
@@ -15,15 +16,15 @@ use async_graphql::dynamic::TypeRef;
 use reactive_graph_dynamic_graph_api::FlowInstanceIsNotOfType;
 use reactive_graph_dynamic_graph_api::FlowInstanceNotFound;
 use reactive_graph_graph::DataType;
+use reactive_graph_graph::EntityType;
 use reactive_graph_graph::FlowType;
+use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypeDefinition;
-use reactive_graph_graph::TypeDefinitionGetter;
 use reactive_graph_reactive_model_impl::ReactiveFlow;
 use reactive_graph_reactive_service_api::ReactiveFlowManager;
 use reactive_graph_runtime_model::LabeledProperties::LABEL;
-use reactive_graph_type_system_api::EntityTypeManager;
 use serde_json::Value;
 use std::str::FromStr;
 use std::sync::Arc;
@@ -50,57 +51,64 @@ pub fn flow_property_field(property_type: &PropertyType) -> Field {
     .description(&property_type.description)
 }
 
-pub fn flow_query_field(flow_type: &FlowType) -> Field {
+pub fn flow_query_field(flow_type: &FlowType, wrapper_entity_type: &EntityType, has_field_name_collision: bool) -> Field {
     let ty = flow_type.ty.clone();
     let flow_type_inner = flow_type.clone();
+    let wrapper_entity_type_inner = wrapper_entity_type.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&ty);
-    let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
+    let field_name = if !has_field_name_collision {
+        dy_ty.field_name()
+    } else {
+        dy_ty.field_name_with_appendix("")
+    };
+    let mut field = Field::new(field_name, TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         let flow_type = flow_type_inner.clone();
-        let entity_ty = flow_type.wrapper_type();
+        // let entity_ty = flow_type.wrapper_type();
+        let wrapper_entity_type = wrapper_entity_type_inner.clone();
         FieldFuture::new(async move {
             let flow_instance_manager = ctx.data::<Arc<dyn ReactiveFlowManager + Send + Sync>>()?;
             if let Ok(id) = ctx.args.try_get("id") {
                 let id = Uuid::from_str(id.string()?)?;
                 let flow_instance = flow_instance_manager.get(id).ok_or(Error::new("Uuid not found"))?;
-                if flow_instance.ty != entity_ty {
+                if flow_instance.ty != wrapper_entity_type.ty {
                     return Err(Error::new(format!("Flow {} is not a {}", id, &ty)));
                 }
                 return Ok(Some(FieldValue::list(vec![FieldValue::owned_any(flow_instance)])));
             }
             if let Ok(label) = ctx.args.try_get("label") {
                 let flow_instance = flow_instance_manager.get_by_label(label.string()?).ok_or(Error::new("Label not found"))?;
-                if flow_instance.ty != entity_ty {
+                if flow_instance.ty != wrapper_entity_type.ty {
                     return Err(Error::new(format!("Flow {} is not a {}", flow_instance.id, &ty)));
                 }
                 return Ok(Some(FieldValue::list(vec![FieldValue::owned_any(flow_instance)])));
             }
-            let instances = get_flow_instances_by_type_filter_by_properties(&ctx, &flow_type)?;
+            let instances = get_flow_instances_by_type_filter_by_properties(&ctx, &flow_type, &wrapper_entity_type)?;
             Ok(Some(FieldValue::list(instances.into_iter().map(FieldValue::owned_any))))
         })
     })
     .description(flow_type.description.clone())
     .argument(InputValue::new("id", TypeRef::named(TypeRef::STRING)))
     .argument(InputValue::new("label", TypeRef::named(TypeRef::STRING)));
-    field = add_flow_type_variables_as_field_arguments(field, flow_type, true, true);
+    field = add_entity_type_properties_as_field_arguments(field, wrapper_entity_type, true, true);
     field
 }
 
-// , flow_instance_manager: Arc<dyn ReactiveFlowManager + Send + Sync>
-pub fn flow_creation_field(flow_type: &FlowType) -> Option<Field> {
+pub fn flow_creation_field(flow_type: &FlowType, wrapper_entity_type: &EntityType, has_field_name_collision: bool) -> Option<Field> {
     let flow_type_inner = flow_type.clone();
+    let wrapper_entity_type_inner = wrapper_entity_type.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&flow_type.ty);
-    let mut field = Field::new(dy_ty.mutation_field_name("create"), TypeRef::named_nn(dy_ty.to_string()), move |ctx| {
+    let field_name = if !has_field_name_collision {
+        dy_ty.mutation_field_name("create")
+    } else {
+        dy_ty.mutation_field_name_with_appendix("create", "")
+    };
+    let mut field = Field::new(field_name, TypeRef::named_nn(dy_ty.to_string()), move |ctx| {
         let ty = flow_type_inner.ty.clone();
         let flow_type = flow_type_inner.clone();
+        let wrapper_entity_type = wrapper_entity_type_inner.clone();
         FieldFuture::new(async move {
             let flow_instance_manager = ctx.data::<Arc<dyn ReactiveFlowManager + Send + Sync>>()?;
-            let entity_type_manager = ctx.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
-
-            let entity_ty = flow_type.wrapper_type();
-            let Some(entity_type) = entity_type_manager.get(&entity_ty) else {
-                return Err(Error::new(format!("Missing entity type {}", entity_ty.type_definition())));
-            };
             let id = ctx.args.get("id").and_then(|id| id.string().ok().and_then(|s| Uuid::from_str(s).ok()));
             if let Some(id) = id {
                 if flow_instance_manager.has(id) {
@@ -108,50 +116,36 @@ pub fn flow_creation_field(flow_type: &FlowType) -> Option<Field> {
                 }
             }
 
-            // let id = if let Some(id) = ctx.args.get("id") {
-            //     let id = Uuid::from_str(id.string()?)?;
-            //     if flow_instance_manager.has(id) {
-            //         return Err(Error::new(format!("Uuid {} is already taken", id)));
-            //     }
-            //     Some(id)
-            // } else {
-            //     None
-            // };
-            let properties = create_properties_from_field_arguments(&ctx, &entity_type.properties)?;
-            // let properties = ReactiveProperties::new_with_id_from_properties(id, properties);
-
-            let variables = create_properties_from_field_arguments(&ctx, &flow_type.variables)?;
-            // let variables = ReactiveProperties::new_with_id_from_properties(id, variables);
+            let variables = create_properties_from_field_arguments(&ctx, &flow_type.variables, false)?;
+            let properties = create_properties_from_field_arguments(&ctx, &wrapper_entity_type.properties, true)?;
 
             match flow_instance_manager.create_from_type(&ty, id, variables, properties) {
                 Ok(reactive_flow) => Ok(Some(FieldValue::owned_any(reactive_flow))),
                 Err(e) => Err(Error::new(format!("Failed to create reactive flow: {e:?}"))),
             }
-            // let Ok(reactive_flow) = flow_instance_manager.create_from_type(&ty, variables, properties) else {
-            //     return Err(Error::new(format!("Failed to create reactive flow: {}",)));
-            // };
-            //
-            // let reactive_flow = ReactiveFlow::builder().ty(&ty).id(id).properties(properties).build();
-            // // TODO: flow_instance_manager.create
-            // let x = flow_instance_manager.register_flow_instance_and_reactive_instances(reactive_flow);
-            // if let Ok(reactive_flow) = flow_instance_manager.register_reactive_instance(reactive_flow) {
-            //     return Ok(Some(FieldValue::owned_any(reactive_flow)));
-            // }
-            // Ok(None)
         })
     })
+    .description(format!("Create a new {} flow", flow_type.type_name()))
     .argument(InputValue::new("id", TypeRef::named(TypeRef::ID)));
     field = add_flow_type_variables_as_field_arguments(field, flow_type, false, false);
+    field = add_entity_type_properties_as_field_arguments(field, wrapper_entity_type, true, true);
     Some(field)
 }
 
-pub fn flow_mutation_field(flow_type: &FlowType) -> Option<Field> {
+pub fn flow_mutation_field(flow_type: &FlowType, wrapper_entity_type: &EntityType, has_field_name_collision: bool) -> Option<Field> {
     let ty = flow_type.ty.clone();
     let flow_type_inner = flow_type.clone();
+    let wrapper_entity_type_inner = wrapper_entity_type.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&flow_type.ty);
-    let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn(dy_ty.mutation_type_name()), move |ctx| {
+    let field_name = if !has_field_name_collision {
+        dy_ty.field_name()
+    } else {
+        dy_ty.field_name_with_appendix("")
+    };
+    let mut field = Field::new(field_name, TypeRef::named_nn(dy_ty.mutation_type_name()), move |ctx| {
         let ty = ty.clone();
         let flow_type = flow_type_inner.clone();
+        let wrapper_entity_type = wrapper_entity_type_inner.clone();
         FieldFuture::new(async move {
             let flow_instance_manager = ctx.data::<Arc<dyn ReactiveFlowManager + Send + Sync>>()?;
             // Multiple ids
@@ -186,7 +180,7 @@ pub fn flow_mutation_field(flow_type: &FlowType) -> Option<Field> {
                 return Ok(Some(field_value));
             }
             // TODO: implement label matching
-            let instances = get_flow_instances_by_type_filter_by_properties(&ctx, &flow_type)?;
+            let instances = get_flow_instances_by_type_filter_by_properties(&ctx, &flow_type, &wrapper_entity_type)?;
             let field_value = FieldValue::owned_any(instances);
             Ok(Some(field_value))
         })
@@ -194,16 +188,19 @@ pub fn flow_mutation_field(flow_type: &FlowType) -> Option<Field> {
     .description(flow_type.description.clone())
     .argument(InputValue::new("ids", TypeRef::named_nn_list(TypeRef::ID)))
     .argument(InputValue::new("id", TypeRef::named(TypeRef::ID)))
-    // TODO: implement label matching
     .argument(InputValue::new("label", TypeRef::named(TypeRef::STRING)));
-    field = add_flow_type_variables_as_field_arguments(field, flow_type, true, true);
+    field = add_entity_type_properties_as_field_arguments(field, wrapper_entity_type, true, true);
     Some(field)
 }
 
-fn get_flow_instances_by_type_filter_by_properties(ctx: &ResolverContext, flow_type: &FlowType) -> async_graphql::Result<Vec<ReactiveFlow>> {
+fn get_flow_instances_by_type_filter_by_properties(
+    ctx: &ResolverContext,
+    flow_type: &FlowType,
+    wrapper_entity_type: &EntityType,
+) -> async_graphql::Result<Vec<ReactiveFlow>> {
     let reactive_flow_manager = ctx.data::<Arc<dyn ReactiveFlowManager + Send + Sync>>()?;
     let mut instances = reactive_flow_manager.get_by_type(&flow_type.ty);
-    for property in flow_type.variables.iter() {
+    for property in wrapper_entity_type.properties.iter() {
         let Some(expected_value) = ctx.args.get(&property.name) else {
             continue;
         };

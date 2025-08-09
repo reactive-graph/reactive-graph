@@ -1,3 +1,13 @@
+use crate::InstanceId;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
+use crate::NamespacedTypeGetter;
+use crate::RelationInstanceTypeId;
+use crate::RelationTypeId;
+use crate::TypeDefinition;
+use crate::TypeDefinitionGetter;
+use crate::TypeIdType;
+use crate::namespace::Namespace;
 use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
@@ -6,14 +16,6 @@ use std::fmt::Display;
 use std::fmt::Formatter;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
-
-use crate::NamespacedType;
-use crate::NamespacedTypeGetter;
-use crate::RelationInstanceTypeId;
-use crate::RelationTypeId;
-use crate::TypeDefinition;
-use crate::TypeDefinitionGetter;
-use crate::TypeIdType;
 
 /// Separator for the string representation of a relation instance.
 pub static RELATION_INSTANCE_ID_SEPARATOR: &str = "--";
@@ -41,18 +43,18 @@ impl RelationInstanceId {
         }
     }
 
-    pub fn new_unique<RT: Into<RelationTypeId>>(outbound_id: Uuid, ty: RT, inbound_id: Uuid) -> Self {
+    pub fn new_singleton<RT: Into<RelationTypeId>>(outbound_id: Uuid, ty: RT, inbound_id: Uuid) -> Self {
         RelationInstanceId {
             outbound_id,
-            ty: RelationInstanceTypeId::new_unique_id(ty),
+            ty: RelationInstanceTypeId::new_singleton(ty),
             inbound_id,
         }
     }
 
-    pub fn new_unique_for_instance_id<RT: Into<RelationTypeId>>(outbound_id: Uuid, ty: RT, instance_id: String, inbound_id: Uuid) -> Self {
+    pub fn new_unique_for_instance_id<RT: Into<RelationTypeId>, ID: Into<InstanceId>>(outbound_id: Uuid, ty: RT, instance_id: ID, inbound_id: Uuid) -> Self {
         RelationInstanceId {
             outbound_id,
-            ty: RelationInstanceTypeId::new_unique_for_instance_id(ty, instance_id),
+            ty: RelationInstanceTypeId::new(ty, instance_id),
             inbound_id,
         }
     }
@@ -67,12 +69,21 @@ impl RelationInstanceId {
 }
 
 impl NamespacedTypeGetter for RelationInstanceId {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
     /// Returns the full instance type name (relation type name + instance id)
-    fn type_name(&self) -> String {
+    /// TODO: Special Handling of RIIDs
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -80,6 +91,10 @@ impl NamespacedTypeGetter for RelationInstanceId {
 impl TypeDefinitionGetter for RelationInstanceId {
     fn type_definition(&self) -> TypeDefinition {
         self.into()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::RelationType
     }
 }
 
@@ -111,7 +126,10 @@ impl From<&RelationInstanceId> for RelationInstanceId {
 
 impl From<&RelationInstanceId> for TypeDefinition {
     fn from(ty: &RelationInstanceId) -> Self {
-        TypeDefinition::new(TypeIdType::RelationType, ty.into())
+        ty.type_definition()
+        // let namespaced_type = ty.into();
+        // NamespacedType::from(ty);
+        // TypeDefinition::new(TypeIdType::RelationType, ty.into())
     }
 }
 

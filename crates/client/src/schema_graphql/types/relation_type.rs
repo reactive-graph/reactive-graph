@@ -5,8 +5,8 @@ use crate::schema_graphql::types::extension::Extension;
 use crate::schema_graphql::types::extension::Extensions;
 use crate::schema_graphql::types::property_type::PropertyType;
 use crate::schema_graphql::types::property_type::PropertyTypes;
-use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::InboundOutboundType;
 use reactive_graph_graph::NamespacedTypeGetter;
 use serde_json::Value;
 use std::ops::Deref;
@@ -78,20 +78,20 @@ impl RelationType {
         }
     }
 
-    fn get_outbound_type(&self) -> ComponentOrEntityTypeId {
+    fn get_outbound_type(&self) -> InboundOutboundType {
         self.outbound_types
             .first()
             .cloned()
             .map(|entity_type| entity_type.into())
-            .unwrap_or(ComponentOrEntityTypeId::EntityType(EntityTypeId::new_from_type("*", "*")))
+            .unwrap_or(InboundOutboundType::EntityType(EntityTypeId::new_from_type("*", "*")))
     }
 
-    fn get_inbound_type(&self) -> ComponentOrEntityTypeId {
+    fn get_inbound_type(&self) -> InboundOutboundType {
         self.inbound_types
             .first()
             .cloned()
             .map(|entity_type| entity_type.into())
-            .unwrap_or(ComponentOrEntityTypeId::EntityType(EntityTypeId::new_from_type("*", "*")))
+            .unwrap_or(InboundOutboundType::EntityType(EntityTypeId::new_from_type("*", "*")))
     }
 }
 

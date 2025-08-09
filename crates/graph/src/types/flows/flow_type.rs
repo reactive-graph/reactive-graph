@@ -7,10 +7,6 @@ use std::ops::DerefMut;
 use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
@@ -57,6 +53,8 @@ use crate::FlowTypeUpdateRelationInstanceError;
 use crate::FlowTypeUpdateVariableError;
 use crate::JSON_SCHEMA_ID_URI_PREFIX;
 use crate::JsonSchemaIdGetter;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
 use crate::NamespacedTypeContainer;
 use crate::NamespacedTypeEntityInstanceContainer;
 use crate::NamespacedTypeExtensionContainer;
@@ -76,6 +74,7 @@ use crate::RemoveRelationInstanceError;
 use crate::RemoveVariableError;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
+use crate::TypeDescriptionGetter;
 use crate::TypeIdType;
 use crate::UpdateEntityInstanceError;
 use crate::UpdateExtensionError;
@@ -84,6 +83,14 @@ use crate::UpdateVariableError;
 use crate::Variable;
 use crate::Variables;
 use crate::VariablesContainer;
+
+use crate::divergent::DivergentPropertyTypes;
+
+use crate::namespace::Namespace;
+#[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
@@ -160,36 +167,6 @@ impl FlowType {
     ) -> FlowType {
         FlowType {
             ty: ty.into(),
-            description: description.into(),
-            wrapper_entity_instance,
-            entity_instances: entity_instances.into(),
-            relation_instances: relation_instances.into(),
-            variables: variables.into(),
-            extensions: extensions.into(),
-        }
-    }
-
-    #[allow(clippy::too_many_arguments)]
-    pub fn new_from_type<
-        N: Into<String>,
-        T: Into<String>,
-        D: Into<String>,
-        EI: Into<EntityInstances>,
-        RI: Into<RelationInstances>,
-        V: Into<PropertyTypes>,
-        E: Into<Extensions>,
-    >(
-        namespace: N,
-        type_name: T,
-        description: D,
-        wrapper_entity_instance: EntityInstance,
-        entity_instances: EI,
-        relation_instances: RI,
-        variables: V,
-        extensions: E,
-    ) -> FlowType {
-        FlowType {
-            ty: FlowTypeId::new_from_type(namespace.into(), type_name.into()),
             description: description.into(),
             wrapper_entity_instance,
             entity_instances: entity_instances.into(),
@@ -363,6 +340,14 @@ impl VariablesContainer for FlowType {
     fn merge_variables<V: Into<Variables>>(&mut self, variables_to_merge: V) {
         self.variables.merge_properties(variables_to_merge)
     }
+
+    fn merge_non_existent_variables<V: Into<Variables>>(&self, variables_to_merge: V) -> DivergentPropertyTypes {
+        self.variables.merge_non_existent_properties(variables_to_merge)
+    }
+
+    fn get_own_variables_cloned(&self) -> Variables {
+        self.variables.clone()
+    }
 }
 
 impl ExtensionContainer for FlowType {
@@ -389,14 +374,26 @@ impl ExtensionContainer for FlowType {
     fn merge_extensions<E: Into<Extensions>>(&mut self, extensions_to_merge: E) {
         self.extensions.merge_extensions(extensions_to_merge)
     }
+
+    fn get_own_extensions_cloned(&self) -> Extensions {
+        self.extensions.clone()
+    }
 }
 
 impl NamespacedTypeGetter for FlowType {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -404,6 +401,16 @@ impl NamespacedTypeGetter for FlowType {
 impl TypeDefinitionGetter for FlowType {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::FlowType
+    }
+}
+
+impl TypeDescriptionGetter for FlowType {
+    fn description(&self) -> String {
+        self.description.clone()
     }
 }
 
@@ -427,18 +434,24 @@ impl Ord for FlowType {
 
 impl From<&FlowType> for TypeDefinition {
     fn from(flow_type: &FlowType) -> Self {
-        TypeDefinition {
-            type_id_type: TypeIdType::FlowType,
-            namespace: flow_type.namespace(),
-            type_name: flow_type.type_name(),
-        }
+        flow_type.type_definition()
     }
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct FlowTypes(DashMap<FlowTypeId, FlowType>);
 
-impl FlowTypes {}
+impl FlowTypes {
+    #[inline]
+    pub fn new() -> Self {
+        NamespacedTypeContainer::new()
+    }
+
+    #[inline]
+    pub fn push<F: Into<FlowType>>(&self, flow_type: F) {
+        NamespacedTypeContainer::push(self, flow_type)
+    }
+}
 
 impl NamespacedTypeContainer for FlowTypes {
     type TypeId = FlowTypeId;

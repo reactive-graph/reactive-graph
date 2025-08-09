@@ -14,13 +14,13 @@ use async_graphql::dynamic::Object;
 use async_graphql::dynamic::SchemaBuilder;
 use itertools::Itertools;
 use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
-use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::EntityType;
+use reactive_graph_graph::InboundOutboundType;
 use reactive_graph_graph::RelationTypes;
 
 pub fn register_entity_type_query_objects(mut schema: SchemaBuilder, context: &SchemaBuilderContext) -> SchemaBuilder {
     for entity_type in context.entity_type_manager.get_all().iter() {
-        let ty = ComponentOrEntityTypeId::EntityType(entity_type.key().clone());
+        let ty = InboundOutboundType::EntityType(entity_type.key().clone());
         let outbound_types = context.relation_type_manager.get_outbound_relation_types(&ty, false);
         let inbound_types = context.relation_type_manager.get_inbound_relation_types(&ty, false);
         let entity_type = create_entity_type_query_object(entity_type.value(), outbound_types, inbound_types, context);

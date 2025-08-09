@@ -9,17 +9,15 @@ use reactive_graph_behaviour_model_api::BehaviourTypeId;
 use reactive_graph_behaviour_model_api::BehaviourTypesContainer;
 use reactive_graph_graph::ComponentContainer;
 use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::ComponentTypeIds;
 use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::NamespacedTypeIdContainer;
 use reactive_graph_graph::RelationTypeId;
 use reactive_graph_reactive_service_api::ReactiveEntityManager;
 use reactive_graph_reactive_service_api::ReactiveFlowManager;
 use reactive_graph_reactive_service_api::ReactiveRelationManager;
 
-use crate::mutation::BehaviourTypeIdDefinition;
-use crate::mutation::ComponentTypeIdDefinition;
-use crate::mutation::EntityTypeIdDefinition;
 use crate::mutation::GraphQLRelationInstanceId;
-use crate::mutation::RelationTypeIdDefinition;
 use crate::query::GraphQLEntityInstance;
 use crate::query::GraphQLFlowInstance;
 use crate::query::GraphQLPropertyInstance;
@@ -42,12 +40,15 @@ impl Instances {
         context: &Context<'_>,
         #[graphql(desc = "Returns only the entity instance with the given id.")] id: Option<Uuid>,
         #[graphql(desc = "Returns the entity instance with the given label.")] label: Option<String>,
-        #[graphql(name = "type", desc = "Filters the entity instances by type.")] entity_type: Option<EntityTypeIdDefinition>,
-        #[graphql(desc = "Filters the entity instances by applied components.")] components: Option<Vec<ComponentTypeIdDefinition>>,
-        #[graphql(desc = "Filters the entity instances by applied behaviours.")] behaviours: Option<Vec<BehaviourTypeIdDefinition>>,
+        #[graphql(name = "type", desc = "Filters the entity instances by entity type.")] namespace: Option<String>,
+        #[graphql(desc = "Filters the entity instances by applied components.")] components: Option<Vec<String>>,
+        #[graphql(desc = "Filters the entity instances by applied behaviours.")] behaviours: Option<Vec<String>>,
         #[graphql(name = "properties", desc = "Query by properties.")] property_query: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<Vec<GraphQLEntityInstance>> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
+        let entity_ty = EntityTypeId::parse_optional_namespace(namespace)?;
+        let components = components.map(|components| ComponentTypeIds::parse_namespaces(components)?);
+        let behaviours = behaviours.map(|behaviours| ComponentTypeIds::parse_namespaces(behaviours)?);
         if let Some(id) = id {
             let entity_instance = entity_instance_manager.get(id).map(|entity_instance| {
                 let entity_instance: GraphQLEntityInstance = entity_instance.into();
@@ -73,7 +74,7 @@ impl Instances {
         let entities = entity_instance_manager
             .get_all()
             .iter()
-            .filter(|entity_instance| entity_type.is_none() || entity_instance.ty == EntityTypeId::from(entity_type.clone().unwrap()))
+            .filter(|entity_instance| entity_ty.is_none() || entity_instance.ty == entity_ty.unwrap())
             .filter(|entity_instance| {
                 components.is_none() || {
                     let components = components.clone().unwrap();
@@ -114,7 +115,7 @@ impl Instances {
     async fn count_entity_instances(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type", desc = "Counts the entity instances of the given type only.")] ty: Option<EntityTypeIdDefinition>,
+        #[graphql(name = "type", desc = "Counts the entity instances of the given entity type only.")] namespace: Option<String>,
         #[graphql(name = "component", desc = "Counts the entity instances which are composed by the given component only.")] component_ty: Option<
             ComponentTypeIdDefinition,
         >,

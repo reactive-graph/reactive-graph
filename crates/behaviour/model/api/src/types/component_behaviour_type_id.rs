@@ -26,8 +26,8 @@ use typed_builder::TypedBuilder;
 use crate::BehaviourTypeId;
 use crate::BehaviourTypeIds;
 use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::NAMESPACE_SEPARATOR;
 use reactive_graph_graph::NamespacedType;
-use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 
 /// The behaviour of a component.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema, TypedBuilder)]
@@ -43,11 +43,6 @@ pub struct ComponentBehaviourTypeId {
 impl ComponentBehaviourTypeId {
     pub fn new(component_ty: ComponentTypeId, behaviour_ty: BehaviourTypeId) -> Self {
         Self { component_ty, behaviour_ty }
-    }
-
-    pub fn new_from_type<N: Into<String>, T: Into<String>>(namespace: N, type_name: T) -> Self {
-        let namespaced_type = NamespacedType::new(namespace, type_name);
-        Self::new(namespaced_type.clone().into(), namespaced_type.into())
     }
 }
 
@@ -65,7 +60,7 @@ impl From<&BehaviourTypeId> for ComponentBehaviourTypeId {
 
 impl Display for ComponentBehaviourTypeId {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}{}{}", &self.component_ty, TYPE_ID_TYPE_SEPARATOR, &self.behaviour_ty)
+        write!(f, "{}{}{}", &self.component_ty, NAMESPACE_SEPARATOR, &self.behaviour_ty)
     }
 }
 

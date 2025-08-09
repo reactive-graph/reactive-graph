@@ -1,3 +1,4 @@
+use crate::NamespacedTypeGetter;
 use crate::PropertyTypeContainer;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
@@ -23,14 +24,7 @@ impl JsonSchemaId {
 
 impl Display for JsonSchemaId {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "{}/dynamic_graph/{}/{}/{}.schema.json",
-            JSON_SCHEMA_ID_URI_PREFIX,
-            self.0.type_id_type.full_name().to_lowercase(),
-            self.0.namespace,
-            self.0.type_name,
-        )
+        write!(f, "{}/dynamic_graph/{}.schema.json", JSON_SCHEMA_ID_URI_PREFIX, self.0.relative_url(),)
     }
 }
 
@@ -85,8 +79,8 @@ pub struct TypeDefinitionJsonSchema(Schema);
 impl TypeDefinitionJsonSchema {
     pub fn new<T: TypeDefinitionGetter + PropertyTypeContainer + JsonSchemaIdGetter>(ty: &T) -> Self {
         let schema_id = ty.json_schema_id();
-        let title = ty.type_definition().type_name.clone();
-        let property_types = ty.get_own_properties();
+        let title = ty.type_definition().namespace().to_string();
+        let property_types = ty.get_own_properties_cloned();
         let mut properties = property_types.as_json_schema_properties();
         properties.insert("$id".to_string(), ty.json_schema_id_property());
         let required = property_types.names();
@@ -156,8 +150,8 @@ where
 {
     fn from(ty: &T) -> Self {
         let schema_id = ty.json_schema_id();
-        let title = ty.type_definition().type_name.clone();
-        let property_types = ty.get_own_properties();
+        let title = ty.type_definition().namespace().to_string();
+        let property_types = ty.get_own_properties_cloned();
         let mut properties = property_types.as_json_schema_properties();
         properties.insert("$id".to_string(), ty.json_schema_id_property());
         let required = property_types.names();

@@ -21,8 +21,12 @@ use reactive_graph_graph::ComponentContainer;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::ComponentTypeIds;
 use reactive_graph_graph::Extensions;
+use reactive_graph_graph::InstanceId;
 use reactive_graph_graph::JsonSchemaId;
 use reactive_graph_graph::Mutability;
+use reactive_graph_graph::Namespace;
+use reactive_graph_graph::NamespaceSegment;
+use reactive_graph_graph::NamespacedType;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyInstanceSetter;
@@ -36,6 +40,7 @@ use reactive_graph_graph::RelationType;
 use reactive_graph_graph::RelationTypeId;
 use reactive_graph_graph::TypeDefinition;
 use reactive_graph_graph::TypeDefinitionGetter;
+use reactive_graph_graph::TypeIdType;
 use reactive_graph_graph::instances::named::NamedInstanceContainer;
 use reactive_graph_reactive_model_api::ReactiveInstance;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;
@@ -148,52 +153,13 @@ impl ReactiveRelationInstance {
         }
     }
 
-    // // TODO: remove?
-    // pub fn new_from_type_with_properties<S: Into<String>, P: Into<PropertyInstances>>(
-    //     namespace: S,
-    //     outbound: ReactiveEntity,
-    //     type_name: S,
-    //     inbound: ReactiveEntity,
-    //     properties: P,
-    // ) -> ReactiveRelationInstance {
-    //     let ty = RelationTypeId::new_from_type(namespace.into(), type_name.into());
-    //     let id = RelationInstanceId::new(outbound.id, ty.clone(), inbound.id);
-    //     let properties = properties.into();
-    //     let properties = ReactiveProperties::new_with_id_from_properties(id.clone(), instance.properties);
-    //     let ty = RelationInstanceTypeId::new_from_type_unique_id(namespace, type_name);
-    //     let properties = properties
-    //         .iter()
-    //         .map(|(name, value)| {
-    //             (
-    //                 name.clone(),
-    //                 ReactiveProperty::new(
-    //                     ty.clone(),
-    //                     name.clone(),
-    //                     // TODO: mutability
-    //                     Mutable,
-    //                     value.clone(),
-    //                 ),
-    //             )
-    //         })
-    //         .collect();
-    //     ReactiveRelationInstance {
-    //         outbound,
-    //         ty,
-    //         inbound,
-    //         description: String::new(),
-    //         properties,
-    //         components: ComponentTypeIds::new(),
-    //         behaviours: BehaviourTypeIds::new(),
-    //     }
-    // }
-
     /// Returns the inner relation type id.
     pub fn relation_type_id(&self) -> RelationTypeId {
         self.ty.relation_type_id()
     }
 
     /// Returns the relation instance type id.
-    pub fn instance_id(&self) -> String {
+    pub fn instance_id(&self) -> InstanceId {
         self.ty.instance_id()
     }
 }
@@ -255,7 +221,7 @@ impl ReactiveRelation {
         (),
         (),
     )> {
-        let ty = RelationInstanceTypeId::new_unique_id(&relation_type.ty);
+        let ty = RelationInstanceTypeId::new_singleton(&relation_type.ty);
         ReactiveRelation::builder_with_entities_and_properties(outbound, &ty, inbound, &relation_type.properties)
     }
 
@@ -263,7 +229,7 @@ impl ReactiveRelation {
     pub fn builder_from_type_with_unique_instance_id(
         outbound: ReactiveEntity,
         relation_type: &RelationType,
-        instance_id: String,
+        instance_id: InstanceId,
         inbound: ReactiveEntity,
     ) -> ReactiveRelationInstanceBuilder<(
         (ReactiveEntity,),
@@ -275,7 +241,7 @@ impl ReactiveRelation {
         (),
         (),
     )> {
-        let ty = RelationInstanceTypeId::new_unique_for_instance_id(&relation_type.ty, instance_id);
+        let ty = RelationInstanceTypeId::new(&relation_type.ty, instance_id);
         ReactiveRelation::builder_with_entities_and_properties(outbound, &ty, inbound, &relation_type.properties)
     }
 
@@ -312,16 +278,6 @@ impl ReactiveRelation {
     pub fn new_from_instance(outbound: ReactiveEntity, inbound: ReactiveEntity, instance: RelationInstance) -> ReactiveRelation {
         ReactiveRelationInstance::new_from_instance(outbound, inbound, instance).into()
     }
-
-    // pub fn new_from_type_with_properties<S: Into<String>>(
-    //     namespace: S,
-    //     outbound: ReactiveEntity,
-    //     type_name: S,
-    //     inbound: ReactiveEntity,
-    //     properties: HashMap<String, Value>,
-    // ) -> ReactiveRelation {
-    //     ReactiveRelationInstance::new_from_type_with_properties(namespace, outbound, type_name, inbound, properties).into()
-    // }
 }
 
 impl NamedInstanceContainer for ReactiveRelation {
@@ -530,11 +486,19 @@ impl PropertyInstanceSetter for ReactiveRelation {
 }
 
 impl NamespacedTypeGetter for ReactiveRelation {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -543,11 +507,19 @@ impl TypeDefinitionGetter for ReactiveRelation {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
     }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::RelationType
+    }
 }
 
 impl TypeDefinitionGetter for &ReactiveRelation {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::RelationType
     }
 }
 
@@ -601,7 +573,7 @@ impl Serialize for ReactiveRelation {
         let property_instances = PropertyInstances::from(&self.properties);
         property_instances.insert("$id".to_string(), JsonSchemaId::from(&self).into());
         property_instances.insert("outbound_id".to_string(), Value::String(self.outbound.id.to_string()));
-        property_instances.insert("instance_id".to_string(), Value::String(self.instance_id()));
+        property_instances.insert("instance_id".to_string(), Value::String(self.instance_id().to_string()));
         property_instances.insert("inbound_id".to_string(), Value::String(self.inbound.id.to_string()));
         serializer.collect_map(property_instances)
     }

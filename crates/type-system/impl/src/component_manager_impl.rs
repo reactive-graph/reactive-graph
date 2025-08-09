@@ -20,6 +20,7 @@ use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionContainer;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::Extensions;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::NamespacedTypeContainer;
 use reactive_graph_graph::Namespaces;
 use reactive_graph_graph::PropertyType;
@@ -67,11 +68,11 @@ impl ComponentManager for ComponentManagerImpl {
         self.components.namespaces()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> Components {
+    fn get_by_namespace(&self, namespace: &Namespace) -> Components {
         self.components.get_by_namespace(namespace)
     }
 
-    fn get_types_by_namespace(&self, namespace: &str) -> ComponentTypeIds {
+    fn get_types_by_namespace(&self, namespace: &Namespace) -> ComponentTypeIds {
         self.components.get_types_by_namespace(namespace)
     }
 
@@ -79,31 +80,27 @@ impl ComponentManager for ComponentManagerImpl {
         self.components.contains_key(ty)
     }
 
-    fn has_by_type(&self, namespace: &str, name: &str) -> bool {
-        self.components.contains_key(&ComponentTypeId::new_from_type(namespace, name))
+    fn has_all(&self, tys: &ComponentTypeIds) -> bool {
+        tys.iter().all(|ty| self.components.contains_key(&ty))
     }
 
     fn get(&self, ty: &ComponentTypeId) -> Option<reactive_graph_graph::Component> {
         self.components.get(ty)
     }
 
-    fn get_by_type(&self, namespace: &str, name: &str) -> Option<reactive_graph_graph::Component> {
-        self.components.get(ComponentTypeId::new_from_type(namespace, name))
-    }
-
     fn get_by_types(&self, tys: ComponentTypeIds) -> Components {
         self.components.get_by_types(tys)
     }
 
-    fn find_by_type_name(&self, search: &str) -> Components {
-        self.components.find_by_type_name(search)
+    fn find(&self, search: &str) -> Components {
+        self.components.find(search)
     }
 
     fn count(&self) -> usize {
         self.components.len()
     }
 
-    fn count_by_namespace(&self, namespace: &str) -> usize {
+    fn count_by_namespace(&self, namespace: &Namespace) -> usize {
         self.components.count_by_namespace(namespace)
     }
 

@@ -17,15 +17,18 @@ pub fn entity_trigger_field(entity_type: &EntityType) -> Option<Field> {
         return None;
     }
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
-    Some(Field::new(TRIGGER.property_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
-        FieldFuture::new(async move {
-            let reactive_entities = ctx.parent_value.try_downcast_ref::<Vec<ReactiveEntity>>()?;
-            for reactive_entity in reactive_entities {
-                reactive_entity.set(TRIGGER.property_name(), json!(true));
-            }
-            Ok(Some(FieldValue::list(
-                reactive_entities.iter().map(|reactive_entity| FieldValue::owned_any(reactive_entity.clone())),
-            )))
+    Some(
+        Field::new(TRIGGER.property_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
+            FieldFuture::new(async move {
+                let reactive_entities = ctx.parent_value.try_downcast_ref::<Vec<ReactiveEntity>>()?;
+                for reactive_entity in reactive_entities {
+                    reactive_entity.set(TRIGGER.property_name(), json!(true));
+                }
+                Ok(Some(FieldValue::list(
+                    reactive_entities.iter().map(|reactive_entity| FieldValue::owned_any(reactive_entity.clone())),
+                )))
+            })
         })
-    }))
+        .description("Triggers the action"),
+    )
 }

@@ -3,6 +3,7 @@ use thiserror::Error;
 use crate::AddExtensionError;
 use crate::AddPropertyError;
 use crate::ComponentTypeId;
+use crate::EntityComponentTypeIds;
 use crate::EntityTypeId;
 use crate::RemoveExtensionError;
 use crate::RemovePropertyError;
@@ -75,6 +76,12 @@ pub enum EntityTypeRemovePropertyError {
 pub enum EntityTypeMergePropertiesError {
     #[error("The entity type {0} does not exist")]
     EntityTypeDoesNotExist(EntityTypeId),
+}
+
+#[derive(Debug, Error)]
+pub enum EntityTypeMergeComponentPropertiesError {
+    #[error("Missing components {0:?} while merging properties from components into an entity type")]
+    ComponentDoesNotExist(EntityComponentTypeIds),
 }
 
 #[derive(Debug, Error)]

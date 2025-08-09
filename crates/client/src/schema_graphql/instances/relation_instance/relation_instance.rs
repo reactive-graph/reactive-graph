@@ -34,7 +34,7 @@ impl RelationInstance {
     }
 
     pub fn instance_ty(&self) -> RelationInstanceTypeId {
-        RelationInstanceTypeId::new_unique_for_instance_id(self.ty(), self.instance_id.clone())
+        RelationInstanceTypeId::new(self.ty(), self.instance_id.clone())
     }
 }
 

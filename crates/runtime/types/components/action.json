@@ -1,0 +1,15 @@
+{
+  "namespace": "core",
+  "type_name": "action",
+  "description": "An action can be triggered",
+  "properties": [
+    {
+      "name": "trigger",
+      "description": "On receiving a boolean trigger the action will be executed",
+      "data_type": "bool",
+      "socket_type": "input"
+    }
+  ],
+  "extensions": [
+  ]
+}

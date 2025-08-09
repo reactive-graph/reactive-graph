@@ -25,6 +25,7 @@ use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::Mutability;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyInstances;
@@ -158,10 +159,10 @@ impl ReactiveEntityManager for ReactiveEntityManagerImpl {
             .collect()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> Vec<ReactiveEntity> {
+    fn get_by_namespace(&self, namespace: &Namespace) -> Vec<ReactiveEntity> {
         self.reactive_entity_instances
             .iter()
-            .filter(|r| r.namespace() == namespace)
+            .filter(|r| &r.path() == namespace)
             .map(|r| r.value().clone())
             .collect()
     }

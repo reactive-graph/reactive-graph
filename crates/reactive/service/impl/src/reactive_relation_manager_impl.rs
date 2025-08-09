@@ -28,9 +28,11 @@ use reactive_graph_behaviour_model_api::RelationBehaviourTypeId;
 use reactive_graph_behaviour_service_api::RelationBehaviourManager;
 use reactive_graph_behaviour_service_api::RelationComponentBehaviourManager;
 use reactive_graph_graph::ComponentContainer;
-use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::InboundOutboundType;
+use reactive_graph_graph::MatchingInboundOutboundType;
 use reactive_graph_graph::Mutability;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyInstances;
 use reactive_graph_graph::PropertyTypeContainer;
@@ -228,10 +230,10 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
             .collect()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> Vec<ReactiveRelation> {
+    fn get_by_namespace(&self, namespace: &Namespace) -> Vec<ReactiveRelation> {
         self.reactive_relation_instances
             .iter()
-            .filter(|r| r.namespace() == namespace)
+            .filter(|r| &r.path() == namespace)
             .map(|r| r.value().clone())
             .collect()
     }
@@ -289,54 +291,33 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
             .get(&relation_ty)
             .ok_or_else(|| ReactiveRelationCreationError::UnknownRelationType(relation_ty.clone()))?;
 
-        if !relation_type.outbound_type.type_name().eq("*") {
-            match &relation_type.outbound_type {
-                ComponentOrEntityTypeId::Component(component_ty) => {
-                    if !outbound.components.contains(component_ty) {
-                        return Err(ReactiveRelationCreationError::OutboundEntityDoesNotHaveComponent(outbound.id, component_ty.clone()));
-                    }
-                }
-                ComponentOrEntityTypeId::EntityType(entity_ty) => {
-                    if &outbound.ty != entity_ty {
-                        return Err(ReactiveRelationCreationError::OutboundEntityIsNotOfType(outbound.id, outbound.ty.clone(), entity_ty.clone()));
-                    }
+        match &relation_type.outbound_type {
+            InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(component_ty)) => {
+                if !outbound.components.contains(component_ty) {
+                    return Err(ReactiveRelationCreationError::OutboundEntityDoesNotHaveComponent(outbound.id, component_ty.clone()));
                 }
             }
-        }
-        // if !relation_type.outbound_type.eq("*")
-        //     && !outbound.type_name.eq(&relation_type.outbound_type)
-        //     && !outbound.components.contains(&relation_type.outbound_type)
-        // {
-        //     return Err(ReactiveRelationCreationError::OutboundEntityIsNotOfType(
-        //         outbound.type_name.clone(),
-        //         relation_type.outbound_type,
-        //     ));
-        // }
-
-        if !relation_type.inbound_type.type_name().eq("*") {
-            match &relation_type.inbound_type {
-                ComponentOrEntityTypeId::Component(component_ty) => {
-                    if !inbound.components.contains(component_ty) {
-                        return Err(ReactiveRelationCreationError::InboundEntityDoesNotHaveComponent(inbound.id, component_ty.clone()));
-                    }
-                }
-                ComponentOrEntityTypeId::EntityType(entity_ty) => {
-                    if &inbound.ty != entity_ty {
-                        return Err(ReactiveRelationCreationError::InboundEntityIsNotOfType(inbound.id, inbound.ty.clone(), entity_ty.clone()));
-                    }
+            InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(entity_ty)) => {
+                if &outbound.ty != entity_ty {
+                    return Err(ReactiveRelationCreationError::OutboundEntityIsNotOfType(outbound.id, outbound.ty.clone(), entity_ty.clone()));
                 }
             }
+            _ => {}
         }
 
-        // if !relation_type.inbound_type.eq("*")
-        //     && !inbound.type_name.eq(&relation_type.inbound_type)
-        //     && !inbound.components.contains(&relation_type.inbound_type)
-        // {
-        //     return Err(ReactiveRelationCreationError::InboundEntityIsNotOfType(
-        //         inbound.type_name.clone(),
-        //         relation_type.inbound_type,
-        //     ));
-        // }
+        match &relation_type.inbound_type {
+            InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(component_ty)) => {
+                if !inbound.components.contains(component_ty) {
+                    return Err(ReactiveRelationCreationError::InboundEntityDoesNotHaveComponent(inbound.id, component_ty.clone()));
+                }
+            }
+            InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(entity_ty)) => {
+                if &inbound.ty != entity_ty {
+                    return Err(ReactiveRelationCreationError::InboundEntityIsNotOfType(inbound.id, inbound.ty.clone(), entity_ty.clone()));
+                }
+            }
+            _ => {}
+        }
 
         let relation_instance = ReactiveRelation::new_from_instance(outbound, inbound, reactive_relation_instance);
 

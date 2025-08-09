@@ -2,13 +2,17 @@
 extern crate darling;
 extern crate proc_macro;
 
+use convert_case::Case::Snake;
+use convert_case::Casing;
 use proc_macro::TokenStream;
+use proc_macro_error2::abort_call_site;
 use proc_macro2::TokenStream as TokenStream2;
 
 use quote::format_ident;
 use quote::quote;
 use syn::DeriveInput;
 use syn::Ident;
+use syn::Type;
 use syn::parse_macro_input;
 
 use crate::darling::FromDeriveInput;
@@ -37,6 +41,14 @@ pub fn type_provider(input: TokenStream) -> TokenStream {
         }
     };
     let tys = type_provider_config.tys;
+    let ident_tys = match &tys {
+        Type::Path(type_path) => match type_path.path.segments.first() {
+            Some(segment) => segment.ident.clone(),
+            None => abort_call_site!("Could not find first path segment"),
+        },
+        _ => abort_call_site!("Type is not a path"),
+    };
+    let ident_tys_fn = format_ident!("get_{}", ident_tys.to_string().to_case(Snake));
     let path = type_provider_config.path;
     let type_provider_id = ident.to_string();
 
@@ -108,7 +120,7 @@ pub fn type_provider(input: TokenStream) -> TokenStream {
     let expanded = quote! {
         #[derive(rust_embed::RustEmbed)]
         #[folder = #path]
-        struct #ident_assets;
+        pub struct #ident_assets;
 
         #[automatically_derived]
         #component_alias
@@ -117,6 +129,12 @@ pub fn type_provider(input: TokenStream) -> TokenStream {
                 #type_provider_id
             }
             fn get_types(&self) -> #tys {
+                #ident_assets::#ident_tys_fn()
+            }
+        }
+
+        impl #ident_assets {
+            pub fn #ident_tys_fn() -> #tys {
                 let mut entries = <#tys as reactive_graph_graph::NamespacedTypeContainer>::new();
                 for file in #ident_assets::iter() {
                     let filename = file.as_ref();

@@ -7,6 +7,7 @@ use async_graphql::Result;
 use reactive_graph_behaviour_service_api::EntityBehaviourRegistry;
 use reactive_graph_graph::EntityType;
 use reactive_graph_graph::EntityTypes;
+use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::JsonSchemaIdGetter;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::TypeDefinitionJsonSchemaGetter;
@@ -15,12 +16,14 @@ use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::RelationTypeManager;
 use serde_json::Value;
 
-use crate::mutation::ExtensionTypeIdDefinition;
 use crate::query::GraphQLComponent;
 use crate::query::GraphQLEntityBehaviour;
 use crate::query::GraphQLExtension;
+use crate::query::GraphQLExtensions;
+use crate::query::GraphQLNamespacedType;
 use crate::query::GraphQLPropertyType;
 use crate::query::GraphQLRelationType;
+use crate::query::GraphQLRelationTypes;
 
 pub struct GraphQLEntityType {
     entity_type: EntityType,
@@ -29,16 +32,10 @@ pub struct GraphQLEntityType {
 /// Entity types defines the type of entity instance.
 #[Object(name = "EntityType")]
 impl GraphQLEntityType {
-    /// The namespace the entity type belongs to.
-    async fn namespace(&self) -> String {
-        self.entity_type.namespace()
-    }
-
-    /// The name of the entity type.
-    ///
-    /// The name is the unique identifier for entity types.
-    async fn name(&self) -> String {
-        self.entity_type.type_name()
+    /// The namespace and type name.
+    #[graphql(name = "type")]
+    async fn ty(&self) -> GraphQLNamespacedType {
+        self.entity_type.namespaced_type().into()
     }
 
     /// Textual description of the entity type.
@@ -47,17 +44,16 @@ impl GraphQLEntityType {
     }
 
     /// The components of the entity type.
-    async fn components(&self, context: &Context<'_>) -> Vec<GraphQLComponent> {
-        match context.data::<Arc<dyn ComponentManager + Send + Sync>>() {
-            Ok(component_manager) => self
-                .entity_type
-                .components
-                .iter()
-                .filter_map(|component_ty| component_manager.get(&component_ty))
-                .map(|component| component.into())
-                .collect(),
-            Err(_) => Vec::new(),
-        }
+    async fn components(&self, context: &Context<'_>) -> Result<Vec<GraphQLComponent>> {
+        let component_manager = context.data::<Arc<dyn ComponentManager + Send + Sync>>()?;
+        let components = self
+            .entity_type
+            .components
+            .iter()
+            .filter_map(|component_ty| component_manager.get(&component_ty))
+            .map(|component| component.into())
+            .collect();
+        Ok(components)
     }
 
     /// The count of components.
@@ -99,27 +95,24 @@ impl GraphQLEntityType {
     /// The extensions which are defined by the entity type.
     async fn extensions(
         &self,
-        #[graphql(name = "type")] extension_ty: Option<ExtensionTypeIdDefinition>,
+        #[graphql(name = "name")] namespace: Option<String>,
         #[graphql(desc = "If true, the extensions are sorted by type")] sort: Option<bool>,
-    ) -> Vec<GraphQLExtension> {
-        match extension_ty {
-            Some(extension_ty) => {
-                let extension_ty = extension_ty.into();
-                self.entity_type
-                    .extensions
-                    .iter()
-                    .filter(|extension| extension.ty == extension_ty)
-                    .map(|extension| extension.value().into())
-                    .collect()
-            }
-            None => {
-                let mut extensions: Vec<GraphQLExtension> = self.entity_type.extensions.iter().map(|extension| extension.value().into()).collect();
-                if sort.unwrap_or_default() {
-                    extensions.sort();
-                }
-                extensions
-            }
-        }
+    ) -> Result<Vec<GraphQLExtension>> {
+        let ty = match namespace {
+            Some(namespace) => Some(ExtensionTypeId::parse_namespace(&namespace)?),
+            None => None,
+        };
+        let extensions: GraphQLExtensions = self
+            .entity_type
+            .extensions
+            .iter()
+            .filter(|extension| match &ty {
+                Some(ty) => &extension.ty == ty,
+                None => true,
+            })
+            .map(|extension| extension.value().clone())
+            .collect();
+        Ok(if sort.unwrap_or_default() { extensions.sorted() } else { extensions.into() })
     }
 
     /// The count of extensions.
@@ -130,77 +123,25 @@ impl GraphQLEntityType {
     /// List of relation types which has this entity type as outbound.
     async fn outbound_relations(&self, context: &Context<'_>) -> Result<Vec<GraphQLRelationType>> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let relation_types = relation_type_manager
-            .get_all()
-            .iter()
-            .filter(|relation_type| {
-                relation_type.outbound_type.type_name() == "*"
-                    || relation_type.outbound_type.eq_entity_type(&self.entity_type.ty)
-                    || self
-                        .entity_type
-                        .components
-                        .iter()
-                        .any(|component_ty| relation_type.outbound_type.eq_component(&component_ty))
-            })
-            .map(|relation_type| relation_type.clone().into())
-            .collect();
-        Ok(relation_types)
+        let relation_types = relation_type_manager.get_outbound_relation_types_by_entity_type(&self.entity_type.ty)?;
+        Ok(GraphQLRelationTypes::new(relation_types).into())
     }
 
     async fn count_outbound_relations(&self, context: &Context<'_>) -> Result<usize> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let count = relation_type_manager
-            .get_all()
-            .iter()
-            .filter(|relation_type| {
-                relation_type.outbound_type.type_name() == "*"
-                    || relation_type.outbound_type.eq_entity_type(&self.entity_type.ty)
-                    || self
-                        .entity_type
-                        .components
-                        .iter()
-                        .any(|component_ty| relation_type.outbound_type.eq_component(&component_ty))
-            })
-            .count();
-        Ok(count)
+        Ok(relation_type_manager.count_outbound_relation_types_by_entity_type(&self.entity_type.ty)?)
     }
 
     /// List of relation types which has this entity type as inbound.
     async fn inbound_relations(&self, context: &Context<'_>) -> Result<Vec<GraphQLRelationType>> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let relation_types = relation_type_manager
-            .get_all()
-            .iter()
-            .filter(|relation_type| {
-                relation_type.inbound_type.type_name() == "*"
-                    || relation_type.inbound_type.eq_entity_type(&self.entity_type.ty)
-                    || self
-                        .entity_type
-                        .components
-                        .iter()
-                        .any(|component_ty| relation_type.inbound_type.eq_component(&component_ty))
-            })
-            .map(|relation_type| relation_type.clone().into())
-            .collect();
-        Ok(relation_types)
+        let relation_types = relation_type_manager.get_inbound_relation_types_by_entity_type(&self.entity_type.ty)?;
+        Ok(GraphQLRelationTypes::new(relation_types).into())
     }
 
     async fn count_inbound_relations(&self, context: &Context<'_>) -> Result<usize> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let count = relation_type_manager
-            .get_all()
-            .iter()
-            .filter(|relation_type| {
-                relation_type.inbound_type.type_name() == "*"
-                    || relation_type.inbound_type.eq_entity_type(&self.entity_type.ty)
-                    || self
-                        .entity_type
-                        .components
-                        .iter()
-                        .any(|component_ty| relation_type.inbound_type.eq_component(&component_ty))
-            })
-            .count();
-        Ok(count)
+        Ok(relation_type_manager.count_inbound_relation_types_by_entity_type(&self.entity_type.ty)?)
     }
 
     /// Returns true, if the entity type is valid. This means all components exists.
@@ -238,10 +179,16 @@ impl From<EntityType> for GraphQLEntityType {
     }
 }
 
-pub struct GraphQLEntityTypes(Vec<GraphQLEntityType>);
+pub struct GraphQLEntityTypes(EntityTypes);
+
+impl GraphQLEntityTypes {
+    pub fn new(entity_types: EntityTypes) -> Self {
+        Self(entity_types)
+    }
+}
 
 impl Deref for GraphQLEntityTypes {
-    type Target = Vec<GraphQLEntityType>;
+    type Target = EntityTypes;
 
     fn deref(&self) -> &Self::Target {
         &self.0
@@ -249,14 +196,13 @@ impl Deref for GraphQLEntityTypes {
 }
 
 impl From<GraphQLEntityTypes> for Vec<GraphQLEntityType> {
-    fn from(value: GraphQLEntityTypes) -> Self {
-        value.0
+    fn from(entity_types: GraphQLEntityTypes) -> Self {
+        entity_types.0.into_iter().map(|(_, entity_type)| entity_type.into()).collect()
     }
 }
 
 impl From<EntityTypes> for GraphQLEntityTypes {
     fn from(entity_types: EntityTypes) -> Self {
-        let entity_types = entity_types.into_iter().map(|(_, entity_type)| entity_type.into()).collect();
-        GraphQLEntityTypes(entity_types)
+        GraphQLEntityTypes::new(entity_types)
     }
 }

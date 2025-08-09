@@ -60,10 +60,10 @@ mod tests {
 
     use crate::InstanceSystemImpl;
     use reactive_graph_graph::EntityType;
+    use reactive_graph_graph::NAMESPACE_SEPARATOR;
     use reactive_graph_graph::NamespacedTypeGetter;
     use reactive_graph_graph::RelationType;
     use reactive_graph_graph::RelationTypeId;
-    use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
     use reactive_graph_instance_system_api::InstanceSystem;
     use reactive_graph_reactive_model_api::ReactiveInstance;
     use reactive_graph_reactive_model_impl::ReactiveEntity;
@@ -135,7 +135,7 @@ mod tests {
             "{}--{}{}{}--{}.json",
             relation_instance_id.outbound_id,
             relation_instance_id.namespace(),
-            TYPE_ID_TYPE_SEPARATOR,
+            NAMESPACE_SEPARATOR,
             relation_instance_id.type_name(),
             relation_instance_id.inbound_id
         ));

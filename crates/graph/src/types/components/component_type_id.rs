@@ -1,3 +1,4 @@
+use std::borrow::Cow;
 use std::collections::hash_map::RandomState;
 use std::fmt::Display;
 use std::fmt::Formatter;
@@ -6,52 +7,80 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-use crate::ComponentTypeIdContainer;
-use crate::NamespacedType;
-use crate::NamespacedTypeGetter;
-use crate::NamespacedTypeIdContainer;
-use crate::NamespacedTypeIds;
-use crate::TypeDefinition;
-use crate::TypeDefinitionGetter;
-use crate::TypeIdParseError;
-use crate::TypeIdType;
 use dashmap::DashSet;
 use dashmap::iter_set::OwningIter;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
-#[cfg(any(test, feature = "test"))]
-use rand_derive3::RandGen;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
 use schemars::json_schema;
 use serde::Deserialize;
 use serde::Serialize;
-use std::borrow::Cow;
+
+use crate::ComponentTypeIdContainer;
+use crate::Namespace;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
+use crate::NamespacedTypeConstructor;
+use crate::NamespacedTypeError;
+use crate::NamespacedTypeGetter;
+use crate::NamespacedTypeIdContainer;
+use crate::NamespacedTypeIds;
+use crate::NamespacedTypeIdsError;
+use crate::TypeDefinition;
+use crate::TypeDefinitionConversionError;
+use crate::TypeDefinitionGetter;
+use crate::TypeIdParseError;
+use crate::TypeIdType;
+
+#[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
+#[cfg(any(test, feature = "test"))]
+use rand_derive3::RandGen;
+#[cfg(any(test, feature = "table"))]
+use tabled::Tabled;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
 #[cfg_attr(any(test, feature = "test"), derive(RandGen))]
+#[cfg_attr(any(test, feature = "table"), derive(Tabled))]
 #[schemars(deny_unknown_fields)]
-pub struct ComponentTypeId(NamespacedType);
+pub struct ComponentTypeId(#[cfg_attr(any(test, feature = "table"), tabled(inline))] NamespacedType);
 
 impl ComponentTypeId {
-    pub fn new(nt: NamespacedType) -> Self {
-        Self(nt)
+    pub fn new<NT: Into<NamespacedType>>(nt: NT) -> Self {
+        NamespacedTypeConstructor::new(nt)
     }
 
-    pub fn new_from_type<N: Into<String>, T: Into<String>>(namespace: N, type_name: T) -> Self {
-        Self(NamespacedType::new(namespace, type_name))
+    pub fn parse_namespace(namespace: &String) -> Result<Self, NamespacedTypeError> {
+        NamespacedTypeConstructor::parse_namespace(namespace)
+    }
+
+    pub fn parse_optional_namespace(namespace: Option<String>) -> Result<Option<Self>, NamespacedTypeError> {
+        NamespacedTypeConstructor::parse_optional_namespace(namespace)
+    }
+}
+
+impl NamespacedTypeConstructor for ComponentTypeId {
+    fn new<NT: Into<NamespacedType>>(nt: NT) -> Self {
+        Self(nt.into())
     }
 }
 
 impl NamespacedTypeGetter for ComponentTypeId {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.0.clone()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.0.namespace.clone()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.0.path.clone()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.0.type_name.clone()
     }
 }
@@ -59,6 +88,10 @@ impl NamespacedTypeGetter for ComponentTypeId {
 impl TypeDefinitionGetter for ComponentTypeId {
     fn type_definition(&self) -> TypeDefinition {
         self.into()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::Component
     }
 }
 
@@ -86,32 +119,52 @@ impl From<NamespacedType> for ComponentTypeId {
     }
 }
 
-impl<N: Into<String>, T: Into<String>> From<(N, T)> for ComponentTypeId {
-    fn from(ty: (N, T)) -> Self {
-        Self(NamespacedType::from(ty))
-    }
-}
+// impl<N: Into<Namespace>, T: Into<String>> From<(N, T)> for ComponentTypeId {
+//     fn from(ty: (N, T)) -> Self {
+//         Self(NamespacedType::from(ty))
+//     }
+// }
 
 impl TryFrom<&TypeDefinition> for ComponentTypeId {
-    type Error = ();
+    type Error = TypeDefinitionConversionError;
 
     fn try_from(type_definition: &TypeDefinition) -> Result<Self, Self::Error> {
         match type_definition.type_id_type {
-            TypeIdType::Component => Ok(ComponentTypeId::new_from_type(type_definition.namespace.clone(), type_definition.type_name.clone())),
-            _ => Err(()),
+            TypeIdType::Component => Ok(ComponentTypeId::new(type_definition.namespaced_type.clone())),
+            _ => Err(TypeDefinitionConversionError::TypeIdTypeMatchError(
+                type_definition.clone(),
+                type_definition.type_id_type.clone(),
+                TypeIdType::Component,
+            )),
         }
+    }
+}
+
+impl TryFrom<&str> for ComponentTypeId {
+    type Error = TypeIdParseError;
+
+    fn try_from(type_definition: &str) -> Result<Self, Self::Error> {
+        let type_definition = TypeDefinition::try_from(type_definition).map_err(TypeIdParseError::TypeDefinitionParseError)?;
+        if TypeIdType::Component != type_definition.type_id_type {
+            return Err(TypeIdParseError::InvalidTypeIdType(TypeIdType::Component, type_definition.type_id_type));
+        }
+        Ok(Self((&type_definition).into()))
     }
 }
 
 impl TryFrom<&String> for ComponentTypeId {
     type Error = TypeIdParseError;
 
-    fn try_from(s: &String) -> Result<Self, Self::Error> {
-        let type_definition = TypeDefinition::try_from(s).map_err(TypeIdParseError::TypeDefinitionParseError)?;
-        if TypeIdType::Component != type_definition.type_id_type {
-            return Err(TypeIdParseError::InvalidTypeIdType(TypeIdType::Component, type_definition.type_id_type));
-        }
-        Ok(Self((&type_definition).into()))
+    fn try_from(type_definition: &String) -> Result<Self, Self::Error> {
+        Self::try_from(type_definition.as_str())
+    }
+}
+
+impl TryFrom<String> for ComponentTypeId {
+    type Error = TypeIdParseError;
+
+    fn try_from(type_definition: String) -> Result<Self, Self::Error> {
+        Self::try_from(type_definition.as_str())
     }
 }
 
@@ -125,16 +178,21 @@ impl Display for ComponentTypeId {
 pub struct ComponentTypeIds(DashSet<ComponentTypeId>);
 
 impl ComponentTypeIds {
+    #[inline]
     pub fn new() -> Self {
         NamespacedTypeIdContainer::new()
     }
 
-    pub fn with_namespace<N: Into<String>>(namespace: N) -> NamespacedTypeIds<Self> {
+    pub fn with_namespace<N: Into<Namespace>>(namespace: N) -> Result<NamespacedTypeIds<Self>, NamespacedTypeIdsError> {
         <Self as NamespacedTypeIdContainer>::with_namespace(namespace)
     }
 
     pub fn component<TypeId: Into<ComponentTypeId>>(self, ty: TypeId) -> Self {
         self.ty(ty)
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.0.is_empty()
     }
 }
 
@@ -146,7 +204,7 @@ impl NamespacedTypeIdContainer for ComponentTypeIds {
         Self(DashSet::new())
     }
 
-    fn with_namespace<N: Into<String>>(namespace: N) -> NamespacedTypeIds<Self> {
+    fn with_namespace<N: Into<Namespace>>(namespace: N) -> Result<NamespacedTypeIds<Self>, NamespacedTypeIdsError> {
         NamespacedTypeIds::new(namespace)
     }
 }
@@ -176,6 +234,10 @@ impl ComponentTypeIdContainer for ComponentTypeIds {
         components_to_remove.iter().for_each(|ty| {
             self.0.remove(&ty);
         });
+    }
+
+    fn get_components_cloned(&self) -> ComponentTypeIds {
+        self.clone()
     }
 }
 

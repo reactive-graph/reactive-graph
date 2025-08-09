@@ -1,0 +1,22 @@
+query {
+    core {
+        labeledComponent {
+            label
+        }
+        _metrics {
+            ... AllNamespaceMetrics
+        }
+        systemEvent {
+            id
+            event
+        }
+        SystemEventJsonSchema
+    }
+}
+
+fragment AllNamespaceMetrics on NamespaceMetrics {
+    components
+    entityTypes
+    relationTypes
+    flowTypes
+}

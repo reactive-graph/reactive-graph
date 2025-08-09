@@ -6,9 +6,6 @@ use reactive_graph_behaviour_model_api::BehaviourTypeId;
 use reactive_graph_behaviour_model_api::EntityBehaviourTypeId;
 use reactive_graph_graph::EntityTypeId;
 
-use crate::mutation::BehaviourTypeIdDefinition;
-use crate::mutation::EntityTypeIdDefinition;
-
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "EntityBehaviourTypeId")]
 pub struct EntityBehaviourTypeIdDefinition {

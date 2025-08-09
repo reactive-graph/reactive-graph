@@ -3,6 +3,7 @@ use crate::PropertyType;
 use crate::PropertyTypes;
 use crate::RemovePropertyError;
 use crate::UpdatePropertyError;
+use crate::divergent::DivergentPropertyTypes;
 
 /// A type which contains property types.
 pub trait PropertyTypeContainer {
@@ -39,8 +40,12 @@ pub trait PropertyTypeContainer {
     /// Merges the given properties into the own properties.
     fn merge_properties<P: Into<PropertyTypes>>(&mut self, properties_to_merge: P);
 
+    /// Merges only new properties into the own properties.
+    /// Returns true, if the property already exists and the data type is divergent.
+    fn merge_non_existent_properties<P: Into<PropertyTypes>>(&self, properties_to_merge: P) -> DivergentPropertyTypes;
+
     /// Returns all own properties.
-    fn get_own_properties(&self) -> &PropertyTypes;
+    fn get_own_properties_cloned(&self) -> PropertyTypes;
 }
 
 /// Collection of a type which contains property types.

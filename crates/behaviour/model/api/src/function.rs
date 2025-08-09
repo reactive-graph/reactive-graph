@@ -38,10 +38,10 @@ impl<ID: Clone, T: ReactiveInstance<ID>, FnType: Clone> BehaviourFunctions<ID, T
         self.0.insert(ty.into(), f);
         self
     }
-    pub fn behaviour<N: Into<String>, TN: Into<String>>(self, namespace: N, type_name: TN, f: FnType) -> Self {
-        self.0.insert(BehaviourTypeId::new_from_type(namespace, type_name), f);
-        self
-    }
+    // pub fn behaviour<N: Into<String>, TN: Into<String>>(self, namespace: N, type_name: TN, f: FnType) -> Self {
+    //     self.0.insert(BehaviourTypeId::new_from_type(namespace, type_name), f);
+    //     self
+    // }
 
     pub fn get(&self) -> BehaviourFunctionsReadOnlyView<ID, T, FnType> {
         self.into()
@@ -94,10 +94,11 @@ impl<ID: Clone, T: ReactiveInstance<ID>, FnType: Clone> NamespacedBehaviourFunct
         Self(namespace.into(), BehaviourFunctions::new(factory_creator))
     }
 
-    pub fn behaviour<TN: Into<String>>(self, type_name: TN, f: FnType) -> Self {
-        self.1.0.insert(BehaviourTypeId::new_from_type(self.0.clone(), type_name), f);
-        self
-    }
+    // TODO: TODO: TODO:
+    // pub fn behaviour<TN: Into<String>>(self, type_name: TN, f: FnType) -> Self {
+    //     self.1.0.insert(BehaviourTypeId::new_from_type(self.0.clone(), type_name), f);
+    //     self
+    // }
 
     pub fn get(&self) -> BehaviourFunctionsReadOnlyView<ID, T, FnType> {
         self.1.get()

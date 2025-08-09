@@ -8,17 +8,19 @@ use serde_json::json;
 use springtime_di::Component;
 use springtime_di::component_alias;
 
-use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::ComponentTypeIds;
+use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionContainer;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::Extensions;
+use reactive_graph_graph::InboundOutboundType;
+use reactive_graph_graph::MatchingInboundOutboundType;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::NamespacedTypeComponentTypeIdContainer;
 use reactive_graph_graph::NamespacedTypeContainer;
 use reactive_graph_graph::NamespacedTypeExtensionContainer;
-use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::NamespacedTypePropertyTypeContainer;
 use reactive_graph_graph::Namespaces;
 use reactive_graph_graph::PropertyType;
@@ -31,6 +33,7 @@ use reactive_graph_graph::RelationTypeAddPropertyError;
 use reactive_graph_graph::RelationTypeId;
 use reactive_graph_graph::RelationTypeIds;
 use reactive_graph_graph::RelationTypeMergeError;
+use reactive_graph_graph::RelationTypeOutboundInboundError;
 use reactive_graph_graph::RelationTypeRemoveComponentError;
 use reactive_graph_graph::RelationTypeRemoveExtensionError;
 use reactive_graph_graph::RelationTypeRemovePropertyError;
@@ -69,38 +72,36 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             return Err(RelationTypeRegistrationError::RelationTypeAlreadyExists(relation_ty));
         }
         // Check if outbound type exists
-        if relation_type.outbound_type.type_name() != "*" {
-            match &relation_type.outbound_type {
-                ComponentOrEntityTypeId::Component(component_ty) => {
-                    if !self.component_manager.has(component_ty) {
-                        warn!("Relation type {} not registered: Outbound component {} does not exist", &relation_ty, component_ty);
-                        return Err(RelationTypeRegistrationError::OutboundComponentDoesNotExist(relation_ty, component_ty.clone()));
-                    }
-                }
-                ComponentOrEntityTypeId::EntityType(entity_ty) => {
-                    if !self.entity_type_manager.has(entity_ty) {
-                        warn!("Relation type {} not registered: Outbound entity type {} does not exist", &relation_ty, entity_ty);
-                        return Err(RelationTypeRegistrationError::OutboundEntityTypeDoesNotExist(relation_ty, entity_ty.clone()));
-                    }
+        match &relation_type.outbound_type {
+            InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(component_ty)) => {
+                if !self.component_manager.has(component_ty) {
+                    warn!("Relation type {} not registered: Outbound component {} does not exist", &relation_ty, component_ty);
+                    return Err(RelationTypeRegistrationError::OutboundComponentDoesNotExist(relation_ty, component_ty.clone()));
                 }
             }
+            InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(entity_ty)) => {
+                if !self.entity_type_manager.has(entity_ty) {
+                    warn!("Relation type {} not registered: Inbound entity type {} does not exist", &relation_ty, entity_ty);
+                    return Err(RelationTypeRegistrationError::InboundEntityTypeDoesNotExist(relation_ty, entity_ty.clone()));
+                }
+            }
+            _ => {} // InboundOutboundType::Component(MatchingInboundOutboundType::Any) | InboundOutboundType::EntityType(MatchingInboundOutboundType::Any) => {}
         }
         // Check if inbound type exists
-        if relation_type.inbound_type.type_name() != "*" {
-            match &relation_type.inbound_type {
-                ComponentOrEntityTypeId::Component(component_ty) => {
-                    if !self.component_manager.has(component_ty) {
-                        warn!("Relation type {} not registered: Inbound component {} does not exist", &relation_ty, component_ty);
-                        return Err(RelationTypeRegistrationError::InboundComponentDoesNotExist(relation_ty, component_ty.clone()));
-                    }
-                }
-                ComponentOrEntityTypeId::EntityType(entity_ty) => {
-                    if !self.entity_type_manager.has(entity_ty) {
-                        warn!("Relation type {} not registered: Inbound entity type {} does not exist", &relation_ty, entity_ty);
-                        return Err(RelationTypeRegistrationError::InboundEntityTypeDoesNotExist(relation_ty, entity_ty.clone()));
-                    }
+        match &relation_type.inbound_type {
+            InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(component_ty)) => {
+                if !self.component_manager.has(component_ty) {
+                    warn!("Relation type {} not registered: Inbound component {} does not exist", &relation_ty, component_ty);
+                    return Err(RelationTypeRegistrationError::InboundComponentDoesNotExist(relation_ty, component_ty.clone()));
                 }
             }
+            InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(entity_ty)) => {
+                if !self.entity_type_manager.has(entity_ty) {
+                    warn!("Relation type {} not registered: Inbound entity type {} does not exist", &relation_ty, entity_ty);
+                    return Err(RelationTypeRegistrationError::InboundEntityTypeDoesNotExist(relation_ty, entity_ty.clone()));
+                }
+            }
+            _ => {}
         }
         // Apply components
         let mut divergent = Vec::new();
@@ -164,11 +165,11 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.relation_types.namespaces()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> RelationTypes {
+    fn get_by_namespace(&self, namespace: &Namespace) -> RelationTypes {
         self.relation_types.get_by_namespace(namespace)
     }
 
-    fn get_types_by_namespace(&self, namespace: &str) -> RelationTypeIds {
+    fn get_types_by_namespace(&self, namespace: &Namespace) -> RelationTypeIds {
         self.relation_types.get_types_by_namespace(namespace)
     }
 
@@ -176,57 +177,169 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.relation_types.get_by_having_component(component_ty)
     }
 
-    fn get_outbound_relation_types(&self, outbound_ty: &ComponentOrEntityTypeId, wildcard: bool) -> RelationTypes {
-        // TODO:
-        // if wildcard && outbound_ty.namespace() == "*" {
-        //     return self.get_all();
-        // } else if wildcard && outbound_ty.type_name() == "*" {
-        //     return self.get_by_namespace(outbound_ty.namespace());
-        // } else {
-        //     self.get_all()
-        //         .into_iter()
-        //         .filter(|relation_type| (wildcard && &relation_type.outbound_type.type_name() == "*") || outbound_ty == &relation_type.outbound_type)
-        //         .collect()
-        // }
-        if wildcard && outbound_ty.type_name() == "*" {
-            return self.get_all();
-        }
+    fn get_outbound_relation_types(&self, outbound_ty: &InboundOutboundType, wildcard: bool) -> RelationTypes {
         self.get_all()
             .into_iter()
-            .filter(|(_, relation_type)| (wildcard && &relation_type.outbound_type.type_name() == "*") || outbound_ty == &relation_type.outbound_type)
+            .filter(|(_, relation_type)| match outbound_ty {
+                InboundOutboundType::Component(MatchingInboundOutboundType::Any) => match relation_type.outbound_type {
+                    InboundOutboundType::Component(_) => wildcard,
+                    _ => false,
+                },
+                InboundOutboundType::EntityType(MatchingInboundOutboundType::Any) => match relation_type.outbound_type {
+                    InboundOutboundType::EntityType(_) => wildcard,
+                    _ => false,
+                },
+                InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(outbound_component_ty)) => match &relation_type.outbound_type {
+                    InboundOutboundType::Component(relation_ty_outbound) => match relation_ty_outbound {
+                        MatchingInboundOutboundType::NamespacedType(relation_ty_outbound_component_ty) => {
+                            relation_ty_outbound_component_ty == outbound_component_ty
+                        }
+                        MatchingInboundOutboundType::Any => wildcard,
+                    },
+                    _ => false,
+                },
+                InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(outbound_entity_ty)) => match &relation_type.outbound_type {
+                    InboundOutboundType::EntityType(relation_ty_outbound) => match relation_ty_outbound {
+                        MatchingInboundOutboundType::NamespacedType(relation_ty_outbound_entity_ty) => relation_ty_outbound_entity_ty == outbound_entity_ty,
+                        MatchingInboundOutboundType::Any => wildcard,
+                    },
+                    _ => false,
+                },
+            })
             .map(|(_, relation_type)| relation_type)
             .collect()
     }
 
-    fn get_inbound_relation_types(&self, inbound_ty: &ComponentOrEntityTypeId, wildcard: bool) -> RelationTypes {
-        if wildcard && inbound_ty.type_name() == "*" {
-            return self.get_all();
-        }
+    fn get_outbound_relation_types_by_entity_type(&self, outbound_ty: &EntityTypeId) -> Result<RelationTypes, RelationTypeOutboundInboundError> {
+        let entity_type = self
+            .entity_type_manager
+            .get(outbound_ty)
+            .ok_or_else(|| RelationTypeOutboundInboundError::EntityTypeDoesNotExist(outbound_ty.clone()))?;
+        let outbound_relation_types = self
+            .get_all()
+            .iter()
+            .filter(|relation_type| relation_type.is_outbound(&entity_type))
+            // .filter(|relation_type| match &relation_type.outbound_type {
+            //     InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(outbound_component_ty)) => entity_type
+            //         .components
+            //         .iter()
+            //         .any(|entity_component_ty| entity_component_ty.eq(outbound_component_ty)),
+            //     InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(ty)) => &entity_type.ty == ty,
+            //     InboundOutboundType::Component(MatchingInboundOutboundType::Any) | InboundOutboundType::EntityType(MatchingInboundOutboundType::Any) => true,
+            // })
+            .map(|relation_type| relation_type.clone().into())
+            .collect();
+        Ok(outbound_relation_types)
+    }
+
+    fn count_outbound_relation_types_by_entity_type(&self, outbound_ty: &EntityTypeId) -> Result<usize, RelationTypeOutboundInboundError> {
+        let entity_type = self
+            .entity_type_manager
+            .get(outbound_ty)
+            .ok_or_else(|| RelationTypeOutboundInboundError::EntityTypeDoesNotExist(outbound_ty.clone()))?;
+        let count = self
+            .get_all()
+            .iter()
+            .filter(|relation_type| relation_type.is_outbound(&entity_type))
+            // .filter(|relation_type| match &relation_type.outbound_type {
+            //     InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(outbound_component_ty)) => entity_type
+            //         .components
+            //         .iter()
+            //         .any(|entity_component_ty| entity_component_ty.eq(outbound_component_ty)),
+            //     InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(ty)) => &entity_type.ty == ty,
+            //     InboundOutboundType::Component(MatchingInboundOutboundType::Any) | InboundOutboundType::EntityType(MatchingInboundOutboundType::Any) => true,
+            // })
+            .count();
+        Ok(count)
+    }
+
+    fn get_inbound_relation_types(&self, inbound_ty: &InboundOutboundType, wildcard: bool) -> RelationTypes {
         self.get_all()
             .into_iter()
-            .filter(|(_, relation_type)| (wildcard && &relation_type.inbound_type.type_name() == "*") || inbound_ty == &relation_type.inbound_type)
+            .filter(|(_, relation_type)| match inbound_ty {
+                InboundOutboundType::Component(MatchingInboundOutboundType::Any) => match relation_type.inbound_type {
+                    InboundOutboundType::Component(_) => wildcard,
+                    _ => false,
+                },
+                InboundOutboundType::EntityType(MatchingInboundOutboundType::Any) => match relation_type.inbound_type {
+                    InboundOutboundType::EntityType(_) => wildcard,
+                    _ => false,
+                },
+                InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(inbound_component_ty)) => match &relation_type.inbound_type {
+                    InboundOutboundType::Component(relation_ty_inbound) => match relation_ty_inbound {
+                        MatchingInboundOutboundType::NamespacedType(relation_ty_inbound_component_ty) => {
+                            relation_ty_inbound_component_ty == inbound_component_ty
+                        }
+                        MatchingInboundOutboundType::Any => wildcard,
+                    },
+                    _ => false,
+                },
+                InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(inbound_entity_ty)) => match &relation_type.inbound_type {
+                    InboundOutboundType::EntityType(relation_ty_inbound) => match relation_ty_inbound {
+                        MatchingInboundOutboundType::NamespacedType(relation_ty_inbound_entity_ty) => relation_ty_inbound_entity_ty == inbound_entity_ty,
+                        MatchingInboundOutboundType::Any => wildcard,
+                    },
+                    _ => false,
+                },
+            })
             .map(|(_, relation_type)| relation_type)
             .collect()
+    }
+
+    fn get_inbound_relation_types_by_entity_type(&self, inbound_ty: &EntityTypeId) -> Result<RelationTypes, RelationTypeOutboundInboundError> {
+        let entity_type = self
+            .entity_type_manager
+            .get(inbound_ty)
+            .ok_or_else(|| RelationTypeOutboundInboundError::EntityTypeDoesNotExist(inbound_ty.clone()))?;
+        let inbound_relation_types = self
+            .get_all()
+            .iter()
+            .filter(|relation_type| relation_type.is_inbound(&entity_type))
+            // .filter(|relation_type| match &relation_type.inbound_type {
+            //     InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(inbound_component_ty)) => entity_type
+            //         .components
+            //         .iter()
+            //         .any(|entity_component_ty| entity_component_ty.eq(inbound_component_ty)),
+            //     InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(ty)) => &entity_type.ty == ty,
+            //     InboundOutboundType::Component(MatchingInboundOutboundType::Any) | InboundOutboundType::EntityType(MatchingInboundOutboundType::Any) => true,
+            // })
+            .map(|relation_type| relation_type.clone().into())
+            .collect();
+        Ok(inbound_relation_types)
+    }
+
+    fn count_inbound_relation_types_by_entity_type(&self, inbound_ty: &EntityTypeId) -> Result<usize, RelationTypeOutboundInboundError> {
+        let entity_type = self
+            .entity_type_manager
+            .get(inbound_ty)
+            .ok_or_else(|| RelationTypeOutboundInboundError::EntityTypeDoesNotExist(inbound_ty.clone()))?;
+        let count = self
+            .get_all()
+            .iter()
+            .filter(|relation_type| relation_type.is_inbound(&entity_type))
+            //     .filter(|relation_type| match &relation_type.inbound_type {
+            //     InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(inbound_component_ty)) => entity_type
+            //         .components
+            //         .iter()
+            //         .any(|entity_component_ty| entity_component_ty.eq(inbound_component_ty)),
+            //     InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(ty)) => &entity_type.ty == ty,
+            //     InboundOutboundType::Component(MatchingInboundOutboundType::Any) | InboundOutboundType::EntityType(MatchingInboundOutboundType::Any) => true,
+            // }
+            // )
+            .count();
+        Ok(count)
     }
 
     fn has(&self, ty: &RelationTypeId) -> bool {
         self.relation_types.contains_key(ty)
     }
 
-    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool {
-        self.relation_types.contains_key(&RelationTypeId::new_from_type(namespace, type_name))
-    }
-
     fn get(&self, ty: &RelationTypeId) -> Option<RelationType> {
         self.relation_types.get(ty).map(|relation_type| relation_type.value().clone())
     }
 
-    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<RelationType> {
-        self.get(&RelationTypeId::new_from_type(namespace, type_name))
-    }
-
-    fn find_by_type_name(&self, search: &str) -> RelationTypes {
-        self.relation_types.find_by_type_name(search)
+    fn find(&self, search: &str) -> RelationTypes {
+        self.relation_types.find(search)
     }
 
     fn count(&self) -> usize {
@@ -234,15 +347,15 @@ impl RelationTypeManager for RelationTypeManagerImpl {
     }
 
     /// Returns the count of relation types of the given namespace.
-    fn count_by_namespace(&self, namespace: &str) -> usize {
+    fn count_by_namespace(&self, namespace: &Namespace) -> usize {
         self.relation_types.count_by_namespace(namespace)
     }
 
     fn create_relation_type(
         &self,
-        outbound_type: &ComponentOrEntityTypeId,
+        outbound_type: &InboundOutboundType,
         ty: &RelationTypeId,
-        inbound_type: &ComponentOrEntityTypeId,
+        inbound_type: &InboundOutboundType,
         description: &str,
         components: ComponentTypeIds,
         properties: PropertyTypes,
@@ -392,12 +505,14 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         if let Some(relation_type) = self.get(ty) {
             return relation_type.components.iter().all(|component_ty| self.component_manager.has(&component_ty))
                 && match &relation_type.outbound_type {
-                    ComponentOrEntityTypeId::EntityType(entity_ty) => self.entity_type_manager.validate(entity_ty),
-                    ComponentOrEntityTypeId::Component(component_ty) => self.component_manager.has(component_ty),
+                    InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(entity_ty)) => self.entity_type_manager.validate(entity_ty),
+                    InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(component_ty)) => self.component_manager.has(component_ty),
+                    _ => true,
                 }
                 && match &relation_type.inbound_type {
-                    ComponentOrEntityTypeId::EntityType(entity_ty) => self.entity_type_manager.validate(entity_ty),
-                    ComponentOrEntityTypeId::Component(component_ty) => self.component_manager.has(component_ty),
+                    InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(entity_ty)) => self.entity_type_manager.validate(entity_ty),
+                    InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(component_ty)) => self.component_manager.has(component_ty),
+                    _ => true,
                 };
         }
         false
@@ -417,12 +532,12 @@ mod tests {
 
     use crate::TypeSystemImpl;
     use reactive_graph_graph::Component;
-    use reactive_graph_graph::ComponentOrEntityTypeId;
     use reactive_graph_graph::ComponentTypeId;
     use reactive_graph_graph::ComponentTypeIdContainer;
     use reactive_graph_graph::ComponentTypeIds;
     use reactive_graph_graph::EntityType;
     use reactive_graph_graph::Extensions;
+    use reactive_graph_graph::InboundOutboundType;
     use reactive_graph_graph::NamespacedTypeGetter;
     use reactive_graph_graph::PropertyType;
     use reactive_graph_graph::PropertyTypeContainer;
@@ -442,12 +557,12 @@ mod tests {
         let outbound_type = entity_type_manager
             .register(EntityType::default_test())
             .expect("Failed to register outbound entity type");
-        let outbound_ty: ComponentOrEntityTypeId = (&outbound_type).into();
+        let outbound_ty: InboundOutboundType = (&outbound_type).into();
 
         let inbound_type = entity_type_manager
             .register(EntityType::default_test())
             .expect("Failed to register inbound entity type");
-        let inbound_ty: ComponentOrEntityTypeId = (&inbound_type).into();
+        let inbound_ty: InboundOutboundType = (&inbound_type).into();
 
         let relation_ty = RelationTypeId::default_test();
 
@@ -476,12 +591,12 @@ mod tests {
         let outbound_type = entity_type_manager
             .register(EntityType::default_test())
             .expect("Failed to register outbound entity type");
-        let outbound_ty: ComponentOrEntityTypeId = (&outbound_type).into();
+        let outbound_ty: InboundOutboundType = (&outbound_type).into();
 
         let inbound_type = entity_type_manager
             .register(EntityType::default_test())
             .expect("Failed to register inbound entity type");
-        let inbound_ty: ComponentOrEntityTypeId = (&inbound_type).into();
+        let inbound_ty: InboundOutboundType = (&inbound_type).into();
 
         let namespace = r_string();
         let type_name = r_string();
@@ -518,12 +633,12 @@ mod tests {
         let outbound_type = entity_type_manager
             .register(EntityType::default_test())
             .expect("Failed to register outbound entity type");
-        let outbound_ty: ComponentOrEntityTypeId = (&outbound_type).into();
+        let outbound_ty: InboundOutboundType = (&outbound_type).into();
 
         let inbound_type = entity_type_manager
             .register(EntityType::default_test())
             .expect("Failed to register inbound entity type");
-        let inbound_ty: ComponentOrEntityTypeId = (&inbound_type).into();
+        let inbound_ty: InboundOutboundType = (&inbound_type).into();
 
         let namespace = r_string();
         let type_name = r_string();
@@ -555,12 +670,12 @@ mod tests {
         let outbound_type = entity_type_manager
             .register(EntityType::default_test())
             .expect("Failed to register outbound entity type");
-        let outbound_ty: ComponentOrEntityTypeId = (&outbound_type).into();
+        let outbound_ty: InboundOutboundType = (&outbound_type).into();
 
         let inbound_type = entity_type_manager
             .register(EntityType::default_test())
             .expect("Failed to register inbound entity type");
-        let inbound_ty: ComponentOrEntityTypeId = (&inbound_type).into();
+        let inbound_ty: InboundOutboundType = (&inbound_type).into();
 
         let component = component_manager.register(Component::default_test()).expect("Failed to register component");
         let component_ty = component.ty.clone();
@@ -593,12 +708,12 @@ mod tests {
         let outbound_type = entity_type_manager
             .register(EntityType::default_test())
             .expect("Failed to register outbound entity type");
-        let outbound_ty: ComponentOrEntityTypeId = (&outbound_type).into();
+        let outbound_ty: InboundOutboundType = (&outbound_type).into();
 
         let inbound_type = entity_type_manager
             .register(EntityType::default_test())
             .expect("Failed to register inbound entity type");
-        let inbound_ty: ComponentOrEntityTypeId = (&inbound_type).into();
+        let inbound_ty: InboundOutboundType = (&inbound_type).into();
 
         let property_type = PropertyType::default_test();
         let property_name = property_type.name.clone();

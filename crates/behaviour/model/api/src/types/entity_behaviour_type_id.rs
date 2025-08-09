@@ -9,12 +9,6 @@ use std::ops::DerefMut;
 
 use dashmap::DashSet;
 use dashmap::iter_set::OwningIter;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
-#[cfg(any(test, feature = "test"))]
-use rand_derive3::RandGen;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
@@ -23,10 +17,18 @@ use serde::Deserialize;
 use serde::Serialize;
 use typed_builder::TypedBuilder;
 
-use crate::BehaviourTypeId;
 use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::NAMESPACE_SEPARATOR;
 use reactive_graph_graph::NamespacedType;
-use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
+
+use crate::BehaviourTypeId;
+
+#[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
+#[cfg(any(test, feature = "test"))]
+use rand_derive3::RandGen;
 
 /// The behaviour of an entity type.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema, TypedBuilder)]
@@ -42,11 +44,6 @@ pub struct EntityBehaviourTypeId {
 impl EntityBehaviourTypeId {
     pub fn new(entity_ty: EntityTypeId, behaviour_ty: BehaviourTypeId) -> Self {
         Self { entity_ty, behaviour_ty }
-    }
-
-    pub fn new_from_type<N: Into<String>, T: Into<String>>(namespace: N, type_name: T) -> Self {
-        let namespaced_type = NamespacedType::new(namespace, type_name);
-        Self::new(namespaced_type.clone().into(), namespaced_type.into())
     }
 }
 
@@ -64,7 +61,7 @@ impl From<&BehaviourTypeId> for EntityBehaviourTypeId {
 
 impl Display for EntityBehaviourTypeId {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}{}{}", &self.entity_ty, TYPE_ID_TYPE_SEPARATOR, &self.behaviour_ty)
+        write!(f, "{}{}{}", &self.entity_ty, NAMESPACE_SEPARATOR, &self.behaviour_ty)
     }
 }
 

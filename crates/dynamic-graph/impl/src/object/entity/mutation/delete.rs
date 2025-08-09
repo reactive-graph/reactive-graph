@@ -22,4 +22,5 @@ pub fn entity_delete_field() -> Field {
             Ok(Some(ids_to_field_value(ids)))
         })
     })
+    .description("Deletes the entity instance")
 }

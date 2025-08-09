@@ -1,9 +1,5 @@
-use crate::NAMESPACE_FLOW;
-use reactive_graph_graph::extension_ty;
+use reactive_graph_graph::ExtensionTypeId;
+use std::sync::LazyLock;
 
-extension_ty!(
-    EXTENSION_FLOW_UUID_TYPE_VARIABLE,
-    NAMESPACE_FLOW,
-    EXTENSION_NAME_FLOW_UUID_TYPE_VARIABLE,
-    "uuid_type_variable"
-);
+pub static EXTENSION_FLOW_UUID_TYPE_VARIABLE: LazyLock<ExtensionTypeId> =
+    LazyLock::new(|| ExtensionTypeId::try_from("reactive_graph::flow::UuidTypeVariable").unwrap());

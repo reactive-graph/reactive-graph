@@ -80,8 +80,8 @@ impl TableInlineFormatSetter for EntityType {
 impl From<reactive_graph_graph::EntityType> for EntityType {
     fn from(entity_type: reactive_graph_graph::EntityType) -> Self {
         EntityType {
-            namespace: entity_type.namespace(),
-            name: entity_type.type_name(),
+            namespace: entity_type.path().to_string(),
+            name: entity_type.type_name().to_string(),
             description: entity_type.description,
             components: ComponentTypeIds::from(entity_type.components).0,
             properties: PropertyTypes::from(entity_type.properties).0,

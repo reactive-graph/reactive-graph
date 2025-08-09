@@ -1,8 +1,9 @@
 use anyhow::Result;
-use reactive_graph_utils_schema_generator::GraphQLSchemaTypes;
-use reactive_graph_utils_schema_generator::JsonSchemaTypes;
-use reactive_graph_utils_schema_generator::write_graphql_schema;
-use reactive_graph_utils_schema_generator::write_json_schema;
+use reactive_graph_generator_schema_graphql::GraphQLSchemaTypes;
+use reactive_graph_generator_schema_graphql::write_graphql_schema;
+
+use reactive_graph_generator_schema_json::JsonSchemaTypes;
+use reactive_graph_generator_schema_json::write_json_schema;
 
 fn main() -> Result<()> {
     write_graphql_schema(GraphQLSchemaTypes::DynamicGraphSchema)?;

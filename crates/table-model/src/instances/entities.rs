@@ -90,8 +90,8 @@ impl From<reactive_graph_graph::EntityInstance> for EntityInstance {
     fn from(entity_instance: reactive_graph_graph::EntityInstance) -> Self {
         EntityInstance {
             id: entity_instance.id,
-            namespace: entity_instance.namespace(),
-            name: entity_instance.type_name(),
+            namespace: entity_instance.path().to_string(),
+            name: entity_instance.type_name().to_string(),
             description: entity_instance.description,
             components: ComponentTypeIds::from(entity_instance.components).0,
             properties: PropertyInstances::from(entity_instance.properties).0,

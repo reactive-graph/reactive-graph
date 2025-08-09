@@ -2,6 +2,7 @@ use serde_json::Value;
 use std::ops::Deref;
 
 use crate::schema_graphql::scalar::Json;
+use crate::schema_graphql::types::entity_type::EntityType;
 use reactive_graph_graph::NamespacedTypeGetter;
 
 #[derive(cynic::InputObject, Clone, Debug)]
@@ -93,6 +94,9 @@ pub struct Extension {
     /// The name of the extension.
     pub name: String,
 
+    /// The entity type constraint of the extension.
+    pub entity_type: Option<EntityType>,
+
     /// Textual description of the extension.
     pub description: String,
 
@@ -102,9 +106,11 @@ pub struct Extension {
 
 impl From<Extension> for reactive_graph_graph::Extension {
     fn from(extension: Extension) -> Self {
+        // let entity_ty = extension.
         let ty = reactive_graph_graph::ExtensionTypeId::new_from_type(extension.namespace, extension.name);
         reactive_graph_graph::Extension {
             ty,
+            entity_ty: None, // TODO!!!!
             description: extension.description,
             extension: extension.extension,
         }

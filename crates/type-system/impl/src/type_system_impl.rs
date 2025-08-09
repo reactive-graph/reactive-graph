@@ -18,7 +18,6 @@ use reactive_graph_type_system_api::NamespaceManager;
 use reactive_graph_type_system_api::RelationTypeImportExportManager;
 use reactive_graph_type_system_api::RelationTypeManager;
 use reactive_graph_type_system_api::RelationTypeProviderRegistry;
-use reactive_graph_type_system_api::RuntimeTypesProvider;
 use reactive_graph_type_system_api::TypeSystem;
 use reactive_graph_type_system_api::TypeSystemEventManager;
 
@@ -38,8 +37,6 @@ pub struct TypeSystemImpl {
     relation_type_import_export_manager: Arc<dyn RelationTypeImportExportManager + Send + Sync>,
     relation_type_provider_registry: Arc<dyn RelationTypeProviderRegistry + Send + Sync>,
     type_system_event_manager: Arc<dyn TypeSystemEventManager + Send + Sync>,
-    // TODO: move it out of the type system else the type system cannot be empty!
-    runtime_types_provider: Arc<dyn RuntimeTypesProvider + Send + Sync>,
 }
 
 #[async_trait]
@@ -122,9 +119,6 @@ impl Lifecycle for TypeSystemImpl {
         self.flow_type_import_export_manager.init().await;
         // Event System
         self.type_system_event_manager.init().await;
-        // Essential types
-        // TODO: move it out of the type system else the type system cannot be empty!
-        self.runtime_types_provider.init().await;
     }
 
     async fn post_init(&self) {
@@ -140,15 +134,9 @@ impl Lifecycle for TypeSystemImpl {
         self.flow_type_provider_registry.post_init().await;
         // Event System
         self.type_system_event_manager.post_init().await;
-        // Essential types
-        // TODO: move it out of the type system else the type system cannot be empty!
-        self.runtime_types_provider.post_init().await;
     }
 
     async fn pre_shutdown(&self) {
-        // Essential types
-        // TODO: move it out of the type system else the type system cannot be empty!
-        self.runtime_types_provider.pre_shutdown().await;
         // Event System
         self.type_system_event_manager.pre_shutdown().await;
         // Type Providers
@@ -164,9 +152,6 @@ impl Lifecycle for TypeSystemImpl {
     }
 
     async fn shutdown(&self) {
-        // Essential types
-        // TODO: move it out of the type system else the type system cannot be empty!
-        self.runtime_types_provider.shutdown().await;
         // Event System
         self.type_system_event_manager.shutdown().await;
         // Type Providers

@@ -1,12 +1,7 @@
-use crate::NAMESPACE_CORE;
-use reactive_graph_graph::component_model;
-use reactive_graph_graph::component_ty;
+use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::properties;
-
-pub const PROPERTY_RESULT: &str = "result";
+use std::sync::LazyLock;
 
 properties!(ActionProperties, (TRIGGER, "trigger", false));
 
-component_ty!(COMPONENT_ACTION, NAMESPACE_CORE, COMPONENT_NAME_ACTION, "action");
-
-component_model!(Action, trigger);
+pub static COMPONENT_ACTION: LazyLock<ComponentTypeId> = LazyLock::new(|| ComponentTypeId::try_from("reactive_graph::core::Action").unwrap());

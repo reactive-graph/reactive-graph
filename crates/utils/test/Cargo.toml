@@ -11,6 +11,7 @@ readme = "../../../README.md"
 
 [dependencies]
 colored = { workspace = true }
+convert_case = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
 log4rs = { workspace = true, features = ["console_appender", "ansi_writer"] }
 random-string = { workspace = true }

@@ -18,10 +18,10 @@ use crate::object::types::DynamicGraphTypeDefinition;
 use crate::union::entity::UNION_ALL_ENTITIES;
 use crate::union::entity::namespace_entities_union_type_name;
 use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
-use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::DataType;
 use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::InboundOutboundType;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyType;
@@ -139,7 +139,7 @@ pub fn relation_creation_field(relation_type: &RelationType) -> Option<Field> {
             let outbound_id = Uuid::from_str(ctx.args.try_get("outboundId")?.string()?)?;
             let inbound_id = Uuid::from_str(ctx.args.try_get("inboundId")?.string()?)?;
             let rty = match ctx.args.get("instanceId").and_then(|s| s.string().map(|s| s.to_string()).ok()) {
-                Some(instance_id) => RelationInstanceTypeId::new_unique_for_instance_id(ty, instance_id),
+                Some(instance_id) => RelationInstanceTypeId::new(ty, instance_id),
                 None => RelationInstanceTypeId::new_with_random_instance_id(ty),
             };
             let id = RelationInstanceId::builder().outbound_id(outbound_id).ty(&rty).inbound_id(inbound_id).build();
@@ -156,7 +156,7 @@ pub fn relation_creation_field(relation_type: &RelationType) -> Option<Field> {
                 .get(inbound_id)
                 .ok_or::<Error>(ReactiveRelationCreationError::MissingInboundEntityInstance(inbound_id).into())?;
 
-            let properties = create_properties_from_field_arguments(&ctx, &relation_type.properties)?;
+            let properties = create_properties_from_field_arguments(&ctx, &relation_type.properties, false)?;
             let properties = ReactiveProperties::new_with_id_from_properties(id, properties);
             let reactive_relation = ReactiveRelation::builder()
                 .outbound(outbound)
@@ -170,6 +170,7 @@ pub fn relation_creation_field(relation_type: &RelationType) -> Option<Field> {
             Ok(None)
         })
     })
+    .description(format!("Create a new {} relation", relation_type.type_name()))
     .argument(InputValue::new("outboundId", TypeRef::named(TypeRef::ID)))
     .argument(InputValue::new("instanceId", TypeRef::named(TypeRef::ID)))
     .argument(InputValue::new("inboundId", TypeRef::named(TypeRef::ID)));
@@ -261,13 +262,13 @@ pub fn relation_property_field(property_type: &PropertyType) -> Field {
 }
 
 pub fn relation_outbound_field(
-    ty: &ComponentOrEntityTypeId,
+    ty: &InboundOutboundType,
     field_name: Option<String>,
     field_description: Option<String>,
     context: &SchemaBuilderContext,
 ) -> Vec<Field> {
     match ty {
-        ComponentOrEntityTypeId::EntityType(ty) => {
+        InboundOutboundType::EntityType(ty) => {
             if ty.namespace() == "*" {
                 vec![relation_outbound_entity_union_field(UNION_ALL_ENTITIES, field_name, field_description)]
             } else if ty.type_name() == "*" {
@@ -280,7 +281,7 @@ pub fn relation_outbound_field(
                 vec![relation_outbound_entity_field(ty, field_name, field_description)]
             }
         }
-        ComponentOrEntityTypeId::Component(ty) => {
+        InboundOutboundType::Component(ty) => {
             if ty.namespace() == "*" {
                 context
                     .component_manager
@@ -313,13 +314,13 @@ pub fn relation_outbound_field(
 }
 
 pub fn relation_inbound_field(
-    ty: &ComponentOrEntityTypeId,
+    ty: &InboundOutboundType,
     field_name: Option<String>,
     field_description: Option<String>,
     context: &SchemaBuilderContext,
 ) -> Vec<Field> {
     match ty {
-        ComponentOrEntityTypeId::EntityType(ty) => {
+        InboundOutboundType::EntityType(ty) => {
             if ty.namespace() == "*" {
                 vec![relation_inbound_entity_union_field(UNION_ALL_ENTITIES, field_name, field_description)]
             } else if ty.type_name() == "*" {
@@ -332,7 +333,7 @@ pub fn relation_inbound_field(
                 vec![relation_inbound_entity_field(ty, field_name, field_description)]
             }
         }
-        ComponentOrEntityTypeId::Component(ty) => {
+        InboundOutboundType::Component(ty) => {
             if ty.namespace() == "*" {
                 context
                     .component_manager

@@ -432,7 +432,7 @@ input EntityTypeId {
 """
 An extension provides named but schema-less additional information.
 Entity types, relation types and property types can provide additional
-meta data. For example an extension named "shape" provides information
+metadata. For example an extension named "shape" provides information
 about the look and feel in the flow editor.
 """
 type Extension {
@@ -440,6 +440,10 @@ type Extension {
 	The name of the extension.
 	"""
 	description: String!
+	"""
+	The entity type constraint of the extension.
+	"""
+	entityType: EntityType
 	"""
 	The additional information as JSON representation (schema-less).
 	"""
@@ -460,11 +464,15 @@ input ExtensionDefinition {
 	"""
 	description: String!
 	"""
+	The entity type of the extension.
+	"""
+	entity_type: EntityTypeId
+	"""
 	The extension as JSON representation.
 	"""
 	extension: JSON!
 	"""
-	The namespace of the extension.
+	The type of the extension.
 	"""
 	type: ExtensionTypeId!
 }

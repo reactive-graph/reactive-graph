@@ -3,6 +3,7 @@ use crate::field::flow::flow_query_field;
 use crate::field::namespace_type_name;
 use crate::field::query::entity_query_field;
 use crate::field::relation_query_field;
+use crate::object::namespace::collision::field_name_collision;
 use crate::object::namespace::metrics::metrics_field;
 use crate::object::namespace::schema::json_schema_field;
 use crate::object::namespace::sort::sort_by_key;
@@ -12,6 +13,7 @@ use convert_case::Casing;
 use itertools::Itertools;
 use log::warn;
 use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
+use reactive_graph_graph::NamespacedTypeContainer;
 use reactive_graph_graph::TypeDefinitionJsonSchemaGetter;
 
 pub fn namespace_query(context: SchemaBuilderContext, namespace: &String) -> Option<Object> {
@@ -35,8 +37,7 @@ pub fn namespace_query(context: SchemaBuilderContext, namespace: &String) -> Opt
     }
 
     for entity_type in entity_types.iter().sorted_by(sort_by_key) {
-        let entity_type = entity_type.value();
-        namespace = namespace.field(entity_query_field(entity_type));
+        namespace = namespace.field(entity_query_field(entity_type.value()));
         namespace = namespace.field(json_schema_field(&entity_type.ty, entity_type.json_schema()));
     }
     for relation_type in relation_types.iter().sorted_by(sort_by_key) {
@@ -45,7 +46,11 @@ pub fn namespace_query(context: SchemaBuilderContext, namespace: &String) -> Opt
     }
 
     for flow_type in flow_types.iter().sorted_by(sort_by_key) {
-        namespace = namespace.field(flow_query_field(flow_type.value()));
+        let has_field_name_collision = field_name_collision(flow_type.value(), entity_types.type_ids());
+        let Some(wrapper_entity_type) = context.entity_type_manager.get(&flow_type.wrapper_type()) else {
+            continue;
+        };
+        namespace = namespace.field(flow_query_field(flow_type.value(), &wrapper_entity_type, has_field_name_collision));
         if let Some(entity_type) = entity_types.get(&flow_type.wrapper_type()) {
             if let Ok(json_schema) = flow_type.json_schema(entity_type.value()) {
                 namespace = namespace.field(json_schema_field(&flow_type.ty, json_schema));

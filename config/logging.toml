@@ -50,7 +50,7 @@ appenders = ["stdout", "file-application"]
 ### Type System Implementation
 
 [loggers."reactive_graph_type_system_impl"]
-level = "debug"
+level = "trace"
 
 [loggers."reactive_graph_type_system_impl::component_manager_impl"]
 level = "info"
@@ -288,7 +288,7 @@ level = "info"
 level = "warn"
 
 [loggers."springtime_di::factory"]
-level = "info"
+level = "debug"
 
 [loggers."springtime_di::component_registry::registry"]
-level = "info"
+level = "debug"

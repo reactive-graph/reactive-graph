@@ -1,4 +1,4 @@
-use crate::NAMESPACE_CORE;
-use reactive_graph_graph::extension_ty;
+use reactive_graph_graph::ExtensionTypeId;
+use std::sync::LazyLock;
 
-extension_ty!(EXTENSION_DIVERGENT, NAMESPACE_CORE, EXTENSION_NAME_DIVERGENT, "divergent");
+pub static EXTENSION_DIVERGENT: LazyLock<ExtensionTypeId> = LazyLock::new(|| ExtensionTypeId::try_from("reactive_graph::core::Divergent").unwrap());

@@ -13,4 +13,5 @@ pub fn entity_id_field() -> Field {
             Ok(Some(FieldValue::value(ID(entity_instance.id.to_string()))))
         })
     })
+    .description("The unique identifier of the entity")
 }

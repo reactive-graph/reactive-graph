@@ -1,0 +1,19 @@
+{
+  "namespace": "core",
+  "type_name": "system_event",
+  "description": "Events of the type system",
+  "components": [
+    {
+      "namespace": "core",
+      "type_name": "labeled"
+    },
+    {
+      "namespace": "core",
+      "type_name": "event"
+    }
+  ],
+  "properties": [
+  ],
+  "extensions": [
+  ]
+}
