@@ -1,0 +1,15 @@
+{
+  "namespace": "flow",
+  "type_name": "generic_flow",
+  "description": "Generic flow without inputs and outputs",
+  "components": [
+    {
+      "namespace": "core",
+      "type_name": "labeled"
+    }
+  ],
+  "properties": [
+  ],
+  "extensions": [
+  ]
+}

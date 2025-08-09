@@ -1,0 +1,44 @@
+{
+  "$id": "https://schema.reactive-graph.io/schema/json/component.schema.json",
+  "name": "reactive_graph::command::Command",
+  "description": "A command which can be executed. The command has a name and can have command arguments.",
+  "properties": [
+    {
+      "name": "namespace",
+      "description": "The command namespace",
+      "data_type": "string",
+      "socket_type": "none",
+      "mutability": "immutable"
+    },
+    {
+      "name": "command",
+      "description": "The command name",
+      "data_type": "string",
+      "socket_type": "none",
+      "mutability": "immutable"
+    },
+    {
+      "name": "args",
+      "description": "The command arguments",
+      "data_type": "array",
+      "socket_type": "none",
+      "mutability": "immutable"
+    },
+    {
+      "name": "help",
+      "description": "Help text which explains the command.",
+      "data_type": "string",
+      "socket_type": "none",
+      "mutability": "immutable"
+    },
+    {
+      "name": "cmd_result",
+      "description": "The result of the command",
+      "data_type": "any",
+      "socket_type": "output",
+      "mutability": "immutable"
+    }
+  ],
+  "extensions": [
+  ]
+}

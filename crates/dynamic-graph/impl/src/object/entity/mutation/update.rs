@@ -158,7 +158,8 @@ pub fn entity_update_field(entity_type: &EntityType) -> Option<Field> {
                 reactive_entities.iter().map(|entity_instance| FieldValue::owned_any(entity_instance.clone())),
             )))
         })
-    });
+    })
+    .description("Updates the entity instance");
     let mut has_updatable_property = false;
     for property in entity_type.properties.iter() {
         if property.mutability == Mutable {

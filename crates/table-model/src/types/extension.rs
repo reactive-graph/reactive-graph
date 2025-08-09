@@ -1,6 +1,7 @@
 use std::fmt;
 use std::fmt::Formatter;
 use std::ops::Deref;
+use tabled::derive::display;
 
 use serde_json::Value;
 use table_to_html::HtmlTable;
@@ -20,15 +21,15 @@ use reactive_graph_graph::NamespacedTypeGetter;
 
 #[derive(Clone, Debug, Tabled)]
 pub struct ExtensionTypeId {
-    pub name: String,
     pub namespace: String,
+    pub name: String,
 }
 
 impl From<reactive_graph_graph::ExtensionTypeId> for ExtensionTypeId {
     fn from(ty: reactive_graph_graph::ExtensionTypeId) -> Self {
         ExtensionTypeId {
-            name: ty.type_name(),
-            namespace: ty.namespace(),
+            namespace: ty.path().to_string(),
+            name: ty.type_name().to_string(),
         }
     }
 }
@@ -99,9 +100,17 @@ pub struct Extension {
     #[tabled(rename = "Namespace")]
     pub namespace: String,
 
-    /// The name of the extension.
+    /// The type name of the extension.
     #[tabled(rename = "Type Name")]
     pub name: String,
+
+    /// The namespace of the entity type.
+    #[tabled(rename = "Entity Namespace", display("display::option", ""))]
+    pub entity_namespace: Option<String>,
+
+    /// The type name of the entity type.
+    #[tabled(rename = "Entity Type Name", display("display::option", ""))]
+    pub entity_type_name: Option<String>,
 
     /// Textual description of the extension.
     #[tabled(rename = "Description")]
@@ -115,28 +124,42 @@ pub struct Extension {
     inline_format: TableInlineFormat,
 }
 
+// impl Extension {
+//     pub fn entity_ty(&self) -> Option<EntityTypeId> {
+//         if let (Some(namespace), Some(type_name)) = (&self.entity_namespace, &self.entity_type_name) {
+//             Some(reactive_graph_graph::EntityTypeId::try_from(namespace, type_name))
+//         } else {
+//             None
+//         }
+//     }
+// }
+
 impl TableInlineFormatSetter for Extension {
     fn set_table_inline_format(&mut self, table_inline_format: TableInlineFormat) {
         self.inline_format = table_inline_format;
     }
 }
 
-impl From<Extension> for reactive_graph_graph::Extension {
-    fn from(extension: Extension) -> Self {
-        let ty = reactive_graph_graph::ExtensionTypeId::new_from_type(extension.namespace, extension.name);
-        reactive_graph_graph::Extension {
-            ty,
-            description: extension.description,
-            extension: extension.extension,
-        }
-    }
-}
+// impl From<Extension> for reactive_graph_graph::Extension {
+//     fn from(extension: Extension) -> Self {
+//         let entity_ty = extension.entity_ty();
+//         let ty = reactive_graph_graph::ExtensionTypeId::new_from_type(extension.namespace, extension.name);
+//         reactive_graph_graph::Extension {
+//             ty,
+//             entity_ty,
+//             description: extension.description,
+//             extension: extension.extension,
+//         }
+//     }
+// }
 
 impl From<reactive_graph_graph::Extension> for Extension {
     fn from(extension: reactive_graph_graph::Extension) -> Self {
         Extension {
-            namespace: extension.namespace(),
-            name: extension.type_name(),
+            namespace: extension.path().to_string(),
+            name: extension.type_name().to_string(),
+            entity_namespace: extension.entity_ty.clone().map(|entity_ty| entity_ty.path().to_string()),
+            entity_type_name: extension.entity_ty.map(|entity_ty| entity_ty.type_name().to_string()),
             description: extension.description,
             extension: extension.extension,
             inline_format: Default::default(),
@@ -155,11 +178,11 @@ impl Deref for Extensions {
     }
 }
 
-impl From<Extensions> for reactive_graph_graph::Extensions {
-    fn from(extensions: Extensions) -> Self {
-        extensions.0.into_iter().map(|extension| extension.into()).collect()
-    }
-}
+// impl From<Extensions> for reactive_graph_graph::Extensions {
+//     fn from(extensions: Extensions) -> Self {
+//         extensions.0.into_iter().map(|extension| extension.into()).collect()
+//     }
+// }
 
 impl From<Extensions> for Vec<Extension> {
     fn from(extensions: Extensions) -> Self {

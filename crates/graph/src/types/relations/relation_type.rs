@@ -7,8 +7,6 @@ use std::ops::DerefMut;
 use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
@@ -20,15 +18,21 @@ use typed_builder::TypedBuilder;
 
 use crate::AddExtensionError;
 use crate::AddPropertyError;
-use crate::ComponentOrEntityTypeId;
 use crate::ComponentTypeId;
 use crate::ComponentTypeIdContainer;
 use crate::ComponentTypeIds;
+use crate::Components;
+use crate::EntityType;
 use crate::Extension;
 use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::Extensions;
+use crate::InboundOutboundType;
 use crate::JSON_SCHEMA_ID_URI_PREFIX;
+use crate::MatchingInboundOutboundType;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
+use crate::NamespacedTypeComponentPropertiesContainer;
 use crate::NamespacedTypeComponentTypeIdContainer;
 use crate::NamespacedTypeContainer;
 use crate::NamespacedTypeExtensionContainer;
@@ -37,11 +41,14 @@ use crate::NamespacedTypePropertyTypeContainer;
 use crate::PropertyType;
 use crate::PropertyTypeContainer;
 use crate::PropertyTypes;
+use crate::RelationComponentTypeId;
+use crate::RelationComponentTypeIds;
 use crate::RelationTypeAddComponentError;
 use crate::RelationTypeAddExtensionError;
 use crate::RelationTypeAddPropertyError;
 use crate::RelationTypeId;
 use crate::RelationTypeIds;
+use crate::RelationTypeMergeComponentPropertiesError;
 use crate::RelationTypeMergeError;
 use crate::RelationTypeMergeExtensionsError;
 use crate::RelationTypeMergePropertiesError;
@@ -56,9 +63,17 @@ use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeDefinitionJsonSchema;
 use crate::TypeDefinitionJsonSchemaGetter;
+use crate::TypeDescriptionGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
+use crate::divergent::DivergentPropertyTypes;
+
+use crate::namespace::Namespace;
+#[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
@@ -80,7 +95,7 @@ pub struct RelationType {
     /// The outbound component or entity type.
     #[serde(rename = "outbound", alias = "outbound")]
     #[builder(setter(into))]
-    pub outbound_type: ComponentOrEntityTypeId,
+    pub outbound_type: InboundOutboundType,
 
     /// The type definition contains the namespace and the type name.
     #[serde(flatten)]
@@ -90,7 +105,7 @@ pub struct RelationType {
     /// The inbound component or entity type.
     #[serde(rename = "inbound", alias = "inbound")]
     #[builder(setter(into))]
-    pub inbound_type: ComponentOrEntityTypeId,
+    pub inbound_type: InboundOutboundType,
 
     /// Textual description of the relation type.
     #[serde(default = "String::new")]
@@ -116,9 +131,9 @@ pub struct RelationType {
 impl RelationType {
     #[allow(clippy::too_many_arguments)]
     pub fn new<
-        OT: Into<ComponentOrEntityTypeId>,
+        OT: Into<InboundOutboundType>,
         RT: Into<RelationTypeId>,
-        IT: Into<ComponentOrEntityTypeId>,
+        IT: Into<InboundOutboundType>,
         D: Into<String>,
         C: Into<ComponentTypeIds>,
         P: Into<PropertyTypes>,
@@ -144,12 +159,34 @@ impl RelationType {
     }
 
     #[allow(clippy::type_complexity)]
-    pub fn builder_with_ty<O: Into<ComponentOrEntityTypeId>, T: Into<RelationTypeId>, I: Into<ComponentOrEntityTypeId>>(
+    pub fn builder_with_ty<O: Into<InboundOutboundType>, T: Into<RelationTypeId>, I: Into<InboundOutboundType>>(
         outbound_type: O,
         ty: T,
         inbound_type: I,
-    ) -> RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (), (), ())> {
+    ) -> RelationTypeBuilder<((InboundOutboundType,), (RelationTypeId,), (InboundOutboundType,), (), (), (), ())> {
         RelationType::builder().outbound_type(outbound_type).ty(ty).inbound_type(inbound_type)
+    }
+
+    pub fn is_outbound(&self, entity_type: &EntityType) -> bool {
+        match &self.outbound_type {
+            InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(outbound_component_ty)) => entity_type
+                .components
+                .iter()
+                .any(|entity_component_ty| entity_component_ty.eq(outbound_component_ty)),
+            InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(ty)) => &entity_type.ty == ty,
+            InboundOutboundType::Component(MatchingInboundOutboundType::Any) | InboundOutboundType::EntityType(MatchingInboundOutboundType::Any) => true,
+        }
+    }
+
+    pub fn is_inbound(&self, entity_type: &EntityType) -> bool {
+        match &self.inbound_type {
+            InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(inbound_component_ty)) => entity_type
+                .components
+                .iter()
+                .any(|entity_component_ty| entity_component_ty.eq(inbound_component_ty)),
+            InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(ty)) => &entity_type.ty == ty,
+            InboundOutboundType::Component(MatchingInboundOutboundType::Any) | InboundOutboundType::EntityType(MatchingInboundOutboundType::Any) => true,
+        }
     }
 }
 
@@ -172,6 +209,10 @@ impl ComponentTypeIdContainer for RelationType {
 
     fn remove_components<C: Into<ComponentTypeIds>>(&mut self, components_to_remove: C) {
         self.components.remove_components(components_to_remove)
+    }
+
+    fn get_components_cloned(&self) -> ComponentTypeIds {
+        self.components.clone()
     }
 }
 
@@ -197,11 +238,15 @@ impl PropertyTypeContainer for RelationType {
     }
 
     fn merge_properties<P: Into<PropertyTypes>>(&mut self, properties_to_merge: P) {
-        self.properties.merge_properties(properties_to_merge);
+        self.properties.merge_properties(properties_to_merge)
     }
 
-    fn get_own_properties(&self) -> &PropertyTypes {
-        &self.properties
+    fn merge_non_existent_properties<P: Into<PropertyTypes>>(&self, properties_to_merge: P) -> DivergentPropertyTypes {
+        self.properties.merge_non_existent_properties(properties_to_merge)
+    }
+
+    fn get_own_properties_cloned(&self) -> PropertyTypes {
+        self.properties.clone()
     }
 }
 
@@ -229,14 +274,26 @@ impl ExtensionContainer for RelationType {
     fn merge_extensions<E: Into<Extensions>>(&mut self, extensions_to_merge: E) {
         self.extensions.merge_extensions(extensions_to_merge)
     }
+
+    fn get_own_extensions_cloned(&self) -> Extensions {
+        self.extensions.clone()
+    }
 }
 
 impl NamespacedTypeGetter for RelationType {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -244,6 +301,16 @@ impl NamespacedTypeGetter for RelationType {
 impl TypeDefinitionGetter for RelationType {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::RelationType
+    }
+}
+
+impl TypeDescriptionGetter for RelationType {
+    fn description(&self) -> String {
+        self.description.clone()
     }
 }
 
@@ -278,11 +345,7 @@ impl Ord for RelationType {
 
 impl From<&RelationType> for TypeDefinition {
     fn from(relation_type: &RelationType) -> Self {
-        TypeDefinition {
-            type_id_type: TypeIdType::RelationType,
-            namespace: relation_type.namespace(),
-            type_name: relation_type.type_name(),
-        }
+        relation_type.type_definition()
     }
 }
 
@@ -293,10 +356,19 @@ impl From<&RelationType> for Schema {
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
-// #[derive(Clone, Debug, Default, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema)]
 pub struct RelationTypes(DashMap<RelationTypeId, RelationType>);
 
 impl RelationTypes {
+    #[inline]
+    pub fn new() -> Self {
+        NamespacedTypeContainer::new()
+    }
+
+    #[inline]
+    pub fn push<R: Into<RelationType>>(&self, relation_type: R) {
+        NamespacedTypeContainer::push(self, relation_type)
+    }
+
     pub fn merge<C: Into<RelationType>>(&self, relation_type_to_merge: C) -> Result<RelationType, RelationTypeMergeError> {
         let relation_type_to_merge = relation_type_to_merge.into();
         let Some(mut relation_type) = self.get_mut(&relation_type_to_merge.ty) else {
@@ -403,6 +475,39 @@ impl
             return Err(RelationTypeMergePropertiesError::RelationTypeDoesNotExist(relation_ty.clone()));
         };
         relation_type.merge_properties(properties_to_merge);
+        Ok(())
+    }
+}
+
+impl NamespacedTypeComponentPropertiesContainer<RelationTypeId, RelationTypeMergeComponentPropertiesError> for RelationTypes {
+    fn merge_component_properties<C: Into<Components>>(&self, components: C) -> Result<(), RelationTypeMergeComponentPropertiesError> {
+        let components = components.into();
+        let lookup_tys = components.type_ids();
+
+        // First check without modification
+        let missing_components: RelationComponentTypeIds = self
+            .0
+            .iter()
+            .map(|relation_type| (relation_type.key().clone(), relation_type.components.clone()))
+            .flat_map(|(relation_ty, component_tys)| {
+                component_tys
+                    .into_iter()
+                    .map(move |component_ty| RelationComponentTypeId::new(relation_ty.clone(), component_ty.clone()))
+            })
+            .filter(|relation_component_ty| !lookup_tys.contains(&relation_component_ty.component_ty))
+            .collect();
+        if !missing_components.is_empty() {
+            return Err(RelationTypeMergeComponentPropertiesError::ComponentDoesNotExist(missing_components));
+        }
+
+        // Modification
+        self.0.iter_mut().for_each(|relation_type| {
+            for component_ty in relation_type.components.iter() {
+                if let Some(component) = components.get(component_ty.key()) {
+                    relation_type.merge_non_existent_properties(component.properties);
+                }
+            }
+        });
         Ok(())
     }
 }
@@ -560,12 +665,12 @@ impl FromIterator<RelationType> for RelationTypes {
 }
 
 // Experimental
-impl RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (), (), ())> {
+impl RelationTypeBuilder<((InboundOutboundType,), (RelationTypeId,), (InboundOutboundType,), (), (), (), ())> {
     #[allow(clippy::type_complexity)]
     pub fn component<C: Into<ComponentTypeId>>(
         self,
         component_ty: C,
-    ) -> RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (ComponentTypeIds,), (), ())> {
+    ) -> RelationTypeBuilder<((InboundOutboundType,), (RelationTypeId,), (InboundOutboundType,), (), (ComponentTypeIds,), (), ())> {
         let (outbound_type, ty, inbound_type, description, _, properties, extensions) = self.fields;
         RelationTypeBuilder {
             fields: (
@@ -583,27 +688,27 @@ impl RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (Compon
 }
 
 // Experimental
-impl RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (ComponentTypeIds,), (), ())> {
+impl RelationTypeBuilder<((InboundOutboundType,), (RelationTypeId,), (InboundOutboundType,), (), (ComponentTypeIds,), (), ())> {
     #[allow(clippy::type_complexity)]
     pub fn component<C: Into<ComponentTypeId>>(
         self,
         ty: C,
-    ) -> RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (ComponentTypeIds,), (), ())> {
+    ) -> RelationTypeBuilder<((InboundOutboundType,), (RelationTypeId,), (InboundOutboundType,), (), (ComponentTypeIds,), (), ())> {
         self.fields.4.0.insert(ty.into());
         self
     }
 }
 
 // Experimental
-impl RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (ComponentTypeIds,), (), ())> {
+impl RelationTypeBuilder<((InboundOutboundType,), (RelationTypeId,), (InboundOutboundType,), (), (ComponentTypeIds,), (), ())> {
     #[allow(clippy::type_complexity)]
     pub fn property<P: Into<PropertyType>>(
         self,
         property: P,
     ) -> RelationTypeBuilder<(
-        (ComponentOrEntityTypeId,),
+        (InboundOutboundType,),
         (RelationTypeId,),
-        (ComponentOrEntityTypeId,),
+        (InboundOutboundType,),
         (),
         (ComponentTypeIds,),
         (PropertyTypes,),
@@ -628,9 +733,9 @@ impl RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (Compon
 // Experimental
 impl
     RelationTypeBuilder<(
-        (ComponentOrEntityTypeId,),
+        (InboundOutboundType,),
         (RelationTypeId,),
-        (ComponentOrEntityTypeId,),
+        (InboundOutboundType,),
         (),
         (ComponentTypeIds,),
         (PropertyTypes,),
@@ -642,9 +747,9 @@ impl
         self,
         property: P,
     ) -> RelationTypeBuilder<(
-        (ComponentOrEntityTypeId,),
+        (InboundOutboundType,),
         (RelationTypeId,),
-        (ComponentOrEntityTypeId,),
+        (InboundOutboundType,),
         (),
         (ComponentTypeIds,),
         (PropertyTypes,),
@@ -659,9 +764,9 @@ impl
 impl DefaultTest for RelationType {
     fn default_test() -> Self {
         RelationType::builder()
-            .outbound_type(ComponentOrEntityTypeId::default_test())
+            .outbound_type(InboundOutboundType::default_test())
             .ty(RelationTypeId::default_test())
-            .inbound_type(ComponentOrEntityTypeId::default_test())
+            .inbound_type(InboundOutboundType::default_test())
             .description(r_string())
             .components(ComponentTypeIds::default_test())
             .properties(PropertyTypes::default_test())
@@ -671,7 +776,19 @@ impl DefaultTest for RelationType {
 }
 
 #[cfg(any(test, feature = "test"))]
-impl RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (), (), ())> {
+impl DefaultTest for RelationTypes {
+    fn default_test() -> Self {
+        let relation_types = RelationTypes::new();
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
+            relation_types.push(RelationType::default_test());
+        }
+        relation_types
+    }
+}
+
+#[cfg(any(test, feature = "test"))]
+impl RelationTypeBuilder<((InboundOutboundType,), (RelationTypeId,), (InboundOutboundType,), (), (), (), ())> {
     pub fn build_with_defaults(self) -> RelationType {
         self.description(r_string())
             .components(ComponentTypeIds::default_test())

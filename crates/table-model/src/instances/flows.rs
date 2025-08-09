@@ -34,8 +34,8 @@ impl TableInlineFormatSetter for FlowInstance {
 impl From<reactive_graph_graph::FlowInstance> for FlowInstance {
     fn from(flow_instance: reactive_graph_graph::FlowInstance) -> Self {
         FlowInstance {
-            namespace: flow_instance.namespace(),
-            name: flow_instance.type_name(),
+            namespace: flow_instance.path().to_string(),
+            name: flow_instance.type_name().to_string(),
             description: flow_instance.description,
             inline_format: Default::default(),
         }

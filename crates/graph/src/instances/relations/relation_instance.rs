@@ -35,8 +35,11 @@ use crate::Extension;
 use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::Extensions;
+use crate::InstanceId;
 use crate::JSON_SCHEMA_ID_URI_PREFIX;
 use crate::MutablePropertyInstanceSetter;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstances;
@@ -47,8 +50,10 @@ use crate::RelationTypeIds;
 use crate::RemoveExtensionError;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
+use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::instances::named::NamedInstanceContainer;
+use crate::namespace::Namespace;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
@@ -131,67 +136,6 @@ impl RelationInstance {
         }
     }
 
-    /// Constructs a new relation instance with the given outbound_id, type, inbound_id and properties
-    pub fn new_from_type_unique_id<S: Into<String>, P: Into<PropertyInstances>>(
-        namespace: S,
-        outbound_id: Uuid,
-        type_name: S,
-        inbound_id: Uuid,
-        properties: P,
-    ) -> RelationInstance {
-        RelationInstance {
-            outbound_id,
-            ty: RelationInstanceTypeId::new_from_type_unique_id(namespace, type_name),
-            inbound_id,
-            name: String::new(),
-            description: String::new(),
-            properties: properties.into(),
-            components: ComponentTypeIds::new(),
-            extensions: Extensions::new(),
-        }
-    }
-
-    /// Constructs a new relation instance with the given outbound_id, type, inbound_id and properties
-    pub fn new_from_type_unique_for_instance_id<S: Into<String>, P: Into<PropertyInstances>>(
-        namespace: S,
-        outbound_id: Uuid,
-        type_name: S,
-        instance_id: S,
-        inbound_id: Uuid,
-        properties: P,
-    ) -> RelationInstance {
-        RelationInstance {
-            outbound_id,
-            ty: RelationInstanceTypeId::new_from_type_unique_for_instance_id(namespace, type_name, instance_id),
-            inbound_id,
-            name: String::new(),
-            description: String::new(),
-            properties: properties.into(),
-            components: ComponentTypeIds::new(),
-            extensions: Extensions::new(),
-        }
-    }
-
-    /// Constructs a new relation instance with the given outbound_id, type, inbound_id and properties
-    pub fn new_from_type_with_random_instance_id<S: Into<String>, P: Into<PropertyInstances>>(
-        namespace: S,
-        outbound_id: Uuid,
-        type_name: S,
-        inbound_id: Uuid,
-        properties: P,
-    ) -> RelationInstance {
-        RelationInstance {
-            outbound_id,
-            ty: RelationInstanceTypeId::new_from_type_with_random_instance_id(namespace, type_name),
-            inbound_id,
-            name: String::new(),
-            description: String::new(),
-            properties: properties.into(),
-            components: ComponentTypeIds::new(),
-            extensions: Extensions::new(),
-        }
-    }
-
     /// Constructs a new relation instance with the given outbound_id, type, inbound_id but without properties
     pub fn new_without_properties<T: Into<RelationInstanceTypeId>>(outbound_id: Uuid, ty: T, inbound_id: Uuid) -> RelationInstance {
         RelationInstance {
@@ -221,7 +165,7 @@ impl RelationInstance {
     }
 
     /// Returns the relation instance type id.
-    pub fn instance_id(&self) -> String {
+    pub fn instance_id(&self) -> InstanceId {
         self.ty.instance_id()
     }
 }
@@ -296,6 +240,10 @@ impl ComponentTypeIdContainer for RelationInstance {
     fn remove_components<C: Into<ComponentTypeIds>>(&mut self, components_to_remove: C) {
         self.components.remove_components(components_to_remove)
     }
+
+    fn get_components_cloned(&self) -> ComponentTypeIds {
+        self.components.clone()
+    }
 }
 
 impl ExtensionContainer for RelationInstance {
@@ -322,14 +270,26 @@ impl ExtensionContainer for RelationInstance {
     fn merge_extensions<E: Into<Extensions>>(&mut self, extensions_to_merge: E) {
         self.extensions.merge_extensions(extensions_to_merge)
     }
+
+    fn get_own_extensions_cloned(&self) -> Extensions {
+        self.extensions.clone()
+    }
 }
 
 impl NamespacedTypeGetter for RelationInstance {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -337,6 +297,10 @@ impl NamespacedTypeGetter for RelationInstance {
 impl TypeDefinitionGetter for RelationInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::RelationType
     }
 }
 
@@ -832,7 +796,7 @@ mod tests {
     #[test]
     fn relation_instance_ser_test() {
         let rty = RelationTypeId::new_from_type("rnr", "rtr");
-        let ty = RelationInstanceTypeId::new_unique_for_instance_id(rty.clone(), "result__lhs");
+        let ty = RelationInstanceTypeId::new(rty.clone(), "result__lhs");
         let outbound_id = Uuid::new_v4();
         let inbound_id = Uuid::new_v4();
         let relation_instance = RelationInstance::new(outbound_id, ty, inbound_id, PropertyInstances::new());

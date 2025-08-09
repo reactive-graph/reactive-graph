@@ -3,6 +3,7 @@ use std::sync::Arc;
 use async_graphql::Context;
 use async_graphql::Error;
 use async_graphql::Object;
+use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::FlowType;
 use reactive_graph_graph::JsonSchemaIdGetter;
 use reactive_graph_graph::NamespacedTypeGetter;
@@ -12,10 +13,11 @@ use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::FlowTypeManager;
 use serde_json::Value;
 
-use crate::mutation::ExtensionTypeIdDefinition;
 use crate::query::GraphQLEntityInstance;
 use crate::query::GraphQLEntityType;
 use crate::query::GraphQLExtension;
+use crate::query::GraphQLExtensions;
+use crate::query::GraphQLNamespacedType;
 use crate::query::GraphQLPropertyInstance;
 use crate::query::GraphQLPropertyType;
 use crate::query::GraphQLRelationInstance;
@@ -28,7 +30,7 @@ pub struct GraphQLFlowType {
 /// Flow types are templates for flow instances.
 #[Object(name = "FlowType")]
 impl GraphQLFlowType {
-    /// The entity type of the flow type.
+    /// The wrapper entity type of the flow type.
     #[graphql(name = "type")]
     async fn entity_type(&self, context: &Context<'_>) -> Option<GraphQLEntityType> {
         if let Ok(entity_type_manager) = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>() {
@@ -37,16 +39,10 @@ impl GraphQLFlowType {
         None
     }
 
-    /// The namespace the flow type belongs to.
-    async fn namespace(&self) -> String {
-        self.flow_type.namespace()
-    }
-
-    /// The name of the flow type.
-    ///
-    /// The name is the unique identifier for flow types of the same namespace.
-    async fn name(&self) -> String {
-        self.flow_type.type_name()
+    /// The namespace and type name.
+    #[graphql(name = "type")]
+    async fn ty(&self) -> GraphQLNamespacedType {
+        self.flow_type.namespaced_type().into()
     }
 
     /// Textual description of the flow type.
@@ -172,19 +168,26 @@ impl GraphQLFlowType {
     }
 
     /// The extensions which are defined by the flow type.
-    async fn extensions(&self, #[graphql(name = "type")] extension_ty: Option<ExtensionTypeIdDefinition>) -> Vec<GraphQLExtension> {
-        if let Some(extension_ty) = extension_ty {
-            let extension_ty = extension_ty.into();
-            return self
-                .flow_type
-                .extensions
-                // .to_vec()
-                .iter()
-                .filter(|extension| extension.ty == extension_ty)
-                .map(|extension| extension.value().clone().into())
-                .collect();
-        }
-        self.flow_type.extensions.iter().map(|extension| extension.value().into()).collect()
+    async fn extensions(
+        &self,
+        #[graphql(name = "type")] namespace: Option<String>,
+        #[graphql(desc = "If true, the extensions are sorted by type")] sort: Option<bool>,
+    ) -> Result<Vec<GraphQLExtension>> {
+        let ty = match namespace {
+            Some(namespace) => Some(ExtensionTypeId::parse_namespace(&namespace)?),
+            None => None,
+        };
+        let extensions: GraphQLExtensions = self
+            .flow_type
+            .extensions
+            .iter()
+            .filter(|extension| match &ty {
+                Some(ty) => &extension.ty == ty,
+                None => true,
+            })
+            .map(|extension| extension.value().clone())
+            .collect();
+        Ok(if sort.unwrap_or_default() { extensions.sorted() } else { extensions.into() })
     }
 
     /// The count of extensions.

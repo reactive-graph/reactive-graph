@@ -1,21 +1,128 @@
-use std::cmp::Ordering;
-use std::fmt::Display;
-use std::fmt::Formatter;
-
-#[cfg(any(test, feature = "test"))]
-use rand_derive3::RandGen;
 use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
+use std::cmp::Ordering;
+use std::fmt::Display;
+use std::fmt::Formatter;
+use thiserror::Error;
 use uuid::Uuid;
 
+use crate::NamespaceSegment;
+use crate::NamespaceSegmentError;
 use crate::NamespacedType;
+use crate::NamespacedTypeError;
 use crate::NamespacedTypeGetter;
 use crate::RelationTypeId;
-use crate::TYPE_ID_TYPE_SEPARATOR;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
+use crate::TypeDefinitionParseError;
+use crate::TypeIdParseError;
 use crate::TypeIdType;
+use crate::namespace::Namespace;
+
+#[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use rand_derive3::RandGen;
+
+/// Separator for the string representation of a property connector.
+pub static INSTANCE_ID_SEPARATOR: &str = "__";
+
+#[derive(Debug, Error)]
+pub enum InstanceIdError {
+    #[error("The instance id {0} is invalid")]
+    InvalidInstanceId(String),
+    #[error("The instance id is invalid: {0}")]
+    NamespaceSegmentError(#[from] NamespaceSegmentError),
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
+#[serde(into = "String", try_from = "String")]
+#[cfg_attr(any(test, feature = "test"), derive(RandGen))]
+pub enum InstanceId {
+    Singleton,
+    Id(Uuid),
+    Named(NamespaceSegment),
+    MultiSegmented(Vec<NamespaceSegment>),
+}
+
+impl InstanceId {
+    pub fn new_with_random_id() -> Self {
+        InstanceId::Id(Uuid::new_v4())
+    }
+
+    pub fn new_segmented(segments: Vec<NamespaceSegment>) -> Self {
+        InstanceId::MultiSegmented(segments)
+    }
+
+    pub fn parse_named(instance_id: &str) -> Result<Self, InstanceIdError> {
+        Ok(InstanceId::Named(NamespaceSegment::try_from(instance_id).map_err(InstanceIdError::NamespaceSegmentError)?))
+    }
+}
+
+impl Display for InstanceId {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let id = match self {
+            InstanceId::Singleton => "".to_string(),
+            InstanceId::Id(id) => id.to_string(),
+            InstanceId::Named(id) => id.to_string(),
+            InstanceId::MultiSegmented(segments) => segments.iter().map(ToString::to_string).collect::<Vec<_>>().join(INSTANCE_ID_SEPARATOR),
+        };
+        write!(f, "{id}")
+    }
+}
+
+impl From<InstanceId> for String {
+    fn from(instance_id: InstanceId) -> Self {
+        instance_id.to_string()
+    }
+}
+
+impl TryFrom<&str> for InstanceId {
+    type Error = InstanceIdError;
+
+    fn try_from(instance_id: &str) -> Result<Self, Self::Error> {
+        if instance_id.is_empty() {
+            return Ok(InstanceId::Singleton);
+        }
+        if let Ok(id) = Uuid::parse_str(instance_id) {
+            return Ok(InstanceId::Id(id));
+        }
+        let instance_id = NamespaceSegment::try_from(instance_id).map_err(InstanceIdError::NamespaceSegmentError)?;
+        if !instance_id.as_ref().contains(INSTANCE_ID_SEPARATOR) {
+            return Ok(InstanceId::Named(instance_id));
+        }
+        let mut segments = vec![];
+        for segment in instance_id.as_ref().split(INSTANCE_ID_SEPARATOR) {
+            segments.push(NamespaceSegment::try_from(segment).map_err(|e| InstanceIdError::NamespaceSegmentError(e))?);
+        }
+        Ok(InstanceId::MultiSegmented(segments))
+    }
+}
+
+impl TryFrom<&String> for InstanceId {
+    type Error = InstanceIdError;
+
+    fn try_from(instance_id: &String) -> Result<Self, Self::Error> {
+        Self::try_from(instance_id.as_str())
+    }
+}
+
+impl TryFrom<String> for InstanceId {
+    type Error = InstanceIdError;
+
+    fn try_from(instance_id: String) -> Result<Self, Self::Error> {
+        Self::try_from(instance_id.as_str())
+    }
+}
+
+#[derive(Debug, Error)]
+pub enum RelationInstanceTypeIdError {
+    #[error("Failed to construct relation instance type id because of an error with the instance id: {0}")]
+    InstanceIdError(#[from] InstanceIdError),
+    #[error("Failed to construct relation instance type id because of an error with the namespaced type: {0}")]
+    NamespacedTypeError(#[from] NamespacedTypeError),
+}
 
 /// Type identifier of a relation instance.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema)]
@@ -26,53 +133,38 @@ pub struct RelationInstanceTypeId {
     ty: RelationTypeId,
 
     /// The instance id.
-    instance_id: String,
+    instance_id: InstanceId,
 }
 
 impl RelationInstanceTypeId {
-    /// Between two entity instances there can be only one relation instance.
-    pub fn new_unique_id<RT: Into<RelationTypeId>>(ty: RT) -> Self {
-        Self {
-            ty: ty.into(),
-            instance_id: String::new(),
-        }
-    }
-
-    /// Between two entity instances there can be only one relation instance with the same instance
-    /// id.
-    ///
-    /// For example, multiple connectors exists between two entity instances. But only one connector
-    /// is allowed between two properties.
-    pub fn new_unique_for_instance_id<RT: Into<RelationTypeId>, S: Into<String>>(ty: RT, instance_id: S) -> Self {
+    pub fn new<RT: Into<RelationTypeId>, ID: Into<InstanceId>>(ty: RT, instance_id: ID) -> Self {
         Self {
             ty: ty.into(),
             instance_id: instance_id.into(),
         }
     }
 
+    /// Between two entity instances there can be only one relation instance.
+    pub fn new_singleton<RT: Into<RelationTypeId>>(ty: RT) -> Self {
+        Self {
+            ty: ty.into(),
+            instance_id: InstanceId::Singleton,
+        }
+    }
+
+    // Between two entity instances there can be only one relation instance with the same instance
+    // id.
+    //
+    // For example, multiple connectors exists between two entity instances. But only one connector
+    // is allowed between two properties.
+
     /// Between two entity instances there can be multiple one relation instances. The instance id
     /// of the relation instance will be generated randomly.
     pub fn new_with_random_instance_id<RT: Into<RelationTypeId>>(ty: RT) -> Self {
         Self {
             ty: ty.into(),
-            instance_id: Uuid::new_v4().to_string(),
+            instance_id: InstanceId::new_with_random_id(),
         }
-    }
-
-    /// Between two entity instances there can be only one relation instance.
-    pub fn new_from_type_unique_id<S: Into<String>>(namespace: S, type_name: S) -> Self {
-        Self::new_unique_id(RelationTypeId::new(NamespacedType::new(namespace, type_name)))
-    }
-
-    /// Between two entity instances there can be only one relation instance with the same instance_id.
-    pub fn new_from_type_unique_for_instance_id<S: Into<String>>(namespace: S, type_name: S, instance_id: S) -> Self {
-        Self::new_unique_for_instance_id(RelationTypeId::new(NamespacedType::new(namespace, type_name)), instance_id)
-    }
-
-    /// Between two entity instances there can be multiple one relation instances. The instance id
-    /// of the relation instance will be generated randomly.
-    pub fn new_from_type_with_random_instance_id<S: Into<String>>(namespace: S, type_name: S) -> Self {
-        Self::new_with_random_instance_id(RelationTypeId::new(NamespacedType::new(namespace, type_name)))
     }
 
     /// Returns true, if the relation instance type id is of the given relation type id.
@@ -86,29 +178,42 @@ impl RelationInstanceTypeId {
     }
 
     /// Returns the instance id.
-    pub fn instance_id(&self) -> String {
+    pub fn instance_id(&self) -> InstanceId {
         self.instance_id.clone()
     }
+
+    // TODO: BREAKING CHANGE: Aufrufe auf type_name() umschreiben zu fully_qualified_type_name()
+    // pub fn fully_qualified_type_name(&self) -> String {
+    // }
 }
 
 impl NamespacedTypeGetter for RelationInstanceTypeId {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    /// Returns the full instance type name (relation type name + instance id)
-    fn type_name(&self) -> String {
-        if !self.instance_id.is_empty() {
-            format!("{}{}{}", self.ty.type_name(), &TYPE_ID_TYPE_SEPARATOR, &self.instance_id)
-        } else {
-            self.ty.type_name()
-        }
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    /// BREAKING CHANGE
+    fn type_name(&self) -> NamespaceSegment {
+        todo!();
+        // self.ty.type_name()
     }
 }
 
 impl TypeDefinitionGetter for RelationInstanceTypeId {
     fn type_definition(&self) -> TypeDefinition {
         self.into()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::RelationType
     }
 }
 
@@ -136,48 +241,70 @@ impl From<&RelationInstanceTypeId> for RelationInstanceTypeId {
 
 impl From<&RelationInstanceTypeId> for TypeDefinition {
     fn from(ty: &RelationInstanceTypeId) -> Self {
-        TypeDefinition::new(TypeIdType::RelationType, ty.into())
+        ty.ty.type_definition()
     }
 }
 
 impl From<&RelationInstanceTypeId> for NamespacedType {
     fn from(ty: &RelationInstanceTypeId) -> Self {
-        // Returns the namespaced type with the full instance type name (relation type name + instance id)
-        NamespacedType::new(ty.namespace(), ty.type_name())
+        let relation_ty = &ty.ty;
+        relation_ty.into()
+    }
+}
+
+#[derive(Debug, Error)]
+pub enum RelationInstanceTypeIdParseError {
+    #[error("Failed to parse type definition: {0}")]
+    TypeDefinitionParseError(#[from] TypeDefinitionParseError),
+    #[error("Failed to parse type id: {0}")]
+    TypeIdParseError(#[from] TypeIdParseError),
+    #[error("Failed to parse instance id: {0}")]
+    InstanceIdError(#[from] InstanceIdError),
+}
+
+impl TryFrom<&str> for RelationInstanceTypeId {
+    type Error = RelationInstanceTypeIdParseError;
+
+    fn try_from(relation_type_definition: &str) -> Result<Self, Self::Error> {
+        let mut s = relation_type_definition.split(&['(', ',', ')'][..]);
+        let type_id_type: TypeIdType = s
+            .next()
+            .ok_or(RelationInstanceTypeIdParseError::TypeDefinitionParseError(TypeDefinitionParseError::MissingTypeIdType))?
+            .try_into()
+            .map_err(TypeDefinitionParseError::TypeIdTypeParseError)
+            .map_err(RelationInstanceTypeIdParseError::TypeDefinitionParseError)?;
+        if TypeIdType::RelationType != type_id_type {
+            return Err(TypeIdParseError::InvalidTypeIdType(TypeIdType::RelationType, type_id_type).into());
+        }
+        let namespaced_type: NamespacedType = s
+            .next()
+            .map(|s| s.to_owned())
+            .ok_or(RelationInstanceTypeIdParseError::TypeDefinitionParseError(TypeDefinitionParseError::MissingNamespace))?
+            .try_into()
+            .map_err(TypeDefinitionParseError::NamespacedTypeError)
+            .map_err(RelationInstanceTypeIdParseError::TypeDefinitionParseError)?;
+        let instance_id = match s.next() {
+            None => Ok(InstanceId::Singleton),
+            Some(id) => InstanceId::try_from(id),
+        }
+        .map_err(RelationInstanceTypeIdParseError::InstanceIdError)?;
+        Ok(RelationInstanceTypeId::new(RelationTypeId::new(namespaced_type), instance_id))
     }
 }
 
 impl TryFrom<&String> for RelationInstanceTypeId {
-    type Error = (); // TODO: Like TypeIdParseError
+    type Error = RelationInstanceTypeIdParseError;
 
-    fn try_from(s: &String) -> Result<Self, Self::Error> {
-        let mut s = s.splitn(4, &TYPE_ID_TYPE_SEPARATOR);
-        let type_id_type = s.next().ok_or(())?.try_into().map_err(|_| ())?;
-        if TypeIdType::RelationType == type_id_type {
-            let namespace = s.next().ok_or(())?;
-            if namespace.is_empty() {
-                return Err(());
-            }
-            let type_name = s.next().ok_or(())?;
-            if type_name.is_empty() {
-                return Err(());
-            }
-            let rty = RelationTypeId::new_from_type(namespace, type_name);
-            let ty = match s.next() {
-                Some(instance_id) => RelationInstanceTypeId::new_unique_for_instance_id(rty, instance_id),
-                None => RelationInstanceTypeId::new_unique_id(rty),
-            };
-            return Ok(ty);
-        }
-        Err(())
+    fn try_from(relation_instance_type_id: &String) -> Result<Self, Self::Error> {
+        RelationInstanceTypeId::try_from(relation_instance_type_id.as_str())
     }
 }
 
 impl TryFrom<String> for RelationInstanceTypeId {
-    type Error = ();
+    type Error = RelationInstanceTypeIdParseError;
 
-    fn try_from(s: String) -> Result<Self, Self::Error> {
-        RelationInstanceTypeId::try_from(&s)
+    fn try_from(relation_instance_type_id: String) -> Result<Self, Self::Error> {
+        RelationInstanceTypeId::try_from(relation_instance_type_id.as_str())
     }
 }
 
@@ -192,9 +319,6 @@ impl Display for RelationInstanceTypeId {
         // }
     }
 }
-
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
 
 #[cfg(any(test, feature = "test"))]
 impl DefaultTest for RelationInstanceTypeId {
@@ -223,7 +347,7 @@ mod tests {
 
         let nt = NamespacedType::new(&namespace, &type_name);
         let rty = RelationTypeId::new_from_type(&namespace, &type_name);
-        let ty = RelationInstanceTypeId::new_unique_id(rty.clone());
+        let ty = RelationInstanceTypeId::new_singleton(rty.clone());
         assert_eq!(namespace, ty.namespace());
         assert_eq!(nt.namespace, ty.namespace());
         assert_eq!(nt.type_name, ty.type_name());
@@ -238,7 +362,7 @@ mod tests {
         assert_eq!(namespace, type_definition_3.namespace());
         assert_eq!(type_name, type_definition_3.type_name());
 
-        let ty2 = RelationInstanceTypeId::new_unique_id(rty.clone());
+        let ty2 = RelationInstanceTypeId::new_singleton(rty.clone());
         assert_eq!(ty, ty2);
         assert_eq!(ty.namespace(), ty2.namespace());
         assert_eq!(ty.type_name(), ty2.type_name());
@@ -254,7 +378,7 @@ mod tests {
 
         let nt = NamespacedType::new(&namespace, &type_name);
         let rty = RelationTypeId::new_from_type(&namespace, &type_name);
-        let ty = RelationInstanceTypeId::new_unique_for_instance_id(rty.clone(), &instance_id);
+        let ty = RelationInstanceTypeId::new(rty.clone(), &instance_id);
         assert_eq!(namespace, ty.namespace());
         assert_eq!(nt.namespace, ty.namespace());
         assert_eq!(format!("{}__{}", type_name, instance_id), ty.type_name());
@@ -272,7 +396,7 @@ mod tests {
         assert_eq!(format!("{}__{}", type_name, instance_id), type_definition_3.type_name());
 
         let instance_id_2 = r_string();
-        let ty2 = RelationInstanceTypeId::new_unique_for_instance_id(rty.clone(), &instance_id_2);
+        let ty2 = RelationInstanceTypeId::new(rty.clone(), &instance_id_2);
         assert_eq!(namespace, ty2.namespace());
         assert_eq!(nt.namespace, ty2.namespace());
         assert_eq!(format!("{}__{}", type_name, instance_id_2), ty2.type_name());

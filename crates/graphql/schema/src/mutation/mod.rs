@@ -1,4 +1,4 @@
-use async_graphql::*;
+use async_graphql::Object;
 
 pub use instances::*;
 // pub use system::*;

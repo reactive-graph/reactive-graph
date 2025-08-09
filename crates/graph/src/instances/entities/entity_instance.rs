@@ -41,15 +41,19 @@ use crate::ExtensionTypeId;
 use crate::Extensions;
 use crate::JSON_SCHEMA_ID_URI_PREFIX;
 use crate::MutablePropertyInstanceSetter;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstances;
 use crate::RemoveExtensionError;
-use crate::TYPE_ID_TYPE_SEPARATOR;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
+use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::instances::named::NamedInstanceContainer;
+use crate::namespace::NAMESPACE_SEPARATOR;
+use crate::namespace::Namespace;
 #[cfg(any(test, feature = "test"))]
 use crate::test_utils::default_from::DefaultFrom;
 #[cfg(any(test, feature = "test"))]
@@ -121,19 +125,6 @@ impl EntityInstance {
     pub fn new<T: Into<EntityTypeId>, P: Into<PropertyInstances>>(ty: T, id: Uuid, properties: P) -> EntityInstance {
         EntityInstance {
             ty: ty.into(),
-            id,
-            name: String::new(),
-            description: String::new(),
-            properties: properties.into(),
-            components: ComponentTypeIds::new(),
-            extensions: Extensions::new(),
-        }
-    }
-
-    /// Constructs a new entity instance with the given namespace, type_name, id and properties.
-    pub fn new_from_type<N: Into<String>, T: Into<String>, P: Into<PropertyInstances>>(namespace: N, type_name: T, id: Uuid, properties: P) -> EntityInstance {
-        EntityInstance {
-            ty: EntityTypeId::new_from_type(namespace.into(), type_name.into()),
             id,
             name: String::new(),
             description: String::new(),
@@ -227,6 +218,10 @@ impl ComponentTypeIdContainer for EntityInstance {
     fn remove_components<C: Into<ComponentTypeIds>>(&mut self, components_to_remove: C) {
         self.components.remove_components(components_to_remove)
     }
+
+    fn get_components_cloned(&self) -> ComponentTypeIds {
+        self.components.clone()
+    }
 }
 
 impl ExtensionContainer for EntityInstance {
@@ -253,14 +248,26 @@ impl ExtensionContainer for EntityInstance {
     fn merge_extensions<E: Into<Extensions>>(&mut self, extensions_to_merge: E) {
         self.extensions.merge_extensions(extensions_to_merge)
     }
+
+    fn get_own_extensions_cloned(&self) -> Extensions {
+        self.extensions.clone()
+    }
 }
 
 impl NamespacedTypeGetter for EntityInstance {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -268,6 +275,10 @@ impl NamespacedTypeGetter for EntityInstance {
 impl TypeDefinitionGetter for EntityInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::EntityType
     }
 }
 
@@ -291,7 +302,7 @@ impl Ord for EntityInstance {
 
 impl Display for EntityInstance {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}{}{}", &self.ty, TYPE_ID_TYPE_SEPARATOR, self.id)
+        write!(f, "{}{}{}", &self.ty, NAMESPACE_SEPARATOR, self.id)
     }
 }
 

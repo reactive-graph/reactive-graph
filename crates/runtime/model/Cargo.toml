@@ -16,6 +16,14 @@ strum_macros = { workspace = true }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 
+[build-dependencies]
+anyhow = { workspace = true }
+
+reactive-graph-generator-documentation = { version = "0.10.0", path = "../../generator/documentation" }
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-runtime-types = { version = "0.10.0", path = "../type-provider" }
+reactive-graph-command-types = { version = "0.10.0", path = "../../command/type-provider" }
+
 [lib]
 crate-type = ["lib"]
 

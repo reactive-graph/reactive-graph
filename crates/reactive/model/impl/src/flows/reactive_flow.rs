@@ -19,6 +19,9 @@ use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::FlowInstance;
 use reactive_graph_graph::Mutability;
+use reactive_graph_graph::Namespace;
+use reactive_graph_graph::NamespaceSegment;
+use reactive_graph_graph::NamespacedType;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyInstanceSetter;
@@ -27,6 +30,7 @@ use reactive_graph_graph::RelationInstance;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::TypeDefinition;
 use reactive_graph_graph::TypeDefinitionGetter;
+use reactive_graph_graph::TypeIdType;
 use reactive_graph_graph::instances::named::NamedInstanceContainer;
 use reactive_graph_reactive_model_api::ReactiveFlowConstructionError;
 use reactive_graph_reactive_model_api::ReactiveInstance;
@@ -301,11 +305,19 @@ impl PropertyInstanceSetter for ReactiveFlowInstance {
 }
 
 impl NamespacedTypeGetter for ReactiveFlowInstance {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -314,11 +326,19 @@ impl TypeDefinitionGetter for ReactiveFlowInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
     }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::FlowType
+    }
 }
 
 impl TypeDefinitionGetter for &ReactiveFlowInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::FlowType
     }
 }
 
@@ -618,11 +638,19 @@ impl PropertyInstanceSetter for ReactiveFlow {
 }
 
 impl NamespacedTypeGetter for ReactiveFlow {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -630,6 +658,10 @@ impl NamespacedTypeGetter for ReactiveFlow {
 impl TypeDefinitionGetter for ReactiveFlow {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::FlowType
     }
 }
 

@@ -1,4 +1,4 @@
-use crate::NAMESPACE_FLOW;
-use reactive_graph_graph::entity_ty;
+use reactive_graph_graph::EntityTypeId;
+use std::sync::LazyLock;
 
-entity_ty!(ENTITY_TYPE_GENERIC_FLOW, NAMESPACE_FLOW, ENTITY_TYPE_NAME_GENERIC_FLOW, "generic_flow");
+pub static ENTITY_TYPE_GENERIC_FLOW: LazyLock<EntityTypeId> = LazyLock::new(|| EntityTypeId::try_from("reactive_graph::flow::GenericFlow").unwrap());

@@ -1,9 +1,5 @@
-use crate::NAMESPACE_FLOW;
-use reactive_graph_graph::extension_ty;
+use reactive_graph_graph::ExtensionTypeId;
+use std::sync::LazyLock;
 
-extension_ty!(
-    EXTENSION_FLOW_RESOLVE_EXISTING_INSTANCE,
-    NAMESPACE_FLOW,
-    EXTENSION_NAME_FLOW_RESOLVE_EXISTING_INSTANCE,
-    "resolve_existing_instance"
-);
+pub static EXTENSION_FLOW_RESOLVE_EXISTING_INSTANCE: LazyLock<ExtensionTypeId> =
+    LazyLock::new(|| ExtensionTypeId::try_from("reactive_graph::flow::ResolveExistingInstance").unwrap());

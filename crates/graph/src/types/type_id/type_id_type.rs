@@ -3,11 +3,9 @@ use serde::Deserialize;
 use serde::Serialize;
 use std::fmt::Display;
 use std::fmt::Formatter;
+use std::path::PathBuf;
 use thiserror::Error;
 use uuid::Uuid;
-
-/// Separator for the string representation of a type definition.
-pub static TYPE_ID_TYPE_SEPARATOR: &str = "__";
 
 /// String representation of the type of behaviour types.
 pub const TYPE_ID_TYPE_BEHAVIOUR: &str = "b";
@@ -56,6 +54,14 @@ impl TypeIdType {
             TypeIdType::FlowType => "Flow",
         }
         .to_string()
+    }
+
+    pub fn relative_url(&self) -> String {
+        self.full_name().to_lowercase()
+    }
+
+    pub fn relative_path(&self) -> PathBuf {
+        PathBuf::from(self.relative_url())
     }
 }
 

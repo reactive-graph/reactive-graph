@@ -52,7 +52,7 @@ impl GraphQLRelationInstance {
 
     /// The instance id of the relation instance type.
     async fn instance_id(&self) -> String {
-        self.relation_instance.ty.instance_id()
+        self.relation_instance.ty.instance_id().to_string()
     }
 
     /// The inbound entity instance.

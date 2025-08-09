@@ -28,6 +28,7 @@ use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionContainer;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::Extensions;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::NamespacedTypeComponentTypeIdContainer;
 use reactive_graph_graph::NamespacedTypeContainer;
 use reactive_graph_graph::NamespacedTypeExtensionContainer;
@@ -37,6 +38,7 @@ use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypeContainer;
 use reactive_graph_graph::PropertyTypes;
 use reactive_graph_graph::TypeDefinitionGetter;
+use reactive_graph_graph::divergent::Divergent;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_runtime_model::EXTENSION_DIVERGENT;
 use reactive_graph_type_system_api::ComponentManager;
@@ -66,39 +68,28 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         }
 
         // Apply components
-        let mut divergent = Vec::new();
+        let mut divergent = Divergent::new();
         for component_ty in entity_type.components.iter() {
-            let mut is_divergent = false;
             match self.component_manager.get(&component_ty) {
                 Some(component) => {
-                    // TODO: what if multiple components have the same property? (like c__http__http__*__result and c__logical__action__*__result)
-                    for (property_name, property_type) in component.properties {
-                        // Own property wins
-                        if !entity_type.has_own_property(&property_name) {
-                            entity_type.properties.push(property_type.clone());
-                        } else {
-                            // Check for divergent data type
-                            if let Some(entity_type_property_type) = entity_type.get_own_property(&property_type.name) {
-                                if property_type.data_type != entity_type_property_type.data_type {
-                                    is_divergent = true;
-                                    warn!(
-                                        "{}__{} has divergent data type {} to {}__{} which has data type {}",
-                                        &entity_type.ty,
-                                        &entity_type_property_type.name,
-                                        &entity_type_property_type.data_type,
-                                        component_ty.deref(),
-                                        &property_type.name,
-                                        &property_type.data_type
-                                    );
-                                }
-                            }
-                            // TODO: merge description (if no own description)
-                            // TODO: merge extensions (for each: if own does not have the extension, add it)
+                    let divergent_properties = entity_type.properties.merge_non_existent_properties(component.properties);
+                    if !divergent_properties.is_empty() {
+                        for divergent_property in divergent_properties.deref() {
+                            warn!(
+                                "{}__{} has divergent data type {} to {}__{} which has data type {}",
+                                &entity_type.ty,
+                                &divergent_property.existing().name,
+                                &divergent_property.existing().data_type,
+                                component_ty.deref(),
+                                &divergent_property.divergent().name,
+                                &divergent_property.divergent().data_type,
+                            );
                         }
+                        divergent.divergent_component(component_ty.deref(), divergent_properties);
                     }
                 }
                 None => {
-                    is_divergent = true;
+                    divergent.unfulfilled_component(component_ty.deref());
                     warn!(
                         "Entity type {} not fully initialized: No component named {}",
                         entity_type.type_definition(),
@@ -106,12 +97,11 @@ impl EntityTypeManager for EntityTypeManagerImpl {
                     )
                 }
             }
-            if is_divergent {
-                divergent.push(component_ty.to_string());
-            }
         }
-        divergent.sort();
-        let _ = entity_type.add_extension(Extension::new(EXTENSION_DIVERGENT.clone(), String::new(), json!(divergent)));
+
+        let divergent_components: Vec<String> = divergent.divergent_components().into_iter().map(|ty| ty.to_string()).collect();
+
+        let _ = entity_type.add_extension(Extension::new(EXTENSION_DIVERGENT.clone(), String::new(), json!(divergent_components)));
         // entity_type
         //     .extensions
         //     .push(Extension::new(EXTENSION_DIVERGENT.clone(), String::new(), json!(divergent)));
@@ -134,11 +124,11 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_types.namespaces()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> EntityTypes {
+    fn get_by_namespace(&self, namespace: &Namespace) -> EntityTypes {
         self.entity_types.get_by_namespace(namespace)
     }
 
-    fn get_types_by_namespace(&self, namespace: &str) -> EntityTypeIds {
+    fn get_types_by_namespace(&self, namespace: &Namespace) -> EntityTypeIds {
         self.entity_types.get_types_by_namespace(namespace)
     }
 
@@ -150,27 +140,19 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_types.contains_key(ty)
     }
 
-    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool {
-        self.has(&EntityTypeId::new_from_type(namespace, type_name))
-    }
-
     fn get(&self, ty: &EntityTypeId) -> Option<EntityType> {
         self.entity_types.get(ty).map(|entity_type| entity_type.value().clone())
     }
 
-    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<EntityType> {
-        self.get(&EntityTypeId::new_from_type(namespace, type_name))
-    }
-
-    fn find_by_type_name(&self, search: &str) -> EntityTypes {
-        self.entity_types.find_by_type_name(search)
+    fn find(&self, search: &str) -> EntityTypes {
+        self.entity_types.find(search)
     }
 
     fn count(&self) -> usize {
         self.entity_types.len()
     }
 
-    fn count_by_namespace(&self, namespace: &str) -> usize {
+    fn count_by_namespace(&self, namespace: &Namespace) -> usize {
         self.entity_types.count_by_namespace(namespace)
     }
 

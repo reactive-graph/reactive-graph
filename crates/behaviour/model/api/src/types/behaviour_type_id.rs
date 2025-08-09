@@ -15,6 +15,7 @@ use default_test::DefaultTest;
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
 use rand_derive3::RandGen;
+use reactive_graph_graph::namespace::Namespace;
 use reactive_graph_graph::prelude::*;
 use schemars::JsonSchema;
 use schemars::Schema;
@@ -27,22 +28,26 @@ use serde::Serialize;
 #[cfg_attr(any(test, feature = "test"), derive(RandGen))]
 pub struct BehaviourTypeId(NamespacedType);
 
-impl BehaviourTypeId {
-    pub fn new(nt: NamespacedType) -> Self {
-        Self(nt)
-    }
-
-    pub fn new_from_type<N: Into<String>, T: Into<String>>(namespace: N, type_name: T) -> Self {
-        Self(NamespacedType::new(namespace, type_name))
+impl NamespacedTypeConstructor for BehaviourTypeId {
+    fn new<NT: Into<NamespacedType>>(nt: NT) -> Self {
+        Self(nt.into())
     }
 }
 
 impl NamespacedTypeGetter for BehaviourTypeId {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.0.clone()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.0.namespace.clone()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.0.path.clone()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.0.type_name.clone()
     }
 }
@@ -50,6 +55,10 @@ impl NamespacedTypeGetter for BehaviourTypeId {
 impl TypeDefinitionGetter for BehaviourTypeId {
     fn type_definition(&self) -> TypeDefinition {
         self.into()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::Behaviour
     }
 }
 
@@ -78,12 +87,16 @@ impl From<NamespacedType> for BehaviourTypeId {
 }
 
 impl TryFrom<&TypeDefinition> for BehaviourTypeId {
-    type Error = ();
+    type Error = TypeDefinitionConversionError;
 
     fn try_from(type_definition: &TypeDefinition) -> Result<Self, Self::Error> {
         match type_definition.type_id_type {
-            TypeIdType::Behaviour => Ok(BehaviourTypeId::new_from_type(type_definition.namespace.clone(), type_definition.type_name.clone())),
-            _ => Err(()),
+            TypeIdType::Behaviour => Ok(BehaviourTypeId::new(type_definition.namespaced_type.clone())),
+            _ => Err(TypeDefinitionConversionError::TypeIdTypeMatchError(
+                type_definition.clone(),
+                type_definition.type_id_type.clone(),
+                TypeIdType::Behaviour,
+            )),
         }
     }
 }
@@ -114,9 +127,9 @@ impl BehaviourTypeIds {
         NamespacedTypeIdContainer::new()
     }
 
-    pub fn with_namespace<N: Into<String>>(namespace: N) -> NamespacedTypeIds<Self> {
-        NamespacedTypeIdContainer::with_namespace(namespace)
-    }
+    // pub fn with_namespace<N: Into<String>>(namespace: N) -> NamespacedTypeIds<Self> {
+    //     NamespacedTypeIdContainer::with_namespace(namespace)
+    // }
 
     pub fn behaviour<TypeId: Into<BehaviourTypeId>>(self, ty: TypeId) -> Self {
         self.ty(ty)
@@ -131,7 +144,7 @@ impl NamespacedTypeIdContainer for BehaviourTypeIds {
         Self(DashSet::new())
     }
 
-    fn with_namespace<N: Into<String>>(namespace: N) -> NamespacedTypeIds<Self> {
+    fn with_namespace<N: Into<Namespace>>(namespace: N) -> Result<NamespacedTypeIds<Self>, NamespacedTypeIdsError> {
         NamespacedTypeIds::new(namespace)
     }
 }

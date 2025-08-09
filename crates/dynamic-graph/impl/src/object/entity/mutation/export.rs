@@ -17,4 +17,5 @@ pub fn entity_export_field() -> Field {
             )))
         })
     })
+    .description("Exports the entity instance as JSON")
 }
