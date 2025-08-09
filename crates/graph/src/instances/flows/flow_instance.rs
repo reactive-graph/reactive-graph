@@ -4,12 +4,16 @@ use crate::EntityInstances;
 use crate::EntityType;
 use crate::EntityTypeId;
 use crate::JSON_SCHEMA_ID_URI_PREFIX;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
 use crate::NamespacedTypeGetter;
 use crate::RelationInstances;
-use crate::TYPE_ID_TYPE_SEPARATOR;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
+use crate::TypeIdType;
 use crate::instances::named::NamedInstanceContainer;
+use crate::namespace::NAMESPACE_SEPARATOR;
+use crate::namespace::Namespace;
 use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
@@ -138,11 +142,19 @@ impl From<EntityInstance> for FlowInstance {
 }
 
 impl NamespacedTypeGetter for FlowInstance {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -150,6 +162,10 @@ impl NamespacedTypeGetter for FlowInstance {
 impl TypeDefinitionGetter for FlowInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::FlowType
     }
 }
 impl PartialEq<Uuid> for FlowInstance {
@@ -172,7 +188,7 @@ impl Ord for FlowInstance {
 
 impl Display for FlowInstance {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}{}{}", &self.ty, TYPE_ID_TYPE_SEPARATOR, self.id)
+        write!(f, "{}{}{}", &self.ty, NAMESPACE_SEPARATOR, self.id)
     }
 }
 

@@ -24,6 +24,12 @@ pub enum PropertyDataTypeError {
 }
 
 #[derive(Debug, Error)]
+pub enum PropertyArgumentMissingError {
+    #[error("The property argument {0} was missing!")]
+    PropertyArgumentMissing(String),
+}
+
+#[derive(Debug, Error)]
 #[error("Can't update immutable property {0}")]
 pub struct ImmutablePropertyError(pub String);
 

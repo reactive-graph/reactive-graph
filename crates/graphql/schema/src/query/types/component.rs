@@ -1,10 +1,11 @@
+use std::ops::Deref;
 use std::sync::Arc;
 
-use crate::mutation::ExtensionTypeIdDefinition;
 use crate::query::GraphQLComponentBehaviour;
 use crate::query::GraphQLEntityType;
 use crate::query::GraphQLEntityTypes;
 use crate::query::GraphQLExtension;
+use crate::query::GraphQLNamespacedType;
 use crate::query::GraphQLPropertyType;
 use crate::query::GraphQLRelationType;
 use crate::query::GraphQLRelationTypes;
@@ -14,6 +15,8 @@ use async_graphql::Result;
 use reactive_graph_behaviour_service_api::EntityComponentBehaviourRegistry;
 use reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
 use reactive_graph_graph::Component;
+use reactive_graph_graph::Components;
+use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::JsonSchemaIdGetter;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::TypeDefinitionJsonSchemaGetter;
@@ -28,14 +31,10 @@ pub struct GraphQLComponent {
 /// Components are composable parts which can be used by types (entity type, relation type).
 #[Object(name = "Component")]
 impl GraphQLComponent {
-    /// The namespace the component belongs to.
-    async fn namespace(&self) -> String {
-        self.component.namespace()
-    }
-
-    /// The name of the component.
-    async fn name(&self) -> String {
-        self.component.type_name()
+    /// The namespace and type name.
+    #[graphql(name = "type")]
+    async fn ty(&self) -> GraphQLNamespacedType {
+        self.component.namespaced_type().into()
     }
 
     /// Textual description of the component.
@@ -77,28 +76,27 @@ impl GraphQLComponent {
     /// The extensions which are defined by the component.
     async fn extensions(
         &self,
-        #[graphql(name = "type")] extension_ty: Option<ExtensionTypeIdDefinition>,
+        #[graphql(name = "name")] namespace: Option<String>,
         #[graphql(desc = "If true, the extensions are sorted by type")] sort: Option<bool>,
-    ) -> Vec<GraphQLExtension> {
-        match extension_ty {
-            Some(extension_ty) => {
-                let extension_ty = extension_ty.into();
-                return self
-                    .component
-                    .extensions
-                    .iter()
-                    .filter(|extension| extension.ty == extension_ty)
-                    .map(|extension| extension.value().into())
-                    .collect();
-            }
-            None => {
-                let mut extensions: Vec<GraphQLExtension> = self.component.extensions.iter().map(|extension| extension.value().into()).collect();
-                if sort.unwrap_or_default() {
-                    extensions.sort();
-                }
-                extensions
-            }
+    ) -> Result<Vec<GraphQLExtension>> {
+        let ty = match namespace {
+            Some(namespace) => Some(ExtensionTypeId::parse_namespace(&namespace)?),
+            None => None,
+        };
+        let mut extensions: Vec<GraphQLExtension> = self
+            .component
+            .extensions
+            .iter()
+            .filter(|extension| match &ty {
+                Some(ty) => &extension.ty == ty,
+                None => true,
+            })
+            .map(|extension| extension.value().into())
+            .collect();
+        if sort.unwrap_or_default() {
+            extensions.sort();
         }
+        Ok(extensions)
     }
 
     /// The count of extensions.
@@ -107,12 +105,10 @@ impl GraphQLComponent {
     }
 
     /// Query which entity types are using this component
-    async fn entity_types(&self, context: &Context<'_>) -> Vec<GraphQLEntityType> {
-        let Ok(entity_type_manager) = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>() else {
-            return Vec::new();
-        };
+    async fn entity_types(&self, context: &Context<'_>) -> Result<Vec<GraphQLEntityType>> {
+        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
         let entity_types: GraphQLEntityTypes = entity_type_manager.get_by_having_component(&self.component.ty).into();
-        entity_types.into()
+        Ok(entity_types.into())
     }
 
     /// Query which relation types are using this component
@@ -133,11 +129,11 @@ impl GraphQLComponent {
             .iter()
             .filter(|relation_type| {
                 // Either the outbound type is the component or the outbound type is an entity type having the component
-                relation_type.outbound_type.eq_component(&self.component.ty)
+                relation_type.outbound_type.eq(&self.component.ty)
                     || entity_type_manager
                         .get_by_having_component(&self.component.ty)
                         .iter()
-                        .any(|e| relation_type.outbound_type.eq_entity_type(&e.ty))
+                        .any(|e| relation_type.outbound_type.eq(&e.ty))
             })
             // .cloned()
             .map(|relation_type| relation_type.value().clone().into())
@@ -153,11 +149,11 @@ impl GraphQLComponent {
             .iter()
             .filter(|relation_type| {
                 // Either the outbound type is the component or the outbound type is an entity type having the component
-                relation_type.inbound_type.eq_component(&self.component.ty)
+                relation_type.inbound_type.eq(&self.component.ty)
                     || entity_type_manager
                         .get_by_having_component(&self.component.ty)
                         .iter()
-                        .any(|e| relation_type.inbound_type.eq_entity_type(&e.ty))
+                        .any(|e| relation_type.inbound_type.eq(&e.ty))
             })
             // .cloned()
             .map(|relation_type| relation_type.value().clone().into())
@@ -198,5 +194,33 @@ impl GraphQLComponent {
 impl From<Component> for GraphQLComponent {
     fn from(component: Component) -> Self {
         GraphQLComponent { component }
+    }
+}
+
+pub struct GraphQLComponents(Components);
+
+impl GraphQLComponents {
+    pub fn new(components: Components) -> Self {
+        GraphQLComponents(components)
+    }
+}
+
+impl Deref for GraphQLComponents {
+    type Target = Components;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl From<GraphQLComponents> for Vec<GraphQLComponent> {
+    fn from(components: GraphQLComponents) -> Self {
+        components.0.into_iter().map(|(_, entity_type)| entity_type.into()).collect()
+    }
+}
+
+impl From<Components> for GraphQLComponents {
+    fn from(components: Components) -> Self {
+        GraphQLComponents(components)
     }
 }

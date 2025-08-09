@@ -1,0 +1,30 @@
+[package]
+name = "reactive-graph-generator-codegen"
+description = "Reactive Graph - Generator - Code Generation"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+anyhow = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+workspace_root = { workspace = true }
+
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-runtime-impl = { version = "0.10.0", path = "../../runtime/impl" }
+
+[dev-dependencies]
+default-test = { workspace = true }
+
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+
+[lib]
+crate-type = ["lib"]
+
+[lints]
+workspace = true

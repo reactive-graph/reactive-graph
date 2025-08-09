@@ -24,6 +24,13 @@ reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactiv
 
 [dev-dependencies]
 
+[build-dependencies]
+anyhow = { workspace = true }
+
+reactive-graph-generator-documentation = { version = "0.10.0", path = "../../generator/documentation" }
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-command-types = { version = "0.10.0", path = "../type-provider" }
+
 [lib]
 crate-type = ["lib"]
 

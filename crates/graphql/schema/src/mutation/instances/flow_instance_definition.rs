@@ -1,4 +1,4 @@
-use async_graphql::*;
+use async_graphql::InputObject;
 use serde::Deserialize;
 use serde::Serialize;
 use uuid::Uuid;

@@ -7,10 +7,6 @@ use std::ops::DerefMut;
 use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
@@ -25,11 +21,15 @@ use crate::AddPropertyError;
 use crate::ComponentTypeId;
 use crate::ComponentTypeIdContainer;
 use crate::ComponentTypeIds;
+use crate::Components;
+use crate::EntityComponentTypeId;
+use crate::EntityComponentTypeIds;
 use crate::EntityTypeAddComponentError;
 use crate::EntityTypeAddExtensionError;
 use crate::EntityTypeAddPropertyError;
 use crate::EntityTypeId;
 use crate::EntityTypeIds;
+use crate::EntityTypeMergeComponentPropertiesError;
 use crate::EntityTypeMergeError;
 use crate::EntityTypeMergeExtensionsError;
 use crate::EntityTypeMergePropertiesError;
@@ -42,6 +42,9 @@ use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::Extensions;
 use crate::JSON_SCHEMA_ID_URI_PREFIX;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
+use crate::NamespacedTypeComponentPropertiesContainer;
 use crate::NamespacedTypeComponentTypeIdContainer;
 use crate::NamespacedTypeContainer;
 use crate::NamespacedTypeExtensionContainer;
@@ -56,10 +59,18 @@ use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeDefinitionJsonSchema;
 use crate::TypeDefinitionJsonSchemaGetter;
+use crate::TypeDescriptionGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
+use crate::divergent::DivergentPropertyTypes;
 use crate::extension::Extension;
+
+use crate::namespace::Namespace;
+#[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
@@ -119,23 +130,6 @@ impl EntityType {
         }
     }
 
-    pub fn new_from_type<N: Into<String>, T: Into<String>, D: Into<String>, C: Into<ComponentTypeIds>, P: Into<PropertyTypes>, E: Into<Extensions>>(
-        namespace: N,
-        type_name: T,
-        description: D,
-        components: C,
-        properties: P,
-        extensions: E,
-    ) -> EntityType {
-        EntityType {
-            ty: EntityTypeId::new_from_type(namespace, type_name),
-            description: description.into(),
-            components: components.into(),
-            properties: properties.into(),
-            extensions: extensions.into(),
-        }
-    }
-
     // TODO: Experimental
     pub fn builder_from_ty<T: Into<EntityTypeId>>(ty: T) -> EntityTypeBuilder<((EntityTypeId,), (), (), (), ())> {
         EntityType::builder().ty(ty.into())
@@ -162,6 +156,10 @@ impl ComponentTypeIdContainer for EntityType {
     fn remove_components<C: Into<ComponentTypeIds>>(&mut self, components_to_remove: C) {
         self.components.remove_components(components_to_remove)
     }
+
+    fn get_components_cloned(&self) -> ComponentTypeIds {
+        self.components.clone()
+    }
 }
 
 impl PropertyTypeContainer for EntityType {
@@ -186,11 +184,15 @@ impl PropertyTypeContainer for EntityType {
     }
 
     fn merge_properties<P: Into<PropertyTypes>>(&mut self, properties_to_merge: P) {
-        self.properties.merge_properties(properties_to_merge);
+        self.properties.merge_properties(properties_to_merge)
     }
 
-    fn get_own_properties(&self) -> &PropertyTypes {
-        &self.properties
+    fn merge_non_existent_properties<P: Into<PropertyTypes>>(&self, properties_to_merge: P) -> DivergentPropertyTypes {
+        self.properties.merge_non_existent_properties(properties_to_merge)
+    }
+
+    fn get_own_properties_cloned(&self) -> PropertyTypes {
+        self.properties.clone()
     }
 }
 
@@ -218,14 +220,26 @@ impl ExtensionContainer for EntityType {
     fn merge_extensions<E: Into<Extensions>>(&mut self, extensions_to_merge: E) {
         self.extensions.merge_extensions(extensions_to_merge)
     }
+
+    fn get_own_extensions_cloned(&self) -> Extensions {
+        self.extensions.clone()
+    }
 }
 
 impl NamespacedTypeGetter for EntityType {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -233,6 +247,16 @@ impl NamespacedTypeGetter for EntityType {
 impl TypeDefinitionGetter for EntityType {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::EntityType
+    }
+}
+
+impl TypeDescriptionGetter for EntityType {
+    fn description(&self) -> String {
+        self.description.clone()
     }
 }
 
@@ -265,11 +289,7 @@ impl Ord for EntityType {
 
 impl From<&EntityType> for TypeDefinition {
     fn from(entity_type: &EntityType) -> Self {
-        TypeDefinition {
-            type_id_type: TypeIdType::EntityType,
-            namespace: entity_type.namespace(),
-            type_name: entity_type.type_name(),
-        }
+        entity_type.type_definition()
     }
 }
 
@@ -284,6 +304,16 @@ impl From<&EntityType> for Schema {
 pub struct EntityTypes(DashMap<EntityTypeId, EntityType>);
 
 impl EntityTypes {
+    #[inline]
+    pub fn new() -> Self {
+        NamespacedTypeContainer::new()
+    }
+
+    #[inline]
+    pub fn push<E: Into<EntityType>>(&self, entity_type: E) {
+        NamespacedTypeContainer::push(self, entity_type)
+    }
+
     pub fn merge<C: Into<EntityType>>(&self, entity_type_to_merge: C) -> Result<EntityType, EntityTypeMergeError> {
         let entity_type_to_merge = entity_type_to_merge.into();
         let Some(mut entity_type) = self.get_mut(&entity_type_to_merge.ty) else {
@@ -386,6 +416,38 @@ impl
             return Err(EntityTypeMergePropertiesError::EntityTypeDoesNotExist(entity_ty.clone()));
         };
         entity_type.merge_properties(properties_to_merge);
+        Ok(())
+    }
+}
+
+impl NamespacedTypeComponentPropertiesContainer<EntityTypeId, EntityTypeMergeComponentPropertiesError> for EntityTypes {
+    fn merge_component_properties<C: Into<Components>>(&self, components: C) -> Result<(), EntityTypeMergeComponentPropertiesError> {
+        let components = components.into();
+        let lookup_tys = components.type_ids();
+
+        // First check without modification
+        let missing_components: EntityComponentTypeIds = self
+            .0
+            .iter()
+            .map(|entity_type| (entity_type.key().clone(), entity_type.components.clone()))
+            .flat_map(|(entity_ty, component_tys)| {
+                component_tys
+                    .into_iter()
+                    .map(move |component_ty| EntityComponentTypeId::new(entity_ty.clone(), component_ty.clone()))
+            })
+            .filter(|entity_component_ty| !lookup_tys.contains(&entity_component_ty.component_ty))
+            .collect();
+        if !missing_components.is_empty() {
+            return Err(EntityTypeMergeComponentPropertiesError::ComponentDoesNotExist(missing_components));
+        }
+
+        self.0.iter_mut().for_each(|entity_type| {
+            for component_ty in entity_type.components.iter() {
+                if let Some(component) = components.get(component_ty.key()) {
+                    entity_type.merge_non_existent_properties(component.properties);
+                }
+            }
+        });
         Ok(())
     }
 }

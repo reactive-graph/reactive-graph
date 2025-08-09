@@ -6,6 +6,7 @@ pub use property_type_errors::*;
 pub use socket_type::*;
 
 pub mod data_type;
+pub mod divergent;
 pub mod mutability;
 pub mod property_type;
 pub mod property_type_container;

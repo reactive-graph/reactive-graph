@@ -1,6 +1,7 @@
 use serde_json::json;
 use std::sync::LazyLock;
 
+use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::DataType;
 use reactive_graph_graph::Mutability::Immutable;
 use reactive_graph_graph::PropertyType;
@@ -8,22 +9,20 @@ use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_graph::PropertyTypes;
 use reactive_graph_graph::SocketType;
 use reactive_graph_graph::component_model;
-use reactive_graph_graph::component_ty;
 use reactive_graph_graph::properties;
 use reactive_graph_runtime_model::ActionProperties::TRIGGER;
 use reactive_graph_runtime_model::LabeledProperties::LABEL;
-use reactive_graph_runtime_model::NAMESPACE_CORE;
 
 properties!(
     CommandProperties,
-    (COMMAND_NAMESPACE, "namespace", ""),
+    (COMMAND_NAMESPACE, "namespace", ""), // TODO: Merge properties namespace and command
     (COMMAND_NAME, "command", ""),
     (COMMAND_ARGS, "args", json!([])),
     (COMMAND_HELP, "help", ""),
     (COMMAND_RESULT, "cmd_result", "")
 );
 
-component_ty!(COMPONENT_COMMAND, NAMESPACE_CORE, COMPONENT_NAME_COMMAND, "command");
+pub static COMPONENT_COMMAND: LazyLock<ComponentTypeId> = LazyLock::new(|| ComponentTypeId::try_from("reactive_graph::command::Command").unwrap());
 
 component_model!(
     CommandComponent,

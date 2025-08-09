@@ -1,18 +1,25 @@
 use core::fmt;
 use schemars::JsonSchema;
+use serde::Deserialize;
+use serde::Serialize;
 use std::fmt::Display;
 use std::fmt::Formatter;
 
-use serde::Deserialize;
-use serde::Serialize;
-
+#[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "docs"))]
+use documented::DocumentedVariants;
 #[cfg(any(test, feature = "test"))]
 use rand_derive3::RandGen;
+#[cfg(any(test, feature = "table"))]
+use tabled::Tabled;
 
 /// The mutability of a property.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Copy, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "lowercase")]
 #[cfg_attr(any(test, feature = "test"), derive(RandGen))]
+#[cfg_attr(any(test, feature = "table"), derive(Tabled))]
+#[cfg_attr(any(test, feature = "docs"), derive(DocumentedVariants))]
 pub enum Mutability {
     /// The property is mutable.
     Mutable,
@@ -45,9 +52,6 @@ impl Display for Mutability {
         write!(f, "{self:?}")
     }
 }
-
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
 
 #[cfg(any(test, feature = "test"))]
 impl DefaultTest for Mutability {

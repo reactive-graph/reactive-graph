@@ -49,6 +49,17 @@
           "description": "Textual description of the extension.",
           "type": "string"
         },
+        "entity_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EntityTypeId"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The type definition contains the namespace and the type name."
+        },
         "extension": {
           "description": "The extension as JSON representation."
         }

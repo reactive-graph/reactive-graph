@@ -6,10 +6,6 @@ use std::ops::DerefMut;
 
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
@@ -19,15 +15,17 @@ use serde::Deserializer;
 use serde::Serialize;
 use serde::Serializer;
 use serde_json::Value;
-#[cfg(any(test, feature = "test"))]
-use serde_json::json;
 use std::borrow::Cow;
 use typed_builder::TypedBuilder;
 
 use crate::AddExtensionError;
+use crate::EntityTypeId;
 use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::ExtensionTypeIds;
+use crate::Namespace;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
 use crate::NamespacedTypeContainer;
 use crate::NamespacedTypeGetter;
 use crate::RemoveExtensionError;
@@ -35,22 +33,40 @@ use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
+
+#[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
+#[cfg(any(test, feature = "test"))]
+use serde_json::json;
+#[cfg(any(test, feature = "table"))]
+use tabled::Tabled;
 
 /// Extension on a type. The extension allows to extend information
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[cfg_attr(any(test, feature = "table"), derive(Tabled))]
 pub struct Extension {
     /// The type definition contains the namespace and the type name.
     #[serde(flatten)]
     #[schemars(required)]
+    #[cfg_attr(any(test, feature = "table"), tabled(rename = "Type", inline))]
     pub ty: ExtensionTypeId,
+
+    /// The type definition contains the namespace and the type name.
+    #[serde(rename = "entity_type")]
+    #[cfg_attr(any(test, feature = "table"), tabled(rename = "EntityType", inline))]
+    pub entity_ty: Option<EntityTypeId>,
 
     /// Textual description of the extension.
     #[serde(default = "String::new")]
+    #[cfg_attr(any(test, feature = "table"), tabled(rename = "Description"))]
     pub description: String,
 
     /// The extension as JSON representation.
+    #[cfg_attr(any(test, feature = "table"), tabled(skip))]
     pub extension: Value,
 }
 
@@ -59,14 +75,22 @@ impl Extension {
     pub fn new<T: Into<ExtensionTypeId>, S: Into<String>>(ty: T, description: S, extension: Value) -> Extension {
         Extension {
             ty: ty.into(),
+            entity_ty: None,
             description: description.into(),
             extension,
         }
     }
 
-    pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S, description: S, extension: Value) -> Extension {
+    /// Constructs an extension from the given namespaced type with the given description, components, properties and extensions.
+    pub fn new_with_type_constraint<T: Into<ExtensionTypeId>, ET: Into<EntityTypeId>, S: Into<String>>(
+        ty: T,
+        entity_ty: ET,
+        description: S,
+        extension: Value,
+    ) -> Extension {
         Extension {
-            ty: ExtensionTypeId::new_from_type(namespace, type_name),
+            ty: ty.into(),
+            entity_ty: Some(entity_ty.into()),
             description: description.into(),
             extension,
         }
@@ -74,11 +98,19 @@ impl Extension {
 }
 
 impl NamespacedTypeGetter for Extension {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -87,15 +119,15 @@ impl TypeDefinitionGetter for Extension {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
     }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::Extension
+    }
 }
 
 impl From<&Extension> for TypeDefinition {
     fn from(extension: &Extension) -> Self {
-        TypeDefinition {
-            type_id_type: TypeIdType::Extension,
-            namespace: extension.namespace(),
-            type_name: extension.type_name(),
-        }
+        extension.type_definition()
     }
 }
 
@@ -131,27 +163,20 @@ impl Hash for Extension {
 pub struct Extensions(DashMap<ExtensionTypeId, Extension>);
 
 impl Extensions {
+    #[inline]
     pub fn new() -> Self {
-        Extensions(DashMap::new())
+        NamespacedTypeContainer::new()
+    }
+
+    #[inline]
+    pub fn push<E: Into<Extension>>(&self, extension: E) {
+        NamespacedTypeContainer::push(self, extension)
     }
 
     pub fn extension<E: Into<Extension>>(self, extension: E) -> Self {
         self.push(extension);
         self
     }
-
-    // pub fn push<E: Into<Extension>>(&self, extension: E) {
-    //     let extension = extension.into();
-    //     self.0.insert(extension.ty.clone(), extension);
-    // }
-    //
-    // // TODO: Impl templated free function
-    // // TODO: Rename to values() ?
-    // pub fn to_vec(&self) -> Vec<Extension> {
-    //     let mut extensions: Vec<Extension> = self.0.iter().map(|extension| extension.value().clone()).collect();
-    //     extensions.sort();
-    //     extensions
-    // }
 }
 
 impl ExtensionContainer for Extensions {
@@ -202,6 +227,10 @@ impl ExtensionContainer for Extensions {
                 existing_extension.extension = extension_to_merge.extension.clone();
             }
         }
+    }
+
+    fn get_own_extensions_cloned(&self) -> Extensions {
+        self.clone()
     }
 }
 
@@ -328,8 +357,14 @@ impl FromIterator<Extension> for Extensions {
 #[cfg(any(test, feature = "test"))]
 impl DefaultTest for Extension {
     fn default_test() -> Self {
+        let entity_ty = if rand::random_bool(0.2) {
+            Some(EntityTypeId::generate_random())
+        } else {
+            None
+        };
         Extension::builder()
             .ty(ExtensionTypeId::generate_random())
+            .entity_ty(entity_ty)
             .description(r_string())
             .extension(json!(r_string()))
             .build()

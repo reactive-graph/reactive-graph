@@ -1,4 +1,5 @@
-use crate::NAMESPACE_DYNAMIC_GRAPH;
-use reactive_graph_graph::extension_ty;
+use reactive_graph_graph::ExtensionTypeId;
+use std::sync::LazyLock;
 
-extension_ty!(EXTENSION_FIELD_DESCRIPTION, NAMESPACE_DYNAMIC_GRAPH, EXTENSION_NAME_FIELD_DESCRIPTION, "field_description");
+pub static EXTENSION_DYNAMIC_GRAPH_FIELD_DESCRIPTION: LazyLock<ExtensionTypeId> =
+    LazyLock::new(|| ExtensionTypeId::try_from("reactive_graph::dynamic_graph::FieldDescription").unwrap());

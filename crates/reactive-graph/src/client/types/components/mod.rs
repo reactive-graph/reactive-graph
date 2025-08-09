@@ -11,8 +11,8 @@ use crate::client::types::components::output_format::ComponentsOutputFormatWrapp
 use crate::client::types::extension::output_format::ExtensionsOutputFormatWrapper;
 use crate::client::types::property_type::output_format::PropertyTypesOutputFormatWrapper;
 use reactive_graph_client::ReactiveGraphClient;
+use reactive_graph_graph::NAMESPACE_SEPARATOR;
 use reactive_graph_graph::NamespacedTypeContainer;
-use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 
 pub(crate) mod args;
 pub(crate) mod commands;
@@ -61,8 +61,8 @@ pub(crate) async fn components(client: &Arc<ReactiveGraphClient>, component_args
             Err(e) => Err(e.into()),
         },
         ComponentsCommands::Delete(args) => match client.types().components().delete_component(args.clone()).await {
-            Ok(Some(true)) => Ok(format!("Component {}{}{} deleted", args.namespace, TYPE_ID_TYPE_SEPARATOR, args.name).into()),
-            Ok(Some(false)) => Ok(format!("Component {}{}{} not deleted", args.namespace, TYPE_ID_TYPE_SEPARATOR, args.name).into()),
+            Ok(Some(true)) => Ok(format!("Component {}{}{} deleted", args.namespace, NAMESPACE_SEPARATOR, args.name).into()),
+            Ok(Some(false)) => Ok(format!("Component {}{}{} not deleted", args.namespace, NAMESPACE_SEPARATOR, args.name).into()),
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },

@@ -18,9 +18,9 @@ use serde::Serialize;
 use typed_builder::TypedBuilder;
 
 use crate::BehaviourTypeId;
+use reactive_graph_graph::NAMESPACE_SEPARATOR;
 use reactive_graph_graph::NamespacedType;
 use reactive_graph_graph::RelationTypeId;
-use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
@@ -44,11 +44,6 @@ impl RelationBehaviourTypeId {
     pub fn new(relation_ty: RelationTypeId, behaviour_ty: BehaviourTypeId) -> Self {
         Self { relation_ty, behaviour_ty }
     }
-
-    pub fn new_from_type<N: Into<String>, T: Into<String>>(namespace: N, type_name: T) -> Self {
-        let namespaced_type = NamespacedType::new(namespace, type_name);
-        Self::new(namespaced_type.clone().into(), namespaced_type.into())
-    }
 }
 
 impl From<NamespacedType> for RelationBehaviourTypeId {
@@ -65,7 +60,7 @@ impl From<&BehaviourTypeId> for RelationBehaviourTypeId {
 
 impl Display for RelationBehaviourTypeId {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}{}{}", &self.relation_ty, TYPE_ID_TYPE_SEPARATOR, &self.behaviour_ty)
+        write!(f, "{}{}{}", &self.relation_ty, NAMESPACE_SEPARATOR, &self.behaviour_ty)
     }
 }
 

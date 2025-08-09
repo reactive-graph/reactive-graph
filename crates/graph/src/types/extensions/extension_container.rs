@@ -33,6 +33,8 @@ pub trait ExtensionContainer {
 
     /// Merge the given extensions into the own extensions.
     fn merge_extensions<E: Into<Extensions>>(&mut self, extensions_to_merge: E);
+
+    fn get_own_extensions_cloned(&self) -> Extensions;
 }
 
 pub trait NamespacedTypeExtensionContainer<T, AddExtensionError, UpdateExtensionError, RemoveExtensionError, MergeExtensionsError> {

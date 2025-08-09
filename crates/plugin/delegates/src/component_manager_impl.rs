@@ -14,6 +14,7 @@ use reactive_graph_graph::Components;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::Extensions;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypes;
 
@@ -31,7 +32,7 @@ impl reactive_graph_plugin_api::ComponentManager for ComponentManagerDelegate {
         self.component_manager.get_all()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> Components {
+    fn get_by_namespace(&self, namespace: &Namespace) -> Components {
         self.component_manager.get_by_namespace(namespace)
     }
 
@@ -39,27 +40,19 @@ impl reactive_graph_plugin_api::ComponentManager for ComponentManagerDelegate {
         self.component_manager.has(ty)
     }
 
-    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool {
-        self.component_manager.has_by_type(namespace, type_name)
-    }
-
     fn get(&self, ty: &ComponentTypeId) -> Option<Component> {
         self.component_manager.get(ty)
     }
 
-    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<Component> {
-        self.component_manager.get_by_type(namespace, type_name)
-    }
-
-    fn find_by_type_name(&self, search: &str) -> Components {
-        self.component_manager.find_by_type_name(search)
+    fn find(&self, search: &str) -> Components {
+        self.component_manager.find(search)
     }
 
     fn count(&self) -> usize {
         self.component_manager.count()
     }
 
-    fn count_by_namespace(&self, namespace: &str) -> usize {
+    fn count_by_namespace(&self, namespace: &Namespace) -> usize {
         self.component_manager.count_by_namespace(namespace)
     }
 

@@ -5,7 +5,7 @@ use serde::Serialize;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::NamespacedTypeGetter;
 
-#[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, InputObject)]
 #[graphql(name = "EntityTypeId")]
 pub struct EntityTypeIdDefinition {
     /// The namespace of the entity type.
@@ -24,6 +24,15 @@ impl From<EntityTypeIdDefinition> for EntityTypeId {
 
 impl From<EntityTypeId> for EntityTypeIdDefinition {
     fn from(ty: EntityTypeId) -> Self {
+        EntityTypeIdDefinition {
+            namespace: ty.namespace(),
+            type_name: ty.type_name(),
+        }
+    }
+}
+
+impl From<&EntityTypeId> for EntityTypeIdDefinition {
+    fn from(ty: &EntityTypeId) -> Self {
         EntityTypeIdDefinition {
             namespace: ty.namespace(),
             type_name: ty.type_name(),
