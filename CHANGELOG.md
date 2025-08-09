@@ -27,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Infrastructure
 
 - CI: Update rust nightly toolchain to nightly-2025-08-05
+- CI: Added CODEOWNERS
+- Build: Use resolver version 3
+- Build: Specify default members of the workspace (exclude utils and generators)
+- Tooling: Added shell script to update the json schema files of the type system manually
 
 ## [0.10.0-alpha-5] - 2025-08-01
 
