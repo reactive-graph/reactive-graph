@@ -194,7 +194,7 @@ flate2 = "1.1"
 futures = "0.3"
 futures-timer = "3.0"
 futures-util = "0.3"
-glob = "0.3.2"
+glob = "0.3.3"
 gql_client = { version = "1.0.7", git = "https://github.com/reactive-graph/gql-client-rs.git", features = ["rustls-tls"], default-features = false }
 # Note: actix-web 5 will likely upgrade http from 0.2 to >= 1.0 (https://github.com/actix/actix-web/issues/3384)
 http = "0.2"
@@ -245,7 +245,7 @@ tokio-stream = "0.1"
 toml = "0.9"
 toml_edit = "0.22"
 typed-builder = "0.21"
-uuid = { version = "1.17", features = ["serde", "v4"] }
+uuid = { version = "1.18", features = ["serde", "v4"] }
 vergen-gix = { version = "1.0" }
 walkdir = "2.5"
 wildmatch = "2.4"
