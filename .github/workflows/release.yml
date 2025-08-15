@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: VCS Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
         with:
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: VCS Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Create GitHub Release
         uses: taiki-e/create-gh-release-action@v1
         with:
@@ -128,7 +128,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: VCS Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install Compiler Tools for Target i686-unknown-linux-gnu
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
@@ -248,7 +248,7 @@ jobs:
   #    runs-on: ubuntu-22.04
   #    steps:
   #      - name: VCS Checkout
-  #        uses: actions/checkout@v4
+  #        uses: actions/checkout@v5
   #      - name: Install rust toolchain
   #        uses: dtolnay/rust-toolchain@master
   #        with:
@@ -296,7 +296,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: VCS Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Get version number from git tag
         id: tag
         uses: devops-actions/action-get-tag@v1.0.3
