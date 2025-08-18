@@ -42,14 +42,14 @@
 <span class="item-spacer"></span>    fn <a href="#tymethod.update_entity_instance" class="fn">update_entity_instance</a>(
         &amp;self,
         ty: &amp;FlowTypeId,
-        id: <a class="struct" href="https://docs.rs/uuid/1.17.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
+        id: <a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
         entity_instance: EntityInstance,
-    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://docs.rs/uuid/1.17.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>, EntityInstance), FlowTypeUpdateEntityInstanceError&gt;;
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>, EntityInstance), FlowTypeUpdateEntityInstanceError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.remove_entity_instance" class="fn">remove_entity_instance</a>(
         &amp;self,
         ty: &amp;FlowTypeId,
-        id: <a class="struct" href="https://docs.rs/uuid/1.17.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
-    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;(<a class="struct" href="https://docs.rs/uuid/1.17.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>, EntityInstance)&gt;, FlowTypeRemoveEntityInstanceError&gt;;
+        id: <a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;(<a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>, EntityInstance)&gt;, FlowTypeRemoveEntityInstanceError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.add_relation_instance" class="fn">add_relation_instance</a>(
         &amp;self,
         ty: &amp;FlowTypeId,
@@ -137,14 +137,14 @@
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.update_entity_instance" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#98-103">Source</a><h4 class="code-header">fn <a href="#tymethod.update_entity_instance" class="fn">update_entity_instance</a>(
     &amp;self,
     ty: &amp;FlowTypeId,
-    id: <a class="struct" href="https://docs.rs/uuid/1.17.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
+    id: <a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
     entity_instance: EntityInstance,
-) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://docs.rs/uuid/1.17.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>, EntityInstance), FlowTypeUpdateEntityInstanceError&gt;</h4></section></summary><div class="docblock"><p>Updates the entity instance with the given id of the given flow type.</p>
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>, EntityInstance), FlowTypeUpdateEntityInstanceError&gt;</h4></section></summary><div class="docblock"><p>Updates the entity instance with the given id of the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.remove_entity_instance" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#106">Source</a><h4 class="code-header">fn <a href="#tymethod.remove_entity_instance" class="fn">remove_entity_instance</a>(
     &amp;self,
     ty: &amp;FlowTypeId,
-    id: <a class="struct" href="https://docs.rs/uuid/1.17.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
-) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;(<a class="struct" href="https://docs.rs/uuid/1.17.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>, EntityInstance)&gt;, FlowTypeRemoveEntityInstanceError&gt;</h4></section></summary><div class="docblock"><p>Removes the entity instance with the given id from the given flow type.</p>
+    id: <a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;(<a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>, EntityInstance)&gt;, FlowTypeRemoveEntityInstanceError&gt;</h4></section></summary><div class="docblock"><p>Removes the entity instance with the given id from the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.add_relation_instance" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#109">Source</a><h4 class="code-header">fn <a href="#tymethod.add_relation_instance" class="fn">add_relation_instance</a>(
     &amp;self,
     ty: &amp;FlowTypeId,

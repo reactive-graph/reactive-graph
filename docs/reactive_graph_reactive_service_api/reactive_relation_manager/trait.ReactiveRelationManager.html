@@ -7,11 +7,11 @@
 <span class="item-spacer"></span>    fn <a href="#tymethod.get" class="fn">get</a>(&amp;self, id: &amp;RelationInstanceId) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;ReactiveRelation&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.get_by_outbound_entity" class="fn">get_by_outbound_entity</a>(
         &amp;self,
-        outbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.17.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
+        outbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
     ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.get_by_inbound_entity" class="fn">get_by_inbound_entity</a>(
         &amp;self,
-        inbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.17.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
+        inbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
     ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.get_all" class="fn">get_all</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.get_by_type" class="fn">get_by_type</a>(&amp;self, ty: &amp;RelationTypeId) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;;
@@ -88,11 +88,11 @@ ends at the given inbound entity.</p>
 outbound entity and ends at the given inbound entity.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.get_by_outbound_entity" class="method"><a class="src rightside" href="../../src/reactive_graph_reactive_service_api/reactive_relation_manager.rs.html#37">Source</a><h4 class="code-header">fn <a href="#tymethod.get_by_outbound_entity" class="fn">get_by_outbound_entity</a>(
     &amp;self,
-    outbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.17.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
+    outbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
 ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;</h4></section></summary><div class="docblock"><p>Returns all reactive relation instances of the given outbound entity instance.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.get_by_inbound_entity" class="method"><a class="src rightside" href="../../src/reactive_graph_reactive_service_api/reactive_relation_manager.rs.html#40">Source</a><h4 class="code-header">fn <a href="#tymethod.get_by_inbound_entity" class="fn">get_by_inbound_entity</a>(
     &amp;self,
-    inbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.17.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
+    inbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
 ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;</h4></section></summary><div class="docblock"><p>Returns all reactive relation instances of the given inbound entity instance.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.get_all" class="method"><a class="src rightside" href="../../src/reactive_graph_reactive_service_api/reactive_relation_manager.rs.html#43">Source</a><h4 class="code-header">fn <a href="#tymethod.get_all" class="fn">get_all</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;</h4></section></summary><div class="docblock"><p>Returns all reactive relation instances.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.get_by_type" class="method"><a class="src rightside" href="../../src/reactive_graph_reactive_service_api/reactive_relation_manager.rs.html#46">Source</a><h4 class="code-header">fn <a href="#tymethod.get_by_type" class="fn">get_by_type</a>(&amp;self, ty: &amp;RelationTypeId) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;</h4></section></summary><div class="docblock"><p>Returns all reactive relation instances of the given type.</p>
