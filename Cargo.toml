@@ -183,8 +183,8 @@ convert_case = "0.8"
 const_format = { version = "0.2", features = ["fmt"] }
 criterion = { version = "0.7", features = ["html_reports"] }
 crossbeam = "0.8"
-cynic = { version = "3.11", features = ["http-reqwest"], default-features = false }
-cynic-introspection = "3.11"
+cynic = { version = "3.12", features = ["http-reqwest"], default-features = false }
+cynic-introspection = "3.12"
 daemonize-me = "2.0"
 darling = "0.20"
 dashmap = { version = "6.0", features = ["serde"] }
