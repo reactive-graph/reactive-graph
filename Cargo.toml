@@ -251,7 +251,7 @@ walkdir = "2.5"
 wildmatch = "2.4"
 workspace_root = "0.1.2"
 xdg = "3.0"
-zip = "4.5"
+zip = "4.6"
 
 [workspace.lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)', 'cfg(fn_traits)', 'cfg(unboxed_closures)'] }
