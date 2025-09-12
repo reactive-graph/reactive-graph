@@ -1,5 +1,5 @@
-use rustc_hash::FxHashMap;
 use log::error;
+use rustc_hash::FxHashMap;
 use springtime_di::component::Injectable;
 use springtime_di::component_registry::ComponentAliasMetadata;
 use springtime_di::component_registry::ComponentDefinition;
