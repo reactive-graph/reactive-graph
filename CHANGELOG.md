@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Avoid conflicting json schema fields in the dynamic graph
+- Replaced crate fxhash with rustc-hash (Fixes RUSTSEC-2025-0057)
 
 ### Distribution
 
