@@ -217,6 +217,7 @@ random-string = "1.1"
 rcgen = { version = "0.13", default-features = false, features = ["aws_lc_rs"] }
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
 rust-embed = { version = "8.7", features = ["debug-embed", "compression"] }
+rustc-hash = "2.1.1"
 rustls = { version = "0.23.31", features = ["aws_lc_rs"] }
 rustls-cert-gen = { version = "0.1", default-features = false, features = ["aws_lc_rs"] }
 rustls-pemfile = "2.2"
@@ -230,8 +231,8 @@ serde_json = "1.0"
 shellwords = "1.1"
 signal-hook = "0.3"
 similar = "2.7"
-springtime = "1.0"
-springtime-di = { version = "1.0", features = ["threadsafe", "derive"] }
+springtime = { version = "1.0", git = "https://github.com/reactive-graph/springtime.git" }
+springtime-di = { version = "1.0", features = ["threadsafe", "derive"], git = "https://github.com/reactive-graph/springtime.git" }
 stopwatch2 = "2.0"
 strum = { version = "0.27", features = ["derive"] }
 strum_macros = "0.27"

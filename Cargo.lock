@@ -1168,15 +1168,6 @@ checksum = "7c74b8349d32d297c9134b8c88677813a227df8f779daa29bfc29c183fe3dca6"
 
 [[package]]
 name = "convert_case"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec182b0ca2f35d8fc196cf3404988fd8b8c739a4d270ff118a398feb0cbec1ca"
-dependencies = [
- "unicode-segmentation",
-]
-
-[[package]]
-name = "convert_case"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baaaa0ecca5b51987b9423ccdc971514dd8b0bb7b4060b983d3664dad3f1f89f"
@@ -1956,15 +1947,6 @@ dependencies = [
  "pin-project-lite",
  "pin-utils",
  "slab",
-]
-
-[[package]]
-name = "fxhash"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c31b6d751ae2c7f11320402d34e41349dd1016f8d5d45e48c4312bc8625af50c"
-dependencies = [
- "byteorder",
 ]
 
 [[package]]
@@ -4834,8 +4816,8 @@ dependencies = [
 name = "reactive-graph-di"
 version = "0.10.0"
 dependencies = [
- "fxhash",
  "log",
+ "rustc-hash 2.1.1",
  "springtime-di",
 ]
 
@@ -4861,7 +4843,7 @@ version = "0.10.0"
 dependencies = [
  "async-graphql",
  "async-trait",
- "convert_case 0.8.0",
+ "convert_case",
  "dashmap",
  "itertools 0.14.0",
  "log",
@@ -4894,7 +4876,7 @@ name = "reactive-graph-dynamic-graph-test"
 version = "0.10.0"
 dependencies = [
  "colored",
- "convert_case 0.8.0",
+ "convert_case",
  "default-test",
  "glob",
  "log",
@@ -6438,13 +6420,12 @@ dependencies = [
 [[package]]
 name = "springtime-di"
 version = "1.0.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "86b735d47afa6bfdf2d6084f11295ea6a23db2bf5b7a48a1959c0def89c57fc4"
+source = "git+https://github.com/reactive-graph/springtime.git#f2b081258cd0cedb7eb217909233c7e528ae1a48"
 dependencies = [
  "derive_more",
- "fxhash",
  "inventory",
  "itertools 0.14.0",
+ "rustc-hash 2.1.1",
  "springtime-di-derive",
  "thiserror 2.0.16",
  "tracing",
@@ -6453,11 +6434,10 @@ dependencies = [
 [[package]]
 name = "springtime-di-derive"
 version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c5f462fdabd80f39cf710a3db1f2c66417fb78d30bebb78fd3b32111e495be82"
+source = "git+https://github.com/reactive-graph/springtime.git#f2b081258cd0cedb7eb217909233c7e528ae1a48"
 dependencies = [
- "convert_case 0.6.0",
- "itertools 0.12.1",
+ "convert_case",
+ "itertools 0.14.0",
  "proc-macro2",
  "quote",
  "syn",

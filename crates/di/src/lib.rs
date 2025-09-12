@@ -1,4 +1,4 @@
-use fxhash::FxHashMap;
+use rustc_hash::FxHashMap;
 use log::error;
 use springtime_di::component::Injectable;
 use springtime_di::component_registry::ComponentAliasMetadata;
