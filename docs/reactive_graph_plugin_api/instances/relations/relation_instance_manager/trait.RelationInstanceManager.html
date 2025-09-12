@@ -4,11 +4,11 @@
 <span class="item-spacer"></span>    fn <a href="#tymethod.get" class="fn">get</a>(&amp;self, id: &amp;RelationInstanceId) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;ReactiveRelation&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.get_by_outbound_entity" class="fn">get_by_outbound_entity</a>(
         &amp;self,
-        outbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
+        outbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.18.1/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
     ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.get_by_inbound_entity" class="fn">get_by_inbound_entity</a>(
         &amp;self,
-        inbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
+        inbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.18.1/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
     ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.get_all" class="fn">get_all</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.get_by_type" class="fn">get_by_type</a>(&amp;self, ty: &amp;RelationTypeId) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;;
@@ -41,7 +41,7 @@
         relation_instance_id: &amp;RelationInstanceId,
         property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         mutability: Mutability,
-        value: <a class="enum" href="https://docs.rs/serde_json/1.0.142/serde_json/value/enum.Value.html" title="enum serde_json::value::Value">Value</a>,
+        value: <a class="enum" href="https://docs.rs/serde_json/1.0.143/serde_json/value/enum.Value.html" title="enum serde_json::value::Value">Value</a>,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, ReactiveRelationPropertyAddError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.remove_property" class="fn">remove_property</a>(
         &amp;self,
@@ -55,11 +55,11 @@ ends at the given inbound entity.</p>
 outbound entity and ends at the given inbound entity.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.get_by_outbound_entity" class="method"><a class="src rightside" href="../../../../src/reactive_graph_plugin_api/instances/relations/relation_instance_manager.rs.html#33">Source</a><h4 class="code-header">fn <a href="#tymethod.get_by_outbound_entity" class="fn">get_by_outbound_entity</a>(
     &amp;self,
-    outbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
+    outbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.18.1/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
 ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;</h4></section></summary><div class="docblock"><p>Returns all reactive relation instances of the given outbound entity instance.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.get_by_inbound_entity" class="method"><a class="src rightside" href="../../../../src/reactive_graph_plugin_api/instances/relations/relation_instance_manager.rs.html#36">Source</a><h4 class="code-header">fn <a href="#tymethod.get_by_inbound_entity" class="fn">get_by_inbound_entity</a>(
     &amp;self,
-    inbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.18.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
+    inbound_entity_id: <a class="struct" href="https://docs.rs/uuid/1.18.1/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
 ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;</h4></section></summary><div class="docblock"><p>Returns all reactive relation instances of the given inbound entity instance.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.get_all" class="method"><a class="src rightside" href="../../../../src/reactive_graph_plugin_api/instances/relations/relation_instance_manager.rs.html#39">Source</a><h4 class="code-header">fn <a href="#tymethod.get_all" class="fn">get_all</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;</h4></section></summary><div class="docblock"><p>Returns all reactive relation instances.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.get_by_type" class="method"><a class="src rightside" href="../../../../src/reactive_graph_plugin_api/instances/relations/relation_instance_manager.rs.html#42">Source</a><h4 class="code-header">fn <a href="#tymethod.get_by_type" class="fn">get_by_type</a>(&amp;self, ty: &amp;RelationTypeId) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;ReactiveRelation&gt;</h4></section></summary><div class="docblock"><p>Returns all reactive relation instances of the given type.</p>
@@ -92,7 +92,7 @@ outbound entity and ends at the given inbound entity.</p>
     relation_instance_id: &amp;RelationInstanceId,
     property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     mutability: Mutability,
-    value: <a class="enum" href="https://docs.rs/serde_json/1.0.142/serde_json/value/enum.Value.html" title="enum serde_json::value::Value">Value</a>,
+    value: <a class="enum" href="https://docs.rs/serde_json/1.0.143/serde_json/value/enum.Value.html" title="enum serde_json::value::Value">Value</a>,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, ReactiveRelationPropertyAddError&gt;</h4></section></summary><div class="docblock"><p>Adds the property with the given name and initial value to the relation instance with the given id.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.remove_property" class="method"><a class="src rightside" href="../../../../src/reactive_graph_plugin_api/instances/relations/relation_instance_manager.rs.html#84">Source</a><h4 class="code-header">fn <a href="#tymethod.remove_property" class="fn">remove_property</a>(
     &amp;self,

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["create_flow_instance_from_type_mutation"],"struct":["CreateFlowInstance","MutationFlowInstances","MutationInstances"]};

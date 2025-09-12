@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["_connect_arguments","_create_arguments","_delete_arguments","_disconnect_arguments","_reconnect_arguments","_tick_arguments","_trigger_arguments","_update_arguments"],"struct":["__typename","connect","create","delete","disconnect","reconnect","tick","trigger","update"]};

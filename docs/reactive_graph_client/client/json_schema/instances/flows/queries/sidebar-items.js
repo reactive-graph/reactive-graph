@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["get_json_schema_for_flow_instances"],"struct":["JsonSchema","JsonSchemaFlowInstances","JsonSchemaInstanceSystem"]};
