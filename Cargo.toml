@@ -186,7 +186,7 @@ crossbeam = "0.8"
 cynic = { version = "3.12", features = ["http-reqwest"], default-features = false }
 cynic-introspection = "3.12"
 daemonize-me = "2.0"
-darling = "0.20"
+darling = "0.21"
 dashmap = { version = "6.0", features = ["serde"] }
 default-test = "0.1"
 documented = "0.9"
@@ -214,12 +214,12 @@ quote = "1.0"
 rand = "0.9"
 rand_derive3 = { version = "0.2", git = "https://github.com/reactive-graph/rand_derive3.git", branch = "rust-edition-2024" }
 random-string = "1.1"
-rcgen = { version = "0.13", default-features = false, features = ["aws_lc_rs"] }
+rcgen = { version = "0.14", default-features = false, features = ["aws_lc_rs"] }
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
-rust-embed = { version = "8.7", features = ["debug-embed", "compression"] }
+rust-embed = { version = "8.8", features = ["debug-embed", "compression"] }
 rustc-hash = "2.1.1"
-rustls = { version = "0.23.32", features = ["aws_lc_rs"] }
-rustls-cert-gen = { version = "0.1", default-features = false, features = ["aws_lc_rs"] }
+rustls = { version = "0.23.33", features = ["aws_lc_rs"] }
+rustls-cert-gen = { version = "0.2", default-features = false, features = ["aws_lc_rs"] }
 rustls-pemfile = "2.2"
 rustversion = "1.0"
 rustyline = "17.0"
@@ -244,13 +244,13 @@ thiserror = "2.0"
 tokio = { version = "1", features = ["time", "rt"] }
 tokio-stream = "0.1"
 toml = "0.9"
-toml_edit = "0.22"
-typed-builder = "0.21"
+toml_edit = "0.23"
+typed-builder = "0.22"
 uuid = { version = "1.18", features = ["serde", "v4"] }
 vergen-gix = { version = "1.0" }
 walkdir = "2.5"
 wildmatch = "2.5"
-workspace_root = "0.1.2"
+workspace_root = "0.2.0"
 xdg = "3.0"
 zip = "4.6"
 
