@@ -244,7 +244,7 @@ thiserror = "2.0"
 tokio = { version = "1", features = ["time", "rt"] }
 tokio-stream = "0.1"
 toml = "0.9"
-toml_edit = "0.22"
+toml_edit = "0.23"
 typed-builder = "0.21"
 uuid = { version = "1.18", features = ["serde", "v4"] }
 vergen-gix = { version = "1.0" }
