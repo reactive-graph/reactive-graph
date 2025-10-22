@@ -186,7 +186,7 @@ crossbeam = "0.8"
 cynic = { version = "3.12", features = ["http-reqwest"], default-features = false }
 cynic-introspection = "3.12"
 daemonize-me = "2.0"
-darling = "0.20"
+darling = "0.21"
 dashmap = { version = "6.0", features = ["serde"] }
 default-test = "0.1"
 documented = "0.9"
