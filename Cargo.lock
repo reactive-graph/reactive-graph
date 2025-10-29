@@ -2008,9 +2008,9 @@ dependencies = [
 
 [[package]]
 name = "get_dir"
-version = "0.4.3"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "157475c9ef63284947b6a2f3661795a4fdbf581974d36daf3567cd20cb1e217e"
+checksum = "a7be53a543a609b266f8ed4237af223fa96bdaa54d69fd6845c71a421a4a4748"
 
 [[package]]
 name = "getrandom"
@@ -7659,9 +7659,9 @@ dependencies = [
 
 [[package]]
 name = "workspace_root"
-version = "0.1.2"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "70d34ee5edf31cd59cf2d7bf699a9af8f1de1743e03aab3982f5ae87b626a2af"
+checksum = "70d804157714956faa87af2ccf3ea2917a7e588c84c6e0a473311c1fca161818"
 dependencies = [
  "get_dir",
 ]
