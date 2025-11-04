@@ -4598,10 +4598,22 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "75e669e5202259b5314d1ea5397316ad400819437857b90861765f24c4cf80a2"
 dependencies = [
  "aws-lc-rs",
- "pem",
  "rustls-pki-types",
  "time",
  "x509-parser",
+ "yasna",
+]
+
+[[package]]
+name = "rcgen"
+version = "0.14.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5fae430c6b28f1ad601274e78b7dffa0546de0b73b4cd32f46723c0c2a16f7a5"
+dependencies = [
+ "aws-lc-rs",
+ "pem",
+ "rustls-pki-types",
+ "time",
  "yasna",
 ]
 
@@ -4621,7 +4633,7 @@ dependencies = [
  "json5",
  "log",
  "log4rs",
- "rcgen",
+ "rcgen 0.13.2",
  "reactive-graph-client",
  "reactive-graph-config-model",
  "reactive-graph-graph",
@@ -6018,16 +6030,15 @@ dependencies = [
 
 [[package]]
 name = "rustls-cert-gen"
-version = "0.1.0"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc90aa1c8aea94bb71cb67a78c4671fe4f0767b4aadfbd40910367909fa304b3"
+checksum = "0207d48722efec7effe77a631b6482bb8eaff6fb5d56ca334c32dfb59a046170"
 dependencies = [
  "anyhow",
  "aws-lc-rs",
  "bpaf",
  "pem",
- "rand 0.8.5",
- "rcgen",
+ "rcgen 0.14.5",
  "rustls-pki-types",
 ]
 
