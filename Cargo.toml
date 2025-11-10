@@ -249,7 +249,7 @@ typed-builder = "0.23"
 uuid = { version = "1.18", features = ["serde", "v4"] }
 vergen-gix = { version = "1.0" }
 walkdir = "2.5"
-wildmatch = "2.5"
+wildmatch = "2.6"
 workspace_root = "0.2.0"
 xdg = "3.0"
 zip = "6.0"
