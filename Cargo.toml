@@ -164,7 +164,7 @@ rust-version = "1.87.0"
 actix = "0.13"
 actix-cors = "0.7"
 actix-http = { version = "3.11", features = ["rustls-0_23"] }
-actix-web = { version = "4.11", features = ["rustls-0_23"] }
+actix-web = { version = "4.12", features = ["rustls-0_23"] }
 actix-web-extras = "0.1"
 anyhow = "1.0"
 # async-graphql features: uuid, chrono, url, log
