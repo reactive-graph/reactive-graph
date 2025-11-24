@@ -1173,9 +1173,9 @@ dependencies = [
 
 [[package]]
 name = "convert_case"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "db05ffb6856bf0ecdf6367558a76a0e8a77b1713044eb92845c692100ed50190"
+checksum = "633458d4ef8c78b72454de2d54fd6ab2e60f9e02be22f3c6104cdc8a4e0fceb9"
 dependencies = [
  "unicode-segmentation",
 ]
@@ -1760,7 +1760,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "778e2ac28f6c47af28e4907f13ffd1e1ddbd400980a9abd7c8df189bf578a5ad"
 dependencies = [
  "libc",
- "windows-sys 0.52.0",
+ "windows-sys 0.60.2",
 ]
 
 [[package]]
@@ -4864,7 +4864,7 @@ version = "0.10.0"
 dependencies = [
  "async-graphql",
  "async-trait",
- "convert_case 0.9.0",
+ "convert_case 0.10.0",
  "dashmap",
  "itertools 0.14.0",
  "log",
@@ -4897,7 +4897,7 @@ name = "reactive-graph-dynamic-graph-test"
 version = "0.10.0"
 dependencies = [
  "colored",
- "convert_case 0.9.0",
+ "convert_case 0.10.0",
  "default-test",
  "glob",
  "log",
@@ -6005,7 +6005,7 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys 0.9.4",
- "windows-sys 0.52.0",
+ "windows-sys 0.60.2",
 ]
 
 [[package]]
