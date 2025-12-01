@@ -200,7 +200,7 @@ gql_client = { version = "1.0.7", git = "https://github.com/reactive-graph/gql-c
 http = "0.2"
 include_dir = "0.7"
 itertools = "0.14"
-json5 = "0.4"
+json5 = "1.0"
 libloading = "0.8"
 log = { version = "0.4", features = ["std", "serde"] }
 log4rs = { version = "1.4.0", features = ["console_appender", "file_appender", "toml_format", "ansi_writer"] }
