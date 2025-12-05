@@ -5112,7 +5112,7 @@ name = "reactive-graph-plugin-api"
 version = "0.10.0"
 dependencies = [
  "async-trait",
- "http 0.2.12",
+ "http 1.3.1",
  "json5",
  "reactive-graph-behaviour-model-api",
  "reactive-graph-command-model",
@@ -5635,7 +5635,7 @@ dependencies = [
  "async-trait",
  "crossbeam",
  "dashmap",
- "http 0.2.12",
+ "http 1.3.1",
  "log",
  "reactive-graph-config-api",
  "reactive-graph-config-model",
