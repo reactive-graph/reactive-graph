@@ -1070,6 +1070,120 @@ impl TryFrom<reactive_graph_graph::EntityInstance> for Comment {
         Err(())
     }
 }
+impl crate::reactive_graph::flow::flow_2_d::Flow2D for Comment {
+    
+    /// ### Property `f2dh`
+    ///
+    /// The height (y-axis) in a 2D flow
+    ///
+    /// Data Type: `Number`
+    ///
+    /// Socket Type: `None`
+    ///
+    /// Mutability: `Mutable`
+    ///
+    fn f2dh(&self) -> u64 {
+        self.f2dh
+    }
+    
+    /// ### Property `f2dh`
+    ///
+    /// The height (y-axis) in a 2D flow
+    ///
+    /// Data Type: `Number`
+    ///
+    /// Socket Type: `None`
+    ///
+    /// Mutability: `Mutable`
+    ///
+    fn set_f2dh(&mut self, f2dh: u64) {
+        self.f2dh = f2dh;
+    }
+    
+    /// ### Property `f2dw`
+    ///
+    /// The width (x-axis) in a 2D flow
+    ///
+    /// Data Type: `Number`
+    ///
+    /// Socket Type: `None`
+    ///
+    /// Mutability: `Mutable`
+    ///
+    fn f2dw(&self) -> u64 {
+        self.f2dw
+    }
+    
+    /// ### Property `f2dw`
+    ///
+    /// The width (x-axis) in a 2D flow
+    ///
+    /// Data Type: `Number`
+    ///
+    /// Socket Type: `None`
+    ///
+    /// Mutability: `Mutable`
+    ///
+    fn set_f2dw(&mut self, f2dw: u64) {
+        self.f2dw = f2dw;
+    }
+    
+    /// ### Property `f2dx`
+    ///
+    /// The X position in a 2D flow
+    ///
+    /// Data Type: `Number`
+    ///
+    /// Socket Type: `None`
+    ///
+    /// Mutability: `Mutable`
+    ///
+    fn f2dx(&self) -> u64 {
+        self.f2dx
+    }
+    
+    /// ### Property `f2dx`
+    ///
+    /// The X position in a 2D flow
+    ///
+    /// Data Type: `Number`
+    ///
+    /// Socket Type: `None`
+    ///
+    /// Mutability: `Mutable`
+    ///
+    fn set_f2dx(&mut self, f2dx: u64) {
+        self.f2dx = f2dx;
+    }
+    
+    /// ### Property `f2dy`
+    ///
+    /// The Y position in a 2D flow
+    ///
+    /// Data Type: `Number`
+    ///
+    /// Socket Type: `None`
+    ///
+    /// Mutability: `Mutable`
+    ///
+    fn f2dy(&self) -> u64 {
+        self.f2dy
+    }
+    
+    /// ### Property `f2dy`
+    ///
+    /// The Y position in a 2D flow
+    ///
+    /// Data Type: `Number`
+    ///
+    /// Socket Type: `None`
+    ///
+    /// Mutability: `Mutable`
+    ///
+    fn set_f2dy(&mut self, f2dy: u64) {
+        self.f2dy = f2dy;
+    }
+}
 impl crate::reactive_graph::flow::flow_3_d::Flow3D for Comment {
     
     /// ### Property `f3dd`
@@ -1238,119 +1352,5 @@ impl crate::reactive_graph::flow::flow_3_d::Flow3D for Comment {
     ///
     fn set_f3dz(&mut self, f3dz: u64) {
         self.f3dz = f3dz;
-    }
-}
-impl crate::reactive_graph::flow::flow_2_d::Flow2D for Comment {
-    
-    /// ### Property `f2dh`
-    ///
-    /// The height (y-axis) in a 2D flow
-    ///
-    /// Data Type: `Number`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    fn f2dh(&self) -> u64 {
-        self.f2dh
-    }
-    
-    /// ### Property `f2dh`
-    ///
-    /// The height (y-axis) in a 2D flow
-    ///
-    /// Data Type: `Number`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    fn set_f2dh(&mut self, f2dh: u64) {
-        self.f2dh = f2dh;
-    }
-    
-    /// ### Property `f2dw`
-    ///
-    /// The width (x-axis) in a 2D flow
-    ///
-    /// Data Type: `Number`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    fn f2dw(&self) -> u64 {
-        self.f2dw
-    }
-    
-    /// ### Property `f2dw`
-    ///
-    /// The width (x-axis) in a 2D flow
-    ///
-    /// Data Type: `Number`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    fn set_f2dw(&mut self, f2dw: u64) {
-        self.f2dw = f2dw;
-    }
-    
-    /// ### Property `f2dx`
-    ///
-    /// The X position in a 2D flow
-    ///
-    /// Data Type: `Number`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    fn f2dx(&self) -> u64 {
-        self.f2dx
-    }
-    
-    /// ### Property `f2dx`
-    ///
-    /// The X position in a 2D flow
-    ///
-    /// Data Type: `Number`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    fn set_f2dx(&mut self, f2dx: u64) {
-        self.f2dx = f2dx;
-    }
-    
-    /// ### Property `f2dy`
-    ///
-    /// The Y position in a 2D flow
-    ///
-    /// Data Type: `Number`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    fn f2dy(&self) -> u64 {
-        self.f2dy
-    }
-    
-    /// ### Property `f2dy`
-    ///
-    /// The Y position in a 2D flow
-    ///
-    /// Data Type: `Number`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    fn set_f2dy(&mut self, f2dy: u64) {
-        self.f2dy = f2dy;
     }
 }
