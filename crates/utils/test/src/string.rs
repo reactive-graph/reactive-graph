@@ -5,8 +5,6 @@ use serde_json::Value;
 use serde_json::json;
 
 const CHARSET_LETTERS: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const CHARSET_NAMESPACE_PATH_SEGMENT: &str = "abcdefghijklmnopqrstuvwxyz          ";
-const CHARSET_NAMESPACE_TYPE_NAME: &str = "abcdefghijklmnopqrstuvwxyz          ";
 const CHARSET_LOWERCASE_LETTERS: &str = "abcdefghijklmnopqrstuvwxyz";
 
 pub fn r_string() -> String {
@@ -17,12 +15,20 @@ pub fn r_lowercase_string() -> String {
     generate(10, CHARSET_LOWERCASE_LETTERS).to_string()
 }
 
+pub fn r_namespace_segment() -> String {
+    let mut path_segment = String::new();
+    for _ in 1..3 {
+        path_segment = format!("{} {}", path_segment, r_lowercase_string());
+    }
+    path_segment
+}
+
 pub fn r_namespace_path_segment() -> String {
-    generate(20, CHARSET_NAMESPACE_PATH_SEGMENT).to_string().to_case(Case::Snake)
+    r_namespace_segment().to_case(Case::Snake)
 }
 
 pub fn r_namespace_type_name() -> String {
-    generate(20, CHARSET_NAMESPACE_TYPE_NAME).to_string().to_case(Case::Pascal)
+    r_namespace_segment().to_case(Case::Pascal)
 }
 
 pub fn r_string_255() -> String {
