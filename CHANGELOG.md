@@ -9,11 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Type System: Generate rust types for the system based on the type definitions
+- Documentation: Generate Markdown documentation for the type system based on the type definitions
 - Plugins: Hot deploy archives (.tar.gz and .zip) containing plugins placed in the deploy folder
 - CLI: Install plugins from a plugin repository (GitHub Releases)
 
 ### Changed
 
+- Type System: Hierarchical and typesafe namespaces
 - Upgrade log4rs to 1.4.0
 
 ### Fixed
