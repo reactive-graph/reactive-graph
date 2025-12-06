@@ -9,10 +9,6 @@ title = "Reactive Graph"
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
 
-[preprocessor.admonish]
-command = "mdbook-admonish"
-assets_version = "3.0.2" # do not edit: managed by `mdbook-admonish install`
-
 [preprocessor.graphql-playground]
 command = "mdbook-graphql-playground"
 renderer = ["html"]
@@ -77,7 +73,7 @@ additional-css = [
     "./src/design/public/css/organisms/footer.css",
     "./src/design/public/css/organisms/story-matrix.css",
     "././book.css",
-    "././mdbook-admonish.css",
+    #    "././mdbook-admonish.css",
     "././graphql-playground.css"
 ]
 theme = "theme"
