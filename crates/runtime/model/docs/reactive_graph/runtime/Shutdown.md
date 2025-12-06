@@ -12,8 +12,8 @@ Shutting down the runtime
 
 | Component                       | Description                                                                                       | Properties                          |
 |---------------------------------|---------------------------------------------------------------------------------------------------|-------------------------------------|
-| `reactive_graph::core::Action`  | An action can be triggered                                                                        | <ul compact><li>`trigger`</li></ul> |
 | `reactive_graph::core::Labeled` | The label is a hierarchical path with static segments, named parameters and catch-all parameters. | <ul compact><li>`label`</li></ul>   |
+| `reactive_graph::core::Action`  | An action can be triggered                                                                        | <ul compact><li>`trigger`</li></ul> |
 
 ## Properties
 
@@ -110,9 +110,9 @@ accepts incoming connections.</details>
     }
   },
   "required": [
-    "delay",
     "label",
     "trigger",
+    "delay",
     "id"
   ],
   "title": "reactive_graph::runtime::Shutdown",
