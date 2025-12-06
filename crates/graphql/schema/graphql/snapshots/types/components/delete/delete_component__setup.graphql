@@ -1,14 +1,8 @@
 mutation {
   types {
     components {
-      create(
-        type: {
-          namespace: "hurtz"
-          name: "hurtz"
-        }
-      ) {
-        namespace
-        name
+      create(type: "hurtz::Hurtz") {
+        type
       }
     }
   }
