@@ -13,9 +13,8 @@ The relation instance is a unique link for the following combination:
 * Relation Type
 * Instance Id
 
-```admonish warning
-It's not possible to add a relation instance with the same outbound, inbound, type and instance_id.
-```
+> [!WARNING]
+> It's not possible to add a relation instance with the same outbound, inbound, type and instance_id.
 
 There are multiple types of instance ids:
 
