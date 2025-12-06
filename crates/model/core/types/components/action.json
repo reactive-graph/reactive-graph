@@ -1,6 +1,6 @@
 {
-  "namespace": "core",
-  "type_name": "action",
+  "$id": "https://schema.reactive-graph.io/schema/json/component.schema.json",
+  "type": "reactive_graph::core::Action",
   "description": "An action can be triggered",
   "properties": [
     {

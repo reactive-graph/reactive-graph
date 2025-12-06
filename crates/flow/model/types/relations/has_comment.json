@@ -1,0 +1,17 @@
+{
+  "$id": "https://schema.reactive-graph.io/schema/json/relation-type.schema.json",
+  "type": "reactive_graph::flow::HasComment",
+  "description": "Any entity within a flow can be commented",
+  "outbound": {
+    "entity_type": "*"
+  },
+  "inbound": {
+    "entity_type": "reactive_graph::flow::Comment"
+  },
+  "components": [
+  ],
+  "properties": [
+  ],
+  "extensions": [
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "$id": "https://schema.reactive-graph.io/schema/json/component.schema.json",
+  "type": "reactive_graph::flow::Flow2D",
+  "description": "The position (x,y) of the entity or relation on a two dimensional flow.",
+  "properties": [
+    {
+      "name": "f2dx",
+      "description": "The X position in a 2D flow",
+      "data_type": "number",
+      "socket_type": "none"
+    },
+    {
+      "name": "f2dy",
+      "description": "The Y position in a 2D flow",
+      "data_type": "number",
+      "socket_type": "none"
+    },
+    {
+      "name": "f2dw",
+      "description": "The width (x-axis) in a 2D flow",
+      "data_type": "number",
+      "socket_type": "none"
+    },
+    {
+      "name": "f2dh",
+      "description": "The height (y-axis) in a 2D flow",
+      "data_type": "number",
+      "socket_type": "none"
+    }
+  ],
+  "extensions": [
+  ]
+}
