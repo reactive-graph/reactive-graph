@@ -1,74 +1,571 @@
-"""
-Any entity.
-"""
-union AllEntities =
+# This file was generated. Do not edit manually.
 
-"""
-Any flow.
-"""
-union AllFlows =
-
-"""
-Any relation.
-"""
-union AllRelations =
-
-"""
-Entities have outbound and inbound relations as well as components and properties 
-"""
-interface Entity {
-	_namespace: ID!
-	id: ID!
+schema {
+  query: Query
+  mutation: Mutation
 }
 
-"""
-Flows have entities and relations.
-"""
-interface Flow {
-	_namespace: ID!
-	id: ID!
+"Indicates that an Input Object is a OneOf Input Object (and thus requires exactly one of its field be provided)"
+directive @oneOf on INPUT_OBJECT
+
+"Entities have outbound and inbound relations as well as components and properties "
+interface Entity {
+  _namespace: ID!
+  id: ID!
+}
+
+"A command which can be executed. The command has a name and can have command arguments."
+interface ReactiveGraphCommandCommandInterface {
+  _ReactiveGraphCommandCommand: ID
+  "The command arguments"
+  args: JSON
+  "blah"
+  cmd_ignore: JSON
+  "The result of the command"
+  cmd_result: JSON
+  "The command name"
+  command: String
+  "Help text which explains the command."
+  help: String
+  "The command namespace"
+  namespace: String
+}
+
+"An action can be triggered"
+interface ReactiveGraphCoreActionInterface {
+  _ReactiveGraphCoreAction: ID
+  "On receiving a boolean trigger the action will be executed"
+  trigger: Boolean
+}
+
+"This component spawns events."
+interface ReactiveGraphCoreEventInterface {
+  _ReactiveGraphCoreEvent: ID
+  "On receiving a boolean trigger the action will be executed"
+  event: JSON
+}
+
+"The label is a hierarchical path with static segments, named parameters and catch-all parameters."
+interface ReactiveGraphCoreLabeledInterface {
+  _ReactiveGraphCoreLabeled: ID
+  "Hierarchical path with static segments, named parameters and catch-all parameters"
+  label: String
+}
+
+"The position (x,y) of the entity or relation on a two dimensional flow."
+interface ReactiveGraphFlowFlow2DInterface {
+  _ReactiveGraphFlowFlow2D: ID
+  "The height (y-axis) in a 2D flow"
+  f2dh: Float
+  "The width (x-axis) in a 2D flow"
+  f2dw: Float
+  "The X position in a 2D flow"
+  f2dx: Float
+  "The Y position in a 2D flow"
+  f2dy: Float
+}
+
+"The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+interface ReactiveGraphFlowFlow3DInterface {
+  _ReactiveGraphFlowFlow3D: ID
+  "The depth (z-axis) in a 3D flow"
+  f3dd: Float
+  "The height (y-axis) in a 3D flow"
+  f3dh: Float
+  "The width (x-axis) in a 3D flow"
+  f3dw: Float
+  "The X position in a 3D flow"
+  f3dx: Float
+  "The Y position in a 3D flow"
+  f3dy: Float
+  "The Z position in a 3D flow"
+  f3dz: Float
+}
+
+"Relations have a outbound entity and a inbound entity as well as components and properties,"
+interface Relation {
+  _namespace: ID!
+  id: ID!
+  instance_id: ID!
+}
+
+"Any entity."
+union AllEntities = ReactiveGraphCommandNumCommandsQuery | ReactiveGraphFlowCommentQuery | ReactiveGraphFlowSimpleFlowQuery | ReactiveGraphRuntimeShutdownQuery | ReactiveGraphTypeSystemTypeSystemEventQuery
+
+"Mutations"
+type Mutation {
+  "Root namespace"
+  _namespace: ID!
+  reactive_graph: ReactiveGraphMutation!
+}
+
+"Queries"
+type Query {
+  "Root namespace"
+  _namespace: ID!
+  reactive_graph: ReactiveGraphQuery!
+}
+
+"A command which can be executed. The command has a name and can have command arguments."
+type ReactiveGraphCommandCommandMutation {
+  "JSON schema of Component reactive_graph::command::Command"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::command::Command"
+  _namespace: ID!
+  "Updates the entity instance"
+  update(cmd_ignore: JSON): ReactiveGraphCommandCommandInterface!
+}
+
+"Mutations for components, entities and relations on the namespace ReactiveGraph::command"
+type ReactiveGraphCommandMutation {
+  "A command which can be executed. The command has a name and can have command arguments."
+  Command(args: [JSON!], cmd_ignore: JSON, cmd_result: JSON, command: String, help: String, namespace: String): [ReactiveGraphCommandCommandMutation!]!
+  "The number of commands"
+  NumCommands(args: [JSON!], cmd_ignore: JSON, cmd_result: JSON, command: String, help: String, id: ID, ids: [ID!], label: String, namespace: String, test: Boolean): [ReactiveGraphCommandNumCommandsMutation!]!
+  "The fully qualified namespace: reactive_graph::command"
+  _namespace: ID!
+  "Create a new ReactiveGraphCommandNumCommandsQuery entity"
+  createNumCommands(args: [JSON!], cmd_ignore: JSON!, cmd_result: JSON, command: String, help: String, id: ID, namespace: String, test: Boolean!): ReactiveGraphCommandNumCommandsQuery!
+}
+
+"The number of commands"
+type ReactiveGraphCommandNumCommandsMutation {
+  "JSON schema of EntityType reactive_graph::command::NumCommands"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::command::NumCommands"
+  _namespace: ID!
+  "Deletes the entity instance"
+  delete: ID!
+  "Export as JSON"
+  export: JSON!
+  "The unique identifier of the entity instance."
+  id: ID!
+  "Updates the entity instance"
+  update(cmd_ignore: JSON, test: Boolean): ReactiveGraphCommandNumCommandsQuery!
+}
+
+"The number of commands"
+type ReactiveGraphCommandNumCommandsQuery implements Entity & ReactiveGraphCommandCommandInterface {
+  "The fully qualified namespace to the component: reactive_graph::command::Command"
+  _ReactiveGraphCommandCommand: ID
+  "JSON schema of EntityType reactive_graph::command::NumCommands"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::command::NumCommands"
+  _namespace: ID!
+  "The command arguments"
+  args: JSON
+  "blah"
+  cmd_ignore: JSON
+  "The result of the command"
+  cmd_result: JSON
+  "The command name"
+  command: String
+  "Help text which explains the command."
+  help: String
+  "The unique identifier of the entity instance."
+  id: ID!
+  "The command namespace"
+  namespace: String
+  test: Boolean
+}
+
+"Queries for components, entities and relations on the namespace ReactiveGraph::command"
+type ReactiveGraphCommandQuery {
+  "A command which can be executed. The command has a name and can have command arguments."
+  Command(args: [JSON!], cmd_ignore: JSON, cmd_result: JSON, command: String, help: String, namespace: String): [ReactiveGraphCommandCommandInterface!]!
+  "The number of commands"
+  NumCommands(args: [JSON!], cmd_ignore: JSON, cmd_result: JSON, command: String, help: String, id: ID, ids: [ID!], label: String, namespace: String, test: Boolean): [ReactiveGraphCommandNumCommandsQuery!]!
+  "JSON schema of Component reactive_graph::command::Command"
+  _CommandJsonSchema: JSON!
+  "JSON schema of EntityType reactive_graph::command::NumCommands"
+  _NumCommandsJsonSchema: JSON!
+  "The fully qualified namespace: reactive_graph::command"
+  _namespace: ID!
+}
+
+"An action can be triggered"
+type ReactiveGraphCoreActionMutation {
+  "JSON schema of Component reactive_graph::core::Action"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::core::Action"
+  _namespace: ID!
+  "Updates the entity instance"
+  update(trigger: Boolean): ReactiveGraphCoreActionInterface!
+}
+
+"This component spawns events."
+type ReactiveGraphCoreEventMutation {
+  "JSON schema of Component reactive_graph::core::Event"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::core::Event"
+  _namespace: ID!
+  "Updates the entity instance"
+  update(event: JSON): ReactiveGraphCoreEventInterface!
+}
+
+"The label is a hierarchical path with static segments, named parameters and catch-all parameters."
+type ReactiveGraphCoreLabeledMutation {
+  "JSON schema of Component reactive_graph::core::Labeled"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::core::Labeled"
+  _namespace: ID!
+  "Updates the entity instance"
+  update(label: String): ReactiveGraphCoreLabeledInterface!
+}
+
+"Mutations for components, entities and relations on the namespace ReactiveGraph::core"
+type ReactiveGraphCoreMutation {
+  "An action can be triggered"
+  Action(trigger: Boolean): [ReactiveGraphCoreActionMutation!]!
+  "This component spawns events."
+  Event(event: JSON): [ReactiveGraphCoreEventMutation!]!
+  "The label is a hierarchical path with static segments, named parameters and catch-all parameters."
+  Labeled: [ReactiveGraphCoreLabeledMutation!]!
+  "The fully qualified namespace: reactive_graph::core"
+  _namespace: ID!
+}
+
+"Queries for components, entities and relations on the namespace ReactiveGraph::core"
+type ReactiveGraphCoreQuery {
+  "An action can be triggered"
+  Action(trigger: Boolean): [ReactiveGraphCoreActionInterface!]!
+  "This component spawns events."
+  Event(event: JSON): [ReactiveGraphCoreEventInterface!]!
+  "The label is a hierarchical path with static segments, named parameters and catch-all parameters."
+  Labeled: [ReactiveGraphCoreLabeledInterface!]!
+  "JSON schema of Component reactive_graph::core::Action"
+  _ActionJsonSchema: JSON!
+  "JSON schema of Component reactive_graph::core::Event"
+  _EventJsonSchema: JSON!
+  "JSON schema of Component reactive_graph::core::Labeled"
+  _LabeledJsonSchema: JSON!
+  "The fully qualified namespace: reactive_graph::core"
+  _namespace: ID!
+}
+
+"A simple comment"
+type ReactiveGraphFlowCommentMutation {
+  "JSON schema of EntityType reactive_graph::flow::Comment"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::flow::Comment"
+  _namespace: ID!
+  "Deletes the entity instance"
+  delete: ID!
+  "Export as JSON"
+  export: JSON!
+  "The unique identifier of the entity instance."
+  id: ID!
+  "Updates the entity instance"
+  update(comment: String, f2dh: Float, f2dw: Float, f2dx: Float, f2dy: Float, f3dd: Float, f3dh: Float, f3dw: Float, f3dx: Float, f3dy: Float, f3dz: Float): ReactiveGraphFlowCommentQuery!
+}
+
+"A simple comment"
+type ReactiveGraphFlowCommentQuery implements Entity & ReactiveGraphFlowFlow2DInterface & ReactiveGraphFlowFlow3DInterface {
+  "The fully qualified namespace to the component: reactive_graph::flow::Flow2D"
+  _ReactiveGraphFlowFlow2D: ID
+  "The fully qualified namespace to the component: reactive_graph::flow::Flow3D"
+  _ReactiveGraphFlowFlow3D: ID
+  "JSON schema of EntityType reactive_graph::flow::Comment"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::flow::Comment"
+  _namespace: ID!
+  "Comment"
+  comment: String
+  "The height (y-axis) in a 2D flow"
+  f2dh: Float
+  "The width (x-axis) in a 2D flow"
+  f2dw: Float
+  "The X position in a 2D flow"
+  f2dx: Float
+  "The Y position in a 2D flow"
+  f2dy: Float
+  "The depth (z-axis) in a 3D flow"
+  f3dd: Float
+  "The height (y-axis) in a 3D flow"
+  f3dh: Float
+  "The width (x-axis) in a 3D flow"
+  f3dw: Float
+  "The X position in a 3D flow"
+  f3dx: Float
+  "The Y position in a 3D flow"
+  f3dy: Float
+  "The Z position in a 3D flow"
+  f3dz: Float
+  "The unique identifier of the entity instance."
+  id: ID!
+  inbound: [AllEntities!]!
+  "Any entity within a flow can be commented"
+  inbound_ReactiveGraphFlowHasComment: [ReactiveGraphFlowHasCommentQuery!]!
+}
+
+"The position (x,y) of the entity or relation on a two dimensional flow."
+type ReactiveGraphFlowFlow2DMutation {
+  "JSON schema of Component reactive_graph::flow::Flow2D"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::flow::Flow2D"
+  _namespace: ID!
+  "Updates the entity instance"
+  update(f2dh: Float, f2dw: Float, f2dx: Float, f2dy: Float): ReactiveGraphFlowFlow2DInterface!
+}
+
+"The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+type ReactiveGraphFlowFlow3DMutation {
+  "JSON schema of Component reactive_graph::flow::Flow3D"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::flow::Flow3D"
+  _namespace: ID!
+  "Updates the entity instance"
+  update(f3dd: Float, f3dh: Float, f3dw: Float, f3dx: Float, f3dy: Float, f3dz: Float): ReactiveGraphFlowFlow3DInterface!
+}
+
+"Any entity within a flow can be commented"
+type ReactiveGraphFlowHasCommentMutation {
+  "JSON schema of RelationType reactive_graph::flow::HasComment"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::flow::HasComment"
+  _namespace: ID!
+  delete: ID!
+  "Export as JSON"
+  export: JSON!
+  id: ID!
+  instance_id: ID!
+}
+
+"Any entity within a flow can be commented"
+type ReactiveGraphFlowHasCommentQuery implements Relation {
+  "JSON schema of RelationType reactive_graph::flow::HasComment"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::flow::HasComment"
+  _namespace: ID!
+  id: ID!
+  inbound_ReactiveGraphFlowComment: ReactiveGraphFlowCommentQuery!
+  instance_id: ID!
+  outbound: AllEntities!
+}
+
+"Mutations for components, entities and relations on the namespace ReactiveGraph::flow"
+type ReactiveGraphFlowMutation {
+  "A simple comment"
+  Comment(comment: String, f2dh: Float, f2dw: Float, f2dx: Float, f2dy: Float, f3dd: Float, f3dh: Float, f3dw: Float, f3dx: Float, f3dy: Float, f3dz: Float, id: ID, ids: [ID!], label: String): [ReactiveGraphFlowCommentMutation!]!
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  Flow2D(f2dh: Float, f2dw: Float, f2dx: Float, f2dy: Float): [ReactiveGraphFlowFlow2DMutation!]!
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  Flow3D(f3dd: Float, f3dh: Float, f3dw: Float, f3dx: Float, f3dy: Float, f3dz: Float): [ReactiveGraphFlowFlow3DMutation!]!
+  "Any entity within a flow can be commented"
+  HasComment(inboundId: ID, outboundId: ID): [ReactiveGraphFlowHasCommentMutation!]!
+  "A simple generic flow with a single input and a single output"
+  SimpleFlow(id: ID, ids: [ID!], input: JSON, label: String, output: JSON): [ReactiveGraphFlowSimpleFlowMutation!]!
+  "The fully qualified namespace: reactive_graph::flow"
+  _namespace: ID!
+  "Create a new ReactiveGraphFlowCommentQuery entity"
+  createComment(comment: String!, f2dh: Float!, f2dw: Float!, f2dx: Float!, f2dy: Float!, f3dd: Float!, f3dh: Float!, f3dw: Float!, f3dx: Float!, f3dy: Float!, f3dz: Float!, id: ID): ReactiveGraphFlowCommentQuery!
+  "Create a new ReactiveGraphFlowHasCommentQuery relation"
+  createHasComment(inboundId: ID, instanceId: ID, outboundId: ID): ReactiveGraphFlowHasCommentQuery!
+  "Create a new ReactiveGraphFlowSimpleFlowQuery entity"
+  createSimpleFlow(id: ID, input: JSON!, output: JSON!): ReactiveGraphFlowSimpleFlowQuery!
+}
+
+"Queries for components, entities and relations on the namespace ReactiveGraph::flow"
+type ReactiveGraphFlowQuery {
+  "A simple comment"
+  Comment(comment: String, f2dh: Float, f2dw: Float, f2dx: Float, f2dy: Float, f3dd: Float, f3dh: Float, f3dw: Float, f3dx: Float, f3dy: Float, f3dz: Float, id: ID, ids: [ID!], label: String): [ReactiveGraphFlowCommentQuery!]!
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  Flow2D(f2dh: Float, f2dw: Float, f2dx: Float, f2dy: Float): [ReactiveGraphFlowFlow2DInterface!]!
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  Flow3D(f3dd: Float, f3dh: Float, f3dw: Float, f3dx: Float, f3dy: Float, f3dz: Float): [ReactiveGraphFlowFlow3DInterface!]!
+  "Any entity within a flow can be commented"
+  HasComment(inboundId: ID, outboundId: ID): [ReactiveGraphFlowHasCommentQuery!]!
+  "A simple generic flow with a single input and a single output"
+  SimpleFlow(id: ID, ids: [ID!], input: JSON, label: String, output: JSON): [ReactiveGraphFlowSimpleFlowQuery!]!
+  "JSON schema of EntityType reactive_graph::flow::Comment"
+  _CommentJsonSchema: JSON!
+  "JSON schema of Component reactive_graph::flow::Flow2D"
+  _Flow2DJsonSchema: JSON!
+  "JSON schema of Component reactive_graph::flow::Flow3D"
+  _Flow3DJsonSchema: JSON!
+  "JSON schema of RelationType reactive_graph::flow::HasComment"
+  _HasCommentJsonSchema: JSON!
+  "JSON schema of EntityType reactive_graph::flow::SimpleFlow"
+  _SimpleFlowJsonSchema: JSON!
+  "The fully qualified namespace: reactive_graph::flow"
+  _namespace: ID!
+}
+
+"A simple generic flow with a single input and a single output"
+type ReactiveGraphFlowSimpleFlowMutation {
+  "JSON schema of EntityType reactive_graph::flow::SimpleFlow"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::flow::SimpleFlow"
+  _namespace: ID!
+  "Deletes the entity instance"
+  delete: ID!
+  "Export as JSON"
+  export: JSON!
+  "The unique identifier of the entity instance."
+  id: ID!
+  "Updates the entity instance"
+  update(input: JSON, output: JSON): ReactiveGraphFlowSimpleFlowQuery!
+}
+
+"A simple generic flow with a single input and a single output"
+type ReactiveGraphFlowSimpleFlowQuery implements Entity {
+  "JSON schema of EntityType reactive_graph::flow::SimpleFlow"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::flow::SimpleFlow"
+  _namespace: ID!
+  "The unique identifier of the entity instance."
+  id: ID!
+  "Flow input"
+  input: JSON
+  "Flow output"
+  output: JSON
+}
+
+"Mutations for components, entities and relations on the namespace ReactiveGraph"
+type ReactiveGraphMutation {
+  "The fully qualified namespace: reactive_graph"
+  _namespace: ID!
+  command: ReactiveGraphCommandMutation!
+  core: ReactiveGraphCoreMutation!
+  flow: ReactiveGraphFlowMutation!
+  runtime: ReactiveGraphRuntimeMutation!
+  type_system: ReactiveGraphTypeSystemMutation!
+}
+
+"Queries for components, entities and relations on the namespace ReactiveGraph"
+type ReactiveGraphQuery {
+  "The fully qualified namespace: reactive_graph"
+  _namespace: ID!
+  command: ReactiveGraphCommandQuery!
+  core: ReactiveGraphCoreQuery!
+  flow: ReactiveGraphFlowQuery!
+  runtime: ReactiveGraphRuntimeQuery!
+  type_system: ReactiveGraphTypeSystemQuery!
+}
+
+"Mutations for components, entities and relations on the namespace ReactiveGraph::runtime"
+type ReactiveGraphRuntimeMutation {
+  "Shutting down the runtime"
+  Shutdown(args: [JSON!], cmd_ignore: JSON, cmd_result: JSON, command: String, delay: Float, help: String, id: ID, ids: [ID!], label: String, namespace: String, trigger: Boolean): [ReactiveGraphRuntimeShutdownMutation!]!
+  "The fully qualified namespace: reactive_graph::runtime"
+  _namespace: ID!
+  "Create a new ReactiveGraphRuntimeShutdownQuery entity"
+  createShutdown(args: [JSON!], cmd_ignore: JSON!, cmd_result: JSON, command: String, delay: Float!, help: String, id: ID, label: String!, namespace: String, trigger: Boolean!): ReactiveGraphRuntimeShutdownQuery!
+}
+
+"Queries for components, entities and relations on the namespace ReactiveGraph::runtime"
+type ReactiveGraphRuntimeQuery {
+  "Shutting down the runtime"
+  Shutdown(args: [JSON!], cmd_ignore: JSON, cmd_result: JSON, command: String, delay: Float, help: String, id: ID, ids: [ID!], label: String, namespace: String, trigger: Boolean): [ReactiveGraphRuntimeShutdownQuery!]!
+  "JSON schema of EntityType reactive_graph::runtime::Shutdown"
+  _ShutdownJsonSchema: JSON!
+  "The fully qualified namespace: reactive_graph::runtime"
+  _namespace: ID!
+}
+
+"Shutting down the runtime"
+type ReactiveGraphRuntimeShutdownMutation {
+  "JSON schema of EntityType reactive_graph::runtime::Shutdown"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::runtime::Shutdown"
+  _namespace: ID!
+  "Deletes the entity instance"
+  delete: ID!
+  "Export as JSON"
+  export: JSON!
+  "The unique identifier of the entity instance."
+  id: ID!
+  "Triggers the action"
+  trigger: ReactiveGraphRuntimeShutdownQuery!
+  "Updates the entity instance"
+  update(cmd_ignore: JSON, delay: Float, label: String, trigger: Boolean): ReactiveGraphRuntimeShutdownQuery!
+}
+
+"Shutting down the runtime"
+type ReactiveGraphRuntimeShutdownQuery implements Entity & ReactiveGraphCommandCommandInterface & ReactiveGraphCoreActionInterface & ReactiveGraphCoreLabeledInterface {
+  "The fully qualified namespace to the component: reactive_graph::command::Command"
+  _ReactiveGraphCommandCommand: ID
+  "The fully qualified namespace to the component: reactive_graph::core::Action"
+  _ReactiveGraphCoreAction: ID
+  "The fully qualified namespace to the component: reactive_graph::core::Labeled"
+  _ReactiveGraphCoreLabeled: ID
+  "JSON schema of EntityType reactive_graph::runtime::Shutdown"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::runtime::Shutdown"
+  _namespace: ID!
+  "The command arguments"
+  args: JSON
+  "blah"
+  cmd_ignore: JSON
+  "The result of the command"
+  cmd_result: JSON
+  "The command name"
+  command: String
+  delay: Float
+  "Help text which explains the command."
+  help: String
+  "The unique identifier of the entity instance."
+  id: ID!
+  "Hierarchical path with static segments, named parameters and catch-all parameters"
+  label: String
+  "The command namespace"
+  namespace: String
+  "On receiving a boolean trigger the action will be executed"
+  trigger: Boolean
+}
+
+"Mutations for components, entities and relations on the namespace ReactiveGraph::typeSystem"
+type ReactiveGraphTypeSystemMutation {
+  "Events of the type system"
+  TypeSystemEvent(event: JSON, id: ID, ids: [ID!], label: String): [ReactiveGraphTypeSystemTypeSystemEventMutation!]!
+  "The fully qualified namespace: reactive_graph::type_system"
+  _namespace: ID!
+  "Create a new ReactiveGraphTypeSystemTypeSystemEventQuery entity"
+  createTypeSystemEvent(event: JSON!, id: ID, label: String!): ReactiveGraphTypeSystemTypeSystemEventQuery!
+}
+
+"Queries for components, entities and relations on the namespace ReactiveGraph::typeSystem"
+type ReactiveGraphTypeSystemQuery {
+  "Events of the type system"
+  TypeSystemEvent(event: JSON, id: ID, ids: [ID!], label: String): [ReactiveGraphTypeSystemTypeSystemEventQuery!]!
+  "JSON schema of EntityType reactive_graph::type_system::TypeSystemEvent"
+  _TypeSystemEventJsonSchema: JSON!
+  "The fully qualified namespace: reactive_graph::type_system"
+  _namespace: ID!
+}
+
+"Events of the type system"
+type ReactiveGraphTypeSystemTypeSystemEventMutation {
+  "JSON schema of EntityType reactive_graph::type_system::TypeSystemEvent"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::type_system::TypeSystemEvent"
+  _namespace: ID!
+  "Deletes the entity instance"
+  delete: ID!
+  "Export as JSON"
+  export: JSON!
+  "The unique identifier of the entity instance."
+  id: ID!
+  "Updates the entity instance"
+  update(event: JSON, label: String): ReactiveGraphTypeSystemTypeSystemEventQuery!
+}
+
+"Events of the type system"
+type ReactiveGraphTypeSystemTypeSystemEventQuery implements Entity & ReactiveGraphCoreEventInterface & ReactiveGraphCoreLabeledInterface {
+  "The fully qualified namespace to the component: reactive_graph::core::Event"
+  _ReactiveGraphCoreEvent: ID
+  "The fully qualified namespace to the component: reactive_graph::core::Labeled"
+  _ReactiveGraphCoreLabeled: ID
+  "JSON schema of EntityType reactive_graph::type_system::TypeSystemEvent"
+  _json_schema: JSON!
+  "The fully qualified namespace: reactive_graph::type_system::TypeSystemEvent"
+  _namespace: ID!
+  "On receiving a boolean trigger the action will be executed"
+  event: JSON
+  "The unique identifier of the entity instance."
+  id: ID!
+  "Hierarchical path with static segments, named parameters and catch-all parameters"
+  label: String
 }
 
 scalar JSON
-
-"""
-Mutations
-"""
-type Mutation {
-	"""
-	Root namespace
-	"""
-	_namespace: ID!
-}
-
-"""
-Queries
-"""
-type Query {
-	"""
-	Root namespace
-	"""
-	_namespace: ID!
-}
-
-"""
-Relations have a outbound entity and a inbound entity as well as components and properties,
-"""
-interface Relation {
-	_namespace: ID!
-	id: ID!
-	instance_id: ID!
-}
-
-"""
-Directs the executor to include this field or fragment only when the `if` argument is true.
-"""
-directive @include(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
-"""
-Directs the executor to skip this field or fragment when the `if` argument is true.
-"""
-directive @skip(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
-schema {
-	query: Query
-	mutation: Mutation
-}
