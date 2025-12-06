@@ -1,40 +1,36 @@
 #[cynic::schema_for_derives(file = r#"../../schema/graphql/reactive-graph-schema.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod variables {
     use crate::schema_graphql::scalar::id::UUID;
-    use crate::schema_graphql::types::component::ComponentTypeId;
-    use crate::schema_graphql::types::component::ComponentTypeIds;
     use cynic::QueryVariables;
-    use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_graph::ComponentTypeIds;
+    use reactive_graph_graph::NamespacedTypeIdContainer;
     use reactive_graph_graph::RelationInstanceId;
 
     #[derive(QueryVariables, Debug)]
     pub struct RelationInstanceIdAndComponentsVariables {
         /// The id of the outbound entity instance.
         pub outbound_id: UUID,
-        /// The relation type id namespace.
-        pub namespace: String,
-        /// The relation type id type name.
-        pub name: String,
-        /// The relation type id type name.
+        /// The fully qualified namespace of the relation type.
+        #[cynic(rename = "type")]
+        pub _type: String,
+        /// The relation instance id.
         pub instance_id: String,
         /// The id of the inbound entity instance.
         pub inbound_id: UUID,
-        // List of components.
-        pub components: Option<Vec<ComponentTypeId>>,
+        /// The list of components.
+        pub components: Option<Vec<String>>,
     }
 
     impl RelationInstanceIdAndComponentsVariables {
-        pub fn new<TY: Into<reactive_graph_graph::ComponentTypeIds>>(id: &RelationInstanceId, component_tys: TY) -> Self {
+        pub fn new<TY: Into<ComponentTypeIds>>(id: &RelationInstanceId, component_tys: TY) -> Self {
             let ty = id.ty.relation_type_id();
-            let component_tys = component_tys.into();
-            let component_tys: ComponentTypeIds = component_tys.into();
+            let component_tys = component_tys.into().into_fully_qualified_namespaces();
             Self {
                 outbound_id: id.outbound_id.into(),
-                namespace: ty.namespace(),
-                name: ty.type_name(),
-                instance_id: id.ty.instance_id(),
+                _type: ty.to_string(),
+                instance_id: id.ty.instance_id().to_string(),
                 inbound_id: id.inbound_id.into(),
-                components: Some(component_tys.0),
+                components: Some(component_tys),
             }
         }
 

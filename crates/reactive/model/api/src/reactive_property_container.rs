@@ -14,13 +14,13 @@ pub trait ReactivePropertyContainer {
     fn has_property(&self, name: &str) -> bool;
 
     /// Adds a reactive property with the given name and the given initial value.
-    fn add_property<S: Into<String>>(&self, name: S, mutability: Mutability, value: Value);
+    fn add_property(&self, name: &str, mutability: Mutability, value: Value);
 
     /// Adds a reactive property with the given name and the given initial value.
     fn add_property_by_type(&self, property: &PropertyType);
 
     /// Removes the reactive property with the given name.
-    fn remove_property<S: Into<String>>(&self, name: S);
+    fn remove_property(&self, name: &str);
 
     /// Observe the stream output flowing out of the stream of the property with the given
     /// name. The handle_id allows to remove the observer again.

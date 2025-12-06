@@ -13,6 +13,9 @@ use springtime_di::Component;
 use springtime_di::component_alias;
 use uuid::Uuid;
 
+use reactive_graph_flow_model::EXTENSION_FLOW_RESOLVE_EXISTING_INSTANCE;
+use reactive_graph_flow_model::EXTENSION_FLOW_UUID_TYPE_EXTENSION;
+use reactive_graph_flow_model::EXTENSION_FLOW_UUID_TYPE_VARIABLE;
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityInstances;
 use reactive_graph_graph::ExtensionContainer;
@@ -24,15 +27,12 @@ use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyInstanceSetter;
 use reactive_graph_graph::PropertyInstances;
-use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_graph::RelationInstance;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::RelationInstances;
 use reactive_graph_graph::TypeDefinitionGetter;
 use reactive_graph_lifecycle::Lifecycle;
-use reactive_graph_model_flow::EXTENSION_FLOW_RESOLVE_EXISTING_INSTANCE;
-use reactive_graph_model_flow::EXTENSION_FLOW_UUID_TYPE_EXTENSION;
-use reactive_graph_model_flow::EXTENSION_FLOW_UUID_TYPE_VARIABLE;
+use reactive_graph_model_core::reactive_graph::core::labeled::LabeledProperties::LABEL;
 use reactive_graph_reactive_model_api::ReactiveInstance;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
@@ -45,7 +45,6 @@ use reactive_graph_reactive_service_api::ReactiveFlowManager;
 use reactive_graph_reactive_service_api::ReactiveInstanceEvent;
 use reactive_graph_reactive_service_api::ReactiveInstanceEventManager;
 use reactive_graph_reactive_service_api::ReactiveRelationManager;
-use reactive_graph_runtime_model::LabeledProperties::LABEL;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::FlowTypeManager;
@@ -454,7 +453,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
         //     .unwrap()
         //     .insert(reactive_flow_instance.id, reactive_flow_instance.clone());
         // Register label
-        if let Some(value) = reactive_flow_instance.get(LABEL.property_name()) {
+        if let Some(value) = reactive_flow_instance.get(LABEL.as_ref()) {
             if let Some(label) = value.as_str() {
                 let mut writer = self.label_path_tree.write().unwrap();
                 let _ = writer.insert(label, reactive_flow_instance.id);

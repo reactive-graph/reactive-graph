@@ -4,9 +4,10 @@ use crate::client::types::entities::args::create::CreateEntityTypeArgs;
 use crate::client::types::entities::args::entity_component_type::EntityComponentTypeIdArgs;
 use crate::client::types::entities::args::entity_extension_type::EntityExtensionTypeIdArgs;
 use crate::client::types::entities::args::entity_type_property::EntityTypePropertyArgs;
-use crate::client::types::entities::args::type_id::EntityTypeIdArgs;
+use crate::client::types::entities::args::parse_entity_ty;
 use crate::client::types::entities::args::update_description::EntityTypeUpdateDescriptionArgs;
 use clap::Subcommand;
+use reactive_graph_graph::EntityTypeId;
 
 #[derive(Subcommand, Debug, Clone)]
 pub(crate) enum EntityTypesCommands {
@@ -15,25 +16,43 @@ pub(crate) enum EntityTypesCommands {
     List,
     /// Prints a single entity type.
     #[non_exhaustive]
-    Get(EntityTypeIdArgs),
+    Get {
+        #[arg(name = "entity_type", value_parser = parse_entity_ty)]
+        entity_ty: EntityTypeId,
+    },
     /// List the properties of an entity type.
     #[non_exhaustive]
-    ListProperties(EntityTypeIdArgs),
+    ListProperties {
+        #[arg(name = "entity_type", value_parser = parse_entity_ty)]
+        entity_ty: EntityTypeId,
+    },
     /// List the extensions of an entity type.
     #[non_exhaustive]
-    ListExtensions(EntityTypeIdArgs),
+    ListExtensions {
+        #[arg(name = "entity_type", value_parser = parse_entity_ty)]
+        entity_ty: EntityTypeId,
+    },
     /// List the components of an entity type.
     #[non_exhaustive]
-    ListComponents(EntityTypeIdArgs),
+    ListComponents {
+        #[arg(name = "entity_type", value_parser = parse_entity_ty)]
+        entity_ty: EntityTypeId,
+    },
     /// Prints the JSON Schema of an entity type.
     #[non_exhaustive]
-    GetJsonSchema(EntityTypeIdArgs),
+    GetJsonSchema {
+        #[arg(name = "entity_type", value_parser = parse_entity_ty)]
+        entity_ty: EntityTypeId,
+    },
     /// Creates a new entity type.
     #[non_exhaustive]
     Create(CreateEntityTypeArgs),
     /// Deletes a entity type.
     #[non_exhaustive]
-    Delete(EntityTypeIdArgs),
+    Delete {
+        #[arg(name = "entity_type", value_parser = parse_entity_ty)]
+        entity_ty: EntityTypeId,
+    },
     /// Adds a property to an entity type.
     #[non_exhaustive]
     AddProperty(EntityTypeAddPropertyArgs),

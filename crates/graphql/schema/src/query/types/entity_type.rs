@@ -32,9 +32,14 @@ pub struct GraphQLEntityType {
 /// Entity types defines the type of entity instance.
 #[Object(name = "EntityType")]
 impl GraphQLEntityType {
-    /// The namespace and type name.
+    /// The fully qualified namespace of the entity type.
     #[graphql(name = "type")]
-    async fn ty(&self) -> GraphQLNamespacedType {
+    async fn ty(&self) -> String {
+        self.entity_type.namespace().to_string()
+    }
+
+    /// The namespaced type.
+    async fn namespaced_type(&self) -> GraphQLNamespacedType {
         self.entity_type.namespaced_type().into()
     }
 
@@ -98,10 +103,7 @@ impl GraphQLEntityType {
         #[graphql(name = "name")] namespace: Option<String>,
         #[graphql(desc = "If true, the extensions are sorted by type")] sort: Option<bool>,
     ) -> Result<Vec<GraphQLExtension>> {
-        let ty = match namespace {
-            Some(namespace) => Some(ExtensionTypeId::parse_namespace(&namespace)?),
-            None => None,
-        };
+        let ty = ExtensionTypeId::parse_optional_namespace(namespace)?;
         let extensions: GraphQLExtensions = self
             .entity_type
             .extensions

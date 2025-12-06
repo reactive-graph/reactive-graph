@@ -9,6 +9,7 @@ pub mod error;
 pub mod mutation;
 pub mod query;
 pub mod subscription;
+pub mod validator;
 
 /// GraphQL Schema for the Reactive Graph
 pub type ReactiveGraphSchema = Schema<ReactiveGraphQuery, ReactiveGraphMutation, ReactiveGraphSubscription>;

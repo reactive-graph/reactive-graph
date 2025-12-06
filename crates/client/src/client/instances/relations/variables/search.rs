@@ -1,9 +1,8 @@
 #[cynic::schema_for_derives(file = r#"../../schema/graphql/reactive-graph-schema.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod variables {
     use cynic::QueryVariables;
-    use typed_builder::TypedBuilder;
 
-    #[derive(QueryVariables, Debug, TypedBuilder)]
+    #[derive(QueryVariables, Debug)]
     pub struct SearchRelationInstancesVariables {
         //
         // TODO: outboundComponentTy
@@ -13,20 +12,16 @@ pub mod variables {
         // TODO (GraphQL Schema): search for instanceId
         //
         /// Returns only the relation instance with the outbound entity instance has the given id.
-        #[builder(default)]
         pub outbound_id: Option<crate::schema_graphql::scalar::id::UUID>,
-        /// Filters the relation instances by type.
-        #[builder(default)]
-        pub ty: Option<crate::schema_graphql::types::relation_type::RelationTypeId>,
+        /// Filters the relation instances by fully qualified namespace of the relation type.
+        #[cynic(rename = "type")]
+        pub _type: Option<String>,
         /// Returns only the relation instance with the inbound entity instance has the given id.
-        #[builder(default)]
         pub inbound_id: Option<crate::schema_graphql::scalar::id::UUID>,
         /// Filter by properties.
-        #[builder(default)]
         pub properties: Option<Vec<crate::schema_graphql::instances::property_instance::property_instance_definition::PropertyInstanceDefinition>>,
-        /// Filter by components.
-        #[builder(default)]
-        pub components: Option<Vec<crate::schema_graphql::types::component::ComponentTypeId>>,
+        /// Filter the relation instances by components.
+        pub components: Option<Vec<String>>,
         // TODO: search for applied behaviours
     }
 }

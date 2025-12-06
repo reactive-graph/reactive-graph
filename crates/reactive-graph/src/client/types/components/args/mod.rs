@@ -8,12 +8,11 @@ pub mod update_description;
 
 use crate::shared::output_format::OutputFormatArgs;
 
-use crate::client::types::components::args::type_id::ComponentTypeIdArgs;
 use crate::client::types::components::commands::ComponentsCommands;
 use clap::Args;
 use reactive_graph_graph::ComponentTypeId;
-use reactive_graph_graph::NAMESPACE_SEPARATOR;
 use std::error::Error;
+use std::str::FromStr;
 
 #[derive(Args, Debug, Clone)]
 #[clap(subcommand_required = true)]
@@ -25,9 +24,6 @@ pub(crate) struct ComponentsArgs {
     pub output_format: Option<OutputFormatArgs>,
 }
 
-pub fn parse_component_ty(s: &str) -> Result<ComponentTypeId, Box<dyn Error + Send + Sync + 'static>> {
-    let pos = s
-        .find(NAMESPACE_SEPARATOR)
-        .ok_or_else(|| format!("no namespace delimiter `{NAMESPACE_SEPARATOR}` found in `{s}`"))?;
-    Ok(ComponentTypeId::new_from_type(s[..pos].to_string(), s[pos + 2..].to_string()))
+pub fn parse_component_ty(namespace: &str) -> Result<ComponentTypeId, Box<dyn Error + Send + Sync + 'static>> {
+    Ok(ComponentTypeId::from_str(namespace).map_err(Box::new)?)
 }

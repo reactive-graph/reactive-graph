@@ -22,17 +22,15 @@ pub mod mutations {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "PropertyContainerVariables")]
     pub struct MutationComponents {
-        #[arguments(type: { name: $name, namespace: $namespace }, propertyName: $property_name)]
+        #[arguments(type: $_type, propertyName: $property_name)]
         pub remove_property: Component,
     }
 
-    pub fn remove_property_mutation(ty: reactive_graph_graph::ComponentTypeId, property_name: String) -> Operation<RemoveProperty, PropertyContainerVariables> {
+    pub fn remove_property_mutation<C: Into<reactive_graph_graph::ComponentTypeId>>(
+        ty: C,
+        property_name: String,
+    ) -> Operation<RemoveProperty, PropertyContainerVariables> {
         use cynic::MutationBuilder;
-        RemoveProperty::build(PropertyContainerVariables::new(ty, property_name))
-    }
-
-    pub fn remove_property_with_variables(variables: PropertyContainerVariables) -> Operation<RemoveProperty, PropertyContainerVariables> {
-        use cynic::MutationBuilder;
-        RemoveProperty::build(variables)
+        RemoveProperty::build(PropertyContainerVariables::new(ty.into(), property_name))
     }
 }

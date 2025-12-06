@@ -85,23 +85,21 @@ impl Lifecycle for EntityTypeImportExportManagerImpl {}
 mod test {
     use std::env;
 
-    use default_test::DefaultTest;
-
-    use crate::TypeSystemImpl;
+    use crate::TypeSystemSystemImpl;
     use reactive_graph_graph::EntityType;
     use reactive_graph_graph::NamespacedTypeGetter;
-    use reactive_graph_type_system_api::TypeSystem;
+    use reactive_graph_graph::RandomNamespacedType;
+    use reactive_graph_type_system_api::TypeSystemSystem;
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_export_import_entity_type() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let entity_type_import_export_manager = type_system.get_entity_type_import_export_manager();
 
-        let entity_type = entity_type_manager
-            .register(EntityType::default_test())
-            .expect("Failed to register entity type!");
+        let entity_type = EntityType::random_type().unwrap();
+        let entity_type = entity_type_manager.register(entity_type).expect("Failed to register entity type!");
         let entity_type_orig = entity_type.clone();
         let entity_ty = entity_type.ty.clone();
         // println!("{}", serde_json::to_string_pretty(&entity_type_orig).unwrap());

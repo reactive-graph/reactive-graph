@@ -18,18 +18,13 @@ pub mod queries {
     #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Types", variables = "TypeIdVariables")]
     pub struct GetComponentByTypeTypes {
-        #[arguments(
-            type: {
-            namespace: $namespace,
-            name: $name
-            }
-        )]
+        #[arguments(type: $_type)]
         pub components: Vec<Component>,
     }
 
-    pub fn get_component_by_type_query(ty: &ComponentTypeId) -> Operation<GetComponentByType, TypeIdVariables> {
+    pub fn get_component_by_type_query<C: Into<ComponentTypeId>>(ty: C) -> Operation<GetComponentByType, TypeIdVariables> {
         use cynic::QueryBuilder;
-        GetComponentByType::build(ty.clone().into())
+        GetComponentByType::build(ty.into().into())
     }
 
     #[cfg(all(test, feature = "integration-tests"))]

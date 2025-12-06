@@ -1,9 +1,9 @@
 use std::ops::Deref;
-
 use thiserror::Error;
 
 use crate::NamespaceError;
 use crate::NamespaceSegment;
+use crate::NamespaceSegmentError;
 use crate::NamespacedType;
 use crate::NamespacedTypeError;
 use crate::NamespacedTypeIdContainer;
@@ -21,6 +21,8 @@ pub enum NamespacedTypeIdsError {
     ChildNamespaceError(Namespace, NamespacedTypeError),
     #[error("Failed to construct a namespaced type because: {0}")]
     NamespacedTypeError(#[from] NamespacedTypeError),
+    #[error("The type name is not a valid type: {0}")]
+    NamespaceSegmentError(#[from] NamespaceSegmentError),
 }
 
 /// Bind T to a specific namespace.
@@ -60,20 +62,6 @@ impl<T: NamespacedTypeIdContainer<TypeIds = T>> NamespacedTypeIds<T> {
 
         self.tys.insert(namespaced_type.into());
         Ok(self)
-
-        // match parent_namespace.try_append_segment(type_name.clone()) {
-        //     Ok(type_namespace) => {
-        //         let x = NamespacedType::new(type_namespace);
-        //         let nt = NamespacedType::new(type_namespace)?;
-        //         self.tys.insert(nt.into());
-        //         Ok(self)
-        //     }
-        //     Err(e) => Err(NamespacedTypeIdsError::NamespaceError(type_name, e)),
-        // }
-        // let x = parent_namespace.append(type_name);
-        // let nt = NamespacedType::new(self.namespace.clone(), type_name.into());
-        // self.tys.insert(nt.into());
-        // self
     }
 }
 

@@ -4,6 +4,7 @@ use uuid::Uuid;
 use reactive_graph_behaviour_model_api::BehaviourTypeId;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::Mutability;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::RelationInstance;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::RelationTypeId;
@@ -42,7 +43,7 @@ pub trait RelationInstanceManager: Send + Sync {
     fn get_by_type(&self, ty: &RelationTypeId) -> Vec<ReactiveRelation>;
 
     /// Returns all reactive relation instances of the given namespace.
-    fn get_by_namespace(&self, namespace: &str) -> Vec<ReactiveRelation>;
+    fn get_by_namespace(&self, namespace: &Namespace) -> Vec<ReactiveRelation>;
 
     /// Returns all relation instance ids.
     fn get_keys(&self) -> Vec<RelationInstanceId>;

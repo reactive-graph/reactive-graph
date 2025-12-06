@@ -84,42 +84,41 @@ impl RelationTypeImportExportManager for RelationTypeImportExportManagerImpl {
 mod tests {
     use std::env;
 
-    use default_test::DefaultTest;
-
-    use crate::TypeSystemImpl;
+    use crate::TypeSystemSystemImpl;
     use reactive_graph_graph::EntityType;
     use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_graph::RandomNamespacedType;
+    use reactive_graph_graph::RandomNamespacedTypeId;
     use reactive_graph_graph::RelationType;
     use reactive_graph_graph::RelationTypeId;
-    use reactive_graph_type_system_api::TypeSystem;
+    use reactive_graph_type_system_api::TypeSystemSystem;
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_export_import_relation_type() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
         let relation_type_import_export_manager = type_system.get_relation_type_import_export_manager();
 
-        let outbound_type = entity_type_manager
-            .register(EntityType::default_test())
-            .expect("Failed to register outbound type");
+        let outbound_entity_type = EntityType::random_type().unwrap();
+        let outbound_type = entity_type_manager.register(outbound_entity_type).expect("Failed to register outbound type");
         let outbound_ty = outbound_type.ty.clone();
 
-        let inbound_type = entity_type_manager
-            .register(EntityType::default_test())
-            .expect("Failed to register inbound type");
+        let inbound_entity_type = EntityType::random_type().unwrap();
+        let inbound_type = entity_type_manager.register(inbound_entity_type).expect("Failed to register inbound type");
         let inbound_ty = inbound_type.ty.clone();
 
-        let relation_ty = RelationTypeId::default_test();
+        let relation_ty = RelationTypeId::random_type_id().unwrap();
 
         let mut path = env::temp_dir();
         path.push(format!("{}__{}.json", relation_ty.namespace(), relation_ty.type_name()));
         let path = path.into_os_string().into_string().unwrap();
 
-        let relation_type = relation_type_manager
-            .register(RelationType::builder_with_ty(outbound_ty, &relation_ty, inbound_ty).build_with_defaults())
-            .expect("Failed to register relation type!");
+        let relation_type = RelationType::builder_with_ty(outbound_ty, &relation_ty, inbound_ty)
+            .build_with_defaults()
+            .expect("Failed to construct a random relation type");
+        let relation_type = relation_type_manager.register(relation_type).expect("Failed to register relation type!");
         let relation_type_orig = relation_type.clone();
 
         assert!(relation_type_manager.has(&relation_ty), "The relation type must exist in order to export it");

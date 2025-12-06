@@ -1,3 +1,4 @@
+use std::str::FromStr;
 use std::sync::Arc;
 
 use crate::json_schema_response;
@@ -19,7 +20,7 @@ pub async fn get_relation_types(relation_type_manager: web::Data<Arc<dyn Relatio
 #[get("/types/relations/{namespace:.*}")]
 pub async fn get_relation_type(path: web::Path<String>, relation_type_manager: web::Data<Arc<dyn RelationTypeManager + Send + Sync>>) -> HttpResponse {
     let namespace = path.into_inner();
-    let ty = match RelationTypeId::try_from(namespace) {
+    let ty = match RelationTypeId::from_str(&namespace) {
         Ok(ty) => ty,
         Err(e) => {
             return HttpResponse::NotFound().content_type(APPLICATION_JSON.to_string()).body(e.to_string());

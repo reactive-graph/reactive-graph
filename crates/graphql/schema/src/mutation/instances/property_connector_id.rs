@@ -1,4 +1,5 @@
 use async_graphql::InputObject;
+use std::str::FromStr;
 use uuid::Uuid;
 
 use reactive_graph_graph::InstanceId;
@@ -41,19 +42,20 @@ pub struct GraphQLPropertyConnectorId {
 
 impl GraphQLPropertyConnectorId {
     pub fn instance_id(&self) -> Result<InstanceId, RelationInstanceTypeIdError> {
-        Ok(InstanceId::new_segmented(vec![
-            NamespaceSegment::try_from(&self.outbound.property_name)
+        InstanceId::new_segmented(vec![
+            NamespaceSegment::from_str(&self.outbound.property_name)
                 .map_err(InstanceIdError::NamespaceSegmentError)
                 .map_err(RelationInstanceTypeIdError::InstanceIdError)?,
-            NamespaceSegment::try_from(&self.inbound.property_name)
+            NamespaceSegment::from_str(&self.inbound.property_name)
                 .map_err(InstanceIdError::NamespaceSegmentError)
                 .map_err(RelationInstanceTypeIdError::InstanceIdError)?,
-        ]))
+        ])
+        .map_err(RelationInstanceTypeIdError::InstanceIdError)
     }
 
     pub fn parse(&self) -> Result<RelationInstanceTypeId, RelationInstanceTypeIdError> {
         Ok(RelationInstanceTypeId::new(
-            RelationTypeId::parse_namespace(&self.namespace).map_err(RelationInstanceTypeIdError::NamespacedTypeError)?,
+            RelationTypeId::from_str(&self.namespace).map_err(RelationInstanceTypeIdError::NamespacedTypeParseError)?,
             self.instance_id()?,
         ))
     }

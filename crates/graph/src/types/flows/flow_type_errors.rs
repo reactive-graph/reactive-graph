@@ -4,6 +4,11 @@ use crate::AddRelationInstanceError;
 use crate::AddVariableError;
 use crate::EntityTypeId;
 use crate::FlowTypeId;
+use crate::InvalidEntityInstanceError;
+use crate::InvalidExtensionError;
+use crate::InvalidPropertyTypeError;
+use crate::InvalidRelationInstanceError;
+use crate::NamespacedTypeParseError;
 use crate::RemoveEntityInstanceError;
 use crate::RemoveExtensionError;
 use crate::RemoveRelationInstanceError;
@@ -138,4 +143,18 @@ pub enum FlowTypeJsonSchemaError {
     WrapperEntityTypeDoesNotExist(FlowTypeId, EntityTypeId),
     #[error("The given entity type {2} does not match the wrapper entity type {1} of the flow type {0}")]
     WrapperEntityTypeDoesNotMatch(FlowTypeId, EntityTypeId, EntityTypeId),
+}
+
+#[derive(Debug, Error)]
+pub enum InvalidFlowTypeError {
+    #[error("The fully qualified namespace of the flow type is invalid: {0}")]
+    InvalidFlowType(#[from] NamespacedTypeParseError),
+    #[error("The entity instance of the flow type is invalid: {0}")]
+    InvalidEntityInstance(#[from] InvalidEntityInstanceError),
+    #[error("The relation instance of the flow type is invalid: {0}")]
+    InvalidRelationInstance(#[from] InvalidRelationInstanceError),
+    #[error("The variable of the flow type is invalid: {0}")]
+    InvalidVariable(#[from] InvalidPropertyTypeError),
+    #[error("The extension of the flow type is invalid: {0}")]
+    InvalidExtension(#[from] InvalidExtensionError),
 }

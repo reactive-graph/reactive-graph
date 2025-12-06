@@ -7,7 +7,7 @@ use crate::mutation::GraphQLExtensionDefinitions;
 use crate::query::GraphQLDataType;
 use crate::query::GraphQLMutability;
 use crate::query::GraphQLSocketType;
-use reactive_graph_graph::NamespacedTypeError;
+use reactive_graph_graph::NamespacedTypeParseError;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypes;
 
@@ -37,7 +37,7 @@ pub struct PropertyTypeDefinition {
 }
 
 impl TryFrom<PropertyTypeDefinition> for PropertyType {
-    type Error = NamespacedTypeError;
+    type Error = NamespacedTypeParseError;
 
     fn try_from(property_type: PropertyTypeDefinition) -> Result<Self, Self::Error> {
         Ok(PropertyType {
@@ -59,11 +59,11 @@ impl PropertyTypeDefinitions {
         Self(property_types)
     }
 
-    pub fn parse_definitions(property_type_definitions: Vec<PropertyTypeDefinition>) -> Result<PropertyTypes, NamespacedTypeError> {
+    pub fn parse_definitions(property_type_definitions: Vec<PropertyTypeDefinition>) -> Result<PropertyTypes, NamespacedTypeParseError> {
         PropertyTypeDefinitions::try_from(property_type_definitions).map(|p| p.0)
     }
 
-    pub fn parse_optional_definitions(property_type_definitions: Option<Vec<PropertyTypeDefinition>>) -> Result<PropertyTypes, NamespacedTypeError> {
+    pub fn parse_optional_definitions(property_type_definitions: Option<Vec<PropertyTypeDefinition>>) -> Result<PropertyTypes, NamespacedTypeParseError> {
         match property_type_definitions {
             Some(property_type_definitions) => {
                 PropertyTypeDefinitions::try_from(property_type_definitions).map(|property_type_definition| property_type_definition.0)
@@ -81,7 +81,7 @@ impl From<PropertyTypeDefinitions> for PropertyTypes {
 }
 
 impl TryFrom<Vec<PropertyTypeDefinition>> for PropertyTypeDefinitions {
-    type Error = NamespacedTypeError;
+    type Error = NamespacedTypeParseError;
 
     fn try_from(property_type_definitions: Vec<PropertyTypeDefinition>) -> Result<Self, Self::Error> {
         let property_types = PropertyTypes::new();

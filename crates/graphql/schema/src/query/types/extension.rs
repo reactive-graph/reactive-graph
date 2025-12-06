@@ -28,13 +28,19 @@ pub struct GraphQLExtension {
 /// about the look and feel in the flow editor.
 #[Object(name = "Extension")]
 impl GraphQLExtension {
-    /// The namespace and type name.
+    /// The fully qualified namespace of the extension.
     #[graphql(name = "type")]
-    async fn ty(&self) -> GraphQLNamespacedType {
+    async fn ty(&self) -> String {
+        self.extension.namespace().to_string()
+    }
+
+    /// The namespaced type.
+    async fn namespaced_type(&self) -> GraphQLNamespacedType {
         self.extension.namespaced_type().into()
     }
 
     /// The entity type constraint of the extension.
+    #[graphql(name = "entityType")]
     async fn entity_type(&self, context: &Context<'_>) -> Result<Option<GraphQLEntityType>> {
         let Some(entity_ty) = self.extension.entity_ty.clone() else {
             return Ok(None);

@@ -37,7 +37,7 @@ impl GraphQLSchemaTypes {
 pub fn generate_graphql_schema(schema_type: &GraphQLSchemaTypes) -> Result<String, SchemaGenerationError> {
     let runtime = RuntimeBuilder::new().ignore_config_files().get();
     let sdl = match schema_type {
-        GraphQLSchemaTypes::DynamicGraphSchema => runtime.get_dynamic_graph_schema_manager().create_dynamic_schema_sync()?.sdl(),
+        GraphQLSchemaTypes::DynamicGraphSchema => runtime.get_dynamic_graph_schema_builder().build_dynamic_schema()?.sdl(),
         GraphQLSchemaTypes::ReactiveGraphSchema => runtime.get_graphql_schema_manager().get_schema().sdl(),
         GraphQLSchemaTypes::ReactiveGraphPluginSchema => runtime.get_plugin_schema_manager().get_schema().sdl(),
         GraphQLSchemaTypes::ReactiveGraphRuntimeSchema => runtime.get_runtime_schema_manager().get_schema().sdl(),

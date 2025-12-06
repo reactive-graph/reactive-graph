@@ -8,6 +8,8 @@ use crate::client::instances::flows::queries::get_by_id::queries::get_flow_insta
 use crate::client::instances::flows::queries::get_by_label::queries::get_flow_instance_by_label;
 use crate::client::instances::flows::queries::search::queries::search;
 use crate::client::instances::flows::variables::search::variables::SearchFlowInstancesVariables;
+use crate::schema_graphql::instances::flow_instance::FlowInstances as FlowInstancesVec;
+
 use cynic::http::ReqwestExt;
 use reactive_graph_graph::FlowInstance;
 use reactive_graph_graph::FlowTypeId;
@@ -23,8 +25,11 @@ impl FlowInstances {
         Self { client }
     }
 
-    pub async fn search(&self, search_query: SearchFlowInstancesVariables) -> Result<Option<Vec<FlowInstance>>, ReactiveGraphClientExecutionError> {
-        let flow_instances = self
+    pub async fn search(
+        &self,
+        search_query: SearchFlowInstancesVariables,
+    ) -> Result<Option<reactive_graph_graph::FlowInstances>, ReactiveGraphClientExecutionError> {
+        let Some(flow_instances) = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -32,14 +37,18 @@ impl FlowInstances {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| crate::schema_graphql::instances::flow_instance::FlowInstances(data.instances.flows))
-            .map(From::from);
-        Ok(flow_instances)
+            .map(|data| FlowInstancesVec(data.instances.flows))
+        else {
+            return Ok(None);
+        };
+        Ok(Some(
+            reactive_graph_graph::FlowInstances::try_from(flow_instances).map_err(|e| ReactiveGraphClientExecutionError::InvalidFlowInstance(e))?,
+        ))
     }
 
     pub async fn get_by_id<ID: Into<Uuid>>(&self, id: ID) -> Result<Option<FlowInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
-        let flow_instance = self
+        let Some(flow_instance) = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -48,13 +57,17 @@ impl FlowInstances {
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .and_then(|data| data.instances.flows.first().cloned())
-            .map(From::from);
-        Ok(flow_instance)
+        else {
+            return Ok(None);
+        };
+        Ok(Some(
+            reactive_graph_graph::FlowInstance::try_from(flow_instance).map_err(|e| ReactiveGraphClientExecutionError::InvalidFlowInstance(e))?,
+        ))
     }
 
     pub async fn get_by_label<L: Into<String>>(&self, label: L) -> Result<Option<FlowInstance>, ReactiveGraphClientExecutionError> {
         let label = label.into();
-        let flow_instance = self
+        let Some(flow_instance) = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -63,8 +76,12 @@ impl FlowInstances {
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .and_then(|data| data.instances.flows.first().cloned())
-            .map(From::from);
-        Ok(flow_instance)
+        else {
+            return Ok(None);
+        };
+        Ok(Some(
+            reactive_graph_graph::FlowInstance::try_from(flow_instance).map_err(|e| ReactiveGraphClientExecutionError::InvalidFlowInstance(e))?,
+        ))
     }
 
     // TODO: pub async fn create()
@@ -78,7 +95,7 @@ impl FlowInstances {
     ) -> Result<Option<FlowInstance>, ReactiveGraphClientExecutionError> {
         let ty = ty.into();
         let id = id.map(|id| id.into());
-        let flow_instance = self
+        let Some(flow_instance) = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -87,13 +104,17 @@ impl FlowInstances {
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.flows.create_from_type)
-            .map(From::from);
-        Ok(flow_instance)
+        else {
+            return Ok(None);
+        };
+        Ok(Some(
+            reactive_graph_graph::FlowInstance::try_from(flow_instance).map_err(|e| ReactiveGraphClientExecutionError::InvalidFlowInstance(e))?,
+        ))
     }
 
     pub async fn delete<ID: Into<Uuid>>(&self, id: ID) -> Result<Option<bool>, ReactiveGraphClientExecutionError> {
         let id = id.into();
-        let flow_instance = self
+        let success = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -102,6 +123,6 @@ impl FlowInstances {
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.flows.delete);
-        Ok(flow_instance)
+        Ok(success)
     }
 }

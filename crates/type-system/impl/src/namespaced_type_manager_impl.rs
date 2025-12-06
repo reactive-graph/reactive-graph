@@ -5,18 +5,18 @@ use springtime_di::component_alias;
 
 use reactive_graph_graph::NamespacedType;
 use reactive_graph_graph::NamespacedTypes;
-use reactive_graph_type_system_api::NamespaceManager;
+use reactive_graph_type_system_api::NamespacedTypeManager;
 use reactive_graph_type_system_api::error::namespace::NamespacedTypeRegistrationError;
 
 #[derive(Component)]
-pub struct NamespaceManagerImpl {
+pub struct NamespacedTypeManagerImpl {
     #[component(default = "NamespacedTypes::new")]
     namespaced_types: NamespacedTypes,
 }
 
 #[async_trait]
 #[component_alias]
-impl NamespaceManager for NamespaceManagerImpl {
+impl NamespacedTypeManager for NamespacedTypeManagerImpl {
     fn register(&self, ty: NamespacedType) -> Result<NamespacedType, NamespacedTypeRegistrationError> {
         if self.namespaced_types.contains(&ty) {
             return Err(NamespacedTypeRegistrationError::NamespacedTypeAlreadyExists(ty));
@@ -36,6 +36,11 @@ impl NamespaceManager for NamespaceManagerImpl {
 
     fn count(&self) -> usize {
         self.namespaced_types.len()
+    }
+
+    fn replace(&self, old_ty: &NamespacedType, new_ty: NamespacedType) -> Result<bool, NamespacedTypeRegistrationError> {
+        self.register(new_ty)?;
+        Ok(self.delete(old_ty))
     }
 
     fn delete(&self, ty: &NamespacedType) -> bool {

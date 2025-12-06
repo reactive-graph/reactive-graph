@@ -1,5 +1,6 @@
 use dashmap::DashSet;
 use dashmap::iter_set::OwningIter;
+use regex::Regex;
 use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
@@ -10,41 +11,41 @@ use std::hash::Hasher;
 use std::hash::RandomState;
 use std::ops::Deref;
 use std::ops::DerefMut;
-use typed_builder::TypedBuilder;
+use std::str::FromStr;
+use std::sync::LazyLock;
 
-use crate::NamespaceError;
-use crate::namespace::Namespace;
-use crate::namespace::NamespaceSegment;
+use crate::Namespace;
+use crate::NamespaceSegment;
+use crate::NamespacedTypeError;
+use crate::NamespacedTypeParseError;
+use crate::Namespaces;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomChildTypeId;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomChildTypeIds;
 
 #[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
+use crate::RandomNamespacedTypeId;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypeIds;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
-#[cfg(any(test, feature = "test"))]
-use rand_derive3::RandGen;
 #[cfg(any(test, feature = "table"))]
 use tabled::Tabled;
-use thiserror::Error;
 
-#[derive(Debug, Error)]
-pub enum NamespacedTypeError {
-    #[error("{0} is not a valid namespaced type because a type must be prefixed with a path")]
-    MissingPathForType(Namespace),
-    #[error("The namespace {0} must contain a type name as last segment")]
-    TypeNameMissing(Namespace),
-    #[error("The namespaced type is not a valid namespace: {0}")]
-    NamespaceError(#[from] NamespaceError),
-}
+pub const NAMESPACED_TYPE_PATTERN: &str = r"^[a-z_]+(?:::[a-z_]+)*(?:::([A-Z][a-zA-Z0-9]*))$";
 
-pub trait NamespacedTypeConstructor {
+pub static NAMESPACED_TYPE_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new(NAMESPACED_TYPE_PATTERN).expect("Failed to construct NAMESPACED_TYPE_REGEX!"));
+
+pub trait NamespacedTypeConstructor: FromStr<Err = NamespacedTypeParseError> {
     /// Creates a new namespaced type.
     fn new<NT: Into<NamespacedType>>(nt: NT) -> Self;
 
-    fn parse_namespace(namespace: &String) -> Result<Self, NamespacedTypeError>
+    fn parse_namespace(namespace: &str) -> Result<Self, NamespacedTypeError>
     where
         Self: Sized,
     {
-        Ok(Self::new(NamespacedType::try_from(namespace)?))
+        Ok(Self::new(NamespacedType::from_str(namespace)?))
     }
 
     fn parse_optional_namespace(namespace: Option<String>) -> Result<Option<Self>, NamespacedTypeError>
@@ -55,12 +56,30 @@ pub trait NamespacedTypeConstructor {
             None => Ok(None),
             Some(namespace) => Self::parse_namespace(&namespace).map(Some),
         }
-        // Ok(namespace.map(|namespace| Self::parse_namespace(&namespace)?))
+    }
+}
+
+#[cfg(any(test, feature = "test"))]
+impl<TY: NamespacedTypeConstructor> RandomNamespacedTypeId for TY {
+    type Error = NamespacedTypeError;
+
+    fn random_type_id() -> Result<Self, NamespacedTypeError> {
+        NamespacedType::random_type_id().map(Self::new)
+    }
+}
+
+#[cfg(any(test, feature = "test"))]
+impl<TY: NamespacedTypeConstructor> RandomChildTypeId for TY {
+    type Error = NamespacedTypeError;
+
+    fn random_child_type_id(namespace: &Namespace) -> Result<Self, Self::Error> {
+        NamespacedType::random_child_type_id(namespace).map(Self::new)
     }
 }
 
 /// Grants access to the namespace and the type name of a type of types.
 pub trait NamespacedTypeGetter {
+    // : AsRef<Namespace>
     /// Returns the namespaced type.
     fn namespaced_type(&self) -> NamespacedType;
 
@@ -72,12 +91,25 @@ pub trait NamespacedTypeGetter {
 
     /// Returns the name of the type.
     fn type_name(&self) -> NamespaceSegment;
+
+    /// Returns the fully qualified type name in pascal case.
+    ///
+    /// For example, namespace1::namespace2::namespace3::TypeName will become
+    /// Namespace1Namespace2Namespace3TypeName
+    fn fully_qualified_type_name(&self) -> String {
+        self.namespace().fully_qualified_type_name()
+    }
+    // fn fully_qualified_type_name(&self) -> String
+    // where
+    //     Self: AsRef<Namespace>,
+    // {
+    //     AsRef::<Namespace>::as_ref(self).fully_qualified_type_name()
+    // }
 }
 
 /// Defines the namespace and the name of a type.
-#[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
 #[serde(into = "String", try_from = "String")]
-#[cfg_attr(any(test, feature = "test"), derive(RandGen))]
 #[cfg_attr(any(test, feature = "table"), derive(Tabled))]
 pub struct NamespacedType {
     /// The fully qualified namespace of the type.
@@ -114,6 +146,33 @@ impl NamespacedType {
         };
         Ok(NamespacedType { namespace, path, type_name })
     }
+
+    /// Returns the fully qualified namespace of the namespaced type.
+    #[inline]
+    pub fn namespace(&self) -> Namespace {
+        NamespacedTypeGetter::namespace(self)
+    }
+
+    /// Returns the path of the namespaced type without the type name segment.
+    #[inline]
+    pub fn path(&self) -> Namespace {
+        NamespacedTypeGetter::path(self)
+    }
+
+    /// Returns the name of the namespaced type.
+    #[inline]
+    pub fn type_name(&self) -> NamespaceSegment {
+        NamespacedTypeGetter::type_name(self)
+    }
+
+    /// Returns the fully qualified type name in pascal case.
+    ///
+    /// For example, namespace1::namespace2::namespace3::TypeName will become
+    /// Namespace1Namespace2Namespace3TypeName
+    #[inline]
+    pub fn fully_qualified_type_name(&self) -> String {
+        NamespacedTypeGetter::fully_qualified_type_name(self)
+    }
 }
 
 impl NamespacedTypeGetter for NamespacedType {
@@ -138,6 +197,12 @@ impl NamespacedTypeGetter for NamespacedType {
     }
 }
 
+impl AsRef<Namespace> for NamespacedType {
+    fn as_ref(&self) -> &Namespace {
+        &self.namespace
+    }
+}
+
 impl Display for NamespacedType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", &self.namespace)
@@ -150,27 +215,22 @@ impl From<NamespacedType> for String {
     }
 }
 
+impl FromStr for NamespacedType {
+    type Err = NamespacedTypeError;
+
+    fn from_str(namespace: &str) -> Result<Self, Self::Err> {
+        Self::new(Namespace::from_str(namespace).map_err(NamespacedTypeError::from)?)
+    }
+}
+
+// Required because of #[serde(try_from = "String")]
 impl TryFrom<String> for NamespacedType {
     type Error = NamespacedTypeError;
 
     fn try_from(namespace: String) -> Result<Self, Self::Error> {
-        Self::new(Namespace::try_from(namespace).map_err(NamespacedTypeError::from)?)
+        Self::from_str(namespace.as_str())
     }
 }
-
-impl TryFrom<&String> for NamespacedType {
-    type Error = NamespacedTypeError;
-
-    fn try_from(namespace: &String) -> Result<Self, Self::Error> {
-        Self::try_from(namespace.clone())
-    }
-}
-
-// impl<N: Into<Namespace>, T: Into<String>> From<(N, T)> for NamespacedType {
-//     fn from(ty: (N, T)) -> Self {
-//         NamespacedType::new(ty.0.into(), ty.1.into())
-//     }
-// }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct NamespacedTypes(DashSet<NamespacedType>);
@@ -184,10 +244,42 @@ impl NamespacedTypes {
         self.0.is_empty()
     }
 
-    fn to_vec(&self) -> Vec<NamespacedType> {
+    pub fn to_vec(&self) -> Vec<NamespacedType> {
         let mut tys: Vec<NamespacedType> = self.iter().map(|ty| ty.clone()).collect();
         tys.sort();
         tys
+    }
+
+    pub fn to_sorted_vec(&self) -> Vec<NamespacedType> {
+        let mut namespaced_types = self.to_vec();
+        namespaced_types.sort();
+        namespaced_types
+    }
+
+    pub fn get_namespaces(&self) -> Namespaces {
+        let mut namespaces = Namespaces::new();
+        let namespaced_types = self.to_sorted_vec();
+        for namespaced_type in namespaced_types {
+            let path = namespaced_type.path();
+            namespaces.insert(path);
+        }
+        namespaces
+    }
+
+    /// Returns the paths and their parent paths of all types.
+    pub fn get_all_parent_paths_recursively(&self) -> Namespaces {
+        let mut namespaces = Namespaces::new();
+        for namespaced_type in self.0.iter() {
+            let mut path = namespaced_type.path();
+            loop {
+                namespaces.insert(path.clone());
+                path = match path.parent() {
+                    None => break,
+                    Some(path) => path,
+                };
+            }
+        }
+        namespaces
     }
 }
 
@@ -277,39 +369,82 @@ impl FromIterator<NamespacedType> for NamespacedTypes {
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for NamespacedType {
-    fn default_test() -> Self {
-        NamespacedType::generate_random()
+impl RandomNamespacedTypeId for NamespacedType {
+    type Error = NamespacedTypeError;
+
+    fn random_type_id() -> Result<Self, Self::Error> {
+        NamespacedType::new(Namespace::random_type()?)
     }
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for NamespacedTypes {
-    fn default_test() -> Self {
+impl RandomChildTypeId for NamespacedType {
+    type Error = NamespacedTypeError;
+
+    fn random_child_type_id(namespace: &Namespace) -> Result<Self, Self::Error> {
+        NamespacedType::new(namespace.random_child_type()?)
+    }
+}
+
+#[cfg(any(test, feature = "test"))]
+impl RandomNamespacedTypeIds for NamespacedTypes {
+    type Error = NamespacedTypeError;
+
+    fn random_type_ids() -> Result<Self, NamespacedTypeError> {
         let tys = Self::new();
         let mut rng = rand::rng();
         for _ in 0..rng.random_range(0..10) {
-            tys.insert(NamespacedType::default_test());
+            tys.insert(NamespacedType::random_type_id()?);
         }
-        tys
+        Ok(tys)
+    }
+}
+
+#[cfg(any(test, feature = "test"))]
+impl RandomChildTypeIds for NamespacedTypes {
+    type Error = NamespacedTypeError;
+
+    fn random_child_type_ids(namespace: &Namespace) -> Result<Self, Self::Error> {
+        let tys = Self::new();
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
+            tys.insert(NamespacedType::random_child_type_id(namespace)?);
+        }
+        Ok(tys)
     }
 }
 
 #[cfg(test)]
-pub mod tests {
-    use default_test::DefaultTest;
+mod tests {
     use schemars::schema_for;
 
+    use crate::NAMESPACED_TYPE_REGEX;
     use crate::Namespace;
     use crate::NamespacedType;
-    use crate::NamespacedTypeGetter;
+    use crate::RandomNamespacedTypeId;
     use reactive_graph_utils_test::r_namespace_path_segment;
     use reactive_graph_utils_test::r_namespace_type_name;
 
-    impl DefaultTest for NamespacedType {
-        fn default_test() -> Self {
-            NamespacedType::new(Namespace::default_test()).unwrap()
-        }
+    #[test]
+    fn random_namespaced_type_test() {
+        assert!(NamespacedType::random_type_id().is_ok(), "Failed to create random type");
+    }
+
+    #[test]
+    fn namespaced_type_regex_test() {
+        assert!(NAMESPACED_TYPE_REGEX.is_match("namespace::Type"));
+        assert!(NAMESPACED_TYPE_REGEX.is_match("namespace::namespace::Type"));
+        assert!(NAMESPACED_TYPE_REGEX.is_match("namespace::namespace::namespace::Type"));
+        assert!(NAMESPACED_TYPE_REGEX.is_match("namespace::namespace::namespace::namespace::Type"));
+
+        assert!(!NAMESPACED_TYPE_REGEX.is_match("Type"), "NamespacedType must have a namespace");
+        assert!(!NAMESPACED_TYPE_REGEX.is_match("Namespace::Type"), "namespace must be lowercase");
+        assert!(!NAMESPACED_TYPE_REGEX.is_match("namespace::type"), "Type name must be uppercase");
+        assert!(!NAMESPACED_TYPE_REGEX.is_match("namespace::namespace"), "NamespacedType must have a type name");
+        assert!(!NAMESPACED_TYPE_REGEX.is_match("namespace::namespace::namespace"), "NamespacedType must have a type name");
+        assert!(!NAMESPACED_TYPE_REGEX.is_match("::namespace::namespace::Type"), "First segment must not be empty");
+        assert!(!NAMESPACED_TYPE_REGEX.is_match("namespace::namespace::Type::"), "Last segment must not be empty");
+        assert!(!NAMESPACED_TYPE_REGEX.is_match("namespace::"), "Last segment must be a type name and must not be empty");
     }
 
     #[test]

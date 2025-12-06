@@ -27,6 +27,7 @@ use crate::query::GraphQLExtensions;
 use crate::query::GraphQLNamespacedType;
 use crate::query::GraphQLPropertyType;
 use crate::query::GraphQLRelationBehaviour;
+use crate::validator::NamespacedTypeValidator;
 
 pub struct GraphQLRelationType {
     relation_type: RelationType,
@@ -68,9 +69,14 @@ impl GraphQLRelationType {
         Ok(GraphQLComponents::new(components).into())
     }
 
-    /// The namespace and type name.
+    /// The fully qualified namespace of the relation type.
     #[graphql(name = "type")]
-    async fn ty(&self) -> GraphQLNamespacedType {
+    async fn ty(&self) -> String {
+        self.relation_type.namespace().to_string()
+    }
+
+    /// The namespaced type.
+    async fn namespaced_type(&self) -> GraphQLNamespacedType {
         self.relation_type.namespaced_type().into()
     }
 
@@ -161,13 +167,15 @@ impl GraphQLRelationType {
     /// The extensions which are defined by the relation type.
     async fn extensions(
         &self,
-        #[graphql(name = "type")] namespace: Option<String>,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the extension",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: Option<String>,
         #[graphql(desc = "If true, the extensions are sorted by type")] sort: Option<bool>,
     ) -> Result<Vec<GraphQLExtension>> {
-        let ty = match namespace {
-            Some(namespace) => Some(ExtensionTypeId::parse_namespace(&namespace)?),
-            None => None,
-        };
+        let ty = ExtensionTypeId::parse_optional_namespace(_type)?;
         let extensions: GraphQLExtensions = self
             .relation_type
             .extensions

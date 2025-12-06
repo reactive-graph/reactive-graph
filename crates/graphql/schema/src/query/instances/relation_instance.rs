@@ -5,6 +5,7 @@ use async_graphql::Object;
 use async_graphql::Result;
 use reactive_graph_behaviour_service_api::RelationBehaviourRegistry;
 use reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
+use reactive_graph_graph::InvalidRelationInstanceError;
 use reactive_graph_reactive_model_impl::ReactiveRelation;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::RelationTypeManager;
@@ -42,12 +43,13 @@ impl GraphQLRelationInstance {
 
     /// The relation type.
     #[graphql(name = "type")]
-    async fn relation_type(&self, context: &Context<'_>) -> Option<GraphQLRelationType> {
-        context
-            .data::<Arc<dyn RelationTypeManager + Send + Sync>>()
-            .ok()?
-            .get(&self.relation_instance.relation_type_id())
-            .map(|r| r.into())
+    async fn relation_type(&self, context: &Context<'_>) -> Result<GraphQLRelationType> {
+        let ty = self.relation_instance.relation_type_id();
+        let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
+        let Some(relation_type) = relation_type_manager.get(&ty) else {
+            return Err(InvalidRelationInstanceError::RelationTypeDoesNotExist(ty).into());
+        };
+        Ok(relation_type.into())
     }
 
     /// The instance id of the relation instance type.
