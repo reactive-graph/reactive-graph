@@ -4,6 +4,7 @@ use crate::CodeGenerationError;
 use crate::CodeGenerationResult;
 use crate::CodeGenerationTarget;
 use crate::TypeGenerator;
+use crate::header::rust::generate_header_generated_code;
 use crate::namespace::rust::fully_qualified_ident::FullyQualifiedNamespacedTypeIdent;
 use crate::namespace::rust::sort_file_items;
 use crate::rust::Rust;
@@ -24,6 +25,8 @@ impl TypeGenerator<Rust> for TypeSystem {
     fn generate_type(&self, config: &CodeGenerationConfig, resolver: &TypeResolver) -> Result<CodeGenerationResult, CodeGenerationError> {
         let path = TypeGenerator::<Rust>::absolute_target_path(self, config)?;
         self.register_root(config, resolver)?;
+
+        let header_generated_code = generate_header_generated_code();
 
         let mut component_idents = Vec::new();
         let mut components = self.components().to_vec();
@@ -69,6 +72,8 @@ impl TypeGenerator<Rust> for TypeSystem {
             None => quote! {},
         };
         let token_stream = quote! {
+            #header_generated_code
+
             #[doc(newline)]
             pub static TYPE_SYSTEM_COMPONENTS: std::sync::LazyLock<reactive_graph_graph::Components> = std::sync::LazyLock::new(|| {
                 reactive_graph_graph::Components::new()

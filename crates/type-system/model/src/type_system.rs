@@ -1,15 +1,33 @@
-pub static TYPE_SYSTEM_COMPONENTS: std::sync::LazyLock<reactive_graph_graph::Components> = std::sync::LazyLock::new(|| reactive_graph_graph::Components::new());
+//! ---------------------------------------------
+//! This file was generated automatically.
+//! ---------------------------------------------
+#![allow(dead_code, unused)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
-pub static TYPE_SYSTEM_ENTITY_TYPES: std::sync::LazyLock<reactive_graph_graph::EntityTypes> = std::sync::LazyLock::new(|| {
-    reactive_graph_graph::EntityTypes::new().entity(crate::reactive_graph::type_system::type_system_event::TYPE_SYSTEM_EVENT_TYPE.clone())
+pub static TYPE_SYSTEM_COMPONENTS: std::sync::LazyLock<
+    reactive_graph_graph::Components,
+> = std::sync::LazyLock::new(|| { reactive_graph_graph::Components::new() });
+
+pub static TYPE_SYSTEM_ENTITY_TYPES: std::sync::LazyLock<
+    reactive_graph_graph::EntityTypes,
+> = std::sync::LazyLock::new(|| {
+    reactive_graph_graph::EntityTypes::new()
+        .entity(
+            crate::reactive_graph::type_system::type_system_event::TYPE_SYSTEM_EVENT_TYPE
+                .clone(),
+        )
 });
 
-pub static TYPE_SYSTEM_RELATION_TYPES: std::sync::LazyLock<reactive_graph_graph::RelationTypes> =
-    std::sync::LazyLock::new(|| reactive_graph_graph::RelationTypes::new());
+pub static TYPE_SYSTEM_RELATION_TYPES: std::sync::LazyLock<
+    reactive_graph_graph::RelationTypes,
+> = std::sync::LazyLock::new(|| { reactive_graph_graph::RelationTypes::new() });
 
-pub static TYPE_SYSTEM_FLOW_TYPES: std::sync::LazyLock<reactive_graph_graph::FlowTypes> = std::sync::LazyLock::new(|| reactive_graph_graph::FlowTypes::new());
+pub static TYPE_SYSTEM_FLOW_TYPES: std::sync::LazyLock<
+    reactive_graph_graph::FlowTypes,
+> = std::sync::LazyLock::new(|| { reactive_graph_graph::FlowTypes::new() });
 
-pub static TYPE_SYSTEM: std::sync::LazyLock<reactive_graph_graph::TypeSystem> = std::sync::LazyLock::new(|| {
+pub static TYPE_SYSTEM: std::sync::LazyLock<reactive_graph_graph::TypeSystem> = std::sync::LazyLock::new(||
+{
     reactive_graph_graph::TypeSystem::builder()
         .components(TYPE_SYSTEM_COMPONENTS.clone())
         .entity_types(TYPE_SYSTEM_ENTITY_TYPES.clone())
@@ -18,5 +36,5 @@ pub static TYPE_SYSTEM: std::sync::LazyLock<reactive_graph_graph::TypeSystem> = 
         .build()
 });
 pub static TYPE_SYSTEM_ID: &str = "reactive_graph::type_system";
-pub static TYPE_SYSTEM_NAMESPACE: std::sync::LazyLock<reactive_graph_graph::Namespace> =
-    std::sync::LazyLock::new(|| std::str::FromStr::from_str(TYPE_SYSTEM_ID).unwrap());
+pub static TYPE_SYSTEM_NAMESPACE: std::sync::LazyLock<reactive_graph_graph::Namespace> = std::sync::LazyLock::new(||
+{ std::str::FromStr::from_str(TYPE_SYSTEM_ID).unwrap() });
