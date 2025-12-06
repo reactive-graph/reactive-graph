@@ -290,26 +290,6 @@ mod tests {
             .id(id)
             .components(components)
             .properties(reactive_properties)
-            // .component(COMPONENT_ACTION.clone())
-            // .component(COMPONENT_COMMAND.clone())
-            // .property(&TRIGGER.property_name(), json!(false))
-            // .property("arg1", json!(0))
-            // .property("arg2", json!(1))
-            // .property(COMMAND_RESULT, json!(0))
-            // .property(COMMAND_NAME, json!("hello_command"))
-            // .property(
-            //     COMMAND_ARGS,
-            //     json!([
-            //         {
-            //             "name": "arg1"
-            //         },
-            //         {
-            //             "name": "arg2",
-            //             "required": true
-            //         }
-            //     ]),
-            // )
-            // .property(COMMAND_HELP, json!("Help text"))
             .build();
         let e1 = reactive_entity.clone();
         let e2 = reactive_entity.clone();
