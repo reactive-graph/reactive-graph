@@ -110,9 +110,9 @@ accepts incoming connections.</details>
     }
   },
   "required": [
+    "delay",
     "label",
     "trigger",
-    "delay",
     "id"
   ],
   "title": "reactive_graph::runtime::Shutdown",

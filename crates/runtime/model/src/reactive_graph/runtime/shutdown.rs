@@ -232,8 +232,8 @@ pub static SHUTDOWN_TYPE: std::sync::LazyLock<reactive_graph_graph::EntityType> 
 ///
 /// | Component                       | Description                                                                                       | Properties                          |
 /// |---------------------------------|---------------------------------------------------------------------------------------------------|-------------------------------------|
-/// | `reactive_graph::core::Labeled` | The label is a hierarchical path with static segments, named parameters and catch-all parameters. | <ul compact><li>`label`</li></ul>   |
 /// | `reactive_graph::core::Action`  | An action can be triggered                                                                        | <ul compact><li>`trigger`</li></ul> |
+/// | `reactive_graph::core::Labeled` | The label is a hierarchical path with static segments, named parameters and catch-all parameters. | <ul compact><li>`label`</li></ul>   |
 ///
 /// ### Properties
 ///
@@ -454,36 +454,6 @@ impl TryFrom<reactive_graph_graph::EntityInstance> for Shutdown {
         Err(())
     }
 }
-impl reactive_graph_model_core::reactive_graph::core::labeled::Labeled for Shutdown {
-    
-    /// ### Property `label`
-    ///
-    /// Hierarchical path with static segments, named parameters and catch-all parameters
-    ///
-    /// Data Type: `String`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    fn label(&self) -> String {
-        self.label.clone()
-    }
-    
-    /// ### Property `label`
-    ///
-    /// Hierarchical path with static segments, named parameters and catch-all parameters
-    ///
-    /// Data Type: `String`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    fn set_label(&mut self, label: String) {
-        self.label = label;
-    }
-}
 impl reactive_graph_model_core::reactive_graph::core::action::Action for Shutdown {
     
     /// ### Property `trigger`
@@ -512,5 +482,35 @@ impl reactive_graph_model_core::reactive_graph::core::action::Action for Shutdow
     ///
     fn set_trigger(&mut self, trigger: bool) {
         self.trigger = trigger;
+    }
+}
+impl reactive_graph_model_core::reactive_graph::core::labeled::Labeled for Shutdown {
+    
+    /// ### Property `label`
+    ///
+    /// Hierarchical path with static segments, named parameters and catch-all parameters
+    ///
+    /// Data Type: `String`
+    ///
+    /// Socket Type: `None`
+    ///
+    /// Mutability: `Mutable`
+    ///
+    fn label(&self) -> String {
+        self.label.clone()
+    }
+    
+    /// ### Property `label`
+    ///
+    /// Hierarchical path with static segments, named parameters and catch-all parameters
+    ///
+    /// Data Type: `String`
+    ///
+    /// Socket Type: `None`
+    ///
+    /// Mutability: `Mutable`
+    ///
+    fn set_label(&mut self, label: String) {
+        self.label = label;
     }
 }

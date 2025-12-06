@@ -169,12 +169,12 @@ output socket.</details>
     }
   },
   "required": [
-    "f3dw",
-    "f3dz",
-    "f3dx",
     "f3dd",
     "f3dh",
-    "f3dy"
+    "f3dw",
+    "f3dx",
+    "f3dy",
+    "f3dz"
   ],
   "title": "reactive_graph::flow::Flow3D",
   "type": "object"
