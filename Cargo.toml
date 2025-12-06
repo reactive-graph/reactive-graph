@@ -214,6 +214,7 @@ mime = "0.3"
 notify = "8.2"
 num_cpus = "1.17"
 path-tree = "0.8"
+prettyplease = "0.2"
 portpicker = "0.1.1"
 proc-macro2 = "1.0"
 proc-macro-error2 = "2.0"
@@ -222,8 +223,10 @@ rand = "0.9"
 rand_derive3 = { version = "0.2", git = "https://github.com/reactive-graph/rand_derive3.git", branch = "rust-edition-2024" }
 random-string = "1.1"
 rcgen = { version = "0.13", default-features = false, features = ["aws_lc_rs"] }
+regex = "1.11"
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
 rust-embed = { version = "8.9", features = ["debug-embed", "compression"] }
+rust-format = "0.3"
 rustc-hash = "2.1.1"
 rustls = { version = "0.23.35", features = ["aws_lc_rs"] }
 rustls-cert-gen = { version = "0.1", default-features = false, features = ["aws_lc_rs"] }
