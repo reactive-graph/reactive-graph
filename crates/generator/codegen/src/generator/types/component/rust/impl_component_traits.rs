@@ -10,6 +10,7 @@ use quote::quote;
 use reactive_graph_generator_documentation::GenerateDocumentation;
 use reactive_graph_graph::ComponentTypeIdContainer;
 use reactive_graph_graph::Mutability;
+use reactive_graph_graph::NamespacedTypeContainer;
 use reactive_graph_graph::TypeDefinitionGetter;
 use reactive_graph_graph::TypeDescriptionGetter;
 use reactive_graph_graph::TypeResolver;
@@ -20,10 +21,11 @@ pub fn generate_impl_component_traits<TY: TypeDefinitionGetter + ComponentTypeId
 ) -> Result<TokenStream, CodeGenerationError> {
     let type_name_ident = TypeIdent::new(type_);
     let component_tys = type_.get_components_cloned();
-    let components = resolver.components(&component_tys)?;
+    let mut components = resolver.components(&component_tys)?.to_vec();
+    components.sort();
     let mut impl_component_traits = Vec::new();
-    for (component_ty, component) in components {
-        let fully_qualified_component_ident = component_ty.fully_qualified_ident_of_type::<TypeIdent>(resolver)?;
+    for component in components {
+        let fully_qualified_component_ident = component.ty.fully_qualified_ident_of_type::<TypeIdent>(resolver)?;
         let mut properties = component.properties.to_vec();
         properties.sort();
         let mut properties_token_stream = Vec::new();
