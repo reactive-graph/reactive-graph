@@ -30,11 +30,9 @@ fn build_component() -> Component {
 }
 ```
 
-```admonish tip "Register Component"
-The component is not yet registered.
-
-Register the component using `ComponentManager::register`
-```
+> [!TIP]
+> The component is not yet registered.
+> Register the component using `ComponentManager::register`
 
 ## Entity Type Builder
 
@@ -60,11 +58,9 @@ fn build_entity_type() -> EntityType {
 }
 ```
 
-```admonish tip "Register Entity Type"
-The entity type is not yet registered.
-
-Register the entity type using `EntityTypeManager::register`
-```
+> [!TIP]
+> The entity type is not yet registered.
+> Register the entity type using `EntityTypeManager::register`
 
 ## Relation Type Builder
 
@@ -98,11 +94,9 @@ fn build_relation_type() -> RelationType {
 }
 ```
 
-```admonish tip "Register Relation Type"
-The relation type is not yet registered.
-
-Register the relation type using `RelationTypeManager::register`
-```
+> [!TIP]
+> The relation type is not yet registered.
+> Register the relation type using `RelationTypeManager::register`
 
 ## Entity Instance Builder
 
@@ -124,40 +118,32 @@ fn build_entity_instance_from_type(entity_type: EntityType) -> EntityInstance {
 }
 ```
 
-```admonish tip "Create Reactive Entity Instance"
-The entity instance is non-reactive and not yet registered.
-
-Create a reactive instance and register it using `ReactiveEntityManager::create_reactive_instance`
-```
+> [!TIP]
+> The entity instance is non-reactive and not yet registered.
+> Create a reactive instance and register it using `ReactiveEntityManager::create_reactive_instance`
 
 ## Relation Instance Builder
 
 Constructs a new relation instance programmatically. This is the non-reactive variant.
 
-```admonish tip "Create Reactive Relation Instance"
-The relation instance is non-reactive and not yet registered.
-
-Create a reactive instance and register it using `ReactiveRelationManager::create_reactive_instance`
-```
+> [!TIP]
+> The relation instance is non-reactive and not yet registered.
+> Create a reactive instance and register it using `ReactiveRelationManager::create_reactive_instance`
 
 ## Reactive Entity Instance Builder
 
 Constructs a new reactive entity instance programmatically.
 
-```admonish tip "Register Reactive Entity Instance"
-The reactive entity instance is fully functional, but not yet registered.
-
-Register the reactive entity instance using `ReactiveEntityManager::register_reactive_instance`
-```
+> [!TIP]
+> The reactive entity instance is fully functional, but not yet registered.
+> Register the reactive entity instance using `ReactiveEntityManager::register_reactive_instance`
 
 ## Reactive Relation Instance Builder
 
 Constructs a new reactive relation instance programmatically.
 
-```admonish tip "Register Reactive Relation Instance"
-The reactive relation instance is fully functional, but not yet registered.
-
-Register the reactive relation instance using `ReactiveRelationManager::register_reactive_instance`
-```
+> [!TIP]
+> The reactive relation instance is fully functional, but not yet registered.
+> Register the reactive relation instance using `ReactiveRelationManager::register_reactive_instance`
 
 ## Flow Builder
