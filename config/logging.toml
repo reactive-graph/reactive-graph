@@ -112,9 +112,12 @@ level = "info"
 ### Dynamic Graph Impl
 
 [loggers."reactive_graph_dynamic_graph_impl"]
-level = "debug"
+level = "trace"
 
 [loggers."reactive_graph_dynamic_graph_impl::dynamic_graph_schema_manager_impl"]
+level = "info"
+
+[loggers."reactive_graph_dynamic_graph_impl::dynamic_graph_schema_builder_impl"]
 level = "info"
 
 [loggers."reactive_graph_dynamic_graph_impl::object::namespace"]
@@ -291,4 +294,4 @@ level = "warn"
 level = "debug"
 
 [loggers."springtime_di::component_registry::registry"]
-level = "debug"
+level = "info"
