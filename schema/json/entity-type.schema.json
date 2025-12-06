@@ -13,7 +13,6 @@
       "$ref": "#/$defs/NamespacedType"
     },
     "Extension": {
-      "$ref": "#/$defs/NamespacedType",
       "description": "Extension on a type. The extension allows to extend information",
       "properties": {
         "description": {
@@ -30,13 +29,18 @@
               "type": "null"
             }
           ],
-          "description": "The type definition contains the namespace and the type name."
+          "description": "The fully qualified namespace of the entity type which is the type constraint of the extension."
         },
         "extension": {
           "description": "The extension as JSON representation."
+        },
+        "type": {
+          "$ref": "#/$defs/NamespacedType",
+          "description": "The fully qualified namespace of the extension."
         }
       },
       "required": [
+        "type",
         "extension"
       ],
       "type": "object"
@@ -50,21 +54,7 @@
     },
     "NamespacedType": {
       "description": "Defines the namespace and the name of a type.",
-      "properties": {
-        "namespace": {
-          "description": "The namespace of the type.",
-          "type": "string"
-        },
-        "type_name": {
-          "description": "The name of the type.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "namespace",
-        "type_name"
-      ],
-      "type": "object"
+      "type": "string"
     },
     "PropertyType": {
       "additionalProperties": false,
@@ -177,8 +167,8 @@
     }
   },
   "$id": "https://schema.reactive-graph.io/schema/json/entity-type.schema.json",
-  "$ref": "#/$defs/NamespacedType",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
   "description": "Entity types defines the type of entity instance.",
   "properties": {
     "$id": {
@@ -205,9 +195,15 @@
       "$ref": "#/$defs/PropertyTypes",
       "default": [],
       "description": "The properties which are defined by the entity type."
+    },
+    "type": {
+      "$ref": "#/$defs/EntityTypeId",
+      "description": "The fully qualified namespace of the entity type."
     }
   },
+  "required": [
+    "type"
+  ],
   "title": "EntityType",
-  "type": "object",
-  "unevaluatedProperties": false
+  "type": "object"
 }

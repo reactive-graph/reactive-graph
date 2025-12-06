@@ -11,7 +11,7 @@
     },
     "EntityInstance": {
       "$id": "https://schema.reactive-graph.io/schema/json/entity-instance.schema.json",
-      "$ref": "#/$defs/NamespacedType",
+      "additionalProperties": false,
       "description": "Entity instances represents an typed object which contains properties.\n\nThe entity type defines the properties (name, data type and socket type).\n\nIn contrast to the entity type the entity instance stores values in its\nproperties.",
       "properties": {
         "$id": {
@@ -48,14 +48,18 @@
           "$ref": "#/$defs/PropertyInstances",
           "default": {},
           "description": "The properties of the entity instance.\n\nEach property is represented by its name (String) and it's value. The value is\na representation of a JSON. Therefore, the value can be boolean, number, string,\narray or an object. For more information about the data types please look at\n<https://docs.serde.rs/serde_json/value/enum.Value.html>"
+        },
+        "type": {
+          "$ref": "#/$defs/EntityTypeId",
+          "description": "The type definition of the entity type."
         }
       },
       "required": [
+        "type",
         "id"
       ],
       "title": "EntityInstance",
-      "type": "object",
-      "unevaluatedProperties": false
+      "type": "object"
     },
     "EntityInstances": {
       "description": "Entity Instances",
@@ -68,7 +72,6 @@
       "$ref": "#/$defs/NamespacedType"
     },
     "Extension": {
-      "$ref": "#/$defs/NamespacedType",
       "description": "Extension on a type. The extension allows to extend information",
       "properties": {
         "description": {
@@ -85,13 +88,18 @@
               "type": "null"
             }
           ],
-          "description": "The type definition contains the namespace and the type name."
+          "description": "The fully qualified namespace of the entity type which is the type constraint of the extension."
         },
         "extension": {
           "description": "The extension as JSON representation."
+        },
+        "type": {
+          "$ref": "#/$defs/NamespacedType",
+          "description": "The fully qualified namespace of the extension."
         }
       },
       "required": [
+        "type",
         "extension"
       ],
       "type": "object"
@@ -103,23 +111,15 @@
       },
       "type": "array"
     },
+    "FlowTypeId": {
+      "$ref": "#/$defs/NamespacedType"
+    },
+    "InstanceId": {
+      "type": "string"
+    },
     "NamespacedType": {
       "description": "Defines the namespace and the name of a type.",
-      "properties": {
-        "namespace": {
-          "description": "The namespace of the type.",
-          "type": "string"
-        },
-        "type_name": {
-          "description": "The name of the type.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "namespace",
-        "type_name"
-      ],
-      "type": "object"
+      "type": "string"
     },
     "PropertyInstances": {
       "description": "Properties",
@@ -236,7 +236,7 @@
     },
     "RelationInstance": {
       "$id": "https://schema.reactive-graph.io/schema/json/relation-instance.schema.json",
-      "$ref": "#/$defs/NamespacedType",
+      "additionalProperties": false,
       "description": "Relation instances are edges from an outbound entity instance to an\ninbound entity instance.\n\nThe relation instance is of a relation type. The relation type defines\nthe entity types of the outbound entity instance and the inbound entity\ninstance. Furthermore, the relation type defines which properties\n(name, data type, socket type) a relation instance have to have.\n\nIn contrast to the relation type, the relation instance stores values/\ndocuments in its properties.",
       "properties": {
         "$id": {
@@ -260,13 +260,13 @@
           "description": "Relation instance specific extensions."
         },
         "inbound_id": {
-          "description": "The id of the inbound vertex.",
+          "description": "The id of the inbound entity instance.",
           "format": "uuid",
           "type": "string"
         },
         "instance_id": {
-          "description": "The instance id.",
-          "type": "string"
+          "$ref": "#/$defs/InstanceId",
+          "description": "The instance id."
         },
         "name": {
           "default": "",
@@ -274,7 +274,7 @@
           "type": "string"
         },
         "outbound_id": {
-          "description": "The id of the outbound vertex.",
+          "description": "The id of the outbound entity instance.",
           "format": "uuid",
           "type": "string"
         },
@@ -282,16 +282,20 @@
           "$ref": "#/$defs/PropertyInstances",
           "default": {},
           "description": "The properties of then relation instance.\n\nEach property is represented by its name (String) and it's value. The value is\na representation of a JSON. Therefore, the value can be boolean, number, string,\narray or an object. For more information about the data types please look at\n<https://docs.serde.rs/serde_json/value/enum.Value.html>"
+        },
+        "type": {
+          "$ref": "#/$defs/RelationTypeId",
+          "description": "The type definition of the relation type."
         }
       },
       "required": [
         "outbound_id",
+        "type",
         "instance_id",
         "inbound_id"
       ],
       "title": "RelationInstance",
-      "type": "object",
-      "unevaluatedProperties": false
+      "type": "object"
     },
     "RelationInstances": {
       "description": "Relation Instances",
@@ -299,11 +303,14 @@
         "$ref": "#/$defs/RelationInstance"
       },
       "type": "array"
+    },
+    "RelationTypeId": {
+      "$ref": "#/$defs/NamespacedType"
     }
   },
   "$id": "https://schema.reactive-graph.io/schema/json/flow-type.schema.json",
-  "$ref": "#/$defs/NamespacedType",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
   "description": "Flow types defines the type of flow instance like a template\nfor flow instances.\n\nThey contain entity instances and relation instances. The wrapper\nentity instance is mandatory and used for input and outputs.",
   "properties": {
     "$id": {
@@ -331,6 +338,10 @@
       "default": [],
       "description": "The relation instances which are contained in this flow.\n\nBy default, no relation instances are contained in this flow type."
     },
+    "type": {
+      "$ref": "#/$defs/FlowTypeId",
+      "description": "The type definition of the entity type."
+    },
     "variables": {
       "$ref": "#/$defs/PropertyTypes",
       "default": [],
@@ -342,9 +353,9 @@
     }
   },
   "required": [
+    "type",
     "wrapper_entity_instance"
   ],
   "title": "FlowType",
-  "type": "object",
-  "unevaluatedProperties": false
+  "type": "object"
 }
