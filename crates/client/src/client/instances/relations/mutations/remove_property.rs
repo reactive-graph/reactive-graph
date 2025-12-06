@@ -24,7 +24,7 @@ pub mod mutations {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "RemovePropertiesVariables")]
     pub struct MutationRelationInstances {
-        #[arguments(relationInstanceId: { outboundId: $outbound_id, namespace: $namespace, typeName: $name, instanceId: $instance_id, inboundId: $inbound_id}, removeProperties: $properties)]
+        #[arguments(relationInstanceId: { outboundId: $outbound_id, type: $_type, instanceId: $instance_id, inboundId: $inbound_id}, removeProperties: $properties)]
         pub update: RelationInstance,
     }
 

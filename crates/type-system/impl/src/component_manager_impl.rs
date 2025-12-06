@@ -22,6 +22,7 @@ use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::Extensions;
 use reactive_graph_graph::Namespace;
 use reactive_graph_graph::NamespacedTypeContainer;
+use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::Namespaces;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypeContainer;
@@ -30,12 +31,15 @@ use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_type_system_api::ComponentCreationError;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::ComponentRegistrationError;
+use reactive_graph_type_system_api::NamespacedTypeManager;
 use reactive_graph_type_system_api::TypeSystemEvent;
 use reactive_graph_type_system_api::TypeSystemEventManager;
 
 #[derive(Component)]
 pub struct ComponentManagerImpl {
     event_manager: Arc<dyn TypeSystemEventManager + Send + Sync>,
+
+    namespaced_type_manager: Arc<dyn NamespacedTypeManager + Send + Sync>,
 
     #[component(default = "Components::new")]
     components: Components,
@@ -46,6 +50,7 @@ pub struct ComponentManagerImpl {
 impl ComponentManager for ComponentManagerImpl {
     fn register(&self, component: reactive_graph_graph::Component) -> Result<reactive_graph_graph::Component, ComponentRegistrationError> {
         let ty = component.ty.clone();
+        self.namespaced_type_manager.register(ty.namespaced_type())?;
         if self.components.contains_key(&ty) {
             return Err(ComponentRegistrationError::ComponentAlreadyExists(ty));
         }
@@ -118,11 +123,13 @@ impl ComponentManager for ComponentManagerImpl {
     fn replace(&self, ty: &ComponentTypeId, r_component: reactive_graph_graph::Component) {
         for mut component in self.components.iter_mut() {
             if &component.ty == ty {
-                component.ty = r_component.ty.clone();
-                component.description = r_component.description.clone();
-                component.properties = r_component.properties.clone();
-                component.extensions = r_component.extensions.clone();
-                // TODO: Notify about changed component -> This effects reactive instances which contains the component -> Add/remove property instances
+                if self.namespaced_type_manager.replace(ty.as_ref(), r_component.namespaced_type()).is_ok() {
+                    component.ty = r_component.ty.clone();
+                    component.description = r_component.description.clone();
+                    component.properties = r_component.properties.clone();
+                    component.extensions = r_component.extensions.clone();
+                    // TODO: Notify about changed component -> This effects reactive instances which contains the component -> Add/remove property instances
+                }
             }
         }
     }
@@ -238,6 +245,7 @@ impl ComponentManager for ComponentManagerImpl {
     }
 
     fn delete(&self, ty: &ComponentTypeId) -> bool {
+        self.namespaced_type_manager.delete(ty.as_ref());
         self.components
             .remove(ty)
             .inspect(|(ty, _)| self.event_manager.emit_event(TypeSystemEvent::ComponentDeleted(ty.clone())))
@@ -254,58 +262,60 @@ impl Lifecycle for ComponentManagerImpl {
 
 #[cfg(test)]
 mod test {
+    use crate::TypeSystemSystemImpl;
     use reactive_graph_graph::Component;
     use reactive_graph_graph::ComponentTypeId;
-    use reactive_graph_graph::Extension;
-    use reactive_graph_graph::ExtensionContainer;
-    use reactive_graph_graph::ExtensionTypeId;
+    use reactive_graph_graph::Components;
+    use reactive_graph_graph::Extensions;
+    use reactive_graph_graph::NamespacedTypeContainer;
     use reactive_graph_graph::NamespacedTypeGetter;
-    use reactive_graph_graph::PropertyType;
-    use reactive_graph_graph::PropertyTypeContainer;
-    use serde_json::json;
-
-    use crate::TypeSystemImpl;
-    use reactive_graph_type_system_api::TypeSystem;
+    use reactive_graph_graph::PropertyTypes;
+    use reactive_graph_graph::RandomNamespacedTypeId;
+    use reactive_graph_graph::RandomNamespacedTypes;
+    use reactive_graph_type_system_api::TypeSystemSystem;
     use reactive_graph_utils_test::r_string;
 
     #[test]
     fn test_register_component() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+
+        let component_ty = ComponentTypeId::random_type_id().unwrap();
+        // let extension_ty = ComponentTypeId::default_test();
+
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let component_manager = type_system.get_component_manager();
-        let namespace = r_string();
-        let component_name = r_string();
         let description = r_string();
-        let property_name = r_string();
-        let extension_name = r_string();
-        let component_ty = ComponentTypeId::new_from_type(namespace.clone(), component_name.clone());
-        let extension_ty = ExtensionTypeId::new_from_type(&namespace, &extension_name);
-        let component = Component::new(
-            &component_ty,
-            &description,
-            vec![PropertyType::string(&property_name)],
-            vec![Extension::new(extension_ty.clone(), "", json!(""))],
-        );
-        assert!(component_manager.register(component).is_ok());
+        let properties = PropertyTypes::random_types(1..5).unwrap();
+        let extensions = Extensions::random_types(1..3).unwrap();
+        let component = Component::new(&component_ty, &description, properties, extensions);
+        assert!(component_manager.register(component.clone()).is_ok());
         assert!(component_manager.has(&component_ty));
 
-        let component = component_manager.get(&component_ty).unwrap();
-        assert_eq!(namespace, component.namespace());
-        assert_eq!(component_name, component.type_name());
-        assert!(component.has_own_property(property_name.clone()));
-        assert!(!component.has_own_property(r_string()));
-        assert!(component.has_own_extension(&extension_ty));
+        let component_2 = component_manager.get(&component_ty).expect("Could not get component");
+        assert_eq!(component.namespace(), component_2.namespace());
+        assert_eq!(component.properties.len(), component_2.properties.len());
+        assert_eq!(component.properties.names(), component_2.properties.names());
+        assert_eq!(component.extensions.len(), component_2.extensions.len());
+        assert_eq!(component.extensions.type_ids(), component_2.extensions.type_ids());
     }
 
     #[test]
-    fn test_get_components() {
+    fn test_get_all_and_has_components() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let component_manager = type_system.get_component_manager();
+        let non_registered_components = Components::random_types(1..3).unwrap();
+        for non_registered_component in non_registered_components.iter() {
+            component_manager
+                .register(non_registered_component.clone())
+                .expect("Failed to register component");
+        }
+
         let components = component_manager.get_all();
         for component in components.iter() {
             assert!(component_manager.has(&component.ty));
         }
-        assert!(!component_manager.has(&ComponentTypeId::new_from_type(r_string(), r_string())));
+        let non_registered_component_ty = ComponentTypeId::random_type_id().unwrap();
+        assert!(!component_manager.has(&non_registered_component_ty));
     }
 }

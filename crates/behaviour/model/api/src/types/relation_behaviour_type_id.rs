@@ -23,15 +23,16 @@ use reactive_graph_graph::NamespacedType;
 use reactive_graph_graph::RelationTypeId;
 
 #[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
-use rand_derive3::RandGen;
+use reactive_graph_graph::NamespacedTypeError;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_graph::RandomNamespacedTypeId;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_graph::RandomNamespacedTypeIds;
 
 /// The behaviour of a relation type.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema, TypedBuilder)]
-#[cfg_attr(any(test, feature = "test"), derive(RandGen))]
 pub struct RelationBehaviourTypeId {
     /// The relation type.
     pub relation_ty: RelationTypeId,
@@ -196,20 +197,24 @@ macro_rules! relation_behaviour_ty {
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for RelationBehaviourTypeId {
-    fn default_test() -> Self {
-        NamespacedType::generate_random().into()
+impl RandomNamespacedTypeId for RelationBehaviourTypeId {
+    type Error = NamespacedTypeError;
+
+    fn random_type_id() -> Result<Self, NamespacedTypeError> {
+        Ok(Self::new(RelationTypeId::random_type_id()?, BehaviourTypeId::random_type_id()?))
     }
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for RelationBehaviourTypeIds {
-    fn default_test() -> Self {
+impl RandomNamespacedTypeIds for RelationBehaviourTypeIds {
+    type Error = NamespacedTypeError;
+
+    fn random_type_ids() -> Result<Self, NamespacedTypeError> {
         let tys = Self::new();
         let mut rng = rand::rng();
         for _ in 0..rng.random_range(0..10) {
-            tys.insert(RelationBehaviourTypeId::default_test());
+            tys.insert(RelationBehaviourTypeId::random_type_id()?);
         }
-        tys
+        Ok(tys)
     }
 }

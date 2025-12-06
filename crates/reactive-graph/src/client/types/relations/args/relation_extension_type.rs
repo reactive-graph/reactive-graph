@@ -1,26 +1,26 @@
-use crate::client::types::extension::args::ExtensionTypeIdArgs;
-use crate::client::types::relations::args::type_id::RelationTypeIdArgs;
+use crate::client::types::extension::args::parse_extension_ty;
+use crate::client::types::relations::args::parse_relation_ty;
 use clap::Args;
-use reactive_graph_client::client::types::extensions::variables::container::variables::ExtensionContainerVariables;
+use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::RelationExtensionTypeId;
+use reactive_graph_graph::RelationTypeId;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct RelationExtensionTypeIdArgs {
-    /// The relation type.
-    #[clap(flatten)]
-    pub relation_ty: RelationTypeIdArgs,
+    /// The fully qualified namespace of the relation type.
+    #[clap(name = "relation_type", value_parser = parse_relation_ty)]
+    pub relation_ty: RelationTypeId,
 
-    /// The extension type.
-    #[clap(flatten)]
-    pub extension_ty: ExtensionTypeIdArgs,
+    /// The fully qualified namespace of the extension.
+    #[clap(name = "relation_extension", value_parser = parse_extension_ty)]
+    pub extension_ty: ExtensionTypeId,
 }
 
-impl From<&RelationExtensionTypeIdArgs> for ExtensionContainerVariables {
+impl From<&RelationExtensionTypeIdArgs> for RelationExtensionTypeId {
     fn from(args: &RelationExtensionTypeIdArgs) -> Self {
-        ExtensionContainerVariables {
-            namespace: args.relation_ty.namespace.clone(),
-            name: args.relation_ty.name.clone(),
-            extension_namespace: args.extension_ty.extension_namespace.clone(),
-            extension_name: args.extension_ty.extension_name.clone(),
+        Self {
+            relation_ty: args.relation_ty.clone(),
+            extension_ty: args.extension_ty.clone(),
         }
     }
 }

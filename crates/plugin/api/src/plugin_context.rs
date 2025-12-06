@@ -3,26 +3,23 @@ use std::sync::Arc;
 use crate::CommandManager;
 use crate::ComponentImportExportManager;
 use crate::ComponentManager;
-use crate::ComponentProviderRegistry;
 use crate::ConfigManager;
 use crate::EntityBehaviourRegistry;
 use crate::EntityComponentBehaviourRegistry;
 use crate::EntityInstanceManager;
 use crate::EntityTypeImportExportManager;
 use crate::EntityTypeManager;
-use crate::EntityTypeProviderRegistry;
 use crate::FlowInstanceManager;
 use crate::FlowTypeImportExportManager;
 use crate::FlowTypeManager;
-use crate::FlowTypeProviderRegistry;
 use crate::GraphQLQueryService;
 use crate::RelationBehaviourRegistry;
 use crate::RelationComponentBehaviourRegistry;
 use crate::RelationInstanceManager;
 use crate::RelationTypeImportExportManager;
 use crate::RelationTypeManager;
-use crate::RelationTypeProviderRegistry;
 use crate::TypeSystemEventManager;
+use crate::TypeSystemProviderRegistry;
 use crate::WebResourceManager;
 use crate::springtime_di::injectable;
 
@@ -37,17 +34,11 @@ pub trait PluginContext: Send + Sync {
     /// Returns the component import export manager.
     fn get_component_import_export_manager(&self) -> Arc<dyn ComponentImportExportManager + Send + Sync>;
 
-    /// Returns the component provider registry.
-    fn get_component_provider_registry(&self) -> Arc<dyn ComponentProviderRegistry + Send + Sync>;
-
     /// Returns the entity type manager.
     fn get_entity_type_manager(&self) -> Arc<dyn EntityTypeManager + Send + Sync>;
 
     /// Returns the entity type import export manager.
     fn get_entity_type_import_export_manager(&self) -> Arc<dyn EntityTypeImportExportManager + Send + Sync>;
-
-    /// Returns the entity type provider registry.
-    fn get_entity_type_provider_registry(&self) -> Arc<dyn EntityTypeProviderRegistry + Send + Sync>;
 
     /// Returns the relation type manager.
     fn get_relation_type_manager(&self) -> Arc<dyn RelationTypeManager + Send + Sync>;
@@ -55,20 +46,17 @@ pub trait PluginContext: Send + Sync {
     /// Returns the relation type import export manager.
     fn get_relation_type_import_export_manager(&self) -> Arc<dyn RelationTypeImportExportManager + Send + Sync>;
 
-    /// Returns the relation type provider registry.
-    fn get_relation_type_provider_registry(&self) -> Arc<dyn RelationTypeProviderRegistry + Send + Sync>;
-
     /// Returns the flow type manager.
     fn get_flow_type_manager(&self) -> Arc<dyn FlowTypeManager + Send + Sync>;
 
     /// Returns the flow type import export manager.
     fn get_flow_type_import_export_manager(&self) -> Arc<dyn FlowTypeImportExportManager + Send + Sync>;
 
-    /// Returns the flow type provider registry.
-    fn get_flow_type_provider_registry(&self) -> Arc<dyn FlowTypeProviderRegistry + Send + Sync>;
-
     /// Returns the system event manager.
     fn get_type_system_event_manager(&self) -> Arc<dyn TypeSystemEventManager + Send + Sync>;
+
+    /// Returns the type system provider registry.
+    fn get_type_system_provider_registry(&self) -> Arc<dyn TypeSystemProviderRegistry + Send + Sync>;
 
     // Instance System
 

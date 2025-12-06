@@ -1,3 +1,4 @@
+use std::str::FromStr;
 use std::sync::Arc;
 
 use crate::json_schema_response;
@@ -17,7 +18,7 @@ pub async fn get_components(component_manager: web::Data<Arc<dyn ComponentManage
 #[get("/types/components/{namespace:.*}")]
 pub async fn get_component(path: web::Path<String>, component_manager: web::Data<Arc<dyn ComponentManager + Send + Sync>>) -> HttpResponse {
     let namespace = path.into_inner();
-    let ty = match ComponentTypeId::try_from(namespace) {
+    let ty = match ComponentTypeId::from_str(&namespace) {
         Ok(ty) => ty,
         Err(e) => {
             return HttpResponse::NotFound().content_type(APPLICATION_JSON.to_string()).body(e.to_string());

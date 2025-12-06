@@ -1,17 +1,19 @@
+use regex::Regex;
 use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 use std::cmp::Ordering;
 use std::fmt::Display;
 use std::fmt::Formatter;
-use thiserror::Error;
-use uuid::Uuid;
+use std::str::FromStr;
+use std::sync::LazyLock;
 
+use crate::INSTANCE_ID_SEPARATOR;
+use crate::InstanceId;
 use crate::NamespaceSegment;
-use crate::NamespaceSegmentError;
 use crate::NamespacedType;
-use crate::NamespacedTypeError;
 use crate::NamespacedTypeGetter;
+use crate::RelationInstanceTypeIdParseError;
 use crate::RelationTypeId;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
@@ -21,115 +23,24 @@ use crate::TypeIdType;
 use crate::namespace::Namespace;
 
 #[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
+use crate::NamespacedTypeError;
 #[cfg(any(test, feature = "test"))]
-use rand_derive3::RandGen;
+use crate::RandomChildType;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomChildTypeId;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypeId;
 
-/// Separator for the string representation of a property connector.
-pub static INSTANCE_ID_SEPARATOR: &str = "__";
+pub const RELATION_INSTANCE_TYPE_ID_PATTERN: &str = r"^[a-z_]+(?:::[a-z_]+)*(?:::([A-Z][a-zA-Z0-9]*))(?:__([a-zA-Z0-9_-]+))*$";
 
-#[derive(Debug, Error)]
-pub enum InstanceIdError {
-    #[error("The instance id {0} is invalid")]
-    InvalidInstanceId(String),
-    #[error("The instance id is invalid: {0}")]
-    NamespaceSegmentError(#[from] NamespaceSegmentError),
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
-#[serde(into = "String", try_from = "String")]
-#[cfg_attr(any(test, feature = "test"), derive(RandGen))]
-pub enum InstanceId {
-    Singleton,
-    Id(Uuid),
-    Named(NamespaceSegment),
-    MultiSegmented(Vec<NamespaceSegment>),
-}
-
-impl InstanceId {
-    pub fn new_with_random_id() -> Self {
-        InstanceId::Id(Uuid::new_v4())
-    }
-
-    pub fn new_segmented(segments: Vec<NamespaceSegment>) -> Self {
-        InstanceId::MultiSegmented(segments)
-    }
-
-    pub fn parse_named(instance_id: &str) -> Result<Self, InstanceIdError> {
-        Ok(InstanceId::Named(NamespaceSegment::try_from(instance_id).map_err(InstanceIdError::NamespaceSegmentError)?))
-    }
-}
-
-impl Display for InstanceId {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let id = match self {
-            InstanceId::Singleton => "".to_string(),
-            InstanceId::Id(id) => id.to_string(),
-            InstanceId::Named(id) => id.to_string(),
-            InstanceId::MultiSegmented(segments) => segments.iter().map(ToString::to_string).collect::<Vec<_>>().join(INSTANCE_ID_SEPARATOR),
-        };
-        write!(f, "{id}")
-    }
-}
-
-impl From<InstanceId> for String {
-    fn from(instance_id: InstanceId) -> Self {
-        instance_id.to_string()
-    }
-}
-
-impl TryFrom<&str> for InstanceId {
-    type Error = InstanceIdError;
-
-    fn try_from(instance_id: &str) -> Result<Self, Self::Error> {
-        if instance_id.is_empty() {
-            return Ok(InstanceId::Singleton);
-        }
-        if let Ok(id) = Uuid::parse_str(instance_id) {
-            return Ok(InstanceId::Id(id));
-        }
-        let instance_id = NamespaceSegment::try_from(instance_id).map_err(InstanceIdError::NamespaceSegmentError)?;
-        if !instance_id.as_ref().contains(INSTANCE_ID_SEPARATOR) {
-            return Ok(InstanceId::Named(instance_id));
-        }
-        let mut segments = vec![];
-        for segment in instance_id.as_ref().split(INSTANCE_ID_SEPARATOR) {
-            segments.push(NamespaceSegment::try_from(segment).map_err(|e| InstanceIdError::NamespaceSegmentError(e))?);
-        }
-        Ok(InstanceId::MultiSegmented(segments))
-    }
-}
-
-impl TryFrom<&String> for InstanceId {
-    type Error = InstanceIdError;
-
-    fn try_from(instance_id: &String) -> Result<Self, Self::Error> {
-        Self::try_from(instance_id.as_str())
-    }
-}
-
-impl TryFrom<String> for InstanceId {
-    type Error = InstanceIdError;
-
-    fn try_from(instance_id: String) -> Result<Self, Self::Error> {
-        Self::try_from(instance_id.as_str())
-    }
-}
-
-#[derive(Debug, Error)]
-pub enum RelationInstanceTypeIdError {
-    #[error("Failed to construct relation instance type id because of an error with the instance id: {0}")]
-    InstanceIdError(#[from] InstanceIdError),
-    #[error("Failed to construct relation instance type id because of an error with the namespaced type: {0}")]
-    NamespacedTypeError(#[from] NamespacedTypeError),
-}
+pub static RELATION_INSTANCE_TYPE_ID_REGEX: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(RELATION_INSTANCE_TYPE_ID_PATTERN).expect("Failed to construct RELATION_INSTANCE_TYPE_ID_REGEX!"));
 
 /// Type identifier of a relation instance.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema)]
-#[cfg_attr(any(test, feature = "test"), derive(RandGen))]
 pub struct RelationInstanceTypeId {
     /// The type definition of the relation type.
-    #[serde(flatten)]
+    #[serde(rename = "type")]
     ty: RelationTypeId,
 
     /// The instance id.
@@ -182,7 +93,7 @@ impl RelationInstanceTypeId {
         self.instance_id.clone()
     }
 
-    // TODO: BREAKING CHANGE: Aufrufe auf type_name() umschreiben zu fully_qualified_type_name()
+    // TODO: BREAKING CHANGE: Replace all calls to type_name()
     // pub fn fully_qualified_type_name(&self) -> String {
     // }
 }
@@ -200,10 +111,10 @@ impl NamespacedTypeGetter for RelationInstanceTypeId {
         self.ty.path()
     }
 
-    /// BREAKING CHANGE
+    // TODO: BREAKING CHANGE: Replace all calls to type_name()
     fn type_name(&self) -> NamespaceSegment {
-        todo!();
-        // self.ty.type_name()
+        // todo!();
+        self.ty.type_name()
     }
 }
 
@@ -214,6 +125,18 @@ impl TypeDefinitionGetter for RelationInstanceTypeId {
 
     fn type_id_type() -> TypeIdType {
         TypeIdType::RelationType
+    }
+}
+
+impl AsRef<NamespacedType> for RelationInstanceTypeId {
+    fn as_ref(&self) -> &NamespacedType {
+        &self.ty.as_ref()
+    }
+}
+
+impl AsRef<Namespace> for RelationInstanceTypeId {
+    fn as_ref(&self) -> &Namespace {
+        &self.ty.as_ref()
     }
 }
 
@@ -230,6 +153,12 @@ impl Ord for RelationInstanceTypeId {
             Ordering::Equal => self.instance_id.cmp(&other.instance_id),
             Ordering::Greater => Ordering::Greater,
         }
+    }
+}
+
+impl Display for RelationInstanceTypeId {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "RelationInstanceTypeId({}{INSTANCE_ID_SEPARATOR}{})", &self.ty, self.instance_id().to_string())
     }
 }
 
@@ -252,241 +181,295 @@ impl From<&RelationInstanceTypeId> for NamespacedType {
     }
 }
 
-#[derive(Debug, Error)]
-pub enum RelationInstanceTypeIdParseError {
-    #[error("Failed to parse type definition: {0}")]
-    TypeDefinitionParseError(#[from] TypeDefinitionParseError),
-    #[error("Failed to parse type id: {0}")]
-    TypeIdParseError(#[from] TypeIdParseError),
-    #[error("Failed to parse instance id: {0}")]
-    InstanceIdError(#[from] InstanceIdError),
-}
+impl FromStr for RelationInstanceTypeId {
+    type Err = RelationInstanceTypeIdParseError;
 
-impl TryFrom<&str> for RelationInstanceTypeId {
-    type Error = RelationInstanceTypeIdParseError;
-
-    fn try_from(relation_type_definition: &str) -> Result<Self, Self::Error> {
-        let mut s = relation_type_definition.split(&['(', ',', ')'][..]);
-        let type_id_type: TypeIdType = s
-            .next()
-            .ok_or(RelationInstanceTypeIdParseError::TypeDefinitionParseError(TypeDefinitionParseError::MissingTypeIdType))?
-            .try_into()
-            .map_err(TypeDefinitionParseError::TypeIdTypeParseError)
-            .map_err(RelationInstanceTypeIdParseError::TypeDefinitionParseError)?;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        if RELATION_INSTANCE_TYPE_ID_REGEX.is_match(s) {
+            return match s.split_once(INSTANCE_ID_SEPARATOR) {
+                None => Ok(RelationInstanceTypeId::new(
+                    RelationTypeId::from_str(s).map_err(RelationInstanceTypeIdParseError::NamespacedTypeParseError)?,
+                    InstanceId::Singleton,
+                )),
+                Some((namespace_part, instance_id_part)) => Ok(RelationInstanceTypeId::new(
+                    RelationTypeId::from_str(namespace_part).map_err(RelationInstanceTypeIdParseError::NamespacedTypeParseError)?,
+                    InstanceId::from_str(instance_id_part)?,
+                )),
+            };
+        }
+        // Parse TypeDefinition Format RelationType(namespace::namespace::TypeName,instance_id)
+        let mut s = s.split(&['(', ',', ')'][..]);
+        let type_id_type = TypeIdType::from_str(
+            s.next()
+                .ok_or(RelationInstanceTypeIdParseError::TypeDefinitionParseError(TypeDefinitionParseError::MissingTypeIdType))?,
+        )
+        .map_err(TypeDefinitionParseError::TypeIdTypeParseError)
+        .map_err(RelationInstanceTypeIdParseError::TypeDefinitionParseError)?;
         if TypeIdType::RelationType != type_id_type {
             return Err(TypeIdParseError::InvalidTypeIdType(TypeIdType::RelationType, type_id_type).into());
         }
-        let namespaced_type: NamespacedType = s
-            .next()
-            .map(|s| s.to_owned())
-            .ok_or(RelationInstanceTypeIdParseError::TypeDefinitionParseError(TypeDefinitionParseError::MissingNamespace))?
-            .try_into()
-            .map_err(TypeDefinitionParseError::NamespacedTypeError)
-            .map_err(RelationInstanceTypeIdParseError::TypeDefinitionParseError)?;
+        println!("{}", type_id_type);
+        let namespaced_type = NamespacedType::from_str(
+            s.next()
+                .ok_or(RelationInstanceTypeIdParseError::TypeDefinitionParseError(TypeDefinitionParseError::MissingNamespace))?,
+        )
+        .map_err(TypeDefinitionParseError::NamespacedTypeError)
+        .map_err(RelationInstanceTypeIdParseError::TypeDefinitionParseError)?;
+        println!("{}", namespaced_type);
         let instance_id = match s.next() {
             None => Ok(InstanceId::Singleton),
-            Some(id) => InstanceId::try_from(id),
+            Some(id) => InstanceId::from_str(id),
         }
         .map_err(RelationInstanceTypeIdParseError::InstanceIdError)?;
+        println!("{}", instance_id);
         Ok(RelationInstanceTypeId::new(RelationTypeId::new(namespaced_type), instance_id))
     }
 }
 
-impl TryFrom<&String> for RelationInstanceTypeId {
-    type Error = RelationInstanceTypeIdParseError;
+#[cfg(any(test, feature = "test"))]
+impl RandomNamespacedTypeId for RelationInstanceTypeId {
+    type Error = NamespacedTypeError;
 
-    fn try_from(relation_instance_type_id: &String) -> Result<Self, Self::Error> {
-        RelationInstanceTypeId::try_from(relation_instance_type_id.as_str())
-    }
-}
-
-impl TryFrom<String> for RelationInstanceTypeId {
-    type Error = RelationInstanceTypeIdParseError;
-
-    fn try_from(relation_instance_type_id: String) -> Result<Self, Self::Error> {
-        RelationInstanceTypeId::try_from(relation_instance_type_id.as_str())
-    }
-}
-
-impl Display for RelationInstanceTypeId {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", &self.type_definition().to_string())
-        // TODO: 2023-09-03
-        // if self.instance_id.is_empty() {
-        //     write!(f, "{}", &self.type_definition().to_string())
-        // } else {
-        //     write!(f, "{}{}{}", &self.type_definition().to_string(), &TYPE_ID_TYPE_SEPARATOR, self.instance_id)
-        // }
+    fn random_type_id() -> Result<Self, NamespacedTypeError> {
+        NamespacedType::random_type_id().map(RelationInstanceTypeId::new_with_random_instance_id)
     }
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for RelationInstanceTypeId {
-    fn default_test() -> Self {
-        RelationInstanceTypeId::new_with_random_instance_id(NamespacedType::generate_random())
+impl RandomChildType for RelationInstanceTypeId {
+    type Error = NamespacedTypeError;
+
+    fn random_child_type(namespace: &Namespace) -> Result<Self, Self::Error> {
+        NamespacedType::random_child_type_id(namespace).map(RelationInstanceTypeId::new_with_random_instance_id)
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use schemars::schema_for;
-
-    use crate::NamespacedType;
-    use crate::NamespacedTypeGetter;
+    use crate::InstanceId;
+    use crate::NamespaceSegment;
+    use crate::RELATION_INSTANCE_TYPE_ID_REGEX;
+    use crate::RandomNamespacedTypeId;
     use crate::RelationInstanceTypeId;
     use crate::RelationTypeId;
-    use crate::TypeDefinition;
-    use crate::TypeDefinitionGetter;
-    use crate::TypeIdType;
-    use reactive_graph_utils_test::r_string;
+    use schemars::schema_for;
+    use std::str::FromStr;
+    use uuid::Uuid;
 
     #[test]
-    fn relation_instance_type_id_unique_id_test() {
-        let namespace = r_string();
-        let type_name = r_string();
+    fn relation_instance_type_id_regex_test() {
+        // InstanceId::Singleton
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Type"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::Type"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::namespace::Type"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::namespace::namespace::Type"));
+        // InstanceId::Id
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Type__2a82b484-7f47-4a76-844f-5a2e686c8680"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::Type__2a82b484-7f47-4a76-844f-5a2e686c8680"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::namespace::Type__2a82b484-7f47-4a76-844f-5a2e686c8680"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::namespace::namespace::Type__2a82b484-7f47-4a76-844f-5a2e686c8680"));
+        // InstanceId::Named
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Type__name"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::Type__name"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::namespace::Type__name"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::namespace::namespace::Type__name"));
+        // InstanceId::MultiSegmented
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Type__segment_1__segment_2"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Type__segment_1__segment_2__segment_3"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Type__segment_1__segment_2__segment_3__segment_4"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::Type__segment_1__segment_2"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::Type__segment_1__segment_2__segment_3"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::Type__segment_1__segment_2__segment_3__segment_4"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::namespace::Type__segment_1__segment_2"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::namespace::Type__segment_1__segment_2__segment_3"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::namespace::Type__segment_1__segment_2__segment_3__segment_4"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::namespace::namespace::Type__segment_1__segment_2"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::namespace::namespace::Type__segment_1__segment_2__segment_3"));
+        assert!(RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::namespace::namespace::Type__segment_1__segment_2__segment_3__segment_4"));
 
-        let nt = NamespacedType::new(&namespace, &type_name);
-        let rty = RelationTypeId::new_from_type(&namespace, &type_name);
-        let ty = RelationInstanceTypeId::new_singleton(rty.clone());
-        assert_eq!(namespace, ty.namespace());
-        assert_eq!(nt.namespace, ty.namespace());
-        assert_eq!(nt.type_name, ty.type_name());
-        assert_eq!(format!("r__{namespace}__{type_name}"), format!("{}", ty));
-        let type_definition = ty.type_definition();
-        assert_eq!(TypeIdType::RelationType, type_definition.type_id_type);
-        assert_eq!(namespace, type_definition.namespace());
-        assert_eq!(type_name, type_definition.type_name());
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("Namespace::Type"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("Namespace::Type__2a82b484-7f47-4a76-844f-5a2e686c8680"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("Namespace::Type__name"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("Namespace::Type__segment_1__segment_2"));
 
-        let type_definition_3 = TypeDefinition::from(&ty);
-        assert_eq!(TypeIdType::RelationType, type_definition_3.type_id_type);
-        assert_eq!(namespace, type_definition_3.namespace());
-        assert_eq!(type_name, type_definition_3.type_name());
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::type"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::type__2a82b484-7f47-4a76-844f-5a2e686c8680"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::type__name"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::type__segment_1__segment_2"));
 
-        let ty2 = RelationInstanceTypeId::new_singleton(rty.clone());
-        assert_eq!(ty, ty2);
-        assert_eq!(ty.namespace(), ty2.namespace());
-        assert_eq!(ty.type_name(), ty2.type_name());
-        assert_eq!(ty.instance_id(), ty2.instance_id());
-        assert_eq!(ty.to_string(), ty2.to_string());
-    }
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Namespace::Type"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Namespace::Type__2a82b484-7f47-4a76-844f-5a2e686c8680"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Namespace::Type__name"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Namespace::Type__segment_1__segment_2"));
 
-    #[test]
-    fn relation_instance_type_id_unique_for_instance_id_test() {
-        let namespace = r_string();
-        let type_name = r_string();
-        let instance_id = r_string();
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::type"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::type__2a82b484-7f47-4a76-844f-5a2e686c8680"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::type__name"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::namespace::type__segment_1__segment_2"));
 
-        let nt = NamespacedType::new(&namespace, &type_name);
-        let rty = RelationTypeId::new_from_type(&namespace, &type_name);
-        let ty = RelationInstanceTypeId::new(rty.clone(), &instance_id);
-        assert_eq!(namespace, ty.namespace());
-        assert_eq!(nt.namespace, ty.namespace());
-        assert_eq!(format!("{}__{}", type_name, instance_id), ty.type_name());
-        assert_eq!(instance_id, ty.instance_id());
-        assert_eq!(rty, ty.relation_type_id());
-        assert_eq!(format!("r__{namespace}__{type_name}__{instance_id}"), format!("{}", ty));
-        let type_definition = ty.type_definition();
-        assert_eq!(TypeIdType::RelationType, type_definition.type_id_type);
-        assert_eq!(namespace, type_definition.namespace());
-        assert_eq!(format!("{}__{}", type_name, instance_id), type_definition.type_name());
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("Namespace::namespace::type"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("Namespace::namespace::type__2a82b484-7f47-4a76-844f-5a2e686c8680"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("Namespace::namespace::type__name"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("Namespace::namespace::type__segment_1__segment_2"));
 
-        let type_definition_3 = TypeDefinition::from(&ty);
-        assert_eq!(TypeIdType::RelationType, type_definition_3.type_id_type);
-        assert_eq!(namespace, type_definition_3.namespace());
-        assert_eq!(format!("{}__{}", type_name, instance_id), type_definition_3.type_name());
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Namespace::type"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Namespace::type__2a82b484-7f47-4a76-844f-5a2e686c8680"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Namespace::type__name"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("namespace::Namespace::type__segment_1__segment_2"));
 
-        let instance_id_2 = r_string();
-        let ty2 = RelationInstanceTypeId::new(rty.clone(), &instance_id_2);
-        assert_eq!(namespace, ty2.namespace());
-        assert_eq!(nt.namespace, ty2.namespace());
-        assert_eq!(format!("{}__{}", type_name, instance_id_2), ty2.type_name());
-        assert_eq!(instance_id_2, ty2.instance_id());
-        assert_eq!(rty, ty2.relation_type_id());
-        assert_eq!(format!("r__{namespace}__{type_name}__{instance_id_2}"), format!("{}", ty2));
-        assert_ne!(ty, ty2);
-        assert_eq!(ty.namespace(), ty2.namespace());
-        assert_ne!(ty.type_name(), ty2.type_name());
-        assert_eq!(ty.relation_type_id(), ty2.relation_type_id());
-        assert_ne!(ty.instance_id(), ty2.instance_id());
-        assert_ne!(ty.to_string(), ty2.to_string());
-    }
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("::Namespace::Type"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("::Namespace::Type__2a82b484-7f47-4a76-844f-5a2e686c8680"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("::Namespace::Type__name"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("::Namespace::Type__segment_1__segment_2"));
 
-    #[test]
-    fn relation_instance_type_id_with_random_instance_id_test() {
-        let namespace = r_string();
-        let type_name = r_string();
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("::Namespace::Type::"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("::Namespace::Type::__2a82b484-7f47-4a76-844f-5a2e686c8680"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("::Namespace::Type::__name"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("::Namespace::Type::__segment_1__segment_2"));
 
-        let nt = NamespacedType::new(&namespace, &type_name);
-        let rty = RelationTypeId::new_from_type(&namespace, &type_name);
-        let ty = RelationInstanceTypeId::new_with_random_instance_id(rty.clone());
-        assert_eq!(namespace, ty.namespace());
-        assert_eq!(nt.namespace, ty.namespace());
-        assert_eq!(format!("{}__{}", type_name, ty.instance_id()), ty.type_name());
-        assert_eq!(rty, ty.relation_type_id());
-        assert_eq!(format!("r__{namespace}__{type_name}__{}", ty.instance_id()), format!("{}", ty));
-        let type_definition = ty.type_definition();
-        assert_eq!(TypeIdType::RelationType, type_definition.type_id_type);
-        assert_eq!(namespace, type_definition.namespace());
-        assert_eq!(format!("{}__{}", type_name, ty.instance_id()), type_definition.type_name());
-
-        let type_definition_3 = TypeDefinition::from(&ty);
-        assert_eq!(TypeIdType::RelationType, type_definition_3.type_id_type);
-        assert_eq!(namespace, type_definition_3.namespace());
-        assert_eq!(format!("{}__{}", type_name, ty.instance_id()), type_definition_3.type_name());
-
-        let ty2 = RelationInstanceTypeId::new_with_random_instance_id(rty.clone());
-        assert_eq!(namespace, ty2.namespace());
-        assert_eq!(nt.namespace, ty2.namespace());
-        assert_eq!(format!("{}__{}", type_name, ty2.instance_id()), ty2.type_name());
-        assert_ne!(ty.instance_id(), ty2.instance_id());
-        assert_eq!(rty, ty2.relation_type_id());
-        assert_eq!(format!("r__{namespace}__{type_name}__{}", ty2.instance_id()), format!("{}", ty2));
-        assert_ne!(ty, ty2);
-        assert_eq!(ty.namespace(), ty2.namespace());
-        assert_ne!(ty.type_name(), ty2.type_name());
-        assert_eq!(ty.relation_type_id(), ty2.relation_type_id());
-        assert_ne!(ty.instance_id(), ty2.instance_id());
-        assert_ne!(ty.to_string(), ty2.to_string());
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("Namespace::Type::"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("Namespace::Type::__2a82b484-7f47-4a76-844f-5a2e686c8680"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("Namespace::Type::__name"));
+        assert!(!RELATION_INSTANCE_TYPE_ID_REGEX.is_match("Namespace::Type::__segment_1__segment_2"));
     }
 
     #[test]
     fn relation_instance_type_id_from_string_test() {
-        let t1 = String::from("r__ns__ty");
-        let ty1 = RelationInstanceTypeId::try_from(&t1).unwrap();
-        assert_eq!("ns", ty1.namespace());
-        assert_eq!("ty", ty1.relation_type_id().type_name());
-        assert_eq!("ty", ty1.type_name());
-        assert!(ty1.instance_id().is_empty());
+        assert_eq!(InstanceId::Singleton, RelationInstanceTypeId::from_str("namespace::namespace::Type").unwrap().instance_id);
+        assert_eq!(
+            InstanceId::Singleton,
+            RelationInstanceTypeId::from_str("namespace::namespace::namespace::Type").unwrap().instance_id
+        );
+        assert_eq!(
+            InstanceId::Singleton,
+            RelationInstanceTypeId::from_str("namespace::namespace::namespace::namespace::Type")
+                .unwrap()
+                .instance_id
+        );
 
-        let t2 = String::from("r__ns__ty__instance");
-        let ty2 = RelationInstanceTypeId::try_from(&t2).unwrap();
-        assert_eq!("ns", ty2.namespace());
-        assert_eq!("ty", ty2.relation_type_id().type_name());
-        assert_eq!("ty__instance", ty2.type_name());
-        assert_eq!("instance", ty2.instance_id());
+        let id = Uuid::from_str("2a82b484-7f47-4a76-844f-5a2e686c8680").unwrap();
+        assert_eq!(
+            InstanceId::Id(id),
+            RelationInstanceTypeId::from_str("namespace::namespace::Type__2a82b484-7f47-4a76-844f-5a2e686c8680")
+                .expect("Failed to parse RelationInstanceTypeId with UUID")
+                .instance_id
+        );
+        assert_eq!(
+            InstanceId::Id(id),
+            RelationInstanceTypeId::from_str("namespace::namespace::namespace::Type__2a82b484-7f47-4a76-844f-5a2e686c8680")
+                .unwrap()
+                .instance_id
+        );
+        assert_eq!(
+            InstanceId::Id(id),
+            RelationInstanceTypeId::from_str("namespace::namespace::namespace::namespace::Type__2a82b484-7f47-4a76-844f-5a2e686c8680")
+                .unwrap()
+                .instance_id
+        );
 
-        let t3 = String::from("r__ns__ty__outbound__inbound");
-        let ty3 = RelationInstanceTypeId::try_from(&t3).unwrap();
-        assert_eq!("ns", ty3.namespace());
-        assert_eq!("ty", ty3.relation_type_id().type_name());
-        assert_eq!("ty__outbound__inbound", ty3.type_name());
-        assert_eq!("outbound__inbound", ty3.instance_id());
+        let named_segment = NamespaceSegment::from_str("name").unwrap();
+        assert_eq!(
+            InstanceId::Named(named_segment.clone()),
+            RelationInstanceTypeId::from_str("namespace::namespace::Type__name").unwrap().instance_id
+        );
+        assert_eq!(
+            InstanceId::Named(named_segment.clone()),
+            RelationInstanceTypeId::from_str("namespace::namespace::namespace::Type__name")
+                .unwrap()
+                .instance_id
+        );
+        assert_eq!(
+            InstanceId::Named(named_segment.clone()),
+            RelationInstanceTypeId::from_str("namespace::namespace::namespace::namespace::Type__name")
+                .unwrap()
+                .instance_id
+        );
 
-        let t4 = String::from("e__ns__ty");
-        let ty4 = RelationInstanceTypeId::try_from(&t4);
-        assert!(ty4.is_err());
+        let segment_1 = NamespaceSegment::from_str("segment_1").unwrap();
+        let segment_2 = NamespaceSegment::from_str("segment_2").unwrap();
+        let segments = vec![segment_1, segment_2];
+        assert_eq!(
+            InstanceId::MultiSegmented(segments.clone()),
+            RelationInstanceTypeId::from_str("namespace::namespace::Type__segment_1__segment_2")
+                .unwrap()
+                .instance_id
+        );
+        assert_eq!(
+            InstanceId::MultiSegmented(segments.clone()),
+            RelationInstanceTypeId::from_str("namespace::namespace::namespace::Type__segment_1__segment_2")
+                .unwrap()
+                .instance_id
+        );
+        assert_eq!(
+            InstanceId::MultiSegmented(segments.clone()),
+            RelationInstanceTypeId::from_str("namespace::namespace::namespace::namespace::Type__segment_1__segment_2")
+                .unwrap()
+                .instance_id
+        );
 
-        let t5 = String::from("r__");
-        let ty5 = RelationInstanceTypeId::try_from(&t5);
-        assert!(ty5.is_err());
+        assert!(RelationInstanceTypeId::from_str("Namespace::Type").is_err());
+        assert!(RelationInstanceTypeId::from_str("Namespace::Type__2a82b484-7f47-4a76-844f-5a2e686c8680").is_err());
+        assert!(RelationInstanceTypeId::from_str("Namespace::Type__name").is_err());
+        assert!(RelationInstanceTypeId::from_str("Namespace::Type__segment_1__segment_2").is_err());
 
-        let t6 = String::from("r__ns");
-        let ty6 = RelationInstanceTypeId::try_from(&t6);
-        assert!(ty6.is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::type").is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::type__2a82b484-7f47-4a76-844f-5a2e686c8680").is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::type__name").is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::type__segment_1__segment_2").is_err());
 
-        let t7 = String::from("r__ns__");
-        let ty7 = RelationInstanceTypeId::try_from(&t7);
-        assert!(ty7.is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::Namespace::Type").is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::Namespace::Type__2a82b484-7f47-4a76-844f-5a2e686c8680").is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::Namespace::Type__name").is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::Namespace::Type__segment_1__segment_2").is_err());
+
+        assert!(RelationInstanceTypeId::from_str("namespace::namespace::type").is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::namespace::type__2a82b484-7f47-4a76-844f-5a2e686c8680").is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::namespace::type__name").is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::namespace::type__segment_1__segment_2").is_err());
+
+        assert!(RelationInstanceTypeId::from_str("Namespace::namespace::type").is_err());
+        assert!(RelationInstanceTypeId::from_str("Namespace::namespace::type__2a82b484-7f47-4a76-844f-5a2e686c8680").is_err());
+        assert!(RelationInstanceTypeId::from_str("Namespace::namespace::type__name").is_err());
+        assert!(RelationInstanceTypeId::from_str("Namespace::namespace::type__segment_1__segment_2").is_err());
+
+        assert!(RelationInstanceTypeId::from_str("namespace::Namespace::type").is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::Namespace::type__2a82b484-7f47-4a76-844f-5a2e686c8680").is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::Namespace::type__name").is_err());
+        assert!(RelationInstanceTypeId::from_str("namespace::Namespace::type__segment_1__segment_2").is_err());
+
+        assert!(RelationInstanceTypeId::from_str("::Namespace::Type").is_err());
+        assert!(RelationInstanceTypeId::from_str("::Namespace::Type__2a82b484-7f47-4a76-844f-5a2e686c8680").is_err());
+        assert!(RelationInstanceTypeId::from_str("::Namespace::Type__name").is_err());
+        assert!(RelationInstanceTypeId::from_str("::Namespace::Type__segment_1__segment_2").is_err());
+
+        assert!(RelationInstanceTypeId::from_str("::Namespace::Type::").is_err());
+        assert!(RelationInstanceTypeId::from_str("::Namespace::Type::__2a82b484-7f47-4a76-844f-5a2e686c8680").is_err());
+        assert!(RelationInstanceTypeId::from_str("::Namespace::Type::__name").is_err());
+        assert!(RelationInstanceTypeId::from_str("::Namespace::Type::__segment_1__segment_2").is_err());
+
+        assert!(RelationInstanceTypeId::from_str("Namespace::Type::").is_err());
+        assert!(RelationInstanceTypeId::from_str("Namespace::Type::__2a82b484-7f47-4a76-844f-5a2e686c8680").is_err());
+        assert!(RelationInstanceTypeId::from_str("Namespace::Type::__name").is_err());
+        assert!(RelationInstanceTypeId::from_str("Namespace::Type::__segment_1__segment_2").is_err());
+    }
+
+    #[test]
+    fn relation_instance_type_id_singleton_test() {
+        let relation_ty = RelationTypeId::random_type_id().unwrap();
+        let relation_instance_ty = RelationInstanceTypeId::new_singleton(relation_ty.clone());
+        assert_eq!(relation_ty, relation_instance_ty.relation_type_id());
+        assert_eq!(InstanceId::Singleton, relation_instance_ty.instance_id());
+    }
+
+    #[test]
+    fn relation_instance_type_id_random_test() {
+        let relation_ty = RelationTypeId::random_type_id().unwrap();
+        let relation_instance_ty = RelationInstanceTypeId::new_with_random_instance_id(relation_ty.clone());
+        assert_eq!(relation_ty, relation_instance_ty.relation_type_id());
+        match relation_instance_ty.instance_id() {
+            InstanceId::Id(_) => assert!(true),
+            _ => assert!(false),
+        }
     }
 
     #[test]

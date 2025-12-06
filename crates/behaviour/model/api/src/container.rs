@@ -1,4 +1,5 @@
 use crate::BehaviourTypeId;
+use crate::BehaviourTypeIds;
 
 pub trait BehaviourTypeContainer {
     fn ty(&self) -> BehaviourTypeId;
@@ -16,4 +17,7 @@ pub trait BehaviourTypesContainer {
 
     /// Returns true, if the reactive instance behaves as the given behaviour.
     fn behaves_as(&self, ty: &BehaviourTypeId) -> bool;
+
+    /// Returns true, if the reactive instance behaves as all the given behaviours.
+    fn behaves_as_all(&self, tys: &BehaviourTypeIds) -> bool;
 }

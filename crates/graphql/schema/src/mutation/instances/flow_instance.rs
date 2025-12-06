@@ -1,3 +1,4 @@
+use std::str::FromStr;
 use std::sync::Arc;
 
 use async_graphql::Context;
@@ -7,8 +8,10 @@ use uuid::Uuid;
 
 use reactive_graph_graph::CreateFlowInstanceError;
 use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::FlowInstance;
 use reactive_graph_graph::FlowTypeId;
 use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_reactive_model_impl::ReactiveFlow;
 use reactive_graph_reactive_service_api::ReactiveEntityManager;
 use reactive_graph_reactive_service_api::ReactiveFlowManager;
 use reactive_graph_reactive_service_api::ReactiveRelationManager;
@@ -21,6 +24,7 @@ use crate::mutation::GraphQLFlowInstanceDefinition;
 use crate::mutation::GraphQLRelationInstanceId;
 use crate::query::GraphQLFlowInstance;
 use crate::query::GraphQLPropertyInstance;
+use crate::validator::NamespacedTypeValidator;
 
 #[derive(Default)]
 pub struct MutationFlowInstances;
@@ -41,7 +45,12 @@ impl MutationFlowInstances {
     async fn create(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "entity_type", desc = "The fully qualified namespace of the entity type")] entity_namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the entity type",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
         #[graphql(desc = "The unique identifier of the flow instance and the wrapper entity instance")] flow_id: Option<Uuid>,
         #[graphql(desc = "The properties of the flow instance and the wrapper entity instance")] properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLFlowInstance> {
@@ -49,7 +58,7 @@ impl MutationFlowInstances {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
         let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
 
-        let entity_ty = EntityTypeId::parse_namespace(&entity_namespace)?;
+        let entity_ty = EntityTypeId::from_str(&_type)?;
         let entity_type = entity_type_manager
             .get(&entity_ty)
             .ok_or(CreateFlowInstanceError::EntityTypeDoesNotExist(entity_ty.clone()))?;
@@ -70,7 +79,10 @@ impl MutationFlowInstances {
             None => reactive_entity_manager.create_reactive_entity(&entity_ty, properties),
         }?;
 
-        Ok(reactive_entity.into())
+        let flow_instance = ReactiveFlow::new(reactive_entity);
+        reactive_flow_manager.register_flow_instance(flow_instance.clone());
+
+        Ok(flow_instance.into())
     }
 
     /// Creates a new flow from the given type.
@@ -88,7 +100,12 @@ impl MutationFlowInstances {
     async fn create_from_type(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type", desc = "The fully qualified namespace of the flow type.")] namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the flow type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
         id: Option<Uuid>,
         #[graphql(desc = "Parametrized construction of a flow instance using variables of a flow type.")] variables: Option<Vec<GraphQLPropertyInstance>>,
         #[graphql(desc = "A list of properties of the wrapper entity instance.")] properties: Option<Vec<GraphQLPropertyInstance>>,
@@ -97,7 +114,7 @@ impl MutationFlowInstances {
         let flow_type_manager = context.data::<Arc<dyn FlowTypeManager + Send + Sync>>()?;
         let reactive_flow_manager = context.data::<Arc<dyn ReactiveFlowManager + Send + Sync>>()?;
 
-        let flow_ty = FlowTypeId::parse_namespace(&namespace)?;
+        let flow_ty = FlowTypeId::from_str(&_type)?;
 
         let Some(flow_type) = flow_type_manager.get(&flow_ty) else {
             return Err(FlowMutationError::MissingFlowType(flow_ty.clone()).into());
@@ -140,7 +157,12 @@ impl MutationFlowInstances {
         &self,
         context: &Context<'_>,
         flow_id: Uuid,
-        #[graphql(name = "type", desc = "The fully qualified namespace of the entity type.")] namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the entity type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
         entity_id: Option<Uuid>,
         properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLFlowInstance> {
@@ -152,7 +174,7 @@ impl MutationFlowInstances {
             return Err(FlowMutationError::MissingFlow(flow_id).into());
         };
 
-        let entity_ty = EntityTypeId::parse_namespace(&namespace)?;
+        let entity_ty = EntityTypeId::from_str(&_type)?;
         let Some(entity_type) = entity_type_manager.get(&entity_ty) else {
             return Err(FlowMutationError::MissingEntityType(entity_ty).into());
         };
@@ -225,8 +247,8 @@ impl MutationFlowInstances {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
         let reactive_relation_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
 
-        let ty = relation_instance_id.ty()?;
-        let relation_ty = ty.relation_type_id();
+        let relation_instance_id = RelationInstanceId::try_from(relation_instance_id)?;
+        let relation_ty = relation_instance_id.ty.relation_type_id();
 
         let relation_type = relation_type_manager
             .get(&relation_ty)
@@ -248,7 +270,7 @@ impl MutationFlowInstances {
 
         let properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, relation_type.properties);
 
-        let relation_instance = reactive_relation_manager.create_reactive_relation(&relation_instance_id.into(), properties);
+        let relation_instance = reactive_relation_manager.create_reactive_relation(&relation_instance_id, properties);
 
         if relation_instance.is_err() {
             return Err(FlowMutationError::RelationInstanceCreationError().into());
@@ -318,7 +340,8 @@ impl MutationFlowInstances {
     /// in the given flow.
     async fn import(&self, context: &Context<'_>, flow: GraphQLFlowInstanceDefinition) -> Result<GraphQLFlowInstance> {
         let reactive_flow_manager = context.data::<Arc<dyn ReactiveFlowManager + Send + Sync>>()?;
-        let flow_instance = reactive_flow_manager.create_reactive_flow(flow.into())?;
-        Ok(flow_instance.into())
+        let flow_instance = FlowInstance::try_from(flow)?;
+        let reactive_flow = reactive_flow_manager.create_reactive_flow(flow_instance)?;
+        Ok(reactive_flow.into())
     }
 }

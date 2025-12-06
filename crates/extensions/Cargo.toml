@@ -1,0 +1,32 @@
+[package]
+name = "reactive-graph-extensions"
+description = "Reactive Graph - Extensions"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+readme = "../../README.md"
+
+[dependencies]
+#anyhow = { workspace = true }
+#rust-format = "0.3.4"
+#serde_json = { workspace = true }
+#semver = { workspace = true }
+#thiserror = { workspace = true }
+#workspace_root = { workspace = true }
+
+reactive-graph-graph = { version = "0.10.0", path = "../graph" }
+#reactive-graph-runtime-impl = { version = "0.10.0", path = "../../runtime/impl" }
+
+[dev-dependencies]
+default-test = { workspace = true }
+
+reactive-graph-graph = { version = "0.10.0", path = "../graph", features = ["test"] }
+
+[lib]
+crate-type = ["lib"]
+
+[lints]
+workspace = true

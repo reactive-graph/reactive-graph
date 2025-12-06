@@ -6,17 +6,12 @@ use serde_json::Value;
 
 use crate::builder::CommandDefinition;
 use crate::builder::CommandDefinitionBuilder;
-use crate::component::COMMAND_PROPERTIES;
-use crate::component::CommandProperties::COMMAND_ARGS;
-use crate::component::CommandProperties::COMMAND_HELP;
-use crate::component::CommandProperties::COMMAND_NAME;
-use crate::component::CommandProperties::COMMAND_NAMESPACE;
-use crate::component::CommandProperties::COMMAND_RESULT;
-use crate::component::command::COMPONENT_COMMAND;
 use crate::entity::arg::CommandArgs;
 use crate::error::CommandArgsError;
 use crate::error::CommandExecutionFailed;
 use crate::error::NotACommand;
+use crate::reactive_graph::command::command::COMMAND;
+use crate::reactive_graph::command::command::CommandProperties;
 use reactive_graph_graph::ComponentContainer;
 use reactive_graph_graph::ComponentTypeIds;
 use reactive_graph_graph::DataType;
@@ -26,14 +21,13 @@ use reactive_graph_graph::Mutability;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyInstanceSetter;
 use reactive_graph_graph::PropertyType;
-use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_graph::SocketType;
+use reactive_graph_model_core::reactive_graph::core::action::ACTION;
+use reactive_graph_model_core::reactive_graph::core::action::ActionProperties;
+use reactive_graph_model_core::reactive_graph::core::labeled::LABELED;
+use reactive_graph_model_core::reactive_graph::core::labeled::LabeledProperties;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
-use reactive_graph_runtime_model::ActionProperties::TRIGGER;
-use reactive_graph_runtime_model::COMPONENT_ACTION;
-use reactive_graph_runtime_model::COMPONENT_LABELED;
-use reactive_graph_runtime_model::LabeledProperties::LABEL;
 
 pub struct Command(ReactiveEntity);
 
@@ -41,7 +35,7 @@ impl Command {}
 
 impl Command {
     pub fn new(entity: ReactiveEntity) -> Result<Self, NotACommand> {
-        if !entity.is_a(&COMPONENT_ACTION) || !entity.is_a(&COMPONENT_COMMAND) {
+        if !entity.is_a(&ACTION) || !entity.is_a(&COMMAND) {
             return Err(NotACommand);
         }
         Ok(Command(entity))
@@ -57,11 +51,11 @@ impl Command {
 
     pub fn get_entity_type(&self) -> EntityType {
         let components = ComponentTypeIds::new()
-            .component(COMPONENT_LABELED.deref())
-            .component(COMPONENT_ACTION.deref())
-            .component(COMPONENT_COMMAND.deref());
-        let properties = COMMAND_PROPERTIES.clone();
-        if let Some(args) = self.get(COMMAND_ARGS).and_then(|args| CommandArgs::try_from(args).ok()) {
+            .component(LABELED.deref())
+            .component(ACTION.deref())
+            .component(COMMAND.deref());
+        if let Some(args) = self.get(CommandProperties::ARGS.as_ref()).and_then(|args| CommandArgs::try_from(args).ok()) {
+            let properties = CommandProperties::property_types();
             for arg in args.to_vec() {
                 if !properties.contains_key(&arg.name) {
                     properties.insert(
@@ -81,23 +75,23 @@ impl Command {
             .ty(self.0.ty.clone())
             .description(self.0.description.clone())
             .components(components)
-            .properties(COMMAND_PROPERTIES.clone())
+            .properties(CommandProperties::property_types().clone())
             .build()
     }
 
     /// Executes a command
     pub fn execute(&self) -> Result<Option<Value>, CommandExecutionFailed> {
-        if !self.0.is_a(&COMPONENT_ACTION) || !self.0.is_a(&COMPONENT_COMMAND) {
+        if !self.0.is_a(&ACTION) || !self.0.is_a(&COMMAND) {
             return Err(CommandExecutionFailed::NotACommand);
         }
-        self.0.set(TRIGGER.property_name(), Value::Bool(true));
-        Ok(self.0.get(COMMAND_RESULT))
+        self.0.set(ActionProperties::TRIGGER.as_ref(), Value::Bool(true));
+        Ok(self.0.get(CommandProperties::CMD_RESULT.as_ref()))
     }
 
     /// Executes a command with the given arguments
     /// Stores the command result in the command result property
     pub fn execute_with_args(&self, args: HashMap<String, Value>) -> Result<Option<Value>, CommandExecutionFailed> {
-        if !self.0.is_a(&COMPONENT_ACTION) || !self.0.is_a(&COMPONENT_COMMAND) {
+        if !self.0.is_a(&ACTION) || !self.0.is_a(&COMMAND) {
             return Err(CommandExecutionFailed::NotACommand);
         }
         // Check that all given arguments are valid arguments and the properties exists
@@ -122,12 +116,12 @@ impl Command {
         }
         for (property_name, value) in args {
             if self.0.has_property(&property_name) {
-                self.0.set_checked(property_name, value)
+                self.0.set_checked(&property_name, value)
             }
         }
         match self.execute() {
             Ok(Some(result)) => {
-                self.0.set(COMMAND_RESULT, result.clone());
+                self.0.set(CommandProperties::CMD_RESULT.as_ref(), result.clone());
                 Ok(Some(result))
             }
             Ok(None) => Ok(None),
@@ -136,19 +130,19 @@ impl Command {
     }
 
     pub fn namespace(&self) -> Option<String> {
-        self.0.as_string(COMMAND_NAMESPACE)
+        self.0.as_string(CommandProperties::NAMESPACE.as_ref())
     }
 
     pub fn name(&self) -> Option<String> {
-        self.0.as_string(COMMAND_NAME)
+        self.0.as_string(CommandProperties::COMMAND.as_ref())
     }
 
     pub fn label(&self) -> Option<String> {
-        self.0.as_string(LABEL)
+        self.0.as_string(LabeledProperties::LABEL.as_ref())
     }
 
     pub fn args(&self) -> Result<CommandArgs, CommandArgsError> {
-        match self.0.get(COMMAND_ARGS) {
+        match self.0.get(CommandProperties::ARGS.as_ref()) {
             Some(v) => CommandArgs::try_from(v),
             None => Err(CommandArgsError::CommandArgDefinitionMissing),
         }
@@ -163,7 +157,7 @@ impl Command {
     }
 
     pub fn help(&self) -> Option<String> {
-        self.0.as_string(COMMAND_HELP)
+        self.0.as_string(CommandProperties::HELP.as_ref())
     }
 
     pub fn ty(&self) -> EntityTypeId {
@@ -240,10 +234,10 @@ impl TryFrom<ReactiveEntity> for Command {
 
 #[cfg(test)]
 mod tests {
+    use serde_json::json;
     use std::collections::HashMap;
     use std::ops::Deref;
-
-    use serde_json::json;
+    use std::str::FromStr;
     use uuid::Uuid;
 
     use reactive_graph_graph::ComponentTypeIds;
@@ -251,36 +245,32 @@ mod tests {
     use reactive_graph_reactive_model_impl::ReactiveEntity;
     use reactive_graph_reactive_model_impl::ReactiveProperties;
 
-    use crate::CommandProperties::COMMAND_RESULT;
-    use crate::component::COMPONENT_COMMAND;
-    use crate::component::CommandProperties::COMMAND_ARGS;
-    use crate::component::CommandProperties::COMMAND_HELP;
-    use crate::component::CommandProperties::COMMAND_NAME;
     use crate::entity::Command;
     use crate::error::CommandExecutionFailed;
+    use crate::reactive_graph::command::command::COMMAND;
+    use crate::reactive_graph::command::command::CommandProperties;
     use reactive_graph_graph::EntityTypeId;
     use reactive_graph_graph::PropertyInstanceGetter;
     use reactive_graph_graph::PropertyInstanceSetter;
-    use reactive_graph_graph::PropertyTypeDefinition;
+    use reactive_graph_model_core::reactive_graph::core::action::ACTION;
+    use reactive_graph_model_core::reactive_graph::core::action::ActionProperties;
     use reactive_graph_reactive_model_api::ReactivePropertyContainer;
-    use reactive_graph_runtime_model::ActionProperties::TRIGGER;
-    use reactive_graph_runtime_model::COMPONENT_ACTION;
 
     #[test]
     fn test_command() {
-        let ty = EntityTypeId::new_from_type("test", "test");
+        let ty = EntityTypeId::from_str("test::Test").unwrap();
         let reactive_entity = ReactiveEntity::builder().ty(&ty).build();
         assert!(Command::try_from(reactive_entity).is_err());
 
-        let components = ComponentTypeIds::new().component(COMPONENT_ACTION.deref()).component(COMPONENT_COMMAND.deref());
+        let components = ComponentTypeIds::new().component(ACTION.deref()).component(COMMAND.deref());
         let properties = PropertyInstances::new()
-            .property(&TRIGGER.property_name(), json!(false))
+            .property(ActionProperties::TRIGGER, json!(false))
             .property("arg1", json!(0))
             .property("arg2", json!(1))
-            .property(COMMAND_RESULT, json!(0))
-            .property(COMMAND_NAME, json!("hello_command"))
+            .property(CommandProperties::CMD_RESULT, json!(0))
+            .property(CommandProperties::COMMAND, json!("hello_command"))
             .property(
-                COMMAND_ARGS,
+                CommandProperties::ARGS,
                 json!([
                     {
                         "name": "arg1"
@@ -291,7 +281,7 @@ mod tests {
                     }
                 ]),
             )
-            .property(COMMAND_HELP, json!("Help text"));
+            .property(CommandProperties::HELP, json!("Help text"));
 
         let id = Uuid::new_v4();
         let reactive_properties = ReactiveProperties::new_with_id_from_properties(id, properties);
@@ -324,25 +314,25 @@ mod tests {
         let e1 = reactive_entity.clone();
         let e2 = reactive_entity.clone();
         e1.observe_with_handle(
-            &TRIGGER.property_name(),
+            &ActionProperties::TRIGGER.as_ref(),
             move |_| {
                 let arg1 = e2.as_u64("arg1").unwrap_or_default();
                 let arg2 = e2.as_u64("arg2").unwrap_or_default();
-                e2.set(COMMAND_RESULT, json!(arg1 + arg2));
+                e2.set(CommandProperties::CMD_RESULT.as_ref(), json!(arg1 + arg2));
             },
             0,
         );
         let command = Command::new(reactive_entity).expect("Failed to create a command");
         assert_eq!("hello_command", command.name().expect("Failed to get command name"));
         assert_eq!("Help text", command.help().expect("Failed to get help text"));
-        assert_eq!(0, e1.as_u64(COMMAND_RESULT).expect("Failed to get initial result"));
+        assert_eq!(0, e1.as_u64(CommandProperties::CMD_RESULT.as_ref()).expect("Failed to get initial result"));
         command.execute().expect("Command execution failed");
-        assert_eq!(1, e1.as_u64(COMMAND_RESULT).expect("Failed to get changed result"));
+        assert_eq!(1, e1.as_u64(CommandProperties::CMD_RESULT.as_ref()).expect("Failed to get changed result"));
         let mut args = HashMap::new();
         args.insert(String::from("arg1"), json!(1));
         args.insert(String::from("arg2"), json!(2));
         let _ = command.execute_with_args(args).expect("Failed to execute command with args");
-        assert_eq!(3, e1.as_u64(COMMAND_RESULT).expect("Failed to get changed result"));
+        assert_eq!(3, e1.as_u64(CommandProperties::CMD_RESULT.as_ref()).expect("Failed to get changed result"));
         let mut args = HashMap::new();
         args.insert(String::from("arg1"), json!(1));
         args.insert(String::from("arg2"), json!(2));

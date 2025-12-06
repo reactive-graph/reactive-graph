@@ -1,25 +1,14 @@
-use crate::client::types::entities::args::type_id::EntityTypeIdArgs;
+use crate::client::types::entities::args::parse_entity_ty;
 use clap::Args;
-use reactive_graph_client::types::entities::variables::create::variables::CreateEntityTypeVariables;
+use reactive_graph_graph::EntityTypeId;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct CreateEntityTypeArgs {
-    /// The entity type.
-    #[clap(flatten)]
-    pub ty: EntityTypeIdArgs,
+    /// The fully qualified namespace of the entity type.
+    #[clap(name = "entity_type", value_parser = parse_entity_ty)]
+    pub entity_ty: EntityTypeId,
 
     /// The entity type description.
+    #[clap(short, long)]
     pub description: Option<String>,
-}
-
-impl From<&CreateEntityTypeArgs> for CreateEntityTypeVariables {
-    fn from(args: &CreateEntityTypeArgs) -> Self {
-        CreateEntityTypeVariables {
-            namespace: args.ty.namespace.clone(),
-            name: args.ty.name.clone(),
-            description: args.description.clone(),
-            properties: None,
-            extensions: None,
-        }
-    }
 }

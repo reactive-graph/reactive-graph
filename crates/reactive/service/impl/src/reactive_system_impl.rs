@@ -11,7 +11,7 @@ use reactive_graph_reactive_service_api::ReactiveFlowManager;
 use reactive_graph_reactive_service_api::ReactiveInstanceEventManager;
 use reactive_graph_reactive_service_api::ReactiveRelationManager;
 use reactive_graph_reactive_service_api::ReactiveSystem;
-use reactive_graph_type_system_api::TypeSystem;
+use reactive_graph_type_system_api::TypeSystemSystem;
 
 #[derive(Component)]
 pub struct ReactiveSystemImpl {
@@ -20,7 +20,7 @@ pub struct ReactiveSystemImpl {
     reactive_flow_manager: Arc<dyn ReactiveFlowManager + Send + Sync>,
     reactive_instance_event_manager: Arc<dyn ReactiveInstanceEventManager + Send + Sync>,
 
-    type_system: Arc<dyn TypeSystem + Send + Sync>,
+    type_system_system: Arc<dyn TypeSystemSystem + Send + Sync>,
     behaviour_system: Arc<dyn BehaviourSystem + Send + Sync>,
 }
 
@@ -43,8 +43,8 @@ impl ReactiveSystem for ReactiveSystemImpl {
         self.reactive_instance_event_manager.clone()
     }
 
-    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
-        self.type_system.clone()
+    fn type_system_system(&self) -> Arc<dyn TypeSystemSystem + Send + Sync> {
+        self.type_system_system.clone()
     }
 
     fn behaviour_system(&self) -> Arc<dyn BehaviourSystem + Send + Sync> {

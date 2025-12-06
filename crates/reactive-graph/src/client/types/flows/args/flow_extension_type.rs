@@ -1,26 +1,26 @@
-use crate::client::types::extension::args::ExtensionTypeIdArgs;
-use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
+use crate::client::types::extension::args::parse_extension_ty;
+use crate::client::types::flows::args::parse_flow_ty;
 use clap::Args;
-use reactive_graph_client::client::types::extensions::variables::container::variables::ExtensionContainerVariables;
+use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::FlowExtensionTypeId;
+use reactive_graph_graph::FlowTypeId;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct FlowExtensionTypeIdArgs {
-    /// The flow type.
-    #[clap(flatten)]
-    pub flow_ty: FlowTypeIdArgs,
+    /// The fully qualified namespace of the flow type.
+    #[clap(name = "flow_type", value_parser = parse_flow_ty)]
+    pub flow_ty: FlowTypeId,
 
-    /// The extension type.
-    #[clap(flatten)]
-    pub extension_ty: ExtensionTypeIdArgs,
+    /// The fully qualified namespace of the extension.
+    #[clap(name = "flow_extension", value_parser = parse_extension_ty)]
+    pub extension_ty: ExtensionTypeId,
 }
 
-impl From<&FlowExtensionTypeIdArgs> for ExtensionContainerVariables {
+impl From<&FlowExtensionTypeIdArgs> for FlowExtensionTypeId {
     fn from(args: &FlowExtensionTypeIdArgs) -> Self {
-        ExtensionContainerVariables {
-            namespace: args.flow_ty.namespace.clone(),
-            name: args.flow_ty.name.clone(),
-            extension_namespace: args.extension_ty.extension_namespace.clone(),
-            extension_name: args.extension_ty.extension_name.clone(),
+        Self {
+            flow_ty: args.flow_ty.clone(),
+            extension_ty: args.extension_ty.clone(),
         }
     }
 }

@@ -24,7 +24,7 @@ pub mod mutations {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "RelationInstanceIdAndComponentsVariables")]
     pub struct MutationRelationInstances {
-        #[arguments(relationInstanceId: { outboundId: $outbound_id, namespace: $namespace, typeName: $name, instanceId: $instance_id, inboundId: $inbound_id}, addComponents: $components)]
+        #[arguments(relationInstanceId: { outboundId: $outbound_id, type: $_type, instanceId: $instance_id, inboundId: $inbound_id}, addComponents: $components)]
         pub update: RelationInstance,
     }
 
@@ -32,8 +32,7 @@ pub mod mutations {
         id: &RelationInstanceId,
         component_ty: TY,
     ) -> Operation<AddComponent, RelationInstanceIdAndComponentsVariables> {
-        use cynic::MutationBuilder;
-        AddComponent::build(RelationInstanceIdAndComponentsVariables::new_from_component_type(id, component_ty))
+        add_components(id, ComponentTypeIds::new().component(component_ty.into()))
     }
 
     pub fn add_components<TY: Into<ComponentTypeIds>>(

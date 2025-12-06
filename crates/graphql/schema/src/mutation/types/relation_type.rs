@@ -1,3 +1,4 @@
+use std::str::FromStr;
 use std::sync::Arc;
 
 use async_graphql::Context;
@@ -9,7 +10,6 @@ use reactive_graph_graph::ComponentTypeIds;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::InboundOutboundType;
-use reactive_graph_graph::NamespacedTypeIdContainer;
 use reactive_graph_graph::RelationType;
 use reactive_graph_graph::RelationTypeAddComponentError;
 use reactive_graph_graph::RelationTypeAddExtensionError;
@@ -22,12 +22,13 @@ use reactive_graph_graph::RelationTypeUpdateExtensionError;
 use reactive_graph_graph::RelationTypeUpdatePropertyError;
 use reactive_graph_type_system_api::RelationTypeManager;
 
-use crate::mutation::ComponentOrEntityTypeIdDefinition;
 use crate::mutation::GraphQLExtensionDefinition;
 use crate::mutation::GraphQLExtensionDefinitions;
+use crate::mutation::GraphQLInboundOutboundType;
 use crate::mutation::PropertyTypeDefinition;
 use crate::mutation::PropertyTypeDefinitions;
 use crate::query::GraphQLRelationType;
+use crate::validator::NamespacedTypeValidator;
 
 #[derive(Default)]
 pub struct MutationRelationTypes;
@@ -42,9 +43,16 @@ impl MutationRelationTypes {
     async fn create(
         &self,
         context: &Context<'_>,
-        outbound_type: ComponentOrEntityTypeIdDefinition,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the relation type.")] namespace: String,
-        inbound_type: ComponentOrEntityTypeIdDefinition,
+        #[graphql(desc = "The outbound type. Either an entity type or a component or any entity type or any component.")]
+        outbound_type: GraphQLInboundOutboundType,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the relation type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
+        #[graphql(desc = "The outbound type. Either an entity type or a component or any entity type or any component.")]
+        inbound_type: GraphQLInboundOutboundType,
         #[graphql(desc = "Describes the relation type.")] description: Option<String>,
         #[graphql(desc = "Adds the given components to the newly created relation type.")] components: Option<Vec<String>>,
         #[graphql(desc = "The definitions of properties. These are added additionally to the properties provided by the given components.")] properties: Option<
@@ -53,13 +61,10 @@ impl MutationRelationTypes {
         #[graphql(desc = "The extensions of the relation type.")] extensions: Option<Vec<GraphQLExtensionDefinition>>,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let outbound_type: InboundOutboundType = outbound_type.into();
-        let ty = RelationTypeId::parse_namespace(&namespace)?;
-        let inbound_type: InboundOutboundType = inbound_type.into();
-        let components = match components {
-            Some(components) => ComponentTypeIds::parse_namespaces(components)?,
-            None => Default::default(),
-        };
+        let outbound_type = InboundOutboundType::try_from(outbound_type)?;
+        let ty = RelationTypeId::from_str(&_type)?;
+        let inbound_type = InboundOutboundType::try_from(inbound_type)?;
+        let components = ComponentTypeIds::parse_optional_namespaces(components)?;
         let properties = PropertyTypeDefinitions::parse_optional_definitions(properties)?;
         let extensions = GraphQLExtensionDefinitions::parse_optional_definitions(extensions)?;
         let relation_type = RelationType::builder()
@@ -81,11 +86,16 @@ impl MutationRelationTypes {
     async fn update_description(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the relation type.")] namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the relation type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
         description: String,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let ty = RelationTypeId::parse_namespace(&namespace)?;
+        let ty = RelationTypeId::from_str(&_type)?;
         Ok(relation_type_manager.update_description(&ty, &description)?.into())
     }
 
@@ -93,12 +103,17 @@ impl MutationRelationTypes {
     async fn add_component(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the relation type.")] relation_namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the relation type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
         #[graphql(name = "component")] component_namespace: String,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let relation_ty = RelationTypeId::parse_namespace(&relation_namespace)?;
-        let component_ty = ComponentTypeId::parse_namespace(&component_namespace)?;
+        let relation_ty = RelationTypeId::from_str(&_type)?;
+        let component_ty = ComponentTypeId::from_str(&component_namespace)?;
         relation_type_manager.add_component(&relation_ty, &component_ty)?;
         relation_type_manager
             .get(&relation_ty)
@@ -110,12 +125,17 @@ impl MutationRelationTypes {
     async fn remove_component(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the relation type.")] relation_namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the relation type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
         #[graphql(name = "component", desc = "The fully qualified namespace of the component.")] component_namespace: String,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let relation_ty = RelationTypeId::parse_namespace(&relation_namespace)?;
-        let component_ty = ComponentTypeId::parse_namespace(&component_namespace)?;
+        let relation_ty = RelationTypeId::from_str(&_type)?;
+        let component_ty = ComponentTypeId::from_str(&component_namespace)?;
         relation_type_manager.remove_component(&relation_ty, &component_ty)?;
         relation_type_manager
             .get(&relation_ty)
@@ -127,11 +147,16 @@ impl MutationRelationTypes {
     async fn add_property(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the relation type.")] namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the relation type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
         property: PropertyTypeDefinition,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let ty = RelationTypeId::parse_namespace(&namespace)?;
+        let ty = RelationTypeId::from_str(&_type)?;
         let property = property.try_into()?;
         relation_type_manager.add_property(&ty, property)?;
         relation_type_manager
@@ -143,12 +168,17 @@ impl MutationRelationTypes {
     async fn update_property(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the relation type.")] namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the relation type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
         property_name: String,
         property: PropertyTypeDefinition,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let ty = RelationTypeId::parse_namespace(&namespace)?;
+        let ty = RelationTypeId::from_str(&_type)?;
         let property = property.try_into()?;
         relation_type_manager.update_property(&ty, property_name.as_str(), property)?;
         relation_type_manager
@@ -161,11 +191,16 @@ impl MutationRelationTypes {
     async fn remove_property(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the relation type.")] namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the relation type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
         property_name: String,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let ty = RelationTypeId::parse_namespace(&namespace)?;
+        let ty = RelationTypeId::from_str(&_type)?;
         relation_type_manager.remove_property(&ty, property_name.as_str())?;
         relation_type_manager
             .get(&ty)
@@ -177,11 +212,16 @@ impl MutationRelationTypes {
     async fn add_extension(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the relation type.")] namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the relation type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
         extension: GraphQLExtensionDefinition,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let ty = RelationTypeId::parse_namespace(&namespace)?;
+        let ty = RelationTypeId::from_str(&_type)?;
         let extension: Extension = extension.try_into()?;
         relation_type_manager.add_extension(&ty, extension)?;
         relation_type_manager
@@ -194,13 +234,18 @@ impl MutationRelationTypes {
     async fn update_extension(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the relation type.")] relation_namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the relation type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
         #[graphql(name = "extension", desc = "The fully qualified namespace of the extension.")] extension_namespace: String,
         extension: GraphQLExtensionDefinition,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let relation_ty = RelationTypeId::parse_namespace(&relation_namespace)?;
-        let extension_ty = ExtensionTypeId::parse_namespace(&extension_namespace)?;
+        let relation_ty = RelationTypeId::from_str(&_type)?;
+        let extension_ty = ExtensionTypeId::from_str(&extension_namespace)?;
         let extension = Extension::try_from(extension)?;
         relation_type_manager.update_extension(&relation_ty, &extension_ty, extension)?;
         relation_type_manager
@@ -213,12 +258,17 @@ impl MutationRelationTypes {
     async fn remove_extension(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the relation type.")] relation_namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the relation type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
         #[graphql(name = "extension", desc = "The fully qualified namespace of the extension.")] extension_namespace: String,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let relation_ty = RelationTypeId::parse_namespace(&relation_namespace)?;
-        let extension_ty = ExtensionTypeId::parse_namespace(&extension_namespace)?;
+        let relation_ty = RelationTypeId::from_str(&_type)?;
+        let extension_ty = ExtensionTypeId::from_str(&extension_namespace)?;
         relation_type_manager.remove_extension(&relation_ty, &extension_ty)?;
         relation_type_manager
             .get(&relation_ty)
@@ -230,10 +280,15 @@ impl MutationRelationTypes {
     async fn delete(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the relation type.")] namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the relation type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
     ) -> Result<bool> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
-        let ty = RelationTypeId::parse_namespace(&namespace)?;
+        let ty = RelationTypeId::from_str(&_type)?;
         Ok(relation_type_manager.delete(&ty.into()).is_some())
     }
 }

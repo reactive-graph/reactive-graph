@@ -18,18 +18,13 @@ pub mod queries {
     #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Types", variables = "TypeIdVariables")]
     pub struct GetFlowTypeByTypeTypes {
-        #[arguments(
-          type: {
-            namespace: $namespace,
-            name: $name
-          }
-        )]
+        #[arguments(type: $_type)]
         pub flows: Vec<FlowType>,
     }
 
-    pub fn get_flow_type_by_type_query(ty: &FlowTypeId) -> Operation<GetFlowTypeByType, TypeIdVariables> {
+    pub fn get_flow_type_by_type_query<FT: Into<FlowTypeId>>(ty: FT) -> Operation<GetFlowTypeByType, TypeIdVariables> {
         use cynic::QueryBuilder;
-        GetFlowTypeByType::build(ty.clone().into())
+        GetFlowTypeByType::build(ty.into().into())
     }
 
     #[cfg(all(test, feature = "integration-tests"))]

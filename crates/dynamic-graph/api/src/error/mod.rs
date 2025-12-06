@@ -16,6 +16,14 @@ pub enum DynamicQueryError {
 }
 
 #[derive(Debug, Error)]
+pub enum PropertyContainerValidateUpdateError {
+    #[error("Can't update an immutable property: {0}")]
+    ImmutablePropertyError(#[from] ImmutablePropertyError),
+    #[error("Failed to update property: {0}")]
+    PropertyDataTypeError(#[from] PropertyDataTypeError),
+}
+
+#[derive(Debug, Error)]
 pub enum PropertyDataTypeError {
     #[error("Null is not a valid datatype for property {0}!")]
     NullIsNotAValidDataType(String),

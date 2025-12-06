@@ -52,10 +52,7 @@ impl GraphQLPropertyType {
         #[graphql(name = "name")] namespace: Option<String>,
         #[graphql(desc = "If true, the extensions are sorted by type")] sort: Option<bool>,
     ) -> Result<Vec<GraphQLExtension>> {
-        let ty = match namespace {
-            Some(extension_namespace) => Some(ExtensionTypeId::parse_namespace(&extension_namespace)?),
-            None => None,
-        };
+        let ty = ExtensionTypeId::parse_optional_namespace(namespace)?;
         let extensions: GraphQLExtensions = self
             .property_type
             .extensions

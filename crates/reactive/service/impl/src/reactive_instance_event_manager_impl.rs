@@ -9,15 +9,14 @@ use springtime_di::component_alias;
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::PropertyInstanceSetter;
 use reactive_graph_graph::PropertyInstances;
-use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_model_core::reactive_graph::core::event::EventProperties::EVENT;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
 use reactive_graph_reactive_service_api::REACTIVE_INSTANCE_EVENT_PROPERTY_LABEL;
 use reactive_graph_reactive_service_api::ReactiveInstanceEvent;
 use reactive_graph_reactive_service_api::ReactiveInstanceEventManager;
 use reactive_graph_reactive_service_api::ReactiveInstanceEventTypes;
-use reactive_graph_runtime_model::ENTITY_TYPE_SYSTEM_EVENT;
-use reactive_graph_runtime_model::EventProperties::EVENT;
+use reactive_graph_type_system_model::reactive_graph::type_system::type_system_event::TYPE_SYSTEM_EVENT;
 
 #[derive(Component)]
 pub struct ReactiveInstanceEventManagerImpl {
@@ -36,9 +35,9 @@ impl ReactiveInstanceEventManager for ReactiveInstanceEventManagerImpl {
             ReactiveInstanceEvent::EntityInstanceCreated(id)
             | ReactiveInstanceEvent::EntityInstanceDeleted(id)
             | ReactiveInstanceEvent::FlowInstanceCreated(id)
-            | ReactiveInstanceEvent::FlowInstanceDeleted(id) => entity_instance.set(EVENT.property_name(), json!(id)),
+            | ReactiveInstanceEvent::FlowInstanceDeleted(id) => entity_instance.set(EVENT.as_ref(), json!(id)),
             ReactiveInstanceEvent::RelationInstanceCreated(relation_instance_id) | ReactiveInstanceEvent::RelationInstanceDeleted(relation_instance_id) => {
-                entity_instance.set(EVENT.property_name(), json!(relation_instance_id))
+                entity_instance.set(EVENT.as_ref(), json!(relation_instance_id))
             }
         }
     }
@@ -82,11 +81,11 @@ impl ReactiveInstanceEventManagerImpl {
 
     pub(crate) fn create_event_instance<S: Into<String>>(&self, label: S) -> ReactiveEntity {
         EntityInstance::builder()
-            .ty(ENTITY_TYPE_SYSTEM_EVENT.deref())
+            .ty(TYPE_SYSTEM_EVENT.deref())
             .properties(
                 PropertyInstances::new()
                     .property(REACTIVE_INSTANCE_EVENT_PROPERTY_LABEL, json!(label.into()))
-                    .property(EVENT.property_name(), json!(false)),
+                    .property(EVENT.as_ref(), json!(false)),
             )
             .build()
             .into()

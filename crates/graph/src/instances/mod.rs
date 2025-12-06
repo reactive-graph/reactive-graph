@@ -2,6 +2,7 @@
 pub use components::*;
 pub use entities::*;
 pub use flows::*;
+pub use named::*;
 pub use properties::*;
 pub use relations::*;
 

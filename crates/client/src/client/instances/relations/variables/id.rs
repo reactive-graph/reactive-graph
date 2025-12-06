@@ -9,10 +9,9 @@ pub mod variables {
     pub struct RelationInstanceIdVariables {
         /// The id of the outbound entity instance.
         pub outbound_id: UUID,
-        /// The relation type id namespace.
-        pub namespace: String,
-        /// The relation type id type name.
-        pub name: String,
+        /// The fully qualified namespace of the relation type.
+        #[cynic(rename = "type")]
+        pub _type: String,
         /// The relation type id type name.
         pub instance_id: String,
         /// The id of the inbound entity instance.
@@ -24,9 +23,8 @@ pub mod variables {
             let ty = id.ty.relation_type_id();
             Self {
                 outbound_id: id.outbound_id.into(),
-                namespace: ty.namespace(),
-                name: ty.type_name(),
-                instance_id: id.ty.instance_id(),
+                _type: ty.namespace().to_string(),
+                instance_id: id.ty.instance_id().to_string(),
                 inbound_id: id.inbound_id.into(),
             }
         }

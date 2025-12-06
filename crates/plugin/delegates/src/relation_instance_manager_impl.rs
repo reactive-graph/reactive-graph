@@ -6,6 +6,7 @@ use uuid::Uuid;
 use reactive_graph_behaviour_model_api::BehaviourTypeId;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::Mutability;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::RelationInstance;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::RelationTypeId;
@@ -64,7 +65,7 @@ impl reactive_graph_plugin_api::RelationInstanceManager for RelationInstanceMana
         self.reactive_relation_manager.get_by_type(ty)
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> Vec<ReactiveRelation> {
+    fn get_by_namespace(&self, namespace: &Namespace) -> Vec<ReactiveRelation> {
         self.reactive_relation_manager.get_by_namespace(namespace)
     }
 

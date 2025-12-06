@@ -1,3 +1,4 @@
+use std::str::FromStr;
 use std::sync::Arc;
 
 use reactive_graph_graph::EntityType;
@@ -10,6 +11,9 @@ use reactive_graph_runtime_impl::RuntimeBuilder;
 
 #[tokio::main]
 async fn main() -> Result<(), ()> {
+    // Define the type id (the name of the type plus the namespace)
+    let ty = EntityTypeId::from_str("example::example").expect("Failed to construct the entity type id");
+
     RuntimeBuilder::new()
         // For this example we dont want to use the configuration files
         .ignore_config_files()
@@ -25,14 +29,11 @@ async fn main() -> Result<(), ()> {
         // The runtime is initialized at this point and can be used.
         // The GraphQL HTTP-Server is not started yet (and we won't start it in this example)
         //
-        // The runtime can be used using the (rust) APIs and using the GraphQL API
+        // Using the rust APIs and / or the GraphQL API
         //
         .with_runtime(|runtime: Arc<dyn Runtime>| async move {
             // The entity type manager manages the entity types
             let entity_type_manager = runtime.get_entity_type_manager();
-
-            // Define the type id (the name of the type plus the namespace)
-            let ty = EntityTypeId::new_from_type("example", "example");
 
             // Now use a builder to construct an entity type for the type id
             let entity_type = EntityType::builder()
@@ -74,13 +75,13 @@ async fn main() -> Result<(), ()> {
             let query = r#"
 query {
   types {
-    entities(type: { namespace: "example", name: "example" }) {
+    entities(type: "example::example") {
       namespace
       name
     }
   }
   instances {
-    entities(type: { namespace: "example", name: "example" }) {
+    entities(type: "example::example") {
       id
       properties {
         name

@@ -1,14 +1,12 @@
 #[cynic::schema_for_derives(file = r#"../../schema/graphql/reactive-graph-schema.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod mutations {
-    use cynic::Operation;
-    use cynic::QueryFragment;
-
     use crate::client::types::properties::variables::add_property::variables::AddPropertyVariables;
     use crate::client::types::properties::variables::add_property::variables::AddPropertyVariablesFields;
     use crate::schema_graphql::types::entity_type::EntityType;
-    use crate::schema_graphql::types::extension::ExtensionDefinitions;
-    use crate::schema_graphql::types::property_type::PropertyTypeDefinition;
-    use reactive_graph_graph::NamespacedTypeGetter;
+    use cynic::Operation;
+    use cynic::QueryFragment;
+    use reactive_graph_graph::EntityTypeId;
+    use reactive_graph_graph::PropertyType;
 
     #[derive(cynic::QueryFragment, Debug)]
     #[cynic(graphql_type = "Mutation", variables = "AddPropertyVariables")]
@@ -25,33 +23,12 @@ pub mod mutations {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "AddPropertyVariables")]
     pub struct MutationEntityTypes {
-        #[arguments(type: { name: $name, namespace: $namespace }, property: $property)]
+        #[arguments(type: $_type, property: $property)]
         pub add_property: EntityType,
     }
 
-    pub fn add_property_mutation(
-        ty: reactive_graph_graph::EntityTypeId,
-        property_type: reactive_graph_graph::PropertyType,
-    ) -> Operation<AddProperty, AddPropertyVariables> {
+    pub fn add_property_mutation<E: Into<EntityTypeId>, PT: Into<PropertyType>>(ty: E, property_type: PT) -> Operation<AddProperty, AddPropertyVariables> {
         use cynic::MutationBuilder;
-        let extensions: ExtensionDefinitions = property_type.extensions.into();
-        let vars = AddPropertyVariables {
-            namespace: ty.namespace(),
-            name: ty.type_name(),
-            property: PropertyTypeDefinition {
-                name: property_type.name,
-                data_type: property_type.data_type.into(),
-                description: property_type.description,
-                socket_type: property_type.socket_type.into(),
-                mutability: property_type.mutability.into(),
-                extensions: extensions.0,
-            },
-        };
-        AddProperty::build(vars)
-    }
-
-    pub fn add_property_with_variables(variables: AddPropertyVariables) -> Operation<AddProperty, AddPropertyVariables> {
-        use cynic::MutationBuilder;
-        AddProperty::build(variables)
+        AddProperty::build(AddPropertyVariables::new(ty.into(), property_type.into()))
     }
 }

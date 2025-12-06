@@ -8,8 +8,7 @@ use async_graphql::Result;
 use async_graphql::Value;
 
 use reactive_graph_command_api::CommandManager;
-use reactive_graph_command_model::component::CommandProperties::COMMAND_RESULT;
-use reactive_graph_graph::PropertyTypeDefinition;
+use reactive_graph_command_model::reactive_graph::command::command::CommandProperties;
 
 use crate::properties::GraphQLCommandResult;
 
@@ -45,5 +44,5 @@ fn map_entry(entry: (String, Value)) -> Option<(String, serde_json::Value)> {
 }
 
 fn convert_result() -> impl FnOnce(serde_json::Value) -> GraphQLCommandResult {
-    |result: serde_json::Value| GraphQLCommandResult::new(COMMAND_RESULT.property_name(), result)
+    |result: serde_json::Value| GraphQLCommandResult::new(CommandProperties::CMD_RESULT.to_string(), result)
 }

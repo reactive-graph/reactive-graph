@@ -24,15 +24,16 @@ use reactive_graph_graph::NamespacedType;
 use crate::BehaviourTypeId;
 
 #[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
-use rand_derive3::RandGen;
+use reactive_graph_graph::NamespacedTypeError;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_graph::RandomNamespacedTypeId;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_graph::RandomNamespacedTypeIds;
 
 /// The behaviour of an entity type.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema, TypedBuilder)]
-#[cfg_attr(any(test, feature = "test"), derive(RandGen))]
 pub struct EntityBehaviourTypeId {
     /// The entity type.
     pub entity_ty: EntityTypeId,
@@ -197,20 +198,24 @@ macro_rules! entity_behaviour_ty {
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for EntityBehaviourTypeId {
-    fn default_test() -> Self {
-        NamespacedType::generate_random().into()
+impl RandomNamespacedTypeId for EntityBehaviourTypeId {
+    type Error = NamespacedTypeError;
+
+    fn random_type_id() -> Result<Self, NamespacedTypeError> {
+        Ok(Self::new(EntityTypeId::random_type_id()?, BehaviourTypeId::random_type_id()?))
     }
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for EntityBehaviourTypeIds {
-    fn default_test() -> Self {
+impl RandomNamespacedTypeIds for EntityBehaviourTypeIds {
+    type Error = NamespacedTypeError;
+
+    fn random_type_ids() -> Result<Self, NamespacedTypeError> {
         let tys = Self::new();
         let mut rng = rand::rng();
         for _ in 0..rng.random_range(0..10) {
-            tys.insert(EntityBehaviourTypeId::default_test());
+            tys.insert(EntityBehaviourTypeId::random_type_id()?);
         }
-        tys
+        Ok(tys)
     }
 }

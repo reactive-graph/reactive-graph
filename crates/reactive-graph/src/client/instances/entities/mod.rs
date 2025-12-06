@@ -10,7 +10,6 @@ use crate::client::types::components::output_format::ComponentTypeIdsOutputForma
 use reactive_graph_client::ReactiveGraphClient;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::PropertyInstanceGetter;
-use reactive_graph_graph::PropertyType;
 use reactive_graph_table_model::instances::properties::PropertyInstance;
 use std::sync::Arc;
 
@@ -25,7 +24,7 @@ pub(crate) async fn entity_instances(client: &Arc<ReactiveGraphClient>, entity_i
     };
     match command {
         EntityInstancesCommands::List(args) => match client.instances().entities().search((&args).into()).await {
-            Ok(Some(entity_instances)) => output_format_wrapper.collection(entity_instances),
+            Ok(Some(entity_instances)) => output_format_wrapper.collection(entity_instances.to_vec()),
             Ok(None) => Err(NoContent("No entity instances found".to_string())),
             Err(e) => Err(e.into()),
         },
@@ -53,23 +52,20 @@ pub(crate) async fn entity_instances(client: &Arc<ReactiveGraphClient>, entity_i
             Err(e) => Err(e.into()),
         },
         EntityInstancesCommands::GetProperty(args) => match client.instances().entities().get_entity_instance_by_id(args.id).await {
-            Ok(Some(entity_instance)) => Ok(entity_instance.get(args.property_name.clone()).ok_or(args.property_not_found())?.into()),
+            Ok(Some(entity_instance)) => Ok(entity_instance.get(&args.property_name).ok_or(args.property_not_found())?.into()),
             Ok(None) => Err(args.id_not_found()),
             Err(e) => Err(e.into()),
         },
         EntityInstancesCommands::SetProperty(args) => match client.instances().entities().set_property(args.id, args.name.clone(), args.value.clone()).await {
-            Ok(Some(entity_instance)) => Ok(entity_instance.get(args.name.clone()).ok_or(args.property_not_found())?.into()),
+            Ok(Some(entity_instance)) => Ok(entity_instance.get(&args.name).ok_or(args.property_not_found())?.into()),
             Ok(None) => Err(args.id_not_found()),
             Err(e) => Err(e.into()),
         },
-        EntityInstancesCommands::AddProperty(args) => {
-            let property_type: PropertyType = args.property_type.clone().into();
-            match client.instances().entities().add_property(args.id, property_type.clone()).await {
-                Ok(Some(entity_instance)) => output_format_wrapper.single(entity_instance),
-                Ok(None) => Err(args.id_not_found()),
-                Err(e) => Err(e.into()),
-            }
-        }
+        EntityInstancesCommands::AddProperty(args) => match client.instances().entities().add_property(args.id, &args.property_type).await {
+            Ok(Some(entity_instance)) => output_format_wrapper.single(entity_instance),
+            Ok(None) => Err(args.id_not_found()),
+            Err(e) => Err(e.into()),
+        },
         EntityInstancesCommands::RemoveProperty(args) => match client.instances().entities().remove_property(args.id, args.property_name.clone()).await {
             Ok(Some(entity_instance)) => output_format_wrapper.single(entity_instance),
             Ok(None) => Err(args.id_not_found()),
@@ -103,7 +99,7 @@ pub(crate) async fn entity_instances(client: &Arc<ReactiveGraphClient>, entity_i
         EntityInstancesCommands::Create(args) => match client
             .instances()
             .entities()
-            .create(args.ty.clone(), args.id, args.description.clone(), args.properties())
+            .create(args.entity_ty.clone(), args.id, args.description.clone(), args.properties())
             .await
         {
             Ok(Some(entity_instance)) => output_format_wrapper.single(entity_instance),

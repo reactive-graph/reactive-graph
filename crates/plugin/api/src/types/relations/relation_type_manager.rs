@@ -36,14 +36,8 @@ pub trait RelationTypeManager: Send + Sync {
     /// Returns true, if a relation type with the given name exists.
     fn has(&self, ty: &RelationTypeId) -> bool;
 
-    /// Returns true, if a relation type with the given fully qualified name exists.
-    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool;
-
     /// Returns the relation type with the given name.
     fn get(&self, ty: &RelationTypeId) -> Option<RelationType>;
-
-    /// Returns the relation type with the given fully qualified name.
-    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<RelationType>;
 
     /// Returns all relation types whose names matches the given search string.
     fn find(&self, search: &str) -> RelationTypes;

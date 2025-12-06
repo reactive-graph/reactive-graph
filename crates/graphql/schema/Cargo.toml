@@ -21,11 +21,12 @@ schemars = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 strum = { workspace = true, features = ["derive"] }
+thiserror = { workspace = true }
 uuid = { workspace = true }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 reactive-graph-instance-system-json-schema = { version = "0.10.0", path = "../../instance-system/json-schema" }
-reactive-graph-runtime-model = { version = "0.10.0", path = "../../runtime/model" }
+reactive-graph-model-core = { version = "0.10.0", path = "../../model/core" }
 reactive-graph-reactive-model-api = { version = "0.10.0", path = "../../reactive/model/api" }
 reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
 reactive-graph-reactive-service-api = { version = "0.10.0", path = "../../reactive/service/api" }

@@ -14,13 +14,13 @@ use reactive_graph_runtime_graphql_api::RuntimeGraphQLSystem;
 use reactive_graph_runtime_web_api::GraphQLServer;
 use reactive_graph_runtime_web_api::WebResourceManager;
 use reactive_graph_runtime_web_api::WebSystem;
-use reactive_graph_type_system_api::TypeSystem;
+use reactive_graph_type_system_api::TypeSystemSystem;
 
 #[derive(Component)]
 pub struct WebSystemImpl {
     graphql_server: Arc<dyn GraphQLServer + Send + Sync>,
     web_resource_manager: Arc<dyn WebResourceManager + Send + Sync>,
-    type_system: Arc<dyn TypeSystem + Send + Sync>,
+    type_system_system: Arc<dyn TypeSystemSystem + Send + Sync>,
     reactive_system: Arc<dyn ReactiveSystem + Send + Sync>,
     config_system: Arc<dyn ConfigSystem + Send + Sync>,
     runtime_graphql_system: Arc<dyn RuntimeGraphQLSystem + Send + Sync>,
@@ -40,8 +40,8 @@ impl WebSystem for WebSystemImpl {
         self.web_resource_manager.clone()
     }
 
-    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
-        self.type_system.clone()
+    fn type_system_system(&self) -> Arc<dyn TypeSystemSystem + Send + Sync> {
+        self.type_system_system.clone()
     }
 
     fn reactive_system(&self) -> Arc<dyn ReactiveSystem + Send + Sync> {

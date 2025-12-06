@@ -21,17 +21,12 @@ pub mod mutations {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "TypeIdVariables")]
     pub struct MutationFlowTypes {
-        #[arguments(type: { name: $name, namespace: $namespace })]
+        #[arguments(type: $_type)]
         pub delete: bool,
     }
 
     pub fn delete_flow_type_mutation<C: Into<reactive_graph_graph::FlowTypeId>>(ty: C) -> Operation<DeleteFlowType, TypeIdVariables> {
         use cynic::MutationBuilder;
         DeleteFlowType::build(ty.into().into())
-    }
-
-    pub fn delete_flow_type_with_variables(variables: TypeIdVariables) -> Operation<DeleteFlowType, TypeIdVariables> {
-        use cynic::MutationBuilder;
-        DeleteFlowType::build(variables)
     }
 }

@@ -1,0 +1,22 @@
+[package]
+name = "reactive-graph-flow-api"
+description = "Reactive Graph - Flow - API"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+async-trait = { workspace = true }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
+
+reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+
+[lib]
+crate-type = ["lib"]
+
+[lints]
+workspace = true

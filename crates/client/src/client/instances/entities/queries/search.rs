@@ -15,7 +15,7 @@ pub mod queries {
     #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Instances", variables = "SearchEntityInstancesVariables")]
     pub struct SearchEntityInstancesInstances {
-        #[arguments(type: $ty, id: $id, label: $label, properties: $properties, components: $components
+        #[arguments(type: $_type, id: $id, label: $label, properties: $properties, components: $components
         )]
         pub entities: Vec<EntityInstance>,
     }

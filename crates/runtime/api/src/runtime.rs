@@ -19,12 +19,12 @@ use reactive_graph_remotes_model::InstanceAddress;
 use reactive_graph_runtime_graphql_api::RuntimeGraphQLSystem;
 use reactive_graph_runtime_service_api::RuntimeSystem;
 use reactive_graph_runtime_web_api::WebSystem;
-use reactive_graph_type_system_api::TypeSystem;
+use reactive_graph_type_system_api::TypeSystemSystem;
 
 #[async_trait]
 #[injectable]
 pub trait Runtime:
-    TypeSystem
+    TypeSystemSystem
     + CommandSystem
     + ConfigSystem
     + GraphQLSystem

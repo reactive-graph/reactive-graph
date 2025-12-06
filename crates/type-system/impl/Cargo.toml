@@ -20,11 +20,14 @@ toml = { workspace = true, optional = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
-reactive-graph-runtime-model = { version = "0.10.0", path = "../../runtime/model" }
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
 reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
+reactive-graph-model-core = { version = "0.10.0", path = "../../model/core" }
+reactive-graph-model-meta = { version = "0.10.0", path = "../../model/meta" }
 reactive-graph-serde = { version = "0.10.0", path = "../../serde" }
-reactive-graph-type-system-api = { version = "0.10.0", path = "../api", features = ["derive"] }
+# reactive-graph-type-system-api = { version = "0.10.0", path = "../api", features = ["derive"] }
+reactive-graph-type-system-api = { version = "0.10.0", path = "../api" }
+reactive-graph-type-system-model = { version = "0.10.0", path = "../model" }
 
 [dev-dependencies]
 criterion = { workspace = true, features = ["html_reports"] }

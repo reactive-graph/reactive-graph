@@ -1,21 +1,98 @@
-use crate::generator::MarkdownDocumentation;
+use crate::error::DocumentationGenerationError;
+use crate::generator::TypedMarkdownDocumentation;
 use crate::markdown::table::MarkdownTableExt;
+use crate::types::config::DocumentationConfig;
+use crate::types::config::PropertiesDocumentationConfig;
+use crate::types::config::SubTypesGenerationMode;
+use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentTypeIdContainer;
-use reactive_graph_graph::NamespacedTypeIdContainer;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::PropertyTypeContainer;
+use reactive_graph_graph::PropertyTypes;
+use reactive_graph_graph::TypeResolveError::ComponentResolveError;
+use reactive_graph_graph::TypeResolver;
 use tabled::Table;
+use tabled::Tabled;
 
-impl<TY> MarkdownDocumentation<TY>
+impl<TY> TypedMarkdownDocumentation<TY>
 where
     TY: ComponentTypeIdContainer,
 {
-    pub fn components(mut self) -> Self {
+    pub fn components(self, config: &DocumentationConfig, resolver: &TypeResolver) -> Result<Self, DocumentationGenerationError> {
         let tys = self.ty.get_components_cloned();
         if tys.is_empty() {
-            return self;
+            return Ok(self);
         }
-        self.document.header2("Components");
-        let table = Table::new(&mut tys.to_vec().into_iter()).to_owned();
-        self.document.table(table);
-        self
+        let components = resolver.components(&tys)?;
+        {
+            let mut document = self.document.write().unwrap();
+            if config.header {
+                document.header2("Components");
+            }
+            match config.mode {
+                SubTypesGenerationMode::None => {}
+                SubTypesGenerationMode::Short | SubTypesGenerationMode::Table => {
+                    let view: Vec<ComponentView> = components.into_iter().map(|(_, component)| ComponentView::new(component)).collect();
+                    let table = Table::new(&mut view.into_iter()).to_owned();
+                    document.table(table);
+                }
+            }
+        }
+        Ok(self)
+    }
+}
+
+impl<TY> TypedMarkdownDocumentation<TY>
+where
+    TY: ComponentTypeIdContainer + PropertyTypeContainer,
+{
+    pub fn component_properties(
+        self,
+        config: &PropertiesDocumentationConfig,
+        resolver: &TypeResolver,
+        merge: bool,
+    ) -> Result<Self, DocumentationGenerationError> {
+        let property_types = if merge { self.ty.get_own_properties_cloned() } else { PropertyTypes::new() };
+        for component_ty in self.ty.get_components_cloned() {
+            let Some(component) = resolver.component(&component_ty) else {
+                return Err(ComponentResolveError(component_ty).into());
+            };
+            property_types.merge_non_existent_properties(component.properties);
+        }
+        if !property_types.is_empty() {
+            let mut document = self.document.write().unwrap();
+            if config.header {
+                match config.mode {
+                    SubTypesGenerationMode::None => {}
+                    SubTypesGenerationMode::Short => {
+                        document.header3("Properties from components");
+                    }
+                    SubTypesGenerationMode::Table => {
+                        document.header2("Properties from components");
+                    }
+                }
+            }
+        }
+        Ok(self.properties(&property_types, config))
+    }
+}
+
+#[derive(Tabled)]
+struct ComponentView {
+    #[tabled(rename = "Component")]
+    namespace: String,
+    #[tabled(rename = "Description")]
+    description: String,
+    #[tabled(rename = "Properties")]
+    properties: String,
+}
+
+impl ComponentView {
+    pub fn new(component: Component) -> Self {
+        ComponentView {
+            namespace: format!("`{}`", component.ty.namespace().to_string()),
+            description: component.description.clone(),
+            properties: format!("<ul compact><li>`{}`</li></ul>", component.properties.names().join("`</li><li>`")),
+        }
     }
 }

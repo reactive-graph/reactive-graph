@@ -2,96 +2,12 @@ use crate::schema_graphql::types::extension::Extension;
 use crate::schema_graphql::types::extension::Extensions;
 use crate::schema_graphql::types::property_type::PropertyType;
 use crate::schema_graphql::types::property_type::PropertyTypes;
-use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::InvalidComponentError;
+use reactive_graph_graph::NamespacedTypeParseError;
 use serde_json::Value;
-use std::fmt;
-use std::fmt::Formatter;
 use std::ops::Deref;
-
-#[derive(cynic::InputObject, Clone, Debug)]
-#[cynic(
-    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
-    schema_module = "crate::schema_graphql::schema"
-)]
-pub struct ComponentTypeId {
-    pub name: String,
-    pub namespace: String,
-}
-
-impl From<reactive_graph_graph::ComponentTypeId> for ComponentTypeId {
-    fn from(ty: reactive_graph_graph::ComponentTypeId) -> Self {
-        ComponentTypeId {
-            name: ty.type_name(),
-            namespace: ty.namespace(),
-        }
-    }
-}
-
-impl From<&ComponentTypeId> for reactive_graph_graph::ComponentTypeId {
-    fn from(ty: &ComponentTypeId) -> Self {
-        reactive_graph_graph::ComponentTypeId::new_from_type(&ty.namespace, &ty.name)
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct ComponentTypeIds(pub Vec<ComponentTypeId>);
-
-impl ComponentTypeIds {
-    pub fn new() -> Self {
-        Self(Vec::new())
-    }
-}
-
-impl Default for ComponentTypeIds {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl From<ComponentTypeIds> for reactive_graph_graph::ComponentTypeIds {
-    fn from(component_type_ids: ComponentTypeIds) -> Self {
-        component_type_ids
-            .0
-            .iter()
-            .map(|ty| {
-                let ty: reactive_graph_graph::ComponentTypeId = ty.into();
-                ty
-            })
-            .collect()
-    }
-}
-
-impl From<reactive_graph_graph::ComponentTypeIds> for ComponentTypeIds {
-    fn from(component_type_ids: reactive_graph_graph::ComponentTypeIds) -> Self {
-        component_type_ids.into_iter().map(From::from).collect()
-    }
-}
-
-impl FromIterator<ComponentTypeId> for ComponentTypeIds {
-    fn from_iter<I: IntoIterator<Item = ComponentTypeId>>(iter: I) -> Self {
-        let mut tys = ComponentTypeIds::new();
-        for component in iter {
-            tys.0.push(component);
-        }
-        tys
-    }
-}
-
-impl FromIterator<Component> for reactive_graph_graph::ComponentTypeIds {
-    fn from_iter<I: IntoIterator<Item = Component>>(iter: I) -> Self {
-        let tys = reactive_graph_graph::ComponentTypeIds::new();
-        for component in iter {
-            tys.insert((&component.ty()).into());
-        }
-        tys
-    }
-}
-
-impl fmt::Display for ComponentTypeIds {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        writeln!(f)
-    }
-}
+use std::str::FromStr;
 
 #[derive(cynic::QueryFragment, Clone, Debug)]
 #[cynic(
@@ -99,13 +15,11 @@ impl fmt::Display for ComponentTypeIds {
     schema_module = "crate::schema_graphql::schema"
 )]
 pub struct Component {
-    /// The namespace of the extension.
-    pub namespace: String,
+    /// The fully qualified namespace of the component.
+    #[cynic(rename = "type")]
+    pub _type: String,
 
-    /// The name of the extension.
-    pub name: String,
-
-    /// Textual description of the extension.
+    /// Textual description of the component.
     pub description: String,
 
     /// The property types.
@@ -119,28 +33,34 @@ pub struct Component {
 }
 
 impl Component {
-    pub fn ty(&self) -> ComponentTypeId {
-        ComponentTypeId {
-            namespace: self.namespace.clone(),
-            name: self.name.clone(),
-        }
+    pub fn ty(&self) -> Result<ComponentTypeId, NamespacedTypeParseError> {
+        ComponentTypeId::from_str(&self._type)
     }
+
+    // pub fn extensions(&self) -> Extensions {
+    //     Extensions(self.extensions.clone())
+    // }
 }
 
-impl From<Component> for reactive_graph_graph::Component {
-    fn from(component: Component) -> Self {
-        reactive_graph_graph::Component {
-            ty: (&component.ty()).into(),
+impl TryFrom<Component> for reactive_graph_graph::Component {
+    type Error = InvalidComponentError;
+
+    fn try_from(component: Component) -> Result<Self, Self::Error> {
+        Ok(reactive_graph_graph::Component {
+            ty: ComponentTypeId::from_str(&component._type).map_err(InvalidComponentError::InvalidComponent)?,
             description: component.description,
-            properties: PropertyTypes(component.properties).into(),
-            extensions: Extensions(component.extensions).into(),
-        }
+            properties: reactive_graph_graph::PropertyTypes::try_from(PropertyTypes(component.properties))
+                .map_err(InvalidComponentError::InvalidPropertyType)?,
+            extensions: reactive_graph_graph::Extensions::try_from(Extensions(component.extensions)).map_err(InvalidComponentError::InvalidExtension)?,
+        })
     }
 }
 
-impl From<Component> for reactive_graph_graph::ComponentTypeId {
-    fn from(component: Component) -> Self {
-        reactive_graph_graph::ComponentTypeId::new_from_type(component.namespace, component.name)
+impl TryFrom<Component> for ComponentTypeId {
+    type Error = NamespacedTypeParseError;
+
+    fn try_from(component: Component) -> Result<Self, Self::Error> {
+        ComponentTypeId::from_str(&component._type)
     }
 }
 
@@ -154,22 +74,15 @@ impl Deref for Components {
     }
 }
 
-impl From<Components> for Vec<reactive_graph_graph::Component> {
-    fn from(components: Components) -> Self {
-        components.0.into_iter().map(From::from).collect()
-    }
-}
+impl TryFrom<Components> for reactive_graph_graph::Components {
+    type Error = InvalidComponentError;
 
-impl From<Components> for reactive_graph_graph::ComponentTypeIds {
-    fn from(components: Components) -> Self {
-        components
-            .0
-            .into_iter()
-            .map(|c| {
-                let ty: reactive_graph_graph::ComponentTypeId = c.into();
-                ty
-            })
-            .collect()
+    fn try_from(components: Components) -> Result<Self, Self::Error> {
+        let components_2 = reactive_graph_graph::Components::new();
+        for component in components.0 {
+            components_2.push(reactive_graph_graph::Component::try_from(component)?);
+        }
+        Ok(components_2)
     }
 }
 

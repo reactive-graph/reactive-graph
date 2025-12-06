@@ -11,20 +11,19 @@ use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::PropertyInstanceSetter;
 use reactive_graph_graph::PropertyInstances;
-use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_graph::TypeDefinition;
 use reactive_graph_graph::TypeDefinitionComponent;
 use reactive_graph_graph::TypeDefinitionExtension;
 use reactive_graph_graph::TypeDefinitionGetter;
 use reactive_graph_graph::TypeDefinitionProperty;
 use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_model_core::reactive_graph::core::event::EventProperties;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
-use reactive_graph_runtime_model::ENTITY_TYPE_SYSTEM_EVENT;
-use reactive_graph_runtime_model::EventProperties::EVENT;
 use reactive_graph_type_system_api::TYPE_SYSTEM_EVENT_PROPERTY_LABEL;
 use reactive_graph_type_system_api::TypeSystemEvent;
 use reactive_graph_type_system_api::TypeSystemEventManager;
 use reactive_graph_type_system_api::TypeSystemEventTypes;
+use reactive_graph_type_system_model::reactive_graph::type_system::type_system_event::TYPE_SYSTEM_EVENT;
 
 #[derive(Component)]
 pub struct TypeSystemEventManagerImpl {
@@ -86,7 +85,7 @@ impl TypeSystemEventManager for TypeSystemEventManagerImpl {
             TypeSystemEvent::RelationTypeExtensionAdded(ty, extension_ty) | TypeSystemEvent::RelationTypeExtensionRemoved(ty, extension_ty) => {
                 self.propagate_type_definition_extension_event(entity_instance, ty.type_definition(), extension_ty);
             }
-            TypeSystemEvent::TypeSystemChanged => entity_instance.set(EVENT.property_name(), json!(true)),
+            TypeSystemEvent::TypeSystemChanged => entity_instance.set(EventProperties::EVENT.as_ref(), json!(true)),
             TypeSystemEvent::EntityTypeComponentRenamed(_, _, _) => {}
             TypeSystemEvent::EntityTypeComponentUpdated(_, _) => {}
             TypeSystemEvent::EntityTypePropertyRenamed(_, _, _) => {}
@@ -119,7 +118,7 @@ impl TypeSystemEventManager for TypeSystemEventManagerImpl {
 impl TypeSystemEventManagerImpl {
     fn propagate_type_definition_event(&self, entity_instance: ReactiveEntity, type_definition: TypeDefinition) {
         if let Ok(value) = serde_json::to_value(type_definition) {
-            entity_instance.set(EVENT.property_name(), value);
+            entity_instance.set(EventProperties::EVENT.as_ref(), value);
             // Also emit event that the type system has been changed
             self.emit_event(TypeSystemEvent::TypeSystemChanged);
         };
@@ -132,7 +131,7 @@ impl TypeSystemEventManagerImpl {
         component_ty: &ComponentTypeId,
     ) {
         if let Ok(v) = TypeDefinitionComponent::new(type_definition, component_ty.clone()).try_into() {
-            entity_instance.set(EVENT.property_name(), v);
+            entity_instance.set(EventProperties::EVENT.as_ref(), v);
         };
         // Also emit event that the type system has been changed
         self.emit_event(TypeSystemEvent::TypeSystemChanged);
@@ -140,7 +139,7 @@ impl TypeSystemEventManagerImpl {
 
     fn propagate_type_definition_property_event(&self, entity_instance: ReactiveEntity, type_definition: TypeDefinition, property_name: String) {
         if let Ok(v) = TypeDefinitionProperty::new(type_definition, property_name).try_into() {
-            entity_instance.set(EVENT.property_name(), v);
+            entity_instance.set(EventProperties::EVENT.as_ref(), v);
         };
         self.emit_event(TypeSystemEvent::TypeSystemChanged);
     }
@@ -154,18 +153,18 @@ impl TypeSystemEventManagerImpl {
         new_property_name: String,
     ) {
         if let Ok(v) = TypeDefinitionProperty::new(type_definition.clone(), old_property_name).try_into() {
-            entity_instance.set(EVENT.property_name(), v);
+            entity_instance.set(EventProperties::EVENT.as_ref(), v);
         };
         self.emit_event(TypeSystemEvent::TypeSystemChanged);
         if let Ok(v) = TypeDefinitionProperty::new(type_definition, new_property_name).try_into() {
-            entity_instance.set(EVENT.property_name(), v);
+            entity_instance.set(EventProperties::EVENT.as_ref(), v);
         };
         self.emit_event(TypeSystemEvent::TypeSystemChanged);
     }
 
     fn propagate_type_definition_extension_event(&self, entity_instance: ReactiveEntity, type_definition: TypeDefinition, extension_ty: ExtensionTypeId) {
         if let Ok(v) = TypeDefinitionExtension::new(type_definition, extension_ty).try_into() {
-            entity_instance.set(EVENT.property_name(), v);
+            entity_instance.set(EventProperties::EVENT.as_ref(), v);
         };
         self.emit_event(TypeSystemEvent::TypeSystemChanged);
     }
@@ -179,11 +178,11 @@ impl TypeSystemEventManagerImpl {
         new_extension_ty: ExtensionTypeId,
     ) {
         if let Ok(v) = TypeDefinitionExtension::new(type_definition.clone(), old_extension_ty).try_into() {
-            entity_instance.set(EVENT.property_name(), v);
+            entity_instance.set(EventProperties::EVENT.as_ref(), v);
         };
         self.emit_event(TypeSystemEvent::TypeSystemChanged);
         if let Ok(v) = TypeDefinitionExtension::new(type_definition, new_extension_ty).try_into() {
-            entity_instance.set(EVENT.property_name(), v);
+            entity_instance.set(EventProperties::EVENT.as_ref(), v);
         };
         self.emit_event(TypeSystemEvent::TypeSystemChanged);
     }
@@ -346,11 +345,11 @@ impl TypeSystemEventManagerImpl {
 
     pub(crate) fn create_system_event_instance<S: Into<String>>(&self, label: S) -> ReactiveEntity {
         EntityInstance::builder()
-            .ty(ENTITY_TYPE_SYSTEM_EVENT.deref())
+            .ty(TYPE_SYSTEM_EVENT.deref())
             .properties(
                 PropertyInstances::new()
                     .property(TYPE_SYSTEM_EVENT_PROPERTY_LABEL, json!(label.into()))
-                    .property(EVENT.property_name(), json!(false)),
+                    .property(EventProperties::EVENT.as_ref(), json!(false)),
             )
             .build()
             .into()

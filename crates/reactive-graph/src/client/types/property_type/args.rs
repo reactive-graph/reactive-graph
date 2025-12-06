@@ -19,19 +19,20 @@ pub(crate) struct PropertyTypeDefinitionArgs {
     pub mutability: Mutability,
 
     /// Description of the property.
+    #[clap(long)]
     pub description: Option<String>,
     // The extensions of the property
     // pub extensions: Option<Extensions>,
 }
 
-impl From<PropertyTypeDefinitionArgs> for reactive_graph_graph::PropertyType {
-    fn from(property_type: PropertyTypeDefinitionArgs) -> Self {
+impl From<&PropertyTypeDefinitionArgs> for reactive_graph_graph::PropertyType {
+    fn from(property_type: &PropertyTypeDefinitionArgs) -> Self {
         reactive_graph_graph::PropertyType::builder()
-            .name(property_type.property_name)
+            .name(property_type.property_name.clone())
             .data_type(property_type.data_type)
             .socket_type(property_type.socket_type)
             .mutability(property_type.mutability)
-            .description(property_type.description.unwrap_or_default())
+            .description(property_type.description.clone().unwrap_or_default())
             .build()
     }
 }

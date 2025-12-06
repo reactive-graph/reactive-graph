@@ -5,28 +5,28 @@ use crate::Mutability;
 
 pub trait PropertyInstanceGetter {
     /// Returns the json value of the given property by name
-    fn get<S: Into<String>>(&self, property_name: S) -> Option<Value>;
+    fn get(&self, property_name: &str) -> Option<Value>;
 
     /// Returns the boolean value of the given property by name
-    fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool>;
+    fn as_bool(&self, property_name: &str) -> Option<bool>;
 
     /// Returns the u64 value of the given property by name
-    fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64>;
+    fn as_u64(&self, property_name: &str) -> Option<u64>;
 
     /// Returns the i64 value of the given property by name
-    fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64>;
+    fn as_i64(&self, property_name: &str) -> Option<i64>;
 
     /// Returns the f64 value of the given property by name
-    fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64>;
+    fn as_f64(&self, property_name: &str) -> Option<f64>;
 
     /// Returns the string value of the given property by name
-    fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String>;
+    fn as_string(&self, property_name: &str) -> Option<String>;
 
     /// Returns the string value of the given property by name
-    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>>;
+    fn as_array(&self, property_name: &str) -> Option<Vec<Value>>;
 
     /// Returns the string value of the given property by name
-    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>>;
+    fn as_object(&self, property_name: &str) -> Option<Map<String, Value>>;
 
     // TODO: integrate with other non-primitive types
     // as_byte_array (string BASE64 -> Vec<u8>)
@@ -52,23 +52,23 @@ pub trait MutablePropertyInstanceSetter: PropertyInstanceGetter {
 
 pub trait PropertyInstanceSetter: PropertyInstanceGetter {
     /// Sets the value of the given property by name if the property is mutable.
-    fn set_checked<S: Into<String>>(&self, property_name: S, value: Value);
+    fn set_checked(&self, property_name: &str, value: Value);
 
     /// Sets the value of the given property by name
-    fn set<S: Into<String>>(&self, property_name: S, value: Value);
+    fn set(&self, property_name: &str, value: Value);
 
     /// Sets the value of the given property by name if the property is mutable. Sends the value
     /// down the stream.
-    fn set_no_propagate_checked<S: Into<String>>(&self, property_name: S, value: Value);
+    fn set_no_propagate_checked(&self, property_name: &str, value: Value);
 
     /// Sets the value of the given property by name. Sends the value down the stream.
-    fn set_no_propagate<S: Into<String>>(&self, property_name: S, value: Value);
+    fn set_no_propagate(&self, property_name: &str, value: Value);
 
     /// Returns the mutability of the property by name.
-    fn mutability<S: Into<String>>(&self, property_name: S) -> Option<Mutability>;
+    fn mutability(&self, property_name: &str) -> Option<Mutability>;
 
     /// Sets the mutability of the property by name.
-    fn set_mutability<S: Into<String>>(&self, property_name: S, mutability: Mutability);
+    fn set_mutability(&self, property_name: &str, mutability: Mutability);
 }
 
 #[macro_export]

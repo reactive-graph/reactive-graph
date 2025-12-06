@@ -31,9 +31,14 @@ pub struct GraphQLComponent {
 /// Components are composable parts which can be used by types (entity type, relation type).
 #[Object(name = "Component")]
 impl GraphQLComponent {
-    /// The namespace and type name.
+    /// The fully qualified namespace of the component.
     #[graphql(name = "type")]
-    async fn ty(&self) -> GraphQLNamespacedType {
+    async fn ty(&self) -> String {
+        self.component.namespace().to_string()
+    }
+
+    /// The namespaced type.
+    async fn namespaced_type(&self) -> GraphQLNamespacedType {
         self.component.namespaced_type().into()
     }
 
@@ -79,10 +84,7 @@ impl GraphQLComponent {
         #[graphql(name = "name")] namespace: Option<String>,
         #[graphql(desc = "If true, the extensions are sorted by type")] sort: Option<bool>,
     ) -> Result<Vec<GraphQLExtension>> {
-        let ty = match namespace {
-            Some(namespace) => Some(ExtensionTypeId::parse_namespace(&namespace)?),
-            None => None,
-        };
+        let ty = ExtensionTypeId::parse_optional_namespace(namespace)?;
         let mut extensions: Vec<GraphQLExtension> = self
             .component
             .extensions

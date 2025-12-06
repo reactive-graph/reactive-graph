@@ -21,7 +21,7 @@ pub struct EntityExtensionTypeId {
 }
 
 impl EntityExtensionTypeId {
-    pub fn new<E: Into<EntityTypeId>, C: Into<ExtensionTypeId>>(entity_ty: E, extension_ty: C) -> Self {
+    pub fn new<E: Into<EntityTypeId>, EX: Into<ExtensionTypeId>>(entity_ty: E, extension_ty: EX) -> Self {
         Self {
             entity_ty: entity_ty.into(),
             extension_ty: extension_ty.into(),

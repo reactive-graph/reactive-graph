@@ -22,20 +22,15 @@ pub mod mutations {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "UpdateDescriptionVariables")]
     pub struct MutationComponents {
-        #[arguments(type: { name: $name, namespace: $namespace }, description: $description)]
+        #[arguments(type: $_type, description: $description)]
         pub update_description: Component,
     }
 
-    pub fn update_description_mutation(
-        ty: reactive_graph_graph::ComponentTypeId,
+    pub fn update_description_mutation<C: Into<reactive_graph_graph::ComponentTypeId>>(
+        ty: C,
         description: String,
     ) -> Operation<UpdateDescription, UpdateDescriptionVariables> {
         use cynic::MutationBuilder;
-        UpdateDescription::build(UpdateDescriptionVariables::new(ty, description))
-    }
-
-    pub fn update_description_with_variables(variables: UpdateDescriptionVariables) -> Operation<UpdateDescription, UpdateDescriptionVariables> {
-        use cynic::MutationBuilder;
-        UpdateDescription::build(variables)
+        UpdateDescription::build(UpdateDescriptionVariables::new(ty.into(), description))
     }
 }

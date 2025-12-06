@@ -1,3 +1,4 @@
+use std::str::FromStr;
 use std::sync::Arc;
 
 use async_graphql::Context;
@@ -7,9 +8,6 @@ use log::debug;
 use serde_json::json;
 use uuid::Uuid;
 
-use crate::mutation::PropertyTypeDefinitions;
-use crate::query::GraphQLEntityInstance;
-use crate::query::GraphQLPropertyInstance;
 use reactive_graph_behaviour_model_api::BehaviourTypeId;
 use reactive_graph_behaviour_service_api::EntityBehaviourManager;
 use reactive_graph_behaviour_service_api::EntityComponentBehaviourManager;
@@ -18,20 +16,22 @@ use reactive_graph_graph::CreateEntityInstanceError;
 use reactive_graph_graph::CreateRelationInstanceError;
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityTypeId;
-use reactive_graph_graph::NamespacedTypeConstructor;
-use reactive_graph_graph::NamespacedTypeIdContainer;
 use reactive_graph_graph::PropertyInstanceSetter;
-use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_graph::TriggerEntityInstanceError;
 use reactive_graph_graph::UpdateEntityInstanceError;
+use reactive_graph_model_core::reactive_graph::core::action::ActionProperties::TRIGGER;
 use reactive_graph_reactive_model_api::ReactiveInstance;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
 use reactive_graph_reactive_service_api::ReactiveEntityManager;
 use reactive_graph_reactive_service_api::ReactiveRelationManager;
-use reactive_graph_runtime_model::ActionProperties::TRIGGER;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::EntityTypeManager;
+
+use crate::mutation::PropertyTypeDefinitions;
+use crate::query::GraphQLEntityInstance;
+use crate::query::GraphQLPropertyInstance;
+use crate::validator::NamespacedTypeValidator;
 
 #[derive(Default)]
 pub struct MutationEntityInstances;
@@ -69,7 +69,12 @@ impl MutationEntityInstances {
     async fn create(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type", desc = "The fully qualified namespace of the entity type.")] namespace: String,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the entity type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: String,
         #[graphql(desc = "The id of the entity instance. If none is given a random uuid will be generated.")] id: Option<Uuid>,
         #[graphql(desc = "Name of the entity instance.")] name: Option<String>,
         #[graphql(desc = "Description of the entity instance.")] description: Option<String>,
@@ -80,7 +85,7 @@ impl MutationEntityInstances {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
         let component_manager = context.data::<Arc<dyn ComponentManager + Send + Sync>>()?;
 
-        let entity_ty = EntityTypeId::parse_namespace(&namespace)?;
+        let entity_ty = EntityTypeId::from_str(&_type)?;
         let component_tys = ComponentTypeIds::parse_optional_namespaces(components)?;
 
         let entity_type = entity_type_manager
@@ -114,8 +119,8 @@ impl MutationEntityInstances {
         context: &Context<'_>,
         #[graphql(desc = "Updates the entity instance with the given id.")] id: Option<Uuid>,
         #[graphql(desc = "Updates the entity instance with the given label.")] label: Option<String>,
-        #[graphql(name = "add_components", desc = "Adds the given components.")] add_component_namespaces: Option<Vec<String>>,
-        #[graphql(name = "remove_components", desc = "Removes the given components.")] remove_component_namespaces: Option<Vec<String>>,
+        #[graphql(name = "addComponents", desc = "Adds the given components.")] add_component_namespaces: Option<Vec<String>>,
+        #[graphql(name = "removeComponents", desc = "Removes the given components.")] remove_component_namespaces: Option<Vec<String>>,
         #[graphql(desc = "Updates the given properties")] properties: Option<Vec<GraphQLPropertyInstance>>,
         #[graphql(desc = "Adds the given properties")] add_properties: Option<Vec<crate::mutation::PropertyTypeDefinition>>,
         #[graphql(desc = "Removes the given properties")] remove_properties: Option<Vec<String>>,
@@ -146,7 +151,7 @@ impl MutationEntityInstances {
             for property in properties.clone() {
                 debug!("set property {} = {}", property.name.clone(), property.value.clone());
                 // Set with respect to the mutability state
-                reactive_entity.set_no_propagate_checked(property.name.clone(), property.value.clone());
+                reactive_entity.set_no_propagate_checked(&property.name, property.value.clone());
             }
             // tick every property that has been changed before, this is still not transactional
             for property in properties {
@@ -163,8 +168,8 @@ impl MutationEntityInstances {
             reactive_entity.add_property_by_type(&property_type);
         }
         if let Some(remove_properties) = remove_properties {
-            for property_name in remove_properties.clone() {
-                debug!("remove property {}", &property_name);
+            for property_name in remove_properties.iter() {
+                debug!("remove property {property_name}");
                 reactive_entity.remove_property(property_name);
             }
         }
@@ -181,10 +186,10 @@ impl MutationEntityInstances {
         #[graphql(desc = "Triggers the entity instance with the given label")] label: Option<String>,
     ) -> Result<GraphQLEntityInstance> {
         let reactive_entity = self.get_reactive_entity_by_id_or_label(context, id, label)?;
-        if !reactive_entity.has_property(&TRIGGER.property_name()) {
+        if !reactive_entity.has_property(TRIGGER.as_ref()) {
             return Err(TriggerEntityInstanceError::TriggerPropertyMissing(reactive_entity.id).into());
         }
-        reactive_entity.set_checked(TRIGGER.property_name(), json!(true));
+        reactive_entity.set_checked(TRIGGER.as_ref(), json!(true));
         Ok(reactive_entity.into())
     }
 
@@ -238,7 +243,7 @@ impl MutationEntityInstances {
         let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
         let entity_behaviour_manager = context.data::<Arc<dyn EntityBehaviourManager + Send + Sync>>()?;
         let entity_component_behaviour_manager = context.data::<Arc<dyn EntityComponentBehaviourManager + Send + Sync>>()?;
-        let behaviour_ty = BehaviourTypeId::parse_namespace(&behaviour_namespace)?;
+        let behaviour_ty = BehaviourTypeId::from_str(&behaviour_namespace)?;
         let reactive_instance = reactive_entity_manager
             .get(id)
             .ok_or(UpdateEntityInstanceError::EntityInstanceDoesNotExist(id))?;
@@ -260,7 +265,7 @@ impl MutationEntityInstances {
         let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
         let entity_behaviour_manager = context.data::<Arc<dyn EntityBehaviourManager + Send + Sync>>()?;
         let entity_component_behaviour_manager = context.data::<Arc<dyn EntityComponentBehaviourManager + Send + Sync>>()?;
-        let behaviour_ty = BehaviourTypeId::parse_namespace(&behaviour_namespace)?;
+        let behaviour_ty = BehaviourTypeId::from_str(&behaviour_namespace)?;
         let reactive_instance = reactive_entity_manager
             .get(id)
             .ok_or(UpdateEntityInstanceError::EntityInstanceDoesNotExist(id))?;
@@ -282,7 +287,7 @@ impl MutationEntityInstances {
         let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
         let entity_behaviour_manager = context.data::<Arc<dyn EntityBehaviourManager + Send + Sync>>()?;
         let entity_component_behaviour_manager = context.data::<Arc<dyn EntityComponentBehaviourManager + Send + Sync>>()?;
-        let behaviour_ty = BehaviourTypeId::parse_namespace(&behaviour_namespace)?;
+        let behaviour_ty = BehaviourTypeId::from_str(&behaviour_namespace)?;
         let reactive_instance = reactive_entity_manager
             .get(id)
             .ok_or(UpdateEntityInstanceError::EntityInstanceDoesNotExist(id))?;

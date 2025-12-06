@@ -3,22 +3,23 @@ use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::Extensions;
-use reactive_graph_graph::NamespacedTypeError;
+use reactive_graph_graph::NamespacedTypeParseError;
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
 use std::ops::Deref;
+use std::str::FromStr;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, InputObject)]
 #[graphql(name = "ExtensionDefinition")]
 pub struct GraphQLExtensionDefinition {
     /// The fully qualified namespace of the extension.
-    #[graphql(name = "name")]
-    pub extension_namespace: String,
+    #[graphql(name = "type")]
+    pub _type: String,
 
     /// Optionally, the fully qualified namespace of the entity type.
-    #[graphql(name = "entity_type")]
-    pub entity_ty: Option<String>,
+    #[graphql(name = "entityType")]
+    pub entity_type: Option<String>,
 
     /// The description of the extension.
     pub description: String,
@@ -28,16 +29,13 @@ pub struct GraphQLExtensionDefinition {
 }
 
 impl TryFrom<GraphQLExtensionDefinition> for Extension {
-    type Error = NamespacedTypeError;
+    type Error = NamespacedTypeParseError;
 
     fn try_from(extension: GraphQLExtensionDefinition) -> Result<Self, Self::Error> {
-        let ty = ExtensionTypeId::parse_namespace(&extension.extension_namespace)?;
-        let entity_ty = match extension.entity_ty {
-            Some(entity_ty) => Some(EntityTypeId::parse_namespace(&entity_ty)?),
-            None => None,
-        };
+        let extension_ty = ExtensionTypeId::from_str(&extension._type)?;
+        let entity_ty = EntityTypeId::parse_optional_namespace(extension.entity_type)?;
         Ok(Extension {
-            ty,
+            ty: extension_ty,
             entity_ty,
             description: extension.description.clone(),
             extension: extension.extension,
@@ -53,11 +51,11 @@ impl GraphQLExtensionDefinitions {
         Self(extensions)
     }
 
-    pub fn parse_definitions(extension_definitions: Vec<GraphQLExtensionDefinition>) -> Result<Extensions, NamespacedTypeError> {
+    pub fn parse_definitions(extension_definitions: Vec<GraphQLExtensionDefinition>) -> Result<Extensions, NamespacedTypeParseError> {
         GraphQLExtensionDefinitions::try_from(extension_definitions).map(|e| e.0)
     }
 
-    pub fn parse_optional_definitions(extension_definitions: Option<Vec<GraphQLExtensionDefinition>>) -> Result<Extensions, NamespacedTypeError> {
+    pub fn parse_optional_definitions(extension_definitions: Option<Vec<GraphQLExtensionDefinition>>) -> Result<Extensions, NamespacedTypeParseError> {
         match extension_definitions {
             Some(extension_definitions) => GraphQLExtensionDefinitions::try_from(extension_definitions).map(|extension_definition| extension_definition.0),
             None => Ok(Extensions::new()),
@@ -86,7 +84,7 @@ impl From<GraphQLExtensionDefinitions> for Extensions {
 }
 
 impl TryFrom<Vec<GraphQLExtensionDefinition>> for GraphQLExtensionDefinitions {
-    type Error = NamespacedTypeError;
+    type Error = NamespacedTypeParseError;
 
     fn try_from(extension_definitions: Vec<GraphQLExtensionDefinition>) -> Result<Self, Self::Error> {
         let extensions = Extensions::new();

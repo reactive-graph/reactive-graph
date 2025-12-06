@@ -12,17 +12,27 @@ readme = "../../../README.md"
 [dependencies]
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
-strum_macros = { workspace = true }
+typed-builder = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-model-core = { version = "0.10.0", path = "../../model/core" }
 
 [build-dependencies]
 anyhow = { workspace = true }
+json5 = { workspace = true, optional = true }
+toml = { workspace = true, optional = true }
 
 reactive-graph-generator-documentation = { version = "0.10.0", path = "../../generator/documentation" }
+reactive-graph-generator-codegen = { version = "0.10.0", path = "../../generator/codegen" }
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
-reactive-graph-runtime-types = { version = "0.10.0", path = "../type-provider" }
-reactive-graph-command-types = { version = "0.10.0", path = "../../command/type-provider" }
+reactive-graph-model-core = { version = "0.10.0", path = "../../model/core" }
+# reactive-graph-type-system-model = { version = "0.10.0", path = "../../type-system/model" }
+
+[features]
+default = ["json5", "toml"]
+json5 = ["dep:json5"]
+toml = ["dep:toml"]
 
 [lib]
 crate-type = ["lib"]

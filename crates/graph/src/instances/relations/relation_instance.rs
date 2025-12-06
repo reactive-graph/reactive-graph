@@ -9,10 +9,6 @@ use std::ops::DerefMut;
 use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
@@ -38,6 +34,7 @@ use crate::Extensions;
 use crate::InstanceId;
 use crate::JSON_SCHEMA_ID_URI_PREFIX;
 use crate::MutablePropertyInstanceSetter;
+use crate::NamedInstanceContainer;
 use crate::NamespaceSegment;
 use crate::NamespacedType;
 use crate::NamespacedTypeGetter;
@@ -52,8 +49,22 @@ use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
-use crate::instances::named::NamedInstanceContainer;
 use crate::namespace::Namespace;
+
+#[cfg(any(test, feature = "test"))]
+use crate::NamespacedTypeError;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomInstance;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomInstances;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypeId;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypes;
+#[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
@@ -79,7 +90,7 @@ pub const JSON_SCHEMA_ID_RELATION_INSTANCE: &str = formatcp!("{}/relation-instan
     transform = add_json_schema_id_property
 )]
 pub struct RelationInstance {
-    /// The id of the outbound vertex.
+    /// The id of the outbound entity instance.
     pub outbound_id: Uuid,
 
     /// The relation instance id is unique and consists of the relation type and an instance_id.
@@ -87,7 +98,7 @@ pub struct RelationInstance {
     #[builder(setter(into))]
     pub ty: RelationInstanceTypeId,
 
-    /// The id of the inbound vertex.
+    /// The id of the inbound entity instance.
     pub inbound_id: Uuid,
 
     /// The name of the relation instance.
@@ -181,35 +192,35 @@ impl NamedInstanceContainer for RelationInstance {
 }
 
 impl PropertyInstanceGetter for RelationInstance {
-    fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
+    fn get(&self, property_name: &str) -> Option<Value> {
         self.properties.get(property_name.into())
     }
 
-    fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
+    fn as_bool(&self, property_name: &str) -> Option<bool> {
         self.properties.as_bool(property_name.into())
     }
 
-    fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
+    fn as_u64(&self, property_name: &str) -> Option<u64> {
         self.properties.as_u64(property_name.into())
     }
 
-    fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
+    fn as_i64(&self, property_name: &str) -> Option<i64> {
         self.properties.as_i64(property_name.into())
     }
 
-    fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
+    fn as_f64(&self, property_name: &str) -> Option<f64> {
         self.properties.as_f64(property_name.into())
     }
 
-    fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
+    fn as_string(&self, property_name: &str) -> Option<String> {
         self.properties.as_string(property_name.into())
     }
 
-    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
+    fn as_array(&self, property_name: &str) -> Option<Vec<Value>> {
         self.properties.as_array(property_name.into())
     }
 
-    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
+    fn as_object(&self, property_name: &str) -> Option<Map<String, Value>> {
         self.properties.as_object(property_name.into())
     }
 }
@@ -480,29 +491,38 @@ impl FromIterator<RelationInstance> for RelationInstances {
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for RelationInstance {
-    fn default_test() -> Self {
-        RelationInstance::builder()
+impl RandomInstance for RelationInstance {
+    type Error = NamespacedTypeError;
+    type TypeId = RelationInstanceTypeId;
+
+    fn random_instance() -> Result<Self, NamespacedTypeError> {
+        Self::random_instance_with_id(&RelationInstanceTypeId::random_type_id()?)
+    }
+
+    fn random_instance_with_id(ty: &Self::TypeId) -> Result<Self, Self::Error> {
+        Ok(RelationInstance::builder()
             .outbound_id(Uuid::new_v4())
-            .ty(RelationInstanceTypeId::default_test())
+            .ty(ty)
             .inbound_id(Uuid::new_v4())
             .name(r_string())
             .description(r_string())
             .properties(PropertyInstances::default_test())
-            .extensions(Extensions::default_test())
-            .build()
+            .extensions(Extensions::random_types(0..10)?)
+            .build())
     }
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for RelationInstances {
-    fn default_test() -> Self {
-        let relation_instances = RelationInstances::new();
+impl RandomInstances for RelationInstances {
+    type Error = NamespacedTypeError;
+
+    fn random_instances() -> Result<Self, NamespacedTypeError> {
+        let instances = Self::new();
         let mut rng = rand::rng();
         for _ in 0..rng.random_range(0..10) {
-            relation_instances.push(RelationInstance::default_test());
+            instances.push(RelationInstance::random_instance()?);
         }
-        relation_instances
+        Ok(instances)
     }
 }
 
@@ -514,6 +534,8 @@ fn add_json_schema_id_property(schema: &mut Schema) {
 mod tests {
     use schemars::schema_for;
     use serde_json::json;
+    use std::ops::Index;
+    use std::str::FromStr;
     use uuid::Uuid;
 
     use crate::ComponentTypeId;
@@ -523,356 +545,172 @@ mod tests {
     use crate::ExtensionContainer;
     use crate::ExtensionTypeId;
     use crate::Extensions;
+    use crate::InstanceId;
     use crate::MutablePropertyInstanceSetter;
-    use crate::NamespacedTypeGetter;
     use crate::PropertyInstanceGetter;
     use crate::PropertyInstances;
+    use crate::RandomInstance;
+    use crate::RandomNamespacedType;
+    use crate::RandomNamespacedTypeId;
     use crate::RelationInstance;
     use crate::RelationInstanceId;
     use crate::RelationInstanceTypeId;
     use crate::RelationTypeId;
-    use crate::TypeDefinitionGetter;
-    use crate::TypeIdType;
     use reactive_graph_utils_test::r_string;
 
     #[test]
-    fn relation_instance_builder_test() {
-        let namespace = r_string();
-        let type_name = r_string();
-        let ty = RelationTypeId::new_from_type(&namespace, &type_name);
-
+    pub fn build_relation_instance() {
+        let relation_ty = RelationTypeId::random_type_id().unwrap();
+        let instance_id = InstanceId::Id(Uuid::from_str("7839aec8-07ea-41d1-84e5-f00b59d62c3e").unwrap());
+        let relation_instance_ty = RelationInstanceTypeId::new(relation_ty.clone(), instance_id.clone());
         let outbound_id = Uuid::new_v4();
         let inbound_id = Uuid::new_v4();
-
-        let property_1_name = r_string();
-        let property_1_value = r_string();
-        let properties = PropertyInstances::new().property(&property_1_name, json!(property_1_value));
-
-        let instance_ty = RelationInstanceTypeId::new_with_random_instance_id(&ty);
-        let instance_id = instance_ty.instance_id();
-
-        let id = RelationInstanceId::new(outbound_id, &instance_ty, inbound_id);
-
-        let relation_instance = RelationInstance::builder()
-            .outbound_id(outbound_id)
-            .ty(instance_ty)
-            .name(r_string())
-            .description(r_string())
-            .inbound_id(inbound_id)
-            .properties(properties)
-            .build();
-
-        assert_eq!(namespace, relation_instance.namespace());
-        assert_eq!(format!("{}__{}", type_name, instance_id), relation_instance.type_name());
-        assert_eq!(ty, relation_instance.relation_type_id());
-        assert_eq!(id, relation_instance.id());
-        assert_eq!(property_1_value.clone().as_str(), relation_instance.get(property_1_name.clone()).unwrap().as_str().unwrap());
-    }
-
-    #[test]
-    fn relation_instance_test() {
-        let namespace = r_string();
-        let outbound_id = Uuid::new_v4();
-        let inbound_id = Uuid::new_v4();
-        let type_name = r_string();
         let name = r_string();
         let description = r_string();
         let property_name = r_string();
         let property_value = json!(r_string());
-        let properties = PropertyInstances::new().property(&property_name, property_value.clone());
-
-        let component_namespace = r_string();
-        let component_name = r_string();
-        let component_ty = ComponentTypeId::new_from_type(&component_namespace, &component_name);
-        let components = ComponentTypeIds::new().component(component_ty.clone());
-
-        let extension_namespace = r_string();
-        let extension_name = r_string();
-        let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
-        let extension_value = json!("extension_value");
-        let extension = Extension {
-            ty: extension_ty.clone(),
-            description: r_string(),
-            extension: extension_value.clone(),
-        };
-        let other_extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
-        let other_extension = Extension::new(&other_extension_ty, r_string(), extension_value.clone());
-        let extensions = Extensions::new().extension(extension.clone()).extension(other_extension.clone());
-
-        let ty = RelationInstanceTypeId::new_from_type_unique_id(&namespace, &type_name);
-        let relation_instance = RelationInstance {
-            outbound_id,
-            ty: ty.clone(),
-            inbound_id,
-            name: name.to_string(),
-            description: description.to_string(),
-            properties: properties.clone(),
-            components: components.clone(),
-            extensions: extensions.clone(),
-        };
-        assert_eq!(namespace, relation_instance.namespace());
+        let component_ty = ComponentTypeId::random_type_id().unwrap();
+        let components = ComponentTypeIds::new().component(&component_ty);
+        let properties = PropertyInstances::new().property(property_name.clone(), property_value.clone());
+        let extension = Extension::random_type().unwrap();
+        let extensions = Extensions::new().extension(extension.clone());
+        let relation_instance = RelationInstance::builder()
+            .outbound_id(outbound_id)
+            .ty(&relation_instance_ty)
+            .inbound_id(inbound_id)
+            .name(&name)
+            .description(&description)
+            .components(components.clone())
+            .properties(properties.clone())
+            .extensions(extensions.clone())
+            .build();
         assert_eq!(outbound_id, relation_instance.outbound_id);
-        assert_eq!(type_name.clone(), relation_instance.type_name());
+        assert_eq!(relation_instance_ty, relation_instance.ty);
+        assert_eq!(relation_ty, relation_instance.relation_type_id());
+        assert_eq!(instance_id, relation_instance.instance_id());
         assert_eq!(inbound_id, relation_instance.inbound_id);
         assert_eq!(name, relation_instance.name);
         assert_eq!(description, relation_instance.description);
-        assert_eq!(properties.clone(), relation_instance.properties.clone());
-        assert!(relation_instance.get(property_name.clone()).is_some());
-        assert!(relation_instance.get(r_string()).is_none());
-        assert_eq!(property_value.clone(), relation_instance.get(property_name.clone()).unwrap());
-        assert!(relation_instance.components.contains(&component_ty.clone()));
-        assert!(relation_instance.components.is_a(&component_ty));
+        assert_eq!(components, relation_instance.components);
         assert!(relation_instance.is_a(&component_ty));
-        assert!(!relation_instance.is_a(&ComponentTypeId::generate_random()));
-        assert!(relation_instance.extensions.has_own_extension(&extension_ty));
-        assert!(relation_instance.has_own_extension(&extension_ty));
-        let non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
-        assert!(!relation_instance.has_own_extension(&non_existing_extension));
-        assert_eq!(extension.extension, relation_instance.get_own_extension(&extension_ty).unwrap().extension);
-
-        assert_eq!(
-            format!("{}-[{}]->{}", relation_instance.outbound_id, relation_instance.ty, relation_instance.inbound_id),
-            format!("{}", relation_instance)
-        );
+        assert_eq!(properties, relation_instance.properties);
+        assert_eq!(property_value, relation_instance.properties.get(&property_name).unwrap());
+        assert_eq!(extensions, relation_instance.extensions);
+        assert!(relation_instance.has_own_extension(&extension.ty));
+        assert_eq!(extension, relation_instance.get_own_extension(&extension.ty).unwrap());
     }
 
     #[test]
-    fn relation_instance_id_from_type_unique_id_test() {
-        let namespace = r_string();
-        let type_name = r_string();
+    pub fn create_relation_instance() {
+        let relation_ty = RelationTypeId::random_type_id().unwrap();
+        let instance_id = InstanceId::Id(Uuid::from_str("7839aec8-07ea-41d1-84e5-f00b59d62c3e").unwrap());
+        let relation_instance_ty = RelationInstanceTypeId::new(relation_ty.clone(), instance_id.clone());
         let outbound_id = Uuid::new_v4();
         let inbound_id = Uuid::new_v4();
-        let ty = RelationInstanceTypeId::new_from_type_unique_id(&namespace, &type_name);
-        assert_eq!(namespace, ty.namespace());
-        assert_eq!(type_name, ty.type_name());
-        assert_eq!(format!("r__{}__{}", namespace, type_name), ty.type_definition().to_string());
-        let relation_instance = RelationInstance {
-            outbound_id,
-            ty: ty.clone(),
-            inbound_id,
-            name: r_string(),
-            description: r_string(),
-            properties: PropertyInstances::new(),
-            components: ComponentTypeIds::new(),
-            extensions: Extensions::new(),
-        };
-
-        let rity = relation_instance.id();
-        assert_eq!(namespace, rity.namespace());
-        assert_eq!(type_name, rity.type_name());
-        assert_eq!(format!("{outbound_id}-[r__{namespace}__{type_name}]->{inbound_id}"), format!("{rity}"));
-
-        let rty = relation_instance.relation_type_id();
-        assert_eq!(namespace, rty.namespace());
-        assert_eq!(type_name, rty.type_name());
-        assert_eq!(format!("r__{namespace}__{type_name}"), format!("{rty}"));
-    }
-
-    #[test]
-    fn relation_instance_id_from_type_unique_for_instance_id_test() {
-        let namespace = r_string();
-        let type_name = r_string();
-        let instance_id = r_string();
-        let outbound_id = Uuid::new_v4();
-        let inbound_id = Uuid::new_v4();
-        let ty = RelationInstanceTypeId::new_from_type_unique_for_instance_id(&namespace, &type_name, &instance_id);
-        assert_eq!(namespace, ty.namespace());
-        assert_eq!(type_name, ty.relation_type_id().type_name());
-        assert_eq!(format!("{type_name}__{instance_id}"), ty.type_name());
-        assert_eq!(format!("r__{namespace}__{type_name}__{instance_id}"), ty.type_definition().to_string());
-        let relation_instance = RelationInstance {
-            outbound_id,
-            ty: ty.clone(),
-            inbound_id,
-            name: r_string(),
-            description: r_string(),
-            properties: PropertyInstances::new(),
-            components: ComponentTypeIds::new(),
-            extensions: Extensions::new(),
-        };
-
-        let rity = relation_instance.id();
-        assert_eq!(namespace, rity.namespace());
-        assert_eq!(format!("{type_name}__{instance_id}"), rity.type_name());
-        assert_eq!(format!("{outbound_id}-[r__{namespace}__{type_name}__{instance_id}]->{inbound_id}"), format!("{rity}"));
-
-        let rty = relation_instance.relation_type_id();
-        assert_eq!(namespace, rty.namespace());
-        assert_eq!(type_name, rty.type_name());
-        assert_eq!(format!("r__{namespace}__{type_name}"), format!("{rty}"));
-
-        assert_eq!(format!("r__{namespace}__{type_name}__{instance_id}"), format!("{}", relation_instance.ty));
-    }
-
-    #[test]
-    fn create_relation_instance_test() {
-        let namespace = r_string();
-        let outbound_id = Uuid::new_v4();
-        let inbound_id = Uuid::new_v4();
-        let type_name = r_string();
+        let relation_instance_id = RelationInstanceId::builder()
+            .outbound_id(outbound_id)
+            .ty(&relation_instance_ty)
+            .inbound_id(inbound_id)
+            .build();
         let property_name = r_string();
         let property_value = json!(r_string());
-        let properties = PropertyInstances::new().property(&property_name, property_value.clone());
-        let ty = RelationInstanceTypeId::new_from_type_unique_id(&namespace, &type_name);
-        let relation_instance = RelationInstance::new(outbound_id, ty, inbound_id, properties.clone());
-        assert_eq!(namespace, relation_instance.namespace());
+        let properties = PropertyInstances::new().property(property_name.clone(), property_value.clone());
+        let relation_instance = RelationInstance::new(
+            relation_instance_id.outbound_id,
+            relation_instance_id.ty,
+            relation_instance_id.inbound_id,
+            PropertyInstances::new().property(&property_name, property_value.clone()),
+        );
         assert_eq!(outbound_id, relation_instance.outbound_id);
-        assert_eq!(type_name, relation_instance.type_name());
+        assert_eq!(relation_instance_ty, relation_instance.ty);
+        assert_eq!(relation_ty, relation_instance.relation_type_id());
+        assert_eq!(instance_id, relation_instance.instance_id());
         assert_eq!(inbound_id, relation_instance.inbound_id);
-        assert_eq!(properties.clone(), relation_instance.properties.clone());
-        assert!(relation_instance.get(property_name.clone()).is_some());
-        assert!(relation_instance.get(r_string()).is_none());
-        assert_eq!(property_value.clone(), relation_instance.get(property_name.clone()).unwrap());
-    }
-
-    #[test]
-    fn create_relation_instance_without_properties_test() {
-        let namespace = r_string();
-        let outbound_id = Uuid::new_v4();
-        let inbound_id = Uuid::new_v4();
-        let type_name = r_string();
-        let ty = RelationInstanceTypeId::new_from_type_unique_id(&namespace, &type_name);
-        let relation_instance = RelationInstance::new_without_properties(outbound_id, ty.clone(), inbound_id);
-        assert_eq!(namespace, relation_instance.namespace());
-        assert_eq!(outbound_id, relation_instance.outbound_id);
-        assert_eq!(type_name, relation_instance.type_name());
-        assert_eq!(inbound_id, relation_instance.inbound_id);
-        assert_eq!(0, relation_instance.properties.len());
+        assert_eq!(properties, relation_instance.properties);
+        assert_eq!(property_value, relation_instance.properties.get(&property_name).unwrap());
     }
 
     #[test]
     fn relation_instance_typed_getter_test() {
-        let namespace = r_string();
-        let outbound_id = Uuid::new_v4();
-        let inbound_id = Uuid::new_v4();
-        let type_name = r_string();
         let property_name = r_string();
-        let properties = PropertyInstances::new().property(&property_name, json!(false));
-        let ty = RelationInstanceTypeId::new_from_type_unique_id(&namespace, &type_name);
-        let mut i = RelationInstance::new(outbound_id, ty.clone(), inbound_id, properties.clone());
+        let mut i = RelationInstance::new(
+            Uuid::new_v4(),
+            RelationInstanceTypeId::new(RelationTypeId::random_type_id().unwrap(), InstanceId::Id(Uuid::new_v4())),
+            Uuid::new_v4(),
+            PropertyInstances::new().property(&property_name, json!(false)),
+        );
         i.set(property_name.clone(), json!(true));
-        assert!(i.as_bool(property_name.clone()).unwrap());
+        assert!(i.as_bool(&property_name).unwrap());
         i.set(property_name.clone(), json!(false));
-        assert!(!i.as_bool(property_name.clone()).unwrap());
+        assert!(!i.as_bool(&property_name).unwrap());
         i.set(property_name.clone(), json!(123));
-        assert_eq!(123, i.as_u64(property_name.clone()).unwrap());
+        assert_eq!(123, i.as_u64(&property_name).unwrap());
         i.set(property_name.clone(), json!(-123));
-        assert_eq!(-123, i.as_i64(property_name.clone()).unwrap());
+        assert_eq!(-123, i.as_i64(&property_name).unwrap());
         i.set(property_name.clone(), json!(1.23));
-        assert_eq!(1.23, i.as_f64(property_name.clone()).unwrap());
+        assert_eq!(1.23, i.as_f64(&property_name).unwrap());
         let s = r_string();
         i.set(property_name.clone(), json!(s.clone()));
-        assert_eq!(s, i.as_string(property_name.clone()).unwrap());
-        i.set(property_name.clone(), json!([]));
-        assert_eq!(0, i.as_array(property_name.clone()).unwrap().len());
-        i.set(property_name.clone(), json!({}));
-        assert_eq!(0, i.as_object(property_name.clone()).unwrap().len());
+        assert_eq!(s, i.as_string(&property_name).unwrap());
+        let a = json!([1, 2, 3]);
+        i.set(property_name.clone(), a.clone());
+        assert_eq!(json!(1), i.as_array(&property_name).unwrap().index(0).clone());
+        assert_eq!(json!(2), i.as_array(&property_name).unwrap().index(1).clone());
+        assert_eq!(json!(3), i.as_array(&property_name).unwrap().index(2).clone());
+        let o = json!({
+            "k": "v"
+        });
+        i.set(property_name.clone(), o.clone());
+        assert_eq!(json!("v"), i.as_object(&property_name).unwrap().index("k").clone());
     }
 
     #[test]
-    fn relation_instance_get_key_test() {
-        let namespace = r_string();
-        let outbound_id = Uuid::new_v4();
-        let inbound_id = Uuid::new_v4();
-        let type_name = r_string();
-        let name = r_string();
-        let description = r_string();
-        let ty = RelationInstanceTypeId::new_from_type_unique_id(&namespace, &type_name);
-        let relation_instance = RelationInstance {
-            outbound_id,
-            ty: ty.clone(),
-            inbound_id,
-            name: name.to_string(),
-            description: description.to_string(),
-            properties: PropertyInstances::new(),
-            components: ComponentTypeIds::new(),
-            extensions: Extensions::new(),
-        };
-
-        assert_eq!(ty, relation_instance.ty);
-        assert_eq!(ty.relation_type_id(), relation_instance.relation_type_id());
+    fn relation_instance_deserialize_fully_valid_test() {
+        let outbound_id = Uuid::from_str("13104a11-96d3-4e24-aa87-e4037de7a28e").unwrap();
+        let ty = RelationTypeId::from_str("fully::qualified::namespace::RelationType").unwrap();
+        let instance_id = InstanceId::Id(Uuid::from_str("7839aec8-07ea-41d1-84e5-f00b59d62c3e").unwrap());
+        let inbound_id = Uuid::from_str("0924e83a-52cf-4540-9a21-37cc87150a17").unwrap();
+        let component_ty = ComponentTypeId::from_str("fully::qualified::namespace::Component").unwrap();
+        let extension_ty = ExtensionTypeId::from_str("fully::qualified::namespace::Extension").unwrap();
+        let relation_instance = serde_json::from_str::<RelationInstance>(
+            r#"{
+          "outbound_id": "13104a11-96d3-4e24-aa87-e4037de7a28e",
+          "type": "fully::qualified::namespace::RelationType",
+          "instance_id": "7839aec8-07ea-41d1-84e5-f00b59d62c3e",
+          "inbound_id": "0924e83a-52cf-4540-9a21-37cc87150a17",
+          "description": "d",
+          "components": [
+            "fully::qualified::namespace::Component"
+          ],
+          "properties": {
+            "property_name": "property_value"
+          },
+          "extensions": [
+            {
+              "type": "fully::qualified::namespace::Extension",
+              "extension": ""
+            }
+          ]
+        }"#,
+        )
+        .expect("Failed to deserialize relation instance");
+        assert_eq!(outbound_id, relation_instance.outbound_id);
+        assert_eq!(ty, relation_instance.ty.relation_type_id());
+        assert_eq!(instance_id, relation_instance.ty.instance_id());
+        assert_eq!(inbound_id, relation_instance.inbound_id);
+        assert_eq!("d", relation_instance.description);
+        assert_eq!(1, relation_instance.components.len());
+        assert!(relation_instance.is_a(&component_ty));
+        assert_eq!(1, relation_instance.properties.len());
+        assert_eq!("property_value", relation_instance.get("property_name").unwrap());
+        assert_eq!(1, relation_instance.extensions.len());
+        assert!(relation_instance.get_own_extension(&extension_ty).is_some());
     }
 
     #[test]
     fn relation_instance_ser_test() {
-        let rty = RelationTypeId::new_from_type("rnr", "rtr");
-        let ty = RelationInstanceTypeId::new(rty.clone(), "result__lhs");
-        let outbound_id = Uuid::new_v4();
-        let inbound_id = Uuid::new_v4();
-        let relation_instance = RelationInstance::new(outbound_id, ty, inbound_id, PropertyInstances::new());
+        let relation_instance = RelationInstance::random_instance().unwrap();
         println!("{}", serde_json::to_string_pretty(&relation_instance).expect("Failed to serialize relation instance"));
-    }
-    #[test]
-    fn relation_instance_de_test() {
-        let s = r#"{
-  "outbound_id": "d82cc81a-e0e5-4de8-8b87-9b5bed0de795",
-  "namespace": "rnr",
-  "type_name": "rtr",
-  "instance_id": "result__lhs",
-  "inbound_id": "3f13400e-9286-441d-b85f-ef5df2177e7c",
-  "name": "BIVS93iu",
-  "description": "B0IgcIiV",
-  "components": [
-    {
-      "namespace": "mno",
-      "type_name": "pqr"
-    }
-  ],
-  "properties": {
-      "property_name": "property_value"
-  },
-  "extensions": [
-    {
-      "namespace": "ext_namespace",
-      "type_name": "ext_name",
-      "extension": "ext_value"
-    },
-    {
-      "namespace": "other_ext_namespace",
-      "type_name": "other_ext_name",
-      "extension": "other_extension_value"
-    }
-  ]
-}"#;
-        let relation_instance: RelationInstance = serde_json::from_str(s).unwrap();
-        assert_eq!("d82cc81a-e0e5-4de8-8b87-9b5bed0de795", relation_instance.outbound_id.to_string());
-        assert_eq!("3f13400e-9286-441d-b85f-ef5df2177e7c", relation_instance.inbound_id.to_string());
-        assert_eq!("rnr", relation_instance.namespace());
-        assert_eq!("rtr__result__lhs", relation_instance.type_name());
-        assert_eq!("rtr", relation_instance.relation_type_id().type_name());
-        assert_eq!("result__lhs", relation_instance.instance_id());
-        assert_eq!("r__rnr__rtr__result__lhs", relation_instance.ty.to_string());
-        assert_eq!(TypeIdType::RelationType, relation_instance.type_definition().type_id_type);
-        assert_eq!("BIVS93iu", relation_instance.name);
-        assert_eq!("B0IgcIiV", relation_instance.description);
-        assert_eq!("property_value", relation_instance.properties.get("property_name").unwrap().as_str().unwrap());
-        assert_eq!(2, relation_instance.extensions.len());
-        assert!(
-            relation_instance
-                .extensions
-                .has_own_extension(&ExtensionTypeId::new_from_type("ext_namespace", "ext_name"))
-        );
-        assert_eq!(
-            json!("ext_value"),
-            relation_instance
-                .extensions
-                .get_own_extension(&ExtensionTypeId::new_from_type("ext_namespace", "ext_name"))
-                .unwrap()
-                .extension
-        );
-        assert!(
-            relation_instance
-                .extensions
-                .has_own_extension(&ExtensionTypeId::new_from_type("other_ext_namespace", "other_ext_name"))
-        );
-        assert_eq!(
-            json!("other_extension_value"),
-            relation_instance
-                .extensions
-                .get_own_extension(&ExtensionTypeId::new_from_type("other_ext_namespace", "other_ext_name"))
-                .unwrap()
-                .extension
-        );
     }
 
     #[test]

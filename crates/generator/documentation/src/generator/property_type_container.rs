@@ -1,80 +1,67 @@
-use crate::generator::MarkdownDocumentation;
+use crate::generator::TypedMarkdownDocumentation;
 use crate::markdown::table::MarkdownTableExt;
-use documented::DocumentedVariants;
-use reactive_graph_graph::ExtensionContainer;
-use reactive_graph_graph::NamespacedTypeContainer;
-use reactive_graph_graph::PropertyType;
+use crate::types::config::PropertiesDocumentationConfig;
+use crate::types::config::SubTypesGenerationMode;
+use markdown_builder::List;
 use reactive_graph_graph::PropertyTypeContainer;
+use reactive_graph_graph::PropertyTypes;
 use tabled::Table;
 
-impl<TY> MarkdownDocumentation<TY>
+impl<TY> TypedMarkdownDocumentation<TY>
 where
     TY: PropertyTypeContainer,
 {
-    pub fn properties(mut self) -> Self {
+    pub fn own_properties(self, config: &PropertiesDocumentationConfig) -> Self {
         let property_types = self.ty.get_own_properties_cloned();
+        if !property_types.is_empty() {
+            let mut document = self.document.write().unwrap();
+            if config.header {
+                match config.mode {
+                    SubTypesGenerationMode::None => {}
+                    SubTypesGenerationMode::Short => {
+                        document.header3("Properties");
+                    }
+                    SubTypesGenerationMode::Table => {
+                        document.header2("Properties");
+                    }
+                }
+            }
+        }
+        self.properties(&property_types, config)
+    }
+
+    pub fn properties(self, property_types: &PropertyTypes, config: &PropertiesDocumentationConfig) -> Self {
         if property_types.is_empty() {
             return self;
         }
-        self.document.header2("Properties");
-        let table = Table::new(&mut property_types.to_vec().into_iter()).to_owned();
-        self.document.table(table);
-
-        for property_type in property_types.iter() {
-            self.property(property_type.value())
+        let mut property_types = property_types.to_vec();
+        property_types.sort();
+        {
+            let mut document = self.document.write().unwrap();
+            match config.mode {
+                SubTypesGenerationMode::None => {}
+                SubTypesGenerationMode::Short => {
+                    let mut list = List::unordered();
+                    for property_type in property_types.iter() {
+                        list.items.push(property_type.name.clone().into());
+                    }
+                    document.list(list);
+                }
+                SubTypesGenerationMode::Table => {
+                    let table = Table::new(&mut property_types.clone().into_iter()).to_owned();
+                    document.table(table);
+                }
+            }
+        }
+        match config.mode {
+            SubTypesGenerationMode::None => {}
+            SubTypesGenerationMode::Short => {}
+            SubTypesGenerationMode::Table => {
+                for property_type in property_types.iter() {
+                    TypedMarkdownDocumentation::new_with_document(property_type.clone(), self.document.clone()).property(&config.property);
+                }
+            }
         }
         self
-    }
-
-    pub fn property(&mut self, property_type: &PropertyType) {
-        self.document.header3(format!("Property `{}`", property_type.name));
-        self.property_description(property_type);
-        self.property_data_type(property_type);
-        self.property_socket_type(property_type);
-        self.property_mutability(property_type);
-        self.property_extensions(property_type);
-    }
-
-    pub fn property_description(&mut self, property_type: &PropertyType) {
-        if !property_type.description.is_empty() {
-            self.document.paragraph(property_type.description.clone());
-        }
-    }
-
-    pub fn property_data_type(&mut self, property_type: &PropertyType) {
-        self.document.header4("Data Type");
-        self.document.paragraph(format!(
-            "<details><summary><code>{}</code></summary>{}</details>",
-            property_type.data_type,
-            property_type.data_type.get_variant_docs()
-        ));
-    }
-
-    pub fn property_socket_type(&mut self, property_type: &PropertyType) {
-        self.document.header4("Socket Type");
-        self.document.paragraph(format!(
-            "<details><summary><code>{}</code></summary>{}</details>",
-            property_type.socket_type,
-            property_type.socket_type.get_variant_docs()
-        ));
-    }
-
-    pub fn property_mutability(&mut self, property_type: &PropertyType) {
-        self.document.header4("Mutability");
-        self.document.paragraph(format!(
-            "<details><summary><code>{}</code></summary>{}</details>",
-            property_type.mutability,
-            property_type.mutability.get_variant_docs()
-        ));
-    }
-
-    pub fn property_extensions(&mut self, property_type: &PropertyType) {
-        let extensions = property_type.get_own_extensions_cloned();
-        if extensions.is_empty() {
-            return;
-        }
-        self.document.header4("Property Extensions");
-        let table = Table::new(&mut extensions.to_vec().into_iter()).to_owned();
-        self.document.table(table);
     }
 }

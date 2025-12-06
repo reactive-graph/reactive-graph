@@ -1,7 +1,7 @@
 #[cynic::schema_for_derives(file = r#"../../schema/graphql/reactive-graph-schema.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod queries {
-    use crate::client::instances::variables::label::queries::LabelVariables;
-    use crate::client::instances::variables::label::queries::LabelVariablesFields;
+    use crate::client::instances::variables::label::variables::LabelVariables;
+    use crate::client::instances::variables::label::variables::LabelVariablesFields;
     use crate::schema_graphql::instances::entity_instance::EntityInstance;
     use cynic::Operation;
     use cynic::QueryFragment;

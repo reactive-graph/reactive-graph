@@ -7,6 +7,7 @@ use uuid::Uuid;
 
 use reactive_graph_behaviour_service_api::EntityBehaviourRegistry;
 use reactive_graph_behaviour_service_api::EntityComponentBehaviourRegistry;
+use reactive_graph_graph::InvalidEntityInstanceError;
 use reactive_graph_graph::RelationTypeId;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
 use reactive_graph_reactive_service_api::ReactiveRelationManager;
@@ -19,6 +20,7 @@ use crate::query::GraphQLEntityBehaviour;
 use crate::query::GraphQLEntityType;
 use crate::query::GraphQLPropertyInstance;
 use crate::query::GraphQLRelationInstance;
+use crate::validator::NamespacedTypeValidator;
 
 pub struct GraphQLEntityInstance {
     entity_instance: ReactiveEntity,
@@ -34,11 +36,12 @@ pub struct GraphQLEntityInstance {
 impl GraphQLEntityInstance {
     /// The entity type of the entity instance.
     #[graphql(name = "type")]
-    async fn entity_type(&self, context: &Context<'_>) -> Option<GraphQLEntityType> {
-        if let Ok(entity_type_manager) = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>() {
-            return entity_type_manager.get(&self.entity_instance.ty).map(|entity_type| entity_type.into());
-        }
-        None
+    async fn entity_type(&self, context: &Context<'_>) -> Result<GraphQLEntityType> {
+        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
+        let Some(entity_type) = entity_type_manager.get(&self.entity_instance.ty) else {
+            return Err(InvalidEntityInstanceError::EntityTypeDoesNotExist(self.entity_instance.ty.clone()).into());
+        };
+        Ok(entity_type.into())
     }
 
     /// The unique identifier of the entity instance.
@@ -148,14 +151,15 @@ impl GraphQLEntityInstance {
     async fn outbound(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type", desc = "The outbound relation type")] outbound_namespace: Option<String>,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the outbound relation type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        outbound_type: Option<String>,
     ) -> Result<Vec<GraphQLRelationInstance>> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
-        let outbound_ty = if let Some(outbound_namespace) = outbound_namespace {
-            Some(RelationTypeId::parse_namespace(&outbound_namespace)?)
-        } else {
-            None
-        };
+        let outbound_ty = RelationTypeId::parse_optional_namespace(outbound_type)?;
         let relation_instances = relation_instance_manager
             .get_by_outbound_entity(self.entity_instance.id)
             .iter()
@@ -172,14 +176,15 @@ impl GraphQLEntityInstance {
     async fn inbound(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type", desc = "The inbound relation type")] inbound_namespace: Option<String>,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the inbound relation type",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        inbound_type: Option<String>,
     ) -> Result<Vec<GraphQLRelationInstance>> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
-        let inbound_ty = if let Some(inbound_namespace) = inbound_namespace {
-            Some(RelationTypeId::parse_namespace(&inbound_namespace)?)
-        } else {
-            None
-        };
+        let inbound_ty = RelationTypeId::parse_optional_namespace(inbound_type)?;
         let relation_instances = relation_instance_manager
             .get_by_inbound_entity(self.entity_instance.id)
             .iter()

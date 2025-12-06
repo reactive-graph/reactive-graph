@@ -7,34 +7,14 @@ use crate::schema_graphql::types::property_type::PropertyType;
 use crate::schema_graphql::types::property_type::PropertyTypes;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::InboundOutboundType;
-use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::InvalidRelationTypeError;
+use reactive_graph_graph::MatchingInboundOutboundType;
+use reactive_graph_graph::NamespacedTypeContainer;
+use reactive_graph_graph::NamespacedTypeParseError;
+use reactive_graph_graph::RelationTypeId;
 use serde_json::Value;
 use std::ops::Deref;
-
-#[derive(cynic::InputObject, Clone, Debug)]
-#[cynic(
-    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
-    schema_module = "crate::schema_graphql::schema"
-)]
-pub struct RelationTypeId {
-    pub name: String,
-    pub namespace: String,
-}
-
-impl From<reactive_graph_graph::RelationTypeId> for RelationTypeId {
-    fn from(ty: reactive_graph_graph::RelationTypeId) -> Self {
-        RelationTypeId {
-            name: ty.type_name(),
-            namespace: ty.namespace(),
-        }
-    }
-}
-
-impl From<&RelationTypeId> for reactive_graph_graph::RelationTypeId {
-    fn from(ty: &RelationTypeId) -> Self {
-        reactive_graph_graph::RelationTypeId::new_from_type(ty.namespace.clone(), ty.name.clone())
-    }
-}
+use std::str::FromStr;
 
 #[derive(cynic::QueryFragment, Clone, Debug)]
 #[cynic(
@@ -45,11 +25,9 @@ pub struct RelationType {
     /// The outbound type(s).
     pub outbound_types: Vec<EntityType>,
 
-    /// The namespace of the extension.
-    pub namespace: String,
-
-    /// The name of the extension.
-    pub name: String,
+    /// The fully qualified namespace of the relation type.
+    #[cynic(rename = "type")]
+    pub _type: String,
 
     /// The inbound type(s).
     pub inbound_types: Vec<EntityType>,
@@ -71,45 +49,47 @@ pub struct RelationType {
 }
 
 impl RelationType {
-    pub fn ty(&self) -> RelationTypeId {
-        RelationTypeId {
-            namespace: self.namespace.clone(),
-            name: self.name.clone(),
-        }
+    pub fn ty(&self) -> Result<RelationTypeId, NamespacedTypeParseError> {
+        RelationTypeId::from_str(&self._type)
     }
 
-    fn get_outbound_type(&self) -> InboundOutboundType {
-        self.outbound_types
-            .first()
-            .cloned()
-            .map(|entity_type| entity_type.into())
-            .unwrap_or(InboundOutboundType::EntityType(EntityTypeId::new_from_type("*", "*")))
+    // TODO: Return all possible types as Vec<InboundOutboundType>
+    fn get_outbound_type(&self) -> Result<InboundOutboundType, NamespacedTypeParseError> {
+        // TODO: fix this: first()
+        let Some(outbound_type) = self.outbound_types.first() else {
+            return Ok(InboundOutboundType::EntityType(MatchingInboundOutboundType::Any));
+        };
+        let ty = EntityTypeId::from_str(&outbound_type._type)?;
+        Ok(InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(ty)))
     }
 
-    fn get_inbound_type(&self) -> InboundOutboundType {
-        self.inbound_types
-            .first()
-            .cloned()
-            .map(|entity_type| entity_type.into())
-            .unwrap_or(InboundOutboundType::EntityType(EntityTypeId::new_from_type("*", "*")))
+    fn get_inbound_type(&self) -> Result<InboundOutboundType, NamespacedTypeParseError> {
+        // TODO: fix this: first()
+        let Some(inbound_type) = self.inbound_types.first() else {
+            return Ok(InboundOutboundType::EntityType(MatchingInboundOutboundType::Any));
+        };
+        let ty = EntityTypeId::from_str(&inbound_type._type)?;
+        Ok(InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(ty)))
     }
 }
 
-impl From<RelationType> for reactive_graph_graph::RelationType {
-    fn from(relation_type: RelationType) -> Self {
-        let ty = (&relation_type.ty()).into();
-        let components: reactive_graph_graph::ComponentTypeIds = Components(relation_type.components.clone()).into();
-        let outbound_type = relation_type.get_outbound_type();
-        let inbound_type = relation_type.get_inbound_type();
-        reactive_graph_graph::RelationType {
-            outbound_type,
-            ty,
-            inbound_type,
+impl TryFrom<RelationType> for reactive_graph_graph::RelationType {
+    type Error = InvalidRelationTypeError;
+
+    fn try_from(relation_type: RelationType) -> Result<Self, Self::Error> {
+        let components = Components(relation_type.components.clone());
+        Ok(reactive_graph_graph::RelationType {
+            outbound_type: relation_type.get_outbound_type()?,
+            ty: RelationTypeId::from_str(&relation_type._type).map_err(InvalidRelationTypeError::InvalidRelationType)?,
+            inbound_type: relation_type.get_inbound_type()?,
             description: relation_type.description,
-            components,
-            properties: PropertyTypes(relation_type.properties).into(),
-            extensions: Extensions(relation_type.extensions).into(),
-        }
+            components: reactive_graph_graph::Components::try_from(components)
+                .map_err(InvalidRelationTypeError::InvalidComponent)?
+                .type_ids(),
+            properties: reactive_graph_graph::PropertyTypes::try_from(PropertyTypes(relation_type.properties))
+                .map_err(InvalidRelationTypeError::InvalidPropertyType)?,
+            extensions: reactive_graph_graph::Extensions::try_from(Extensions(relation_type.extensions)).map_err(InvalidRelationTypeError::InvalidExtension)?,
+        })
     }
 }
 
@@ -123,8 +103,14 @@ impl Deref for RelationTypes {
     }
 }
 
-impl From<RelationTypes> for Vec<reactive_graph_graph::RelationType> {
-    fn from(relation_types: RelationTypes) -> Self {
-        relation_types.0.into_iter().map(From::from).collect()
+impl TryFrom<RelationTypes> for reactive_graph_graph::RelationTypes {
+    type Error = InvalidRelationTypeError;
+
+    fn try_from(relation_types: RelationTypes) -> Result<Self, Self::Error> {
+        let relation_types_2 = reactive_graph_graph::RelationTypes::new();
+        for relation_type in relation_types.0 {
+            relation_types_2.push(reactive_graph_graph::RelationType::try_from(relation_type)?);
+        }
+        Ok(relation_types_2)
     }
 }

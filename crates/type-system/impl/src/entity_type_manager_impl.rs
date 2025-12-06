@@ -32,6 +32,7 @@ use reactive_graph_graph::Namespace;
 use reactive_graph_graph::NamespacedTypeComponentTypeIdContainer;
 use reactive_graph_graph::NamespacedTypeContainer;
 use reactive_graph_graph::NamespacedTypeExtensionContainer;
+use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::NamespacedTypePropertyTypeContainer;
 use reactive_graph_graph::Namespaces;
 use reactive_graph_graph::PropertyType;
@@ -40,19 +41,22 @@ use reactive_graph_graph::PropertyTypes;
 use reactive_graph_graph::TypeDefinitionGetter;
 use reactive_graph_graph::divergent::Divergent;
 use reactive_graph_lifecycle::Lifecycle;
-use reactive_graph_runtime_model::EXTENSION_DIVERGENT;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::EntityTypeCreationError;
 use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::EntityTypeRegistrationError;
+use reactive_graph_type_system_api::NamespacedTypeManager;
 use reactive_graph_type_system_api::TypeSystemEvent;
 use reactive_graph_type_system_api::TypeSystemEventManager;
+use reactive_graph_type_system_model::EXTENSION_DIVERGENT;
 
 #[derive(Component)]
 pub struct EntityTypeManagerImpl {
     event_manager: Arc<dyn TypeSystemEventManager + Send + Sync>,
 
     component_manager: Arc<dyn ComponentManager + Send + Sync>,
+
+    namespaced_type_manager: Arc<dyn NamespacedTypeManager + Send + Sync>,
 
     #[component(default = "EntityTypes::new")]
     entity_types: EntityTypes,
@@ -63,6 +67,7 @@ pub struct EntityTypeManagerImpl {
 impl EntityTypeManager for EntityTypeManagerImpl {
     fn register(&self, entity_type: EntityType) -> Result<EntityType, EntityTypeRegistrationError> {
         let ty = entity_type.ty.clone();
+        self.namespaced_type_manager.register(ty.namespaced_type())?;
         if self.entity_types.contains_key(&ty) {
             return Err(EntityTypeRegistrationError::EntityTypeAlreadyExists(ty));
         }
@@ -296,8 +301,9 @@ impl EntityTypeManager for EntityTypeManagerImpl {
 
     // TODO: parameter "cascade": relation types, flow types and entity instances (and their dependencies) depends on a entity type
     // TODO: first delete the entity instance of this type, then delete the entity type itself.
-    fn delete(&self, entity_ty: &EntityTypeId) -> Option<EntityType> {
-        self.entity_types.remove(entity_ty).map(|(entity_ty, entity_type)| {
+    fn delete(&self, ty: &EntityTypeId) -> Option<EntityType> {
+        self.namespaced_type_manager.delete(ty.as_ref());
+        self.entity_types.remove(ty).map(|(entity_ty, entity_type)| {
             self.event_manager.emit_event(TypeSystemEvent::EntityTypeDeleted(entity_ty.clone()));
             entity_type
         })
@@ -320,50 +326,50 @@ impl Lifecycle for EntityTypeManagerImpl {
 
 #[cfg(test)]
 mod test {
-    use default_test::DefaultTest;
-
-    use crate::TypeSystemImpl;
+    use crate::TypeSystemSystemImpl;
     use reactive_graph_graph::Component;
-    use reactive_graph_graph::ComponentTypeId;
     use reactive_graph_graph::ComponentTypeIdContainer;
     use reactive_graph_graph::ComponentTypeIds;
     use reactive_graph_graph::EntityType;
     use reactive_graph_graph::EntityTypeId;
-    use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_graph::Extensions;
     use reactive_graph_graph::PropertyType;
     use reactive_graph_graph::PropertyTypeContainer;
-    use reactive_graph_type_system_api::TypeSystem;
+    use reactive_graph_graph::PropertyTypes;
+    use reactive_graph_graph::RandomNamespacedType;
+    use reactive_graph_graph::RandomNamespacedTypeId;
+    use reactive_graph_graph::RandomNamespacedTypeIds;
+    use reactive_graph_graph::RandomNamespacedTypes;
+    use reactive_graph_type_system_api::TypeSystemSystem;
     use reactive_graph_utils_test::r_string;
 
     #[test]
     fn test_register_entity_type() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
 
-        let namespace = r_string();
-        let type_name = r_string();
+        let entity_ty = EntityTypeId::random_type_id().unwrap();
         let description = r_string();
+        let components = ComponentTypeIds::random_type_ids().unwrap();
+        let properties = PropertyTypes::random_types(1..5).unwrap();
+        let extensions = Extensions::random_types(1..3).unwrap();
 
-        let component_ty = ComponentTypeId::new_from_type(&namespace, &r_string());
-        let entity_type = EntityType::new_from_type(&namespace, &type_name, &description, vec![component_ty], vec![PropertyType::string("x")], vec![]);
-        let result = entity_type_manager.register(entity_type.clone());
-        assert!(result.is_ok());
-        assert!(entity_type_manager.has_by_type(&namespace, &type_name));
+        let entity_type = EntityType::new(&entity_ty, &description, components, properties, extensions);
+        let entity_type = entity_type_manager.register(entity_type.clone()).expect("Failed to register the entity type!");
         assert!(entity_type_manager.has(&entity_type.ty));
-
-        assert_eq!(type_name, entity_type_manager.get_by_type(&namespace, &type_name).unwrap().type_name());
-        assert_eq!(type_name, entity_type_manager.get(&entity_type.ty).unwrap().type_name());
+        assert!(entity_type_manager.has(&entity_ty));
+        assert_eq!(Some(entity_type.clone()), entity_type_manager.get(&entity_ty));
     }
 
     #[test]
     fn test_create_and_delete_entity_type() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
 
         let entity_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(EntityType::random_type().unwrap())
             .expect("Failed to register the entity type!");
         let ty = entity_type.ty.clone();
 
@@ -376,11 +382,11 @@ mod test {
     #[test]
     fn test_get_entity_types() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
 
         let entity_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(EntityType::random_type().unwrap())
             .expect("Failed to register the entity type!");
         assert!(entity_type_manager.has(&entity_type.ty), "The entity type should be registered!");
         let entity_types = entity_type_manager.get_all();
@@ -399,13 +405,15 @@ mod test {
     #[test]
     fn test_register_entity_type_has_component() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let component_manager = type_system.get_component_manager();
         let entity_type_manager = type_system.get_entity_type_manager();
 
-        let component = component_manager.register(Component::default_test()).expect("Failed to register component!");
+        let component = component_manager
+            .register(Component::random_type().unwrap())
+            .expect("Failed to register component!");
 
-        let entity_ty = EntityTypeId::default_test();
+        let entity_ty = EntityTypeId::random_type_id().unwrap();
         let entity_type = EntityType::builder_from_ty(&entity_ty).component(&component.ty).build();
 
         let _entity_type = entity_type_manager.register(entity_type).expect("Failed to register entity type!");
@@ -419,14 +427,14 @@ mod test {
     #[test]
     fn test_register_entity_type_has_property() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
 
-        let property_type = PropertyType::default_test();
+        let property_type = PropertyType::random_type().unwrap();
 
-        let entity_ty = EntityTypeId::default_test();
+        let entity_ty = EntityTypeId::random_type_id().unwrap();
         let entity_type = EntityType::builder_from_ty(&entity_ty)
-            .components(ComponentTypeIds::default_test())
+            .components(ComponentTypeIds::random_type_ids().unwrap())
             .property(property_type.clone())
             .build();
 
@@ -436,16 +444,5 @@ mod test {
             .expect("It should be possible to get the entity type by type id!");
         assert!(entity_type.has_own_property(&property_type.name));
         assert!(entity_type.properties.contains_key(&property_type.name));
-
-        // // let property_name = String::from("x");
-        // // let property_type = PropertyType::string(&property_name);
-        //
-        // // let entity_type_name = r_string();
-        // // let namespace = r_string();
-        //
-        // let entity_ty = EntityTypeId::new_from_type(&namespace, &entity_type_name);
-        // let entity_type = EntityType::new(&entity_ty, String::new(), vec![], vec![property_type], vec![]);
-        // assert!(entity_type_manager.register(entity_type).is_ok());
-        // assert!(entity_type_manager.get(&entity_ty).unwrap().has_own_property(property_name.as_str()));
     }
 }

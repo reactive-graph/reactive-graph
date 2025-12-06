@@ -25,30 +25,22 @@ pub mod mutations {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "CreateEntityTypeVariables")]
     pub struct MutationEntityTypes {
-        #[arguments(type: { name: $name, namespace: $namespace }, description: $description, properties: $properties, extensions: $extensions
+        #[arguments(type: $_type, description: $description, properties: $properties, extensions: $extensions
         )]
         pub create: EntityType,
     }
 
     pub fn create_entity_type_mutation(entity_type: reactive_graph_graph::EntityType) -> Operation<CreateEntityType, CreateEntityTypeVariables> {
         use cynic::MutationBuilder;
-        let namespace = entity_type.namespace();
-        let name = entity_type.type_name();
+        let _type = entity_type.namespace().to_string();
         let description = entity_type.description;
         let property_types: PropertyTypeDefinitions = entity_type.properties.into();
         let extensions: ExtensionDefinitions = entity_type.extensions.into();
-        let vars = CreateEntityTypeVariables {
-            namespace,
-            name,
+        CreateEntityType::build(CreateEntityTypeVariables {
+            _type,
             description: Some(description),
             properties: Some(property_types.0),
             extensions: Some(extensions.0),
-        };
-        CreateEntityType::build(vars)
-    }
-
-    pub fn create_entity_type_with_variables(variables: CreateEntityTypeVariables) -> Operation<CreateEntityType, CreateEntityTypeVariables> {
-        use cynic::MutationBuilder;
-        CreateEntityType::build(variables)
+        })
     }
 }

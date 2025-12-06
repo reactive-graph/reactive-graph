@@ -1,9 +1,9 @@
-use std::fmt::Display;
-use std::fmt::Formatter;
-
 use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
+use std::fmt::Display;
+use std::fmt::Formatter;
+use std::str::FromStr;
 use thiserror::Error;
 
 use crate::Component;
@@ -11,20 +11,25 @@ use crate::ComponentTypeId;
 use crate::EntityType;
 use crate::EntityTypeId;
 use crate::NamespacedType;
+use crate::NamespacedTypeConstructor;
 use crate::NamespacedTypeGetter;
+use crate::NamespacedTypeParseError;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 
 #[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
+use crate::NamespacedTypeError;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypeId;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema)]
+#[serde(into = "String", try_from = "String")]
 pub enum MatchingInboundOutboundType<T>
 where
-    T: NamespacedTypeGetter + TypeDefinitionGetter,
+    T: NamespacedTypeGetter + TypeDefinitionGetter + NamespacedTypeConstructor + Clone + Display,
 {
     /// Concrete type: The inbound or outbound type must be of the correct TypeIdType (either component or entity type) and must be the given namespaced type.
     NamespacedType(T),
@@ -34,7 +39,7 @@ where
 
 impl<T> Display for MatchingInboundOutboundType<T>
 where
-    T: NamespacedTypeGetter + TypeDefinitionGetter + ToString,
+    T: NamespacedTypeGetter + TypeDefinitionGetter + NamespacedTypeConstructor + Clone + Display,
 {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let namespace_or_matching = match self {
@@ -44,10 +49,48 @@ where
         write!(f, "{namespace_or_matching}")
     }
 }
+// Required because of #[serde(into = "String")]
+impl<T> From<MatchingInboundOutboundType<T>> for String
+where
+    T: NamespacedTypeGetter + TypeDefinitionGetter + NamespacedTypeConstructor + Clone + Display,
+{
+    fn from(value: MatchingInboundOutboundType<T>) -> Self {
+        match value {
+            MatchingInboundOutboundType::NamespacedType(ty) => ty.namespace().to_string(),
+            MatchingInboundOutboundType::Any => "*".to_string(),
+        }
+    }
+}
+
+impl<T> FromStr for MatchingInboundOutboundType<T>
+where
+    T: NamespacedTypeGetter + TypeDefinitionGetter + NamespacedTypeConstructor + Clone + Display,
+{
+    type Err = NamespacedTypeParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "*" => Ok(MatchingInboundOutboundType::Any),
+            s => Ok(MatchingInboundOutboundType::NamespacedType(T::from_str(s)?)),
+        }
+    }
+}
+
+// Required because of #[serde(try_from = "String")]
+impl<T> TryFrom<String> for MatchingInboundOutboundType<T>
+where
+    T: NamespacedTypeGetter + TypeDefinitionGetter + NamespacedTypeConstructor + Clone + Display,
+{
+    type Error = NamespacedTypeParseError;
+
+    fn try_from(s: String) -> Result<Self, Self::Error> {
+        Self::from_str(s.as_str())
+    }
+}
 
 impl<T> TryFrom<&MatchingInboundOutboundType<T>> for NamespacedType
 where
-    T: NamespacedTypeGetter + TypeDefinitionGetter,
+    T: NamespacedTypeGetter + TypeDefinitionGetter + NamespacedTypeConstructor + Clone + Display,
 {
     type Error = InboundOutboundTypeConversionError;
 
@@ -61,7 +104,7 @@ where
 
 impl<T> TryFrom<&MatchingInboundOutboundType<T>> for TypeDefinition
 where
-    T: NamespacedTypeGetter + TypeDefinitionGetter,
+    T: NamespacedTypeGetter + TypeDefinitionGetter + NamespacedTypeConstructor + Clone + Display,
 {
     type Error = InboundOutboundTypeConversionError;
 
@@ -73,6 +116,21 @@ where
     }
 }
 
+#[derive(Clone)]
+pub enum InboundOutboundDirection {
+    Outbound,
+    Inbound,
+}
+
+impl Display for InboundOutboundDirection {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            InboundOutboundDirection::Outbound => write!(f, "outbound"),
+            InboundOutboundDirection::Inbound => write!(f, "inbound"),
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema)]
 pub enum InboundOutboundType {
     #[serde(rename = "component")]
@@ -80,24 +138,6 @@ pub enum InboundOutboundType {
     #[serde(rename = "entity_type")]
     EntityType(MatchingInboundOutboundType<EntityTypeId>),
 }
-
-// impl InboundOutboundType {
-//     /// Returns true, if the given component type id is equal to the inner component type id.
-//     pub fn eq_component(&self, component_ty: &ComponentTypeId) -> bool {
-//         match self {
-//             InboundOutboundType::Component(ty) => ty.eq(component_ty),
-//             _ => false,
-//         }
-//     }
-//
-//     /// Returns true, if the given entity type id is equal to the inner entity type id.
-//     pub fn eq_entity_type(&self, entity_ty: &EntityTypeId) -> bool {
-//         match self {
-//             InboundOutboundType::EntityType(ty) => ty.eq(entity_ty),
-//             _ => false,
-//         }
-//     }
-// }
 
 impl PartialEq<ComponentTypeId> for InboundOutboundType {
     fn eq(&self, component_ty: &ComponentTypeId) -> bool {
@@ -283,14 +323,15 @@ impl TryFrom<&InboundOutboundType> for NamespacedType {
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for InboundOutboundType {
-    fn default_test() -> Self {
+impl RandomNamespacedTypeId for InboundOutboundType {
+    type Error = NamespacedTypeError;
+    fn random_type_id() -> Result<Self, NamespacedTypeError> {
         let mut rng = rand::rng();
         let b: bool = rng.random();
-        if b {
-            InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(ComponentTypeId::new(NamespacedType::generate_random())))
+        Ok(if b {
+            InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(ComponentTypeId::random_type_id()?))
         } else {
-            InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(EntityTypeId::new(NamespacedType::generate_random())))
-        }
+            InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(EntityTypeId::random_type_id()?))
+        })
     }
 }

@@ -1,5 +1,6 @@
 use thiserror::Error;
 
+use crate::NamespacedTypeRegistrationError;
 use reactive_graph_graph::prelude::*;
 use reactive_graph_serde::error::DeserializationError;
 use reactive_graph_serde::error::SerializationError;
@@ -8,6 +9,8 @@ use reactive_graph_serde::error::SerializationError;
 pub enum RelationTypeRegistrationError {
     #[error("Failed to register relation type {0} because it already exists!")]
     RelationTypeAlreadyExists(RelationTypeId),
+    #[error("Failed to register relation type because the namespaced type is already registered: {0}")]
+    NamespacedTypeRegistrationError(#[from] NamespacedTypeRegistrationError),
     #[error("Failed to register relation type {0} because outbound component {1} does not exist!")]
     OutboundComponentDoesNotExist(RelationTypeId, ComponentTypeId),
     #[error("Failed to register relation type {0} because outbound entity type {1} does not exist!")]

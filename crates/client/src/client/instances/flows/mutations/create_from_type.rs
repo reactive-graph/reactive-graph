@@ -1,13 +1,11 @@
 #[cynic::schema_for_derives(file = r#"../../schema/graphql/reactive-graph-schema.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod mutations {
-    use crate::PropertyInstanceDefinitions;
     use crate::client::instances::flows::variables::create_from_type::variables::CreateFlowInstanceFromTypeVariables;
     use crate::client::instances::flows::variables::create_from_type::variables::CreateFlowInstanceFromTypeVariablesFields;
     use crate::schema_graphql::instances::flow_instance::FlowInstance;
     use cynic::Operation;
     use cynic::QueryFragment;
     use reactive_graph_graph::FlowTypeId;
-    use reactive_graph_graph::NamespacedTypeGetter;
     use uuid::Uuid;
 
     #[derive(cynic::QueryFragment, Debug)]
@@ -25,7 +23,7 @@ pub mod mutations {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "CreateFlowInstanceFromTypeVariables")]
     pub struct MutationFlowInstances {
-        #[arguments(type: { namespace: $namespace, name: $type_name}, variables: $variables, properties: $properties
+        #[arguments(type: $_type, variables: $variables, properties: $properties
         )]
         pub create_from_type: FlowInstance,
     }
@@ -37,18 +35,6 @@ pub mod mutations {
         properties: reactive_graph_graph::PropertyInstances,
     ) -> Operation<CreateFlowInstance, CreateFlowInstanceFromTypeVariables> {
         use cynic::MutationBuilder;
-        let id = id.map(|id| id.into());
-        let variables: PropertyInstanceDefinitions = variables.into();
-        let variables = Some(variables.0);
-        let properties: PropertyInstanceDefinitions = properties.into();
-        let properties = Some(properties.0);
-        let vars = CreateFlowInstanceFromTypeVariables::builder()
-            .namespace(ty.namespace())
-            .type_name(ty.type_name())
-            .id(id)
-            .variables(variables)
-            .properties(properties)
-            .build();
-        CreateFlowInstance::build(vars)
+        CreateFlowInstance::build(CreateFlowInstanceFromTypeVariables::new(ty, id, variables, properties))
     }
 }

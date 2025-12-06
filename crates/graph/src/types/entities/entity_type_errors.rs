@@ -5,6 +5,10 @@ use crate::AddPropertyError;
 use crate::ComponentTypeId;
 use crate::EntityComponentTypeIds;
 use crate::EntityTypeId;
+use crate::InvalidComponentError;
+use crate::InvalidExtensionError;
+use crate::InvalidPropertyTypeError;
+use crate::NamespacedTypeParseError;
 use crate::RemoveExtensionError;
 use crate::RemovePropertyError;
 use crate::UpdateExtensionError;
@@ -112,4 +116,16 @@ pub enum EntityTypeRemoveExtensionError {
 pub enum EntityTypeMergeExtensionsError {
     #[error("The entity type {0} does not exist")]
     EntityTypeDoesNotExist(EntityTypeId),
+}
+
+#[derive(Debug, Error)]
+pub enum InvalidEntityTypeError {
+    #[error("The fully qualified namespace of the entity type is invalid: {0}")]
+    InvalidEntityType(#[from] NamespacedTypeParseError),
+    #[error("The property type of the entity type is invalid: {0}")]
+    InvalidPropertyType(InvalidPropertyTypeError),
+    #[error("The component of the entity type is invalid: {0}")]
+    InvalidComponent(#[from] InvalidComponentError),
+    #[error("The extension of the entity type is invalid: {0}")]
+    InvalidExtension(#[from] InvalidExtensionError),
 }

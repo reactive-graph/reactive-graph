@@ -4,10 +4,11 @@ use crate::client::types::flows::args::add_variable::FlowTypeAddVariableArgs;
 use crate::client::types::flows::args::create::CreateFlowTypeArgs;
 use crate::client::types::flows::args::flow_extension_type::FlowExtensionTypeIdArgs;
 use crate::client::types::flows::args::flow_type_variable::FlowTypeVariableArgs;
+use crate::client::types::flows::args::parse_flow_ty;
 use crate::client::types::flows::args::remove_entity_instance::FlowTypeRemoveEntityInstanceArgs;
-use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
 use crate::client::types::flows::args::update_description::FlowTypeUpdateDescriptionArgs;
 use clap::Subcommand;
+use reactive_graph_graph::FlowTypeId;
 
 #[derive(Subcommand, Debug, Clone)]
 pub(crate) enum FlowTypesCommands {
@@ -16,22 +17,37 @@ pub(crate) enum FlowTypesCommands {
     List,
     /// Prints a single flow type.
     #[non_exhaustive]
-    Get(FlowTypeIdArgs),
+    Get {
+        #[arg(name = "flow_type", value_parser = parse_flow_ty)]
+        flow_ty: FlowTypeId,
+    },
     /// List the variables of a flow type.
     #[non_exhaustive]
-    ListVariables(FlowTypeIdArgs),
+    ListVariables {
+        #[arg(name = "flow_type", value_parser = parse_flow_ty)]
+        flow_ty: FlowTypeId,
+    },
     /// List the extensions of a flow type.
     #[non_exhaustive]
-    ListExtensions(FlowTypeIdArgs),
+    ListExtensions {
+        #[arg(name = "flow_type", value_parser = parse_flow_ty)]
+        flow_ty: FlowTypeId,
+    },
     /// Prints the JSON Schema of a flow type.
     #[non_exhaustive]
-    GetJsonSchema(FlowTypeIdArgs),
+    GetJsonSchema {
+        #[arg(name = "flow_type", value_parser = parse_flow_ty)]
+        flow_ty: FlowTypeId,
+    },
     /// Creates a new flow type.
     #[non_exhaustive]
     Create(CreateFlowTypeArgs),
     /// Deletes a flow type.
     #[non_exhaustive]
-    Delete(FlowTypeIdArgs),
+    Delete {
+        #[arg(name = "flow_type", value_parser = parse_flow_ty)]
+        flow_ty: FlowTypeId,
+    },
     /// Adds a property to a flow type.
     #[non_exhaustive]
     AddVariable(FlowTypeAddVariableArgs),

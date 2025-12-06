@@ -11,9 +11,14 @@ pub struct GraphQLBehaviour {
 /// A behaviour.
 #[Object(name = "Behaviour")]
 impl GraphQLBehaviour {
-    /// The namespace and type name.
+    /// The fully qualified namespace of the behaviour.
     #[graphql(name = "type")]
-    async fn ty(&self) -> GraphQLNamespacedType {
+    async fn ty(&self) -> String {
+        self.behaviour_ty.namespace().to_string()
+    }
+
+    /// The namespaced type.
+    async fn namespaced_type(&self) -> GraphQLNamespacedType {
         self.behaviour_ty.namespaced_type().into()
     }
 }

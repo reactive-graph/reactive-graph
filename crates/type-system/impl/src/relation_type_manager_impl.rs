@@ -21,6 +21,7 @@ use reactive_graph_graph::Namespace;
 use reactive_graph_graph::NamespacedTypeComponentTypeIdContainer;
 use reactive_graph_graph::NamespacedTypeContainer;
 use reactive_graph_graph::NamespacedTypeExtensionContainer;
+use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::NamespacedTypePropertyTypeContainer;
 use reactive_graph_graph::Namespaces;
 use reactive_graph_graph::PropertyType;
@@ -42,14 +43,15 @@ use reactive_graph_graph::RelationTypeUpdateExtensionError;
 use reactive_graph_graph::RelationTypeUpdatePropertyError;
 use reactive_graph_graph::RelationTypes;
 use reactive_graph_lifecycle::Lifecycle;
-use reactive_graph_runtime_model::EXTENSION_DIVERGENT;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::NamespacedTypeManager;
 use reactive_graph_type_system_api::RelationTypeCreationError;
 use reactive_graph_type_system_api::RelationTypeManager;
 use reactive_graph_type_system_api::RelationTypeRegistrationError;
 use reactive_graph_type_system_api::TypeSystemEvent;
 use reactive_graph_type_system_api::TypeSystemEventManager;
+use reactive_graph_type_system_model::EXTENSION_DIVERGENT;
 
 #[derive(Component)]
 pub struct RelationTypeManagerImpl {
@@ -58,6 +60,8 @@ pub struct RelationTypeManagerImpl {
     component_manager: Arc<dyn ComponentManager + Send + Sync>,
 
     entity_type_manager: Arc<dyn EntityTypeManager + Send + Sync>,
+
+    namespaced_type_manager: Arc<dyn NamespacedTypeManager + Send + Sync>,
 
     #[component(default = "RelationTypes::new")]
     relation_types: RelationTypes,
@@ -68,6 +72,7 @@ pub struct RelationTypeManagerImpl {
 impl RelationTypeManager for RelationTypeManagerImpl {
     fn register(&self, relation_type: RelationType) -> Result<RelationType, RelationTypeRegistrationError> {
         let relation_ty = relation_type.ty.clone();
+        self.namespaced_type_manager.register(relation_ty.namespaced_type())?;
         if self.has(&relation_ty) {
             return Err(RelationTypeRegistrationError::RelationTypeAlreadyExists(relation_ty));
         }
@@ -495,6 +500,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
 
     // TODO: parameter "cascade": flow types and relation instances (and their dependencies) depends on a relation type
     fn delete(&self, ty: &RelationTypeId) -> Option<RelationType> {
+        self.namespaced_type_manager.delete(ty.as_ref());
         self.relation_types.remove(ty).map(|(ty, relation_type)| {
             self.event_manager.emit_event(TypeSystemEvent::RelationTypeDeleted(ty.clone()));
             relation_type
@@ -528,9 +534,7 @@ impl Lifecycle for RelationTypeManagerImpl {
 
 #[cfg(test)]
 mod tests {
-    use default_test::DefaultTest;
-
-    use crate::TypeSystemImpl;
+    use crate::TypeSystemSystemImpl;
     use reactive_graph_graph::Component;
     use reactive_graph_graph::ComponentTypeId;
     use reactive_graph_graph::ComponentTypeIdContainer;
@@ -542,35 +546,40 @@ mod tests {
     use reactive_graph_graph::PropertyType;
     use reactive_graph_graph::PropertyTypeContainer;
     use reactive_graph_graph::PropertyTypes;
+    use reactive_graph_graph::RandomNamespacedType;
+    use reactive_graph_graph::RandomNamespacedTypeId;
+    use reactive_graph_graph::RandomNamespacedTypeIds;
+    use reactive_graph_graph::RandomNamespacedTypes;
     use reactive_graph_graph::RelationType;
     use reactive_graph_graph::RelationTypeId;
-    use reactive_graph_type_system_api::TypeSystem;
+    use reactive_graph_type_system_api::TypeSystemSystem;
     use reactive_graph_utils_test::r_string;
 
     #[test]
     fn test_register_relation_type() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
 
         let outbound_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(EntityType::random_type().unwrap())
             .expect("Failed to register outbound entity type");
         let outbound_ty: InboundOutboundType = (&outbound_type).into();
 
         let inbound_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(EntityType::random_type().unwrap())
             .expect("Failed to register inbound entity type");
         let inbound_ty: InboundOutboundType = (&inbound_type).into();
 
-        let relation_ty = RelationTypeId::default_test();
+        let relation_ty = RelationTypeId::random_type_id().unwrap();
 
         let relation_type = RelationType::builder()
             .outbound_type(&outbound_ty)
             .ty(&relation_ty)
             .inbound_type(&inbound_ty)
-            .build_with_defaults();
+            .build_with_defaults()
+            .unwrap();
 
         let _relation_type = relation_type_manager.register(relation_type).expect("Failed to register relation type");
 
@@ -584,37 +593,37 @@ mod tests {
     #[test]
     fn test_create_and_delete_relation_type() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
 
         let outbound_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(EntityType::random_type().unwrap())
             .expect("Failed to register outbound entity type");
         let outbound_ty: InboundOutboundType = (&outbound_type).into();
 
         let inbound_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(EntityType::random_type().unwrap())
             .expect("Failed to register inbound entity type");
         let inbound_ty: InboundOutboundType = (&inbound_type).into();
 
-        let namespace = r_string();
-        let type_name = r_string();
-        let relation_ty = RelationTypeId::new_from_type(&namespace, &type_name);
+        // let namespace = r_string();
+        // let type_name = r_string();
+        let relation_ty = RelationTypeId::random_type_id().unwrap();
 
         let relation_type = RelationType::builder()
             .outbound_type(&outbound_ty)
             .ty(&relation_ty)
             .inbound_type(&inbound_ty)
-            .build_with_defaults();
+            .build_with_defaults()
+            .unwrap();
 
         let _relation_type = relation_type_manager.register(relation_type).expect("Failed to register relation type");
         assert!(relation_type_manager.has(&relation_ty));
-        assert!(relation_type_manager.has_by_type(&namespace, &type_name));
 
         let relation_type_2 = relation_type_manager.get(&relation_ty).expect("Failed to get relation type by type id");
-        assert_eq!(namespace, relation_type_2.namespace(), "The relation type's namespace mismatches");
-        assert_eq!(type_name, relation_type_2.type_name(), "The relation type's type_name mismatches");
+        assert_eq!(relation_ty.namespace(), relation_type_2.namespace(), "The relation type's namespace mismatches");
+        assert_eq!(relation_ty.type_name(), relation_type_2.type_name(), "The relation type's type_name mismatches");
         relation_type_manager.delete(&relation_ty).expect("Failed to delete relation type by type id");
         assert!(!relation_type_manager.has(&relation_ty), "Relation type should not be registered anymore");
         assert!(
@@ -626,29 +635,28 @@ mod tests {
     #[test]
     fn test_get_relation_types() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
 
         let outbound_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(EntityType::random_type().unwrap())
             .expect("Failed to register outbound entity type");
         let outbound_ty: InboundOutboundType = (&outbound_type).into();
 
         let inbound_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(EntityType::random_type().unwrap())
             .expect("Failed to register inbound entity type");
         let inbound_ty: InboundOutboundType = (&inbound_type).into();
 
-        let namespace = r_string();
-        let type_name = r_string();
-        let relation_ty = RelationTypeId::new_from_type(&namespace, &type_name);
+        let relation_ty = RelationTypeId::random_type_id().unwrap();
 
         let relation_type = RelationType::builder()
             .outbound_type(&outbound_ty)
             .ty(&relation_ty)
             .inbound_type(&inbound_ty)
-            .build_with_defaults();
+            .build_with_defaults()
+            .unwrap();
 
         let _relation_type = relation_type_manager.register(relation_type).expect("Failed to register relation type");
 
@@ -662,31 +670,33 @@ mod tests {
     #[test]
     fn test_register_relation_type_has_component() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let component_manager = type_system.get_component_manager();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
 
         let outbound_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(EntityType::random_type().unwrap())
             .expect("Failed to register outbound entity type");
         let outbound_ty: InboundOutboundType = (&outbound_type).into();
 
         let inbound_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(EntityType::random_type().unwrap())
             .expect("Failed to register inbound entity type");
         let inbound_ty: InboundOutboundType = (&inbound_type).into();
 
-        let component = component_manager.register(Component::default_test()).expect("Failed to register component");
+        let component = component_manager
+            .register(Component::random_type().unwrap())
+            .expect("Failed to register component");
         let component_ty = component.ty.clone();
 
         let relation_type = RelationType::builder()
             .outbound_type(&outbound_ty)
-            .ty(RelationTypeId::default_test())
+            .ty(RelationTypeId::random_type_id().unwrap())
             .inbound_type(&inbound_ty)
             .component(&component_ty)
-            .properties(PropertyTypes::default_test())
-            .extensions(Extensions::default_test())
+            .properties(PropertyTypes::random_types(1..5).unwrap())
+            .extensions(Extensions::random_types(1..3).unwrap())
             .build();
         let relation_ty = relation_type.ty.clone();
 
@@ -695,37 +705,40 @@ mod tests {
         let relation_type = relation_type_manager.get(&relation_ty).expect("Failed to get relation type");
         assert!(relation_type.is_a(&component_ty), "Relation type must contain the component");
         assert!(relation_type.components.contains(&component_ty), "Relation type components must contain the component");
-        assert!(!relation_type.is_a(&ComponentTypeId::default_test()), "Relation type must not container another component");
+        assert!(
+            !relation_type.is_a(&ComponentTypeId::random_type_id().unwrap()),
+            "Relation type must not container another component"
+        );
     }
 
     #[test]
     fn test_register_relation_type_has_property() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
 
         let outbound_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(EntityType::random_type().unwrap())
             .expect("Failed to register outbound entity type");
         let outbound_ty: InboundOutboundType = (&outbound_type).into();
 
         let inbound_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(EntityType::random_type().unwrap())
             .expect("Failed to register inbound entity type");
         let inbound_ty: InboundOutboundType = (&inbound_type).into();
 
-        let property_type = PropertyType::default_test();
+        let property_type = PropertyType::random_type().unwrap();
         let property_name = property_type.name.clone();
 
         let relation_type = RelationType::builder()
             .outbound_type(&outbound_ty)
-            .ty(RelationTypeId::default_test())
+            .ty(RelationTypeId::random_type_id().unwrap())
             .inbound_type(&inbound_ty)
-            .components(ComponentTypeIds::default_test())
+            .components(ComponentTypeIds::random_type_ids().unwrap())
             .property(property_type)
             // .properties(PropertyTypes::default_test())
-            .extensions(Extensions::default_test())
+            .extensions(Extensions::random_types(1..3).unwrap())
             .build();
         let relation_ty = relation_type.ty.clone();
 

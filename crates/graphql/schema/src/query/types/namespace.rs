@@ -32,7 +32,7 @@ where
     fn parse(value: Value) -> InputValueResult<Self> {
         match value {
             Value::String(value) => {
-                let ty = TY::parse_namespace(&value).map_err(|e| InputValueError::from(e))?;
+                let ty = TY::from_str(&value).map_err(|e| InputValueError::from(e))?;
                 Ok(GraphQLNamespace(ty))
             }
             _ => Err(InputValueError::expected_type(value)),
@@ -41,7 +41,7 @@ where
 
     fn is_valid(value: &Value) -> bool {
         match value {
-            Value::String(value) => TY::parse_namespace(value).is_ok(),
+            Value::String(value) => TY::from_str(value).is_ok(),
             _ => false,
         }
     }
