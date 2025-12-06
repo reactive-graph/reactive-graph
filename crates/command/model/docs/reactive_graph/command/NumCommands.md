@@ -12,7 +12,7 @@ The number of commands
 
 | Component                          | Description                                                                             | Properties                                                                                                                      |
 |------------------------------------|-----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| `reactive_graph::command::Command` | A command which can be executed. The command has a name and can have command arguments. | <ul compact><li>`cmd_ignore`</li><li>`cmd_result`</li><li>`namespace`</li><li>`help`</li><li>`args`</li><li>`command`</li></ul> |
+| `reactive_graph::command::Command` | A command which can be executed. The command has a name and can have command arguments. | <ul compact><li>`args`</li><li>`cmd_ignore`</li><li>`cmd_result`</li><li>`command`</li><li>`help`</li><li>`namespace`</li></ul> |
 
 ## Properties
 
