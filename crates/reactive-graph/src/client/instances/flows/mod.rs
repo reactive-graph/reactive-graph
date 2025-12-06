@@ -19,7 +19,7 @@ pub(crate) async fn flow_instances(client: &Arc<ReactiveGraphClient>, flow_insta
     };
     match command {
         FlowInstancesCommands::List(args) => match client.instances().flows().search((&args).into()).await {
-            Ok(Some(flow_instances)) => output_format_wrapper.collection(flow_instances),
+            Ok(Some(flow_instances)) => output_format_wrapper.collection(flow_instances.to_vec()),
             Ok(None) => Err(NoContent("No flow instances found".to_string())),
             Err(e) => Err(e.into()),
         },
@@ -41,7 +41,7 @@ pub(crate) async fn flow_instances(client: &Arc<ReactiveGraphClient>, flow_insta
         FlowInstancesCommands::CreateFromType(args) => match client
             .instances()
             .flows()
-            .create_from_type(args.ty.clone(), args.id, args.variables(), args.properties())
+            .create_from_type(args.flow_ty.clone(), args.id, args.variables(), args.properties())
             .await
         {
             Ok(Some(flow_instance)) => output_format_wrapper.single(flow_instance),

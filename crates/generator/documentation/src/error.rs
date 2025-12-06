@@ -1,3 +1,4 @@
+use reactive_graph_graph::TypeResolveError;
 use std::path::PathBuf;
 use thiserror::Error;
 
@@ -7,4 +8,6 @@ pub enum DocumentationGenerationError {
     WriteError(PathBuf, std::io::Error),
     #[error("Failed to create documentation folder {0}")]
     PathError(PathBuf),
+    #[error("Failed to resolve component {0}")]
+    TypeResolveError(#[from] TypeResolveError),
 }

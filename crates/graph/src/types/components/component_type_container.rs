@@ -40,6 +40,9 @@ pub trait NamespacedTypeComponentTypeIdContainer<T, AddComponentError, RemoveCom
 
     /// Remove the component with the given component_name from the entity type with the given name.
     fn remove_component(&self, ty: &T, component_ty: &ComponentTypeId) -> Result<ComponentTypeId, RemoveComponentError>;
+
+    /// Returns all component type ids of the component type id container.
+    fn get_component_type_ids(&self) -> ComponentTypeIds;
 }
 
 pub trait NamespacedTypeComponentPropertiesContainer<T, MergeComponentPropertiesError> {

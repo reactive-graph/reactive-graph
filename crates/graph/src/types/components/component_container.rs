@@ -19,6 +19,9 @@ pub trait ComponentContainer {
 
     /// Returns true, if the reactive instance is composed with the given component.
     fn is_a(&self, ty: &ComponentTypeId) -> bool;
+
+    /// Returns true, if the reactive instance is composed with all the given components.
+    fn is_all(&self, tys: &ComponentTypeIds) -> bool;
 }
 
 pub trait ComponentContainerGetter {

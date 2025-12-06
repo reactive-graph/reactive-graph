@@ -36,7 +36,6 @@ use reactive_graph_graph::Namespace;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyInstances;
 use reactive_graph_graph::PropertyTypeContainer;
-use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_graph::RelationInstance;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::RelationTypeId;
@@ -44,12 +43,12 @@ use reactive_graph_graph::TypeDefinitionComponent;
 use reactive_graph_graph::TypeDefinitionGetter;
 use reactive_graph_graph::TypeDefinitionProperty;
 use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_model_core::reactive_graph::core::event::EventProperties::EVENT;
 use reactive_graph_reactive_model_api::ReactiveInstance;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 use reactive_graph_reactive_model_impl::ReactiveRelation;
 use reactive_graph_reactive_service_api::ReactiveEntityManager;
 use reactive_graph_reactive_service_api::ReactiveRelationManager;
-use reactive_graph_runtime_model::EventProperties::EVENT;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::RelationTypeManager;
 use reactive_graph_type_system_api::TypeSystemEventManager;
@@ -675,7 +674,7 @@ impl TypeSystemEventSubscriber for ReactiveRelationManagerImpl {
         if let Some(entity_instance) = self.type_system_event_manager.get_type_system_event_instance(system_event_type) {
             if let Some(sender) = self.event_channels.sender(&handle_id) {
                 entity_instance.observe_with_handle(
-                    &EVENT.property_name(),
+                    EVENT.as_ref(),
                     move |v| {
                         let _ = sender.send(v.clone());
                     },
@@ -687,7 +686,7 @@ impl TypeSystemEventSubscriber for ReactiveRelationManagerImpl {
 
     fn unsubscribe_type_system_event(&self, system_event_type: TypeSystemEventTypes, handle_id: u128) {
         if let Some(entity_instance) = self.type_system_event_manager.get_type_system_event_instance(system_event_type) {
-            entity_instance.remove_observer(&EVENT.property_name(), handle_id);
+            entity_instance.remove_observer(EVENT.as_ref(), handle_id);
         }
     }
 }

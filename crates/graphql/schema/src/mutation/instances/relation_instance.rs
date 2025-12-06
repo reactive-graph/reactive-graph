@@ -1,5 +1,13 @@
+use std::str::FromStr;
 use std::sync::Arc;
 
+use crate::mutation::GraphQLExtensionDefinition;
+use crate::mutation::GraphQLExtensionDefinitions;
+use crate::mutation::GraphQLPropertyConnectorId;
+use crate::mutation::GraphQLRelationInstanceId;
+use crate::mutation::PropertyTypeDefinitions;
+use crate::query::GraphQLPropertyInstance;
+use crate::query::GraphQLRelationInstance;
 use async_graphql::Context;
 use async_graphql::Object;
 use async_graphql::Result;
@@ -10,30 +18,19 @@ use reactive_graph_behaviour_service_api::RelationComponentBehaviourManager;
 use reactive_graph_graph::ComponentTypeIds;
 use reactive_graph_graph::CreatePropertyConnectorError;
 use reactive_graph_graph::CreateRelationInstanceError;
-use reactive_graph_graph::NamespacedTypeConstructor;
-use reactive_graph_graph::NamespacedTypeIdContainer;
 use reactive_graph_graph::PropertyInstanceSetter;
-use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_graph::RelationInstance;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::RemoveRelationInstanceError;
 use reactive_graph_graph::TriggerRelationInstanceError;
 use reactive_graph_graph::UpdateRelationInstanceError;
+use reactive_graph_model_core::reactive_graph::core::action::ActionProperties::TRIGGER;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 use reactive_graph_reactive_service_api::ReactiveEntityManager;
 use reactive_graph_reactive_service_api::ReactiveRelationManager;
-use reactive_graph_runtime_model::ActionProperties::TRIGGER;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::RelationTypeManager;
 use serde_json::json;
-
-use crate::mutation::GraphQLExtensionDefinition;
-use crate::mutation::GraphQLExtensionDefinitions;
-use crate::mutation::GraphQLPropertyConnectorId;
-use crate::mutation::GraphQLRelationInstanceId;
-use crate::mutation::PropertyTypeDefinitions;
-use crate::query::GraphQLPropertyInstance;
-use crate::query::GraphQLRelationInstance;
 
 #[derive(Default)]
 pub struct MutationRelationInstances;
@@ -266,7 +263,7 @@ impl MutationRelationInstances {
             for property in properties.clone() {
                 debug!("set property {} = {}", property.name.clone(), property.value.clone());
                 // Set with respect to the mutability state
-                reactive_relation.set_no_propagate_checked(property.name.clone(), property.value.clone());
+                reactive_relation.set_no_propagate_checked(&property.name, property.value.clone());
             }
             // tick every property that has been changed before, this is still not transactional
             for property in properties {
@@ -284,8 +281,8 @@ impl MutationRelationInstances {
             reactive_relation.add_property_by_type(&property_type);
         }
         if let Some(remove_properties) = remove_properties {
-            for property_name in remove_properties.clone() {
-                debug!("remove property {}", &property_name);
+            for property_name in remove_properties.iter() {
+                debug!("remove property {property_name}");
                 reactive_relation.remove_property(property_name);
             }
         }
@@ -303,10 +300,10 @@ impl MutationRelationInstances {
         let reactive_relation = reactive_relation_manager
             .get(&relation_instance_id)
             .ok_or(TriggerRelationInstanceError::RelationInstanceDoesNotExist(relation_instance_id.clone()))?;
-        if !reactive_relation.has_property(&TRIGGER.property_name()) {
+        if !reactive_relation.has_property(TRIGGER.as_ref()) {
             return Err(TriggerRelationInstanceError::TriggerPropertyMissing(relation_instance_id).into());
         }
-        reactive_relation.set_checked(TRIGGER.property_name(), json!(true));
+        reactive_relation.set_checked(TRIGGER.as_ref(), json!(true));
         Ok(reactive_relation.into())
     }
 
@@ -355,7 +352,7 @@ impl MutationRelationInstances {
         let relation_behaviour_manager = context.data::<Arc<dyn RelationBehaviourManager + Send + Sync>>()?;
         let relation_component_behaviour_manager = context.data::<Arc<dyn RelationComponentBehaviourManager + Send + Sync>>()?;
         let relation_instance_id = RelationInstanceId::try_from(relation_instance_id)?;
-        let behaviour_ty = BehaviourTypeId::parse_namespace(&behaviour_namespace)?;
+        let behaviour_ty = BehaviourTypeId::from_str(&behaviour_namespace)?;
         let reactive_instance = relation_instance_manager
             .get(&relation_instance_id)
             .ok_or(UpdateRelationInstanceError::RelationInstanceDoesNotExist(relation_instance_id))?;
@@ -379,7 +376,7 @@ impl MutationRelationInstances {
         let relation_behaviour_manager = context.data::<Arc<dyn RelationBehaviourManager + Send + Sync>>()?;
         let relation_component_behaviour_manager = context.data::<Arc<dyn RelationComponentBehaviourManager + Send + Sync>>()?;
         let relation_instance_id = RelationInstanceId::try_from(relation_instance_id)?;
-        let behaviour_ty = BehaviourTypeId::parse_namespace(&behaviour_namespace)?;
+        let behaviour_ty = BehaviourTypeId::from_str(&behaviour_namespace)?;
         let reactive_instance = relation_instance_manager
             .get(&relation_instance_id)
             .ok_or(UpdateRelationInstanceError::RelationInstanceDoesNotExist(relation_instance_id))?;
@@ -403,7 +400,7 @@ impl MutationRelationInstances {
         let relation_behaviour_manager = context.data::<Arc<dyn RelationBehaviourManager + Send + Sync>>()?;
         let relation_component_behaviour_manager = context.data::<Arc<dyn RelationComponentBehaviourManager + Send + Sync>>()?;
         let relation_instance_id = RelationInstanceId::try_from(relation_instance_id)?;
-        let behaviour_ty = BehaviourTypeId::parse_namespace(&behaviour_namespace)?;
+        let behaviour_ty = BehaviourTypeId::from_str(&behaviour_namespace)?;
         let reactive_instance = relation_instance_manager
             .get(&relation_instance_id)
             .ok_or(UpdateRelationInstanceError::RelationInstanceDoesNotExist(relation_instance_id))?;

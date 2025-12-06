@@ -2,6 +2,10 @@ use crate::AddExtensionError;
 use crate::AddPropertyError;
 use crate::ComponentTypeId;
 use crate::EntityTypeId;
+use crate::InvalidComponentError;
+use crate::InvalidExtensionError;
+use crate::InvalidPropertyTypeError;
+use crate::NamespacedTypeParseError;
 use crate::RelationComponentTypeIds;
 use crate::RelationTypeId;
 use crate::RemoveExtensionError;
@@ -118,4 +122,16 @@ pub enum RelationTypeMergeExtensionsError {
 pub enum RelationTypeOutboundInboundError {
     #[error("The entity type {0} does not exist")]
     EntityTypeDoesNotExist(EntityTypeId),
+}
+
+#[derive(Debug, Error)]
+pub enum InvalidRelationTypeError {
+    #[error("The fully qualified namespace of the relation type is invalid: {0}")]
+    InvalidRelationType(#[from] NamespacedTypeParseError),
+    #[error("The property type of the relation type is invalid: {0}")]
+    InvalidPropertyType(InvalidPropertyTypeError),
+    #[error("The component of the relation type is invalid: {0}")]
+    InvalidComponent(#[from] InvalidComponentError),
+    #[error("The extension of the relation type is invalid: {0}")]
+    InvalidExtension(#[from] InvalidExtensionError),
 }

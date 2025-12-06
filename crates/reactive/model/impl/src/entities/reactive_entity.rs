@@ -23,6 +23,7 @@ use reactive_graph_graph::Extensions;
 use reactive_graph_graph::JsonSchemaId;
 use reactive_graph_graph::Mutability;
 use reactive_graph_graph::Mutability::Mutable;
+use reactive_graph_graph::NamedInstanceContainer;
 use reactive_graph_graph::Namespace;
 use reactive_graph_graph::NamespaceSegment;
 use reactive_graph_graph::NamespacedType;
@@ -34,11 +35,11 @@ use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::TypeDefinition;
 use reactive_graph_graph::TypeDefinitionGetter;
 use reactive_graph_graph::TypeIdType;
-use reactive_graph_graph::instances::named::NamedInstanceContainer;
 
 use crate::ReactiveProperties;
 use crate::ReactiveProperty;
 use reactive_graph_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactiveInstanceUnidentifiable;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 
 #[derive(TypedBuilder)]
@@ -117,6 +118,8 @@ impl Deref for ReactiveEntity {
     }
 }
 
+impl ReactiveInstanceUnidentifiable for ReactiveEntity {}
+
 impl ReactiveInstance<Uuid> for ReactiveEntity {
     fn id(&self) -> Uuid {
         self.id
@@ -140,10 +143,10 @@ impl ReactivePropertyContainer for ReactiveEntity {
         self.properties.contains_key(name)
     }
 
-    fn add_property<S: Into<String>>(&self, name: S, mutability: Mutability, value: Value) {
+    fn add_property(&self, name: &str, mutability: Mutability, value: Value) {
         let name = name.into();
         if !self.properties.contains_key(&name) {
-            let property_instance = ReactiveProperty::new(self.id, name.clone(), mutability, value);
+            let property_instance = ReactiveProperty::new(self.id, &name, mutability, value);
             self.properties.insert(name, property_instance);
         }
     }
@@ -153,8 +156,7 @@ impl ReactivePropertyContainer for ReactiveEntity {
         self.properties.insert(property.name.clone(), property_instance);
     }
 
-    fn remove_property<S: Into<String>>(&self, name: S) {
-        let name = name.into();
+    fn remove_property(&self, name: &str) {
         self.properties.retain(|property_name, _| property_name != &name);
     }
 
@@ -212,6 +214,10 @@ impl ComponentContainer for ReactiveEntity {
     fn is_a(&self, ty: &ComponentTypeId) -> bool {
         self.components.contains(ty)
     }
+
+    fn is_all(&self, tys: &ComponentTypeIds) -> bool {
+        tys.iter().all(|ty| self.components.contains(&ty))
+    }
 }
 
 impl BehaviourTypesContainer for ReactiveEntity {
@@ -230,73 +236,77 @@ impl BehaviourTypesContainer for ReactiveEntity {
     fn behaves_as(&self, ty: &BehaviourTypeId) -> bool {
         self.behaviours.contains(ty)
     }
+
+    fn behaves_as_all(&self, tys: &BehaviourTypeIds) -> bool {
+        tys.iter().all(|ty| self.behaviours.contains(&ty))
+    }
 }
 
 impl PropertyInstanceGetter for ReactiveEntity {
-    fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.properties.get(&property_name.into()).map(|p| p.get())
+    fn get(&self, property_name: &str) -> Option<Value> {
+        self.properties.get(property_name).map(|p| p.get())
     }
 
-    fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_bool())
+    fn as_bool(&self, property_name: &str) -> Option<bool> {
+        self.properties.get(property_name).and_then(|p| p.as_bool())
     }
 
-    fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_u64())
+    fn as_u64(&self, property_name: &str) -> Option<u64> {
+        self.properties.get(property_name).and_then(|p| p.as_u64())
     }
 
-    fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_i64())
+    fn as_i64(&self, property_name: &str) -> Option<i64> {
+        self.properties.get(property_name).and_then(|p| p.as_i64())
     }
 
-    fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_f64())
+    fn as_f64(&self, property_name: &str) -> Option<f64> {
+        self.properties.get(property_name).and_then(|p| p.as_f64())
     }
 
-    fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_string())
+    fn as_string(&self, property_name: &str) -> Option<String> {
+        self.properties.get(property_name).and_then(|p| p.as_string())
     }
 
-    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_array())
+    fn as_array(&self, property_name: &str) -> Option<Vec<Value>> {
+        self.properties.get(property_name).and_then(|p| p.as_array())
     }
 
-    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_object())
+    fn as_object(&self, property_name: &str) -> Option<Map<String, Value>> {
+        self.properties.get(property_name).and_then(|p| p.as_object())
     }
 }
 
 impl PropertyInstanceSetter for ReactiveEntity {
-    fn set_checked<S: Into<String>>(&self, property_name: S, value: Value) {
-        if let Some(instance) = self.properties.get(&property_name.into()) {
+    fn set_checked(&self, property_name: &str, value: Value) {
+        if let Some(instance) = self.properties.get(property_name) {
             instance.set_checked(value);
         }
     }
 
-    fn set<S: Into<String>>(&self, property_name: S, value: Value) {
-        if let Some(instance) = self.properties.get(&property_name.into()) {
+    fn set(&self, property_name: &str, value: Value) {
+        if let Some(instance) = self.properties.get(property_name) {
             instance.set(value);
         }
     }
 
-    fn set_no_propagate_checked<S: Into<String>>(&self, property_name: S, value: Value) {
-        if let Some(instance) = self.properties.get(&property_name.into()) {
+    fn set_no_propagate_checked(&self, property_name: &str, value: Value) {
+        if let Some(instance) = self.properties.get(property_name) {
             instance.set_no_propagate_checked(value);
         }
     }
 
-    fn set_no_propagate<S: Into<String>>(&self, property_name: S, value: Value) {
-        if let Some(instance) = self.properties.get(&property_name.into()) {
+    fn set_no_propagate(&self, property_name: &str, value: Value) {
+        if let Some(instance) = self.properties.get(property_name) {
             instance.set_no_propagate(value);
         }
     }
 
-    fn mutability<S: Into<String>>(&self, property_name: S) -> Option<Mutability> {
-        self.properties.get(&property_name.into()).map(|p| p.value().mutability)
+    fn mutability(&self, property_name: &str) -> Option<Mutability> {
+        self.properties.get(property_name).map(|p| p.value().mutability)
     }
 
-    fn set_mutability<S: Into<String>>(&self, property_name: S, mutability: Mutability) {
-        if let Some(mut property_instance) = self.properties.get_mut(&property_name.into()) {
+    fn set_mutability(&self, property_name: &str, mutability: Mutability) {
+        if let Some(mut property_instance) = self.properties.get_mut(property_name) {
             property_instance.set_mutability(mutability);
         }
     }
@@ -340,6 +350,18 @@ impl TypeDefinitionGetter for &ReactiveEntity {
 
     fn type_id_type() -> TypeIdType {
         TypeIdType::EntityType
+    }
+}
+
+impl AsRef<NamespacedType> for ReactiveEntity {
+    fn as_ref(&self) -> &NamespacedType {
+        self.ty.as_ref()
+    }
+}
+
+impl AsRef<Namespace> for ReactiveEntity {
+    fn as_ref(&self) -> &Namespace {
+        self.ty.as_ref()
     }
 }
 

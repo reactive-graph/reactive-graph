@@ -7,9 +7,14 @@ use serde_json::json;
 const CHARSET_LETTERS: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const CHARSET_NAMESPACE_PATH_SEGMENT: &str = "abcdefghijklmnopqrstuvwxyz          ";
 const CHARSET_NAMESPACE_TYPE_NAME: &str = "abcdefghijklmnopqrstuvwxyz          ";
+const CHARSET_LOWERCASE_LETTERS: &str = "abcdefghijklmnopqrstuvwxyz";
 
 pub fn r_string() -> String {
     generate(10, CHARSET_LETTERS).to_string()
+}
+
+pub fn r_lowercase_string() -> String {
+    generate(10, CHARSET_LOWERCASE_LETTERS).to_string()
 }
 
 pub fn r_namespace_path_segment() -> String {

@@ -1,20 +1,12 @@
 #[cynic::schema_for_derives(file = r#"../../schema/graphql/reactive-graph-schema.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod mutations {
+    use crate::client::instances::entities::variables::set_property::variables::SetPropertyVariables;
+    use crate::client::instances::entities::variables::set_property::variables::SetPropertyVariablesFields;
     use crate::schema_graphql::instances::entity_instance::EntityInstance;
-    use crate::schema_graphql::instances::property_instance::PropertyInstanceDefinition;
-    use crate::schema_graphql::scalar::UUID;
     use cynic::Operation;
     use cynic::QueryFragment;
-    use cynic::QueryVariables;
     use serde_json::Value;
-    use typed_builder::TypedBuilder;
     use uuid::Uuid;
-
-    #[derive(QueryVariables, Debug, TypedBuilder)]
-    pub struct SetPropertyVariables {
-        pub id: UUID,
-        pub properties: Option<Vec<PropertyInstanceDefinition>>,
-    }
 
     #[derive(cynic::QueryFragment, Debug)]
     #[cynic(graphql_type = "Mutation", variables = "SetPropertyVariables")]
@@ -37,11 +29,6 @@ pub mod mutations {
 
     pub fn set_property(id: Uuid, name: String, value: Value) -> Operation<SetProperty, SetPropertyVariables> {
         use cynic::MutationBuilder;
-        SetProperty::build(
-            SetPropertyVariables::builder()
-                .id(id.into())
-                .properties(Some(vec![PropertyInstanceDefinition { name, value }]))
-                .build(),
-        )
+        SetProperty::build(SetPropertyVariables::new(id, name, value))
     }
 }

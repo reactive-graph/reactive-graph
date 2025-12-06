@@ -313,12 +313,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "320119579fcad9c21884f5c4861d16174d0e06250625266f50fe6898340abefa"
 
 [[package]]
-name = "adler32"
-version = "1.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aae1277d39aeec15cb388266ecc24b11c80469deae6067e17a1a7aa9e5c1f234"
-
-[[package]]
 name = "aes"
 version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1209,15 +1203,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
 
 [[package]]
-name = "core2"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b49ba7ef1ad6107f8824dbe97de947cbaac53c44e7f9756a1fba0d37c1eec505"
-dependencies = [
- "memchr",
-]
-
-[[package]]
 name = "cpufeatures"
 version = "0.2.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1481,12 +1466,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "dary_heap"
-version = "0.3.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "04d2cd9c18b9f454ed67da600630b021a8a80bf33f8c95896ab33aaf1c26b728"
-
-[[package]]
 name = "dashmap"
 version = "6.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1645,10 +1624,57 @@ dependencies = [
 ]
 
 [[package]]
+name = "documented"
+version = "0.9.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ed6b3e31251e87acd1b74911aed84071c8364fc9087972748ade2f1094ccce34"
+dependencies = [
+ "documented-macros",
+ "phf",
+ "thiserror 2.0.16",
+]
+
+[[package]]
+name = "documented-macros"
+version = "0.9.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1149cf7462e5e79e17a3c05fd5b1f9055092bbfa95e04c319395c3beacc9370f"
+dependencies = [
+ "convert_case 0.8.0",
+ "itertools 0.14.0",
+ "optfield",
+ "proc-macro2",
+ "quote",
+ "strum 0.27.2",
+ "syn",
+]
+
+[[package]]
 name = "dunce"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813"
+
+[[package]]
+name = "dyn-clonable"
+version = "0.9.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a36efbb9bfd58e1723780aa04b61aba95ace6a05d9ffabfdb0b43672552f0805"
+dependencies = [
+ "dyn-clonable-impl",
+ "dyn-clone",
+]
+
+[[package]]
+name = "dyn-clonable-impl"
+version = "0.9.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7e8671d54058979a37a26f3511fbf8d198ba1aa35ffb202c42587d918d77213a"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
 
 [[package]]
 name = "dyn-clone"
@@ -1721,7 +1747,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "778e2ac28f6c47af28e4907f13ffd1e1ddbd400980a9abd7c8df189bf578a5ad"
 dependencies = [
  "libc",
- "windows-sys 0.52.0",
+ "windows-sys 0.60.2",
 ]
 
 [[package]]
@@ -3266,29 +3292,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e8a5a9a0ff0086c7a148acb942baaabeadf9504d10400b5a05645853729b9cd2"
 
 [[package]]
-name = "include-flate"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "df49c16750695486c1f34de05da5b7438096156466e7f76c38fcdf285cf0113e"
-dependencies = [
- "include-flate-codegen",
- "lazy_static",
- "libflate",
-]
-
-[[package]]
-name = "include-flate-codegen"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8c5b246c6261be723b85c61ecf87804e8ea4a35cb68be0ff282ed84b95ffe7d7"
-dependencies = [
- "libflate",
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "include_dir"
 version = "0.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3606,37 +3609,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1171693293099992e19cddea4e8b849964e9846f4acee11b3948bcc337be8776"
 
 [[package]]
-name = "libflate"
-version = "2.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "45d9dfdc14ea4ef0900c1cddbc8dcd553fbaacd8a4a282cf4018ae9dd04fb21e"
-dependencies = [
- "adler32",
- "core2",
- "crc32fast",
- "dary_heap",
- "libflate_lz77",
-]
-
-[[package]]
-name = "libflate_lz77"
-version = "2.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e6e0d73b369f386f1c44abd9c570d5318f55ccde816ff4b562fa452e5182863d"
-dependencies = [
- "core2",
- "hashbrown 0.14.5",
- "rle-decode-fast",
-]
-
-[[package]]
 name = "libloading"
 version = "0.8.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "07033963ba89ebaf1584d767badaa2e8fcec21aedea6b8c0346d487d49c28667"
 dependencies = [
  "cfg-if",
- "windows-targets 0.52.6",
+ "windows-targets 0.53.3",
 ]
 
 [[package]]
@@ -3807,6 +3786,16 @@ name = "lru-slab"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "112b39cec0b298b6c1999fee3e31427f74f676e4cb9879ed1a121b43661a4154"
+
+[[package]]
+name = "markdown-builder"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d128ffd10ce978b0f4d7fabace392d6df9ac616ce5a13593c624705d76915be6"
+dependencies = [
+ "dyn-clonable",
+ "tousize",
+]
 
 [[package]]
 name = "maybe-async"
@@ -4071,6 +4060,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d6790f58c7ff633d8771f42965289203411a5e5c68388703c06e14f24770b41e"
 
 [[package]]
+name = "optfield"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "969ccca8ffc4fb105bd131a228107d5c9dd89d9d627edf3295cbe979156f9712"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "ordered-float"
 version = "2.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4220,6 +4220,48 @@ checksum = "edd1101f170f5903fde0914f899bb503d9ff5271d7ba76bbb70bea63690cc0d5"
 dependencies = [
  "pest",
  "sha2",
+]
+
+[[package]]
+name = "phf"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "913273894cec178f401a31ec4b656318d95473527be05c0752cc41cdc32be8b7"
+dependencies = [
+ "phf_macros",
+ "phf_shared",
+]
+
+[[package]]
+name = "phf_generator"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2cbb1126afed61dd6368748dae63b1ee7dc480191c6262a3b4ff1e29d86a6c5b"
+dependencies = [
+ "fastrand 2.3.0",
+ "phf_shared",
+]
+
+[[package]]
+name = "phf_macros"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d713258393a82f091ead52047ca779d37e5766226d009de21696c4e667044368"
+dependencies = [
+ "phf_generator",
+ "phf_shared",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "phf_shared"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "06005508882fb681fd97892ecff4b7fd0fee13ef1aa569f8695dae7ab9099981"
+dependencies = [
+ "siphasher",
 ]
 
 [[package]]
@@ -4642,7 +4684,6 @@ dependencies = [
  "reactive-graph-remotes-model",
  "reactive-graph-runtime-api",
  "reactive-graph-runtime-impl",
- "reactive-graph-runtime-model",
  "reactive-graph-serde",
  "reactive-graph-table-model",
  "reactive-graph-type-system-json-schema",
@@ -4743,16 +4784,18 @@ dependencies = [
  "cynic",
  "cynic-introspection",
  "itertools 0.14.0",
+ "reactive-graph-generator-schema-graphql",
+ "reactive-graph-generator-schema-json",
  "reactive-graph-graph",
  "reactive-graph-plugin-model",
  "reactive-graph-remotes-model",
  "reactive-graph-runtime-api",
  "reactive-graph-runtime-impl",
  "reactive-graph-table-model",
- "reactive-graph-utils-schema-generator",
  "reqwest",
  "serde",
  "serde_json",
+ "thiserror 2.0.16",
  "tokio",
  "typed-builder",
  "uuid",
@@ -4776,7 +4819,6 @@ name = "reactive-graph-command-impl"
 version = "0.10.0"
 dependencies = [
  "async-trait",
- "log",
  "reactive-graph-command-api",
  "reactive-graph-command-model",
  "reactive-graph-graph",
@@ -4784,7 +4826,6 @@ dependencies = [
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
  "reactive-graph-type-system-api",
- "rust-embed",
  "serde_json",
  "springtime-di",
 ]
@@ -4793,14 +4834,18 @@ dependencies = [
 name = "reactive-graph-command-model"
 version = "0.10.0"
 dependencies = [
+ "anyhow",
  "clap",
+ "json5",
+ "reactive-graph-generator-codegen",
+ "reactive-graph-generator-documentation",
  "reactive-graph-graph",
+ "reactive-graph-model-core",
  "reactive-graph-reactive-model-api",
  "reactive-graph-reactive-model-impl",
- "reactive-graph-runtime-model",
  "serde",
  "serde_json",
- "strum_macros 0.27.2",
+ "toml 0.9.5",
  "typed-builder",
  "uuid",
 ]
@@ -4876,11 +4921,13 @@ dependencies = [
  "reactive-graph-dynamic-graph-model",
  "reactive-graph-graph",
  "reactive-graph-lifecycle",
+ "reactive-graph-model-core",
  "reactive-graph-reactive-model-api",
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
  "reactive-graph-runtime-model",
  "reactive-graph-type-system-api",
+ "reactive-graph-type-system-model",
  "schemars",
  "serde",
  "serde_json",
@@ -4926,19 +4973,154 @@ dependencies = [
 ]
 
 [[package]]
+name = "reactive-graph-flow-api"
+version = "0.10.0"
+dependencies = [
+ "async-trait",
+ "reactive-graph-lifecycle",
+ "springtime-di",
+]
+
+[[package]]
+name = "reactive-graph-flow-impl"
+version = "0.10.0"
+dependencies = [
+ "async-trait",
+ "reactive-graph-flow-api",
+ "reactive-graph-flow-model",
+ "reactive-graph-graph",
+ "reactive-graph-lifecycle",
+ "reactive-graph-type-system-api",
+ "springtime-di",
+]
+
+[[package]]
+name = "reactive-graph-flow-model"
+version = "0.10.0"
+dependencies = [
+ "anyhow",
+ "json5",
+ "reactive-graph-generator-codegen",
+ "reactive-graph-generator-documentation",
+ "reactive-graph-graph",
+ "serde",
+ "serde_json",
+ "toml 0.9.5",
+ "typed-builder",
+ "uuid",
+]
+
+[[package]]
+name = "reactive-graph-generator-book"
+version = "0.10.0"
+dependencies = [
+ "anyhow",
+ "default-test",
+ "reactive-graph-graph",
+ "serde_json",
+ "thiserror 2.0.16",
+ "workspace_root",
+]
+
+[[package]]
+name = "reactive-graph-generator-codegen"
+version = "0.10.0"
+dependencies = [
+ "anyhow",
+ "convert_case 0.8.0",
+ "dashmap",
+ "json5",
+ "prettyplease",
+ "proc-macro2",
+ "quote",
+ "reactive-graph-generator-documentation",
+ "reactive-graph-graph",
+ "reactive-graph-utils-test",
+ "semver",
+ "serde",
+ "serde_json",
+ "syn",
+ "thiserror 2.0.16",
+ "toml 0.9.5",
+ "typed-builder",
+ "workspace_root",
+]
+
+[[package]]
+name = "reactive-graph-generator-documentation"
+version = "0.10.0"
+dependencies = [
+ "convert_case 0.8.0",
+ "default-test",
+ "documented",
+ "markdown-builder",
+ "reactive-graph-graph",
+ "reactive-graph-utils-test",
+ "serde_json",
+ "tabled",
+ "thiserror 2.0.16",
+ "typed-builder",
+ "workspace_root",
+]
+
+[[package]]
+name = "reactive-graph-generator-model"
+version = "0.10.0"
+dependencies = [
+ "anyhow",
+ "reactive-graph-generator-codegen",
+ "reactive-graph-generator-documentation",
+ "reactive-graph-graph",
+]
+
+[[package]]
+name = "reactive-graph-generator-schema-graphql"
+version = "0.10.0"
+dependencies = [
+ "anyhow",
+ "async-graphql",
+ "reactive-graph-instance-system-json-schema",
+ "reactive-graph-runtime-impl",
+ "reactive-graph-type-system-json-schema",
+ "serde_json",
+ "thiserror 2.0.16",
+ "workspace_root",
+]
+
+[[package]]
+name = "reactive-graph-generator-schema-json"
+version = "0.10.0"
+dependencies = [
+ "anyhow",
+ "reactive-graph-instance-system-json-schema",
+ "reactive-graph-runtime-impl",
+ "reactive-graph-type-system-json-schema",
+ "serde_json",
+ "thiserror 2.0.16",
+ "workspace_root",
+]
+
+[[package]]
 name = "reactive-graph-graph"
 version = "0.10.0"
 dependencies = [
  "const_format",
+ "convert_case 0.8.0",
  "dashmap",
  "default-test",
+ "documented",
+ "json5",
  "rand 0.9.2",
  "rand_derive3",
+ "reactive-graph-serde",
  "reactive-graph-utils-test",
+ "regex",
  "schemars",
  "serde",
  "serde_json",
+ "tabled",
  "thiserror 2.0.16",
+ "toml 0.9.5",
  "typed-builder",
  "uuid",
  "wildmatch",
@@ -4991,11 +5173,11 @@ dependencies = [
  "reactive-graph-behaviour-service-api",
  "reactive-graph-graph",
  "reactive-graph-instance-system-json-schema",
+ "reactive-graph-model-core",
  "reactive-graph-reactive-model-api",
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
  "reactive-graph-runtime-impl",
- "reactive-graph-runtime-model",
  "reactive-graph-type-system-api",
  "reactive-graph-type-system-json-schema",
  "reactive-graph-utils-test",
@@ -5004,6 +5186,7 @@ dependencies = [
  "serde_json",
  "similar",
  "strum 0.27.2",
+ "thiserror 2.0.16",
  "tokio",
  "uuid",
 ]
@@ -5093,10 +5276,32 @@ dependencies = [
 ]
 
 [[package]]
-name = "reactive-graph-model-flow"
+name = "reactive-graph-model-core"
 version = "0.10.0"
 dependencies = [
+ "anyhow",
+ "json5",
+ "reactive-graph-generator-codegen",
+ "reactive-graph-generator-documentation",
  "reactive-graph-graph",
+ "serde_json",
+ "toml 0.9.5",
+]
+
+[[package]]
+name = "reactive-graph-model-meta"
+version = "0.10.0"
+dependencies = [
+ "anyhow",
+ "json5",
+ "reactive-graph-generator-codegen",
+ "reactive-graph-generator-documentation",
+ "reactive-graph-graph",
+ "serde",
+ "serde_json",
+ "toml 0.9.5",
+ "typed-builder",
+ "uuid",
 ]
 
 [[package]]
@@ -5110,13 +5315,10 @@ dependencies = [
  "reactive-graph-command-model",
  "reactive-graph-config-model",
  "reactive-graph-graph",
- "reactive-graph-plugin-derive",
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
  "reactive-graph-type-system-api",
- "rust-embed",
  "rustc_version",
- "serde",
  "serde_json",
  "springtime-di",
  "thiserror 2.0.16",
@@ -5148,10 +5350,6 @@ dependencies = [
  "springtime-di",
  "uuid",
 ]
-
-[[package]]
-name = "reactive-graph-plugin-derive"
-version = "0.10.0"
 
 [[package]]
 name = "reactive-graph-plugin-graphql-api"
@@ -5343,15 +5541,17 @@ dependencies = [
  "reactive-graph-behaviour-service-api",
  "reactive-graph-behaviour-service-impl",
  "reactive-graph-di",
+ "reactive-graph-flow-model",
  "reactive-graph-graph",
  "reactive-graph-lifecycle",
- "reactive-graph-model-flow",
+ "reactive-graph-model-core",
  "reactive-graph-reactive-model-api",
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
  "reactive-graph-runtime-model",
  "reactive-graph-type-system-api",
  "reactive-graph-type-system-impl",
+ "reactive-graph-type-system-model",
  "reactive-graph-utils-test",
  "serde_json",
  "springtime-di",
@@ -5515,6 +5715,8 @@ dependencies = [
  "reactive-graph-di",
  "reactive-graph-dynamic-graph-api",
  "reactive-graph-dynamic-graph-impl",
+ "reactive-graph-flow-api",
+ "reactive-graph-flow-impl",
  "reactive-graph-graph",
  "reactive-graph-graphql-api",
  "reactive-graph-graphql-impl",
@@ -5551,10 +5753,17 @@ dependencies = [
 name = "reactive-graph-runtime-model"
 version = "0.10.0"
 dependencies = [
+ "anyhow",
+ "json5",
+ "reactive-graph-generator-codegen",
+ "reactive-graph-generator-documentation",
  "reactive-graph-graph",
+ "reactive-graph-model-core",
  "serde",
  "serde_json",
- "strum_macros 0.27.2",
+ "toml 0.9.5",
+ "typed-builder",
+ "uuid",
 ]
 
 [[package]]
@@ -5580,6 +5789,7 @@ dependencies = [
  "reactive-graph-reactive-service-api",
  "reactive-graph-runtime-model",
  "reactive-graph-runtime-service-api",
+ "reactive-graph-type-system-api",
  "serde",
  "serde_json",
  "springtime-di",
@@ -5690,23 +5900,11 @@ dependencies = [
  "reactive-graph-lifecycle",
  "reactive-graph-reactive-model-impl",
  "reactive-graph-serde",
- "reactive-graph-type-system-derive",
- "rust-embed",
  "serde_json",
  "springtime-di",
  "thiserror 2.0.16",
  "toml 0.9.5",
  "uuid",
-]
-
-[[package]]
-name = "reactive-graph-type-system-derive"
-version = "0.10.0"
-dependencies = [
- "darling",
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -5722,12 +5920,13 @@ dependencies = [
  "reactive-graph-di",
  "reactive-graph-graph",
  "reactive-graph-lifecycle",
+ "reactive-graph-model-core",
+ "reactive-graph-model-meta",
  "reactive-graph-reactive-model-impl",
- "reactive-graph-runtime-model",
  "reactive-graph-serde",
  "reactive-graph-type-system-api",
+ "reactive-graph-type-system-model",
  "reactive-graph-utils-test",
- "rust-embed",
  "serde_json",
  "springtime-di",
  "tokio",
@@ -5741,6 +5940,23 @@ version = "0.10.0"
 dependencies = [
  "reactive-graph-graph",
  "schemars",
+]
+
+[[package]]
+name = "reactive-graph-type-system-model"
+version = "0.10.0"
+dependencies = [
+ "anyhow",
+ "json5",
+ "reactive-graph-generator-codegen",
+ "reactive-graph-generator-documentation",
+ "reactive-graph-graph",
+ "reactive-graph-model-core",
+ "serde",
+ "serde_json",
+ "toml 0.9.5",
+ "typed-builder",
+ "uuid",
 ]
 
 [[package]]
@@ -5766,24 +5982,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "reactive-graph-utils-schema-generator"
-version = "0.10.0"
-dependencies = [
- "anyhow",
- "async-graphql",
- "reactive-graph-instance-system-json-schema",
- "reactive-graph-runtime-impl",
- "reactive-graph-type-system-json-schema",
- "serde_json",
- "thiserror 2.0.16",
- "workspace_root",
-]
-
-[[package]]
 name = "reactive-graph-utils-test"
 version = "0.10.0"
 dependencies = [
  "colored",
+ "convert_case 0.8.0",
  "log",
  "log4rs",
  "random-string",
@@ -5910,51 +6113,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "rle-decode-fast"
-version = "1.0.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3582f63211428f83597b51b2ddb88e2a91a9d52d12831f9d08f5e624e8977422"
-
-[[package]]
 name = "roff"
 version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "88f8660c1ff60292143c98d08fc6e2f654d722db50410e3f3797d40baaf9d8f3"
-
-[[package]]
-name = "rust-embed"
-version = "8.7.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "025908b8682a26ba8d12f6f2d66b987584a4a87bc024abc5bbc12553a8cd178a"
-dependencies = [
- "include-flate",
- "rust-embed-impl",
- "rust-embed-utils",
- "walkdir",
-]
-
-[[package]]
-name = "rust-embed-impl"
-version = "8.7.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6065f1a4392b71819ec1ea1df1120673418bf386f50de1d6f54204d836d4349c"
-dependencies = [
- "proc-macro2",
- "quote",
- "rust-embed-utils",
- "syn",
- "walkdir",
-]
-
-[[package]]
-name = "rust-embed-utils"
-version = "8.7.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f6cc0c81648b20b70c491ff8cce00c1c3b223bb8ed2b5d41f0e54c6c4c0a3594"
-dependencies = [
- "sha2",
- "walkdir",
-]
 
 [[package]]
 name = "rustc-demangle"
@@ -6015,7 +6177,7 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys 0.9.4",
- "windows-sys 0.52.0",
+ "windows-sys 0.60.2",
 ]
 
 [[package]]
@@ -6393,6 +6555,12 @@ name = "similar"
 version = "2.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bbbb5d9659141646ae647b42fe094daf6c6192d1620870b449d9557f748b2daa"
+
+[[package]]
+name = "siphasher"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "56199f7ddabf13fe5074ce809e7d3f42b42ae711800501b5b16ea82ad029c39d"
 
 [[package]]
 name = "slab"
@@ -6940,6 +7108,12 @@ name = "toml_writer"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fcc842091f2def52017664b53082ecbbeb5c7731092bad69d2c63050401dfd64"
+
+[[package]]
+name = "tousize"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "701cb83c29ec5fc8f9f7fd8d38644bc6ee165aed7beadd104bdec0a620380e13"
 
 [[package]]
 name = "tower"

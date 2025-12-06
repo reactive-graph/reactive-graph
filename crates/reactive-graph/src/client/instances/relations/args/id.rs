@@ -1,9 +1,12 @@
 use crate::client::error::CommandError;
 use crate::client::error::CommandError::NotFound;
-use crate::client::types::relations::args::type_id::RelationTypeIdArgs;
+use crate::client::types::relations::args::parse_instance_id;
+use crate::client::types::relations::args::parse_relation_ty;
 use clap::Args;
+use reactive_graph_graph::InstanceId;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::RelationInstanceTypeId;
+use reactive_graph_graph::RelationTypeId;
 use std::fmt::Debug;
 use std::fmt::Display;
 use std::fmt::Formatter;
@@ -16,12 +19,13 @@ pub(crate) struct RelationInstanceIdArgs {
     #[clap(long)]
     pub outbound_id: Uuid,
 
-    /// The relation type.
-    #[clap(flatten)]
-    pub ty: RelationTypeIdArgs,
+    /// The fully qualified namespace of the relation type.
+    #[clap(name = "relation_type", value_parser = parse_relation_ty)]
+    pub relation_ty: RelationTypeId,
 
     /// The instance id.
-    pub instance_id: String,
+    #[clap(value_parser = parse_instance_id)]
+    pub instance_id: InstanceId,
 
     /// The id of the inbound entity instance.
     #[clap(short, long)]
@@ -37,7 +41,7 @@ impl RelationInstanceIdArgs {
 
 impl From<&RelationInstanceIdArgs> for RelationInstanceId {
     fn from(id: &RelationInstanceIdArgs) -> Self {
-        let ty = RelationInstanceTypeId::new(id.ty.clone(), id.instance_id.clone());
+        let ty = RelationInstanceTypeId::new(id.relation_ty.clone(), id.instance_id.clone());
         Self {
             outbound_id: id.outbound_id,
             ty,

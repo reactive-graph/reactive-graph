@@ -27,17 +27,20 @@ impl<ID: Clone, T: ReactiveInstance<ID>, FnType: Clone> BehaviourFunctions<ID, T
         Self(DashMap::new(), factory_creator)
     }
 
-    pub fn with_namespace<N: Into<String>>(
-        namespace: N,
-        factory_creator: BehaviourFactoryCreator<ID, T, FnType>,
-    ) -> NamespacedBehaviourFunctions<ID, T, FnType> {
-        NamespacedBehaviourFunctions::new(namespace, factory_creator)
-    }
+    // pub fn with_namespace<N: Into<String>>(
+    //     namespace: N,
+    //     factory_creator: BehaviourFactoryCreator<ID, T, FnType>,
+    // ) -> NamespacedBehaviourFunctions<ID, T, FnType> {
+    //     NamespacedBehaviourFunctions::new(namespace, factory_creator)
+    // }
 
     pub fn behaviour_from_ty<B: Into<BehaviourTypeId>>(self, ty: B, f: FnType) -> Self {
         self.0.insert(ty.into(), f);
         self
     }
+
+    // TODO: use behaviour_from_ty instead!
+    //
     // pub fn behaviour<N: Into<String>, TN: Into<String>>(self, namespace: N, type_name: TN, f: FnType) -> Self {
     //     self.0.insert(BehaviourTypeId::new_from_type(namespace, type_name), f);
     //     self

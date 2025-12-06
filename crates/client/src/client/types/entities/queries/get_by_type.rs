@@ -18,18 +18,13 @@ pub mod queries {
     #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Types", variables = "TypeIdVariables")]
     pub struct GetEntityTypeByTypeTypes {
-        #[arguments(
-          type: {
-            namespace: $namespace,
-            name: $name
-          }
-        )]
+        #[arguments(type: $_type)]
         pub entities: Vec<EntityType>,
     }
 
-    pub fn get_entity_type_by_type_query(ty: &EntityTypeId) -> Operation<GetEntityTypeByType, TypeIdVariables> {
+    pub fn get_entity_type_by_type_query<E: Into<EntityTypeId>>(ty: E) -> Operation<GetEntityTypeByType, TypeIdVariables> {
         use cynic::QueryBuilder;
-        GetEntityTypeByType::build(ty.clone().into())
+        GetEntityTypeByType::build(ty.into().into())
     }
 
     #[cfg(all(test, feature = "integration-tests"))]

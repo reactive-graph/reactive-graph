@@ -1,39 +1,24 @@
-use crate::client::types::entities::args::type_id::InboundEntityTypeIdArgs;
-use crate::client::types::entities::args::type_id::OutboundEntityTypeIdArgs;
-use crate::client::types::relations::args::type_id::RelationTypeIdArgs;
+use crate::client::types::entities::args::parse_entity_ty;
+use crate::client::types::relations::args::parse_relation_ty;
 use clap::Args;
-use reactive_graph_client::types::relations::mutations::create::mutations::CreateRelationTypeVariables;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::RelationTypeId;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct CreateRelationTypeArgs {
-    /// The outbound entity type.
-    #[clap(flatten)]
-    pub outbound_ty: OutboundEntityTypeIdArgs,
+    /// The fully qualified namespace of the outbound entity type.
+    #[clap(name = "outbound", value_parser = parse_entity_ty)]
+    pub outbound_ty: EntityTypeId,
 
-    /// The relation type.
-    #[clap(flatten)]
-    pub ty: RelationTypeIdArgs,
+    /// The fully qualified namespace of the relation type.
+    #[clap(name = "relation_type", value_parser = parse_relation_ty)]
+    pub relation_ty: RelationTypeId,
 
-    /// The inbound entity type.
-    #[clap(flatten)]
-    pub inbound_ty: InboundEntityTypeIdArgs,
+    /// The fully qualified namespace of the inbound entity type.
+    #[clap(name = "inbound", value_parser = parse_entity_ty)]
+    pub inbound_ty: EntityTypeId,
 
     /// The relation type description.
+    #[clap(short, long)]
     pub description: Option<String>,
-}
-
-impl From<&CreateRelationTypeArgs> for CreateRelationTypeVariables {
-    fn from(args: &CreateRelationTypeArgs) -> Self {
-        CreateRelationTypeVariables {
-            outbound_type_namespace: args.outbound_ty.outbound_type_namespace.clone(),
-            outbound_type_name: args.outbound_ty.outbound_type_name.clone(),
-            namespace: args.ty.namespace.clone(),
-            name: args.ty.name.clone(),
-            inbound_type_namespace: args.inbound_ty.inbound_type_namespace.clone(),
-            inbound_type_name: args.inbound_ty.inbound_type_name.clone(),
-            description: args.description.clone(),
-            properties: None,
-            extensions: None,
-        }
-    }
 }

@@ -45,16 +45,8 @@ impl reactive_graph_plugin_api::RelationTypeManager for RelationTypeManagerDeleg
         self.relation_type_manager.has(ty)
     }
 
-    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool {
-        self.relation_type_manager.has_by_type(namespace, type_name)
-    }
-
     fn get(&self, ty: &RelationTypeId) -> Option<RelationType> {
         self.relation_type_manager.get(ty)
-    }
-
-    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<RelationType> {
-        self.relation_type_manager.get_by_type(namespace, type_name)
     }
 
     fn find(&self, search: &str) -> RelationTypes {

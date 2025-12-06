@@ -4,13 +4,13 @@ use serde::Serialize;
 
 use crate::mutation::GraphQLExtensionDefinition;
 use crate::mutation::GraphQLRelationInstanceId;
-use crate::query::GraphQLExtension;
 use crate::query::GraphQLPropertyInstance;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::Extensions;
 use reactive_graph_graph::PropertyInstances;
 use reactive_graph_graph::RelationInstance;
-use reactive_graph_graph::RelationInstanceTypeId;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_graph::RelationInstanceTypeIdError;
 use reactive_graph_graph::RelationInstances;
 
 /// Relation instances are edges from an outbound entity instance to an
@@ -43,35 +43,38 @@ pub struct GraphQLRelationInstanceDefinition {
     /// https://docs.serde.rs/serde_json/value/enum.Value.html
     pub properties: Vec<GraphQLPropertyInstance>,
 
+    // TODO: components
     /// Relation instance specific extensions.
     pub extensions: Vec<GraphQLExtensionDefinition>,
 }
 
-// impl From<GraphQLRelationInstanceDefinition> for RelationInstance {
-//     fn from(relation_instance: GraphQLRelationInstanceDefinition) -> Self {
-//         let ty = RelationInstanceTypeId::new_from_type_unique_for_instance_id(
-//             relation_instance.namespace,
-//             relation_instance.type_name,
-//             relation_instance.instance_id,
-//         );
-//         let properties: PropertyInstances = relation_instance
-//             .properties
-//             .iter()
-//             .map(|property_instance| (property_instance.name.clone(), property_instance.value.clone()))
-//             .collect();
-//         // let components; relation_instance.components.iter().map(|e| ComponentTypeId::from(e.clone())).collect();
-//         let extensions: Extensions = relation_instance.extensions.iter().map(|e| Extension::from(e.clone())).collect();
-//         RelationInstance::builder()
-//             .outbound_id(relation_instance.outbound_id)
-//             .ty(ty)
-//             .inbound_id(relation_instance.inbound_id)
-//             .description(relation_instance.description)
-//             .properties(properties)
-//             // .components(components) ???
-//             .extensions(extensions)
-//             .build()
-//     }
-// }
+impl TryFrom<GraphQLRelationInstanceDefinition> for RelationInstance {
+    type Error = RelationInstanceTypeIdError;
+
+    fn try_from(relation_instance: GraphQLRelationInstanceDefinition) -> Result<Self, Self::Error> {
+        let relation_instance_id = RelationInstanceId::try_from(relation_instance.relation_instance_id)?;
+        let properties: PropertyInstances = relation_instance
+            .properties
+            .iter()
+            .map(|property_instance| (property_instance.name.clone(), property_instance.value.clone()))
+            .collect();
+        let extensions = Extensions::new();
+        for extension in relation_instance.extensions {
+            extensions.push(Extension::try_from(extension.clone())?);
+        }
+        // let extensions: Extensions = relation_instance.extensions.iter().map(|e| Extension::from(e.clone())).collect();
+        // let components; relation_instance.components.iter().map(|e| ComponentTypeId::from(e.clone())).collect();
+        Ok(RelationInstance::builder()
+            .outbound_id(relation_instance_id.outbound_id)
+            .ty(relation_instance_id.ty)
+            .inbound_id(relation_instance_id.inbound_id)
+            .description(relation_instance.description)
+            .properties(properties)
+            // .components(components) ???
+            .extensions(extensions)
+            .build())
+    }
+}
 
 #[derive(Default)]
 pub struct GraphQLRelationInstanceDefinitions(pub Vec<GraphQLRelationInstanceDefinition>);
@@ -82,8 +85,15 @@ impl GraphQLRelationInstanceDefinitions {
     }
 }
 
-impl From<GraphQLRelationInstanceDefinitions> for RelationInstances {
-    fn from(relation_instances: GraphQLRelationInstanceDefinitions) -> Self {
-        relation_instances.0.into_iter().map(|entity_instance| entity_instance.into()).collect()
+impl TryFrom<GraphQLRelationInstanceDefinitions> for RelationInstances {
+    type Error = RelationInstanceTypeIdError;
+
+    fn try_from(relation_instance_definitions: GraphQLRelationInstanceDefinitions) -> Result<Self, Self::Error> {
+        let relation_instances = RelationInstances::new();
+        for relation_instance_definition in relation_instance_definitions.0 {
+            relation_instances.push(RelationInstance::try_from(relation_instance_definition)?);
+        }
+        // relation_instances.0.into_iter().map(|entity_instance| entity_instance.into()).collect()
+        Ok(relation_instances)
     }
 }

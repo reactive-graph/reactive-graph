@@ -21,17 +21,12 @@ pub mod mutations {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "TypeIdVariables")]
     pub struct MutationComponents {
-        #[arguments(type: { name: $name, namespace: $namespace })]
+        #[arguments(type: $_type)]
         pub delete: bool,
     }
 
     pub fn delete_component_mutation<C: Into<reactive_graph_graph::ComponentTypeId>>(ty: C) -> Operation<DeleteComponent, TypeIdVariables> {
         use cynic::MutationBuilder;
         DeleteComponent::build(ty.into().into())
-    }
-
-    pub fn delete_component_with_variables(variables: TypeIdVariables) -> Operation<DeleteComponent, TypeIdVariables> {
-        use cynic::MutationBuilder;
-        DeleteComponent::build(variables)
     }
 }

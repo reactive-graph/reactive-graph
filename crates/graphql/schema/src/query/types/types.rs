@@ -1,6 +1,8 @@
 use std::collections::HashSet;
+use std::str::FromStr;
 use std::sync::Arc;
 
+use crate::validator::NamespacedTypeValidator;
 use async_graphql::Context;
 use async_graphql::Object;
 use async_graphql::Result;
@@ -14,20 +16,18 @@ use reactive_graph_graph::FlowTypeId;
 use reactive_graph_graph::InboundOutboundType;
 use reactive_graph_graph::MatchingInboundOutboundType;
 use reactive_graph_graph::Namespace;
-use reactive_graph_graph::NamespacedTypeIdContainer;
 use reactive_graph_graph::PropertyTypeContainer;
 use reactive_graph_graph::RelationTypeId;
 use reactive_graph_graph::VariablesContainer;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::FlowTypeManager;
-use reactive_graph_type_system_api::NamespaceManager;
+use reactive_graph_type_system_api::NamespacedTypeManager;
 use reactive_graph_type_system_api::RelationTypeManager;
 
 use crate::query::GraphQLComponent;
 use crate::query::GraphQLEntityType;
 use crate::query::GraphQLFlowType;
-use crate::query::GraphQLNamespace;
 use crate::query::GraphQLRelationType;
 
 #[derive(Default)]
@@ -39,10 +39,16 @@ impl Types {
     /// Search for components
     ///
     /// Optionally the list of components can be filtered by name.
+    /// "^[a-z_]+(?:::[a-z_]+)*(?:::([A-Z][a-zA-Z0-9]*))$"
     async fn components(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the component.")] component_namespace: Option<GraphQLNamespace<ComponentTypeId>>,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the component.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: Option<String>,
         #[graphql(name = "namespace", desc = "Searches by the namespace of the components.")] namespace: Option<String>,
         #[graphql(desc = "Searches by the name of the components. Allowed wildcards are: ? and *")] search: Option<String>,
         #[graphql(desc = "Filters by having all of these properties.")] properties: Option<Vec<String>>,
@@ -51,23 +57,18 @@ impl Types {
         let component_manager = context.data::<Arc<dyn ComponentManager + Send + Sync>>()?;
 
         // Return the specified component
-        if let Some(component_namespace) = component_namespace {
-            let ty = component_namespace.ty();
-            // let ty = ComponentTypeId::parse_namespace(&component_namespace)?;
+        if let Some(ty) = ComponentTypeId::parse_optional_namespace(_type)? {
             return match component_manager.get(&ty) {
                 Some(component) => Ok(vec![component.into()]),
                 None => Ok(vec![]),
             };
         }
 
-        let extensions = match extensions {
-            Some(extensions) => ExtensionTypeIds::parse_namespaces(extensions)?,
-            None => Default::default(),
-        };
+        let extensions = ExtensionTypeIds::parse_optional_namespaces(extensions).unwrap_or_default();
 
         // Namespace search
         if let Some(namespace) = namespace {
-            let namespace = Namespace::try_from(&namespace)?;
+            let namespace = Namespace::from_str(&namespace)?;
             let components = component_manager
                 .get_by_namespace(&namespace)
                 .iter_mut()
@@ -154,7 +155,12 @@ impl Types {
     async fn entities(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the entity type.")] entity_namespace: Option<String>,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the entity type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: Option<String>,
         #[graphql(name = "namespace", desc = "Searches by the namespace of the entity types.")] namespace: Option<String>,
         #[graphql(desc = "Searches by the name of the entity types. Allowed wildcards are: ? and *")] search: Option<String>,
         #[graphql(desc = "Filters by having all of these properties.")] properties: Option<Vec<String>>,
@@ -164,26 +170,19 @@ impl Types {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
 
         // Return the specified entity type
-        if let Some(entity_namespace) = entity_namespace {
-            let ty = EntityTypeId::parse_namespace(&entity_namespace)?;
+        if let Some(ty) = EntityTypeId::parse_optional_namespace(_type)? {
             return match entity_type_manager.get(&ty.into()) {
                 Some(entity_type) => Ok(vec![entity_type.into()]),
                 None => Ok(vec![]),
             };
         }
 
-        let components = match components {
-            Some(components) => ComponentTypeIds::parse_namespaces(components)?,
-            None => Default::default(),
-        };
-        let extensions = match extensions {
-            Some(extensions) => ExtensionTypeIds::parse_namespaces(extensions)?,
-            None => Default::default(),
-        };
+        let components = ComponentTypeIds::parse_optional_namespaces(components)?;
+        let extensions = ExtensionTypeIds::parse_optional_namespaces(extensions).unwrap_or_default();
 
         // Search entity type by namespace
         if let Some(namespace) = namespace {
-            let namespace = Namespace::try_from(&namespace)?;
+            let namespace = Namespace::from_str(&namespace)?;
             let entity_types = entity_type_manager
                 .get_by_namespace(&namespace)
                 .iter_mut()
@@ -254,13 +253,18 @@ impl Types {
     async fn relations(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the relation type.")] relation_namespace: Option<String>,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the relation type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: Option<String>,
         #[graphql(name = "namespace", desc = "Searches by the namespace of the components.")] namespace: Option<String>,
         #[graphql(desc = "Searches by the name of the relation types. Allowed wildcards are: ? and *")] search: Option<String>,
-        #[graphql(name = "outbound_component", desc = "Filters by outbound component")] outbound_component_namespace: Option<String>,
-        #[graphql(name = "outbound_entity_type", desc = "Filters by outbound entity type")] outbound_entity_namespace: Option<String>,
-        #[graphql(name = "inbound_component", desc = "Filters by inbound component")] inbound_component_namespace: Option<String>,
-        #[graphql(name = "inbound_entity_type", desc = "Filters by inbound entity type")] inbound_entity_namespace: Option<String>,
+        #[graphql(name = "outboundComponent", desc = "Filters by outbound component")] outbound_component_namespace: Option<String>,
+        #[graphql(name = "outboundEntityType", desc = "Filters by outbound entity type")] outbound_entity_namespace: Option<String>,
+        #[graphql(name = "inboundComponent", desc = "Filters by inbound component")] inbound_component_namespace: Option<String>,
+        #[graphql(name = "inboundEntityType", desc = "Filters by inbound entity type")] inbound_entity_namespace: Option<String>,
         #[graphql(desc = "Filters by having all of these properties.")] properties: Option<Vec<String>>,
         #[graphql(desc = "Filters by having all of these components.")] components: Option<Vec<String>>,
         #[graphql(desc = "Filters by having all of these extensions.")] extensions: Option<Vec<String>>,
@@ -268,8 +272,7 @@ impl Types {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
 
         // Return the specified relation type
-        if let Some(relation_namespace) = relation_namespace {
-            let ty = RelationTypeId::parse_namespace(&relation_namespace)?;
+        if let Some(ty) = RelationTypeId::parse_optional_namespace(_type)? {
             return match relation_type_manager.get(&ty.into()) {
                 Some(relation_type) => Ok(vec![relation_type.into()]),
                 None => Ok(vec![]),
@@ -277,33 +280,27 @@ impl Types {
         }
 
         let outbound_component_ty = match &outbound_component_namespace {
-            Some(outbound_component_namespace) => Some(ComponentTypeId::parse_namespace(outbound_component_namespace)?),
+            Some(outbound_component_namespace) => Some(ComponentTypeId::from_str(outbound_component_namespace)?),
             None => None,
         };
         let outbound_entity_ty = match &outbound_entity_namespace {
-            Some(outbound_entity_namespace) => Some(EntityTypeId::parse_namespace(outbound_entity_namespace)?),
+            Some(outbound_entity_namespace) => Some(EntityTypeId::from_str(outbound_entity_namespace)?),
             None => None,
         };
         let inbound_component_ty = match &inbound_component_namespace {
-            Some(inbound_component_namespace) => Some(ComponentTypeId::parse_namespace(inbound_component_namespace)?),
+            Some(inbound_component_namespace) => Some(ComponentTypeId::from_str(inbound_component_namespace)?),
             None => None,
         };
         let inbound_entity_ty = match &inbound_entity_namespace {
-            Some(inbound_entity_namespace) => Some(EntityTypeId::parse_namespace(inbound_entity_namespace)?),
+            Some(inbound_entity_namespace) => Some(EntityTypeId::from_str(inbound_entity_namespace)?),
             None => None,
         };
-        let components = match components {
-            Some(components) => ComponentTypeIds::parse_namespaces(components)?,
-            None => Default::default(),
-        };
-        let extensions = match extensions {
-            Some(extensions) => ExtensionTypeIds::parse_namespaces(extensions)?,
-            None => Default::default(),
-        };
+        let components = ComponentTypeIds::parse_optional_namespaces(components)?;
+        let extensions = ExtensionTypeIds::parse_optional_namespaces(extensions)?;
 
         // Namespace search
         if let Some(namespace) = namespace {
-            let namespace = Namespace::try_from(&namespace)?;
+            let namespace = Namespace::from_str(&namespace)?;
             let relation_types = relation_type_manager
                 .get_by_namespace(&namespace)
                 .iter_mut()
@@ -459,7 +456,12 @@ impl Types {
     async fn flows(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "name", desc = "The fully qualified namespace of the flow type.")] flow_namespace: Option<String>,
+        #[graphql(
+            name = "type",
+            desc = "The fully qualified namespace of the flow type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: Option<String>,
         #[graphql(name = "namespace", desc = "Searches by the namespace of the flow types.")] namespace: Option<String>,
         #[graphql(desc = "Searches by the name of the flow types. Allowed wildcards are: ? and *")] search: Option<String>,
         #[graphql(desc = "Filters by having all of these variables.")] variables: Option<Vec<String>>,
@@ -468,22 +470,17 @@ impl Types {
         let flow_type_manager = context.data::<Arc<dyn FlowTypeManager + Send + Sync>>()?;
 
         // Return the specified flow type
-        if let Some(flow_namespace) = flow_namespace {
-            let ty = FlowTypeId::parse_namespace(&flow_namespace)?;
+        if let Some(ty) = FlowTypeId::parse_optional_namespace(_type)? {
             return match flow_type_manager.get(&ty.into()) {
                 Some(flow_type) => Ok(vec![flow_type.into()]),
                 None => Ok(vec![]),
             };
         }
 
-        let extensions = match extensions {
-            Some(extensions) => ExtensionTypeIds::parse_namespaces(extensions)?,
-            None => Default::default(),
-        };
+        let extensions = ExtensionTypeIds::parse_optional_namespaces(extensions).unwrap_or_default();
 
         // Search flow type by namespace
-        if let Some(namespace) = namespace {
-            let namespace = Namespace::try_from(&namespace)?;
+        if let Some(namespace) = Namespace::parse_optional_namespace(namespace)? {
             let flow_types = flow_type_manager
                 .get_by_namespace(&namespace)
                 .iter_mut()
@@ -532,8 +529,8 @@ impl Types {
     }
 
     async fn namespaces(&self, context: &Context<'_>) -> Result<HashSet<String>> {
-        let namespace_manager = context.data::<Arc<dyn NamespaceManager + Send + Sync>>()?;
-        let namespaces = namespace_manager.get_all().iter().map(|namespace| namespace.to_string()).collect();
+        let namespaced_type_manager = context.data::<Arc<dyn NamespacedTypeManager + Send + Sync>>()?;
+        let namespaces = namespaced_type_manager.get_all().iter().map(|namespace| namespace.to_string()).collect();
         Ok(namespaces)
     }
 }

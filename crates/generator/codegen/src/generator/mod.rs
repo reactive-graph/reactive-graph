@@ -1,10 +1,11 @@
-use crate::error::CodeGenerationError;
+pub use error::*;
+pub use types::*;
 
+pub mod error;
 pub mod types;
 
-pub trait GenerateCode<TY, TARGET>
-where
-    TARGET:,
-{
-    fn generate_code(&self) -> Result<(), CodeGenerationError>;
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn test() {}
 }

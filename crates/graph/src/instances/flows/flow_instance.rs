@@ -1,36 +1,3 @@
-use crate::EntityInstance;
-use crate::EntityInstances;
-#[cfg(any(test, feature = "test"))]
-use crate::EntityType;
-use crate::EntityTypeId;
-use crate::JSON_SCHEMA_ID_URI_PREFIX;
-use crate::NamespaceSegment;
-use crate::NamespacedType;
-use crate::NamespacedTypeGetter;
-use crate::RelationInstances;
-use crate::TypeDefinition;
-use crate::TypeDefinitionGetter;
-use crate::TypeIdType;
-use crate::instances::named::NamedInstanceContainer;
-use crate::namespace::NAMESPACE_SEPARATOR;
-use crate::namespace::Namespace;
-use const_format::formatcp;
-use dashmap::DashMap;
-use dashmap::iter::OwningIter;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
-#[cfg(any(test, feature = "test"))]
-use reactive_graph_utils_test::DefaultFrom;
-use schemars::JsonSchema;
-use schemars::Schema;
-use schemars::SchemaGenerator;
-use schemars::json_schema;
-use serde::Deserialize;
-use serde::Deserializer;
-use serde::Serialize;
-use serde::Serializer;
 use std::borrow::Cow;
 use std::cmp::Ordering;
 use std::fmt::Display;
@@ -39,8 +6,54 @@ use std::hash::Hash;
 use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
+
+use const_format::formatcp;
+use dashmap::DashMap;
+use dashmap::iter::OwningIter;
+use schemars::JsonSchema;
+use schemars::Schema;
+use schemars::SchemaGenerator;
+use schemars::json_schema;
+use serde::Deserialize;
+use serde::Deserializer;
+use serde::Serialize;
+use serde::Serializer;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
+
+use crate::EntityInstance;
+use crate::EntityInstances;
+use crate::EntityTypeId;
+use crate::JSON_SCHEMA_ID_URI_PREFIX;
+use crate::NAMESPACE_SEPARATOR;
+use crate::NamedInstanceContainer;
+use crate::Namespace;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
+use crate::NamespacedTypeGetter;
+use crate::RelationInstances;
+use crate::TypeDefinition;
+use crate::TypeDefinitionGetter;
+use crate::TypeIdType;
+
+#[cfg(any(test, feature = "test"))]
+use crate::EntityType;
+#[cfg(any(test, feature = "test"))]
+use crate::NamespacedTypeError;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomInstance;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomInstances;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedType;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypeId;
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_utils_test::DefaultFrom;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_utils_test::DefaultTryFrom;
 
 pub const JSON_SCHEMA_ID_FLOW_INSTANCE: &str = formatcp!("{}/flow-instance.schema.json", JSON_SCHEMA_ID_URI_PREFIX);
 
@@ -74,7 +87,7 @@ pub struct FlowInstance {
     pub id: Uuid,
 
     /// The type definition of the entity type of the wrapper entity instance.
-    #[serde(flatten)]
+    #[serde(rename = "type")]
     #[builder(setter(into))]
     pub ty: EntityTypeId,
 
@@ -341,49 +354,136 @@ impl FromIterator<FlowInstance> for FlowInstances {
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for FlowInstance {
-    fn default_test() -> Self {
-        let entity_type = EntityType::default_test();
-        let wrapper_entity_instance = EntityInstance::default_from(&entity_type);
+impl RandomInstance for FlowInstance {
+    type Error = NamespacedTypeError;
+    type TypeId = EntityTypeId;
+
+    fn random_instance() -> Result<Self, NamespacedTypeError> {
+        Self::random_instance_with_id(&EntityTypeId::random_type_id()?)
+    }
+
+    fn random_instance_with_id(ty: &Self::TypeId) -> Result<Self, Self::Error> {
+        let entity_type = EntityType::random_type_with_id(ty)?;
+        let wrapper_entity_instance = EntityInstance::default_try_from(&entity_type)?;
         let id = wrapper_entity_instance.id;
 
-        let entity_instances = EntityInstances::default_test();
+        let entity_instances = EntityInstances::random_instances()?;
         entity_instances.push(wrapper_entity_instance);
 
-        FlowInstance::builder()
+        Ok(FlowInstance::builder()
             .ty(entity_type.ty.clone())
             .id(id)
             .entity_instances(entity_instances)
-            .build()
+            .build())
     }
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultFrom<EntityType> for FlowInstance {
-    fn default_from(entity_type: &EntityType) -> Self {
-        Self::default_from(&EntityInstance::default_from(entity_type))
+impl DefaultTryFrom<&EntityType> for FlowInstance {
+    type Error = NamespacedTypeError;
+
+    fn default_try_from(entity_type: &EntityType) -> Result<Self, NamespacedTypeError> {
+        let wrapper_entity_instance = EntityInstance::default_try_from(entity_type)?;
+        Ok(Self::default_from(&wrapper_entity_instance))
     }
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultFrom<EntityInstance> for FlowInstance {
+impl DefaultFrom<&EntityInstance> for FlowInstance {
     fn default_from(wrapper_entity_instance: &EntityInstance) -> Self {
         FlowInstance::from(wrapper_entity_instance.clone())
     }
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for FlowInstances {
-    fn default_test() -> Self {
-        let flow_instances = FlowInstances::new();
+impl RandomInstances for FlowInstances {
+    type Error = NamespacedTypeError;
+
+    fn random_instances() -> Result<Self, NamespacedTypeError> {
+        let instances = Self::new();
         let mut rng = rand::rng();
         for _ in 0..rng.random_range(0..10) {
-            flow_instances.push(FlowInstance::default_test());
+            instances.push(FlowInstance::random_instance()?);
         }
-        flow_instances
+        Ok(instances)
     }
 }
 
 fn add_json_schema_id_property(schema: &mut Schema) {
     crate::json_schema::add_json_schema_id_property(schema, JSON_SCHEMA_ID_FLOW_INSTANCE);
+}
+
+#[cfg(test)]
+mod tests {
+    use schemars::schema_for;
+    use uuid::Uuid;
+
+    use crate::EntityInstance;
+    use crate::EntityInstances;
+    use crate::EntityTypeId;
+    use crate::FlowInstance;
+    use crate::NamespacedTypeGetter;
+    use crate::RandomInstance;
+    use crate::RandomNamespacedTypeId;
+    use crate::RelationInstances;
+    use reactive_graph_utils_test::r_string;
+
+    #[test]
+    fn flow_instance_test() {
+        let flow_id = Uuid::new_v4();
+        let flow_name = r_string();
+        let flow_description = r_string();
+
+        let ty = EntityTypeId::random_type_id().unwrap();
+        let flow_instance = FlowInstance {
+            id: flow_id,
+            ty: ty.clone(),
+            name: flow_name.clone(),
+            description: flow_description.to_string(),
+            entity_instances: EntityInstances::new(),
+            relation_instances: RelationInstances::new(),
+        };
+
+        assert_eq!(ty.namespace(), flow_instance.namespace());
+        assert_eq!(ty.path(), flow_instance.path());
+        assert_eq!(ty.type_name(), flow_instance.type_name());
+        assert_eq!(flow_id.clone(), flow_instance.id.clone());
+        assert_eq!(flow_name.clone(), flow_instance.name.clone());
+        assert_eq!(flow_description.clone(), flow_instance.description.clone());
+        assert_eq!(0, flow_instance.entity_instances.len());
+        assert_eq!(0, flow_instance.relation_instances.len());
+    }
+
+    #[test]
+    fn flow_instance_from_entity_instance_test() {
+        let wrapper_entity_instance = EntityInstance::random_instance().unwrap();
+        let wrapper_type = wrapper_entity_instance.ty.clone();
+        let flow_instance = FlowInstance::from(wrapper_entity_instance.clone());
+        assert_eq!(wrapper_type, flow_instance.ty);
+        assert_eq!(wrapper_type.namespace(), flow_instance.namespace());
+        assert_eq!(wrapper_type.path(), flow_instance.path());
+        assert_eq!(wrapper_type.type_name(), flow_instance.type_name());
+        assert_eq!(wrapper_entity_instance.id, flow_instance.id);
+        assert_eq!(String::new(), flow_instance.name);
+    }
+
+    #[test]
+    fn flow_instance_from_entity_instance_with_name_test() {
+        let wrapper_entity_instance = EntityInstance::random_instance().unwrap();
+        let wrapper_type = wrapper_entity_instance.ty.clone();
+        let flow_name = r_string();
+        let flow_instance = FlowInstance::from_instance_with_name(wrapper_entity_instance.clone(), flow_name.clone());
+        assert_eq!(wrapper_type, flow_instance.ty);
+        assert_eq!(wrapper_type.namespace(), flow_instance.namespace());
+        assert_eq!(wrapper_type.path(), flow_instance.path());
+        assert_eq!(wrapper_type.type_name(), flow_instance.type_name());
+        assert_eq!(wrapper_entity_instance.id, flow_instance.id);
+        assert_eq!(flow_name, flow_instance.name);
+    }
+
+    #[test]
+    fn flow_instance_json_schema() {
+        let schema = schema_for!(FlowInstance);
+        println!("{}", serde_json::to_string_pretty(&schema).unwrap());
+    }
 }

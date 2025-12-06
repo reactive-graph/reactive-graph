@@ -1,28 +1,12 @@
-use serde_json::Value;
-use std::ops::Deref;
-
 use crate::schema_graphql::scalar::Json;
 use crate::schema_graphql::types::entity_type::EntityType;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::InvalidExtensionError;
 use reactive_graph_graph::NamespacedTypeGetter;
-
-#[derive(cynic::InputObject, Clone, Debug)]
-#[cynic(
-    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
-    schema_module = "crate::schema_graphql::schema"
-)]
-pub struct ExtensionTypeId {
-    pub name: String,
-    pub namespace: String,
-}
-
-impl From<reactive_graph_graph::ExtensionTypeId> for ExtensionTypeId {
-    fn from(ty: reactive_graph_graph::ExtensionTypeId) -> Self {
-        ExtensionTypeId {
-            name: ty.type_name(),
-            namespace: ty.namespace(),
-        }
-    }
-}
+use serde_json::Value;
+use std::ops::Deref;
+use std::str::FromStr;
 
 #[derive(cynic::InputObject, Clone, Debug)]
 #[cynic(
@@ -30,16 +14,22 @@ impl From<reactive_graph_graph::ExtensionTypeId> for ExtensionTypeId {
     schema_module = "crate::schema_graphql::schema"
 )]
 pub struct ExtensionDefinition {
+    // The fully qualified namespace of the extension.
     #[cynic(rename = "type")]
-    pub type_: ExtensionTypeId,
+    pub _type: String,
+    // The fully qualified namespace of the entity type which is the type constraint of the extension.
+    pub entity_type: Option<String>,
+    // The description of the extension.
     pub description: String,
+    // The extension data.
     pub extension: Json,
 }
 
 impl From<reactive_graph_graph::Extension> for ExtensionDefinition {
     fn from(extension: reactive_graph_graph::Extension) -> Self {
         ExtensionDefinition {
-            type_: extension.ty.into(),
+            _type: extension.ty.namespace().to_string(),
+            entity_type: extension.entity_ty.map(|entity_ty| entity_ty.namespace().to_string()),
             description: extension.description,
             extension: extension.extension.into(),
         }
@@ -88,13 +78,11 @@ impl Default for ExtensionDefinitions {
     schema_module = "crate::schema_graphql::schema"
 )]
 pub struct Extension {
-    /// The namespace of the extension.
-    pub namespace: String,
+    /// The fully qualified namespace of the extension.
+    #[cynic(rename = "type")]
+    pub _type: String,
 
-    /// The name of the extension.
-    pub name: String,
-
-    /// The entity type constraint of the extension.
+    /// The fully qualified namespace of the entity type which is the type constraint of the extension.
     pub entity_type: Option<EntityType>,
 
     /// Textual description of the extension.
@@ -104,16 +92,19 @@ pub struct Extension {
     pub extension: Value,
 }
 
-impl From<Extension> for reactive_graph_graph::Extension {
-    fn from(extension: Extension) -> Self {
-        // let entity_ty = extension.
-        let ty = reactive_graph_graph::ExtensionTypeId::new_from_type(extension.namespace, extension.name);
-        reactive_graph_graph::Extension {
-            ty,
-            entity_ty: None, // TODO!!!!
+impl TryFrom<Extension> for reactive_graph_graph::Extension {
+    type Error = InvalidExtensionError;
+
+    fn try_from(extension: Extension) -> Result<Self, Self::Error> {
+        Ok(reactive_graph_graph::Extension {
+            ty: ExtensionTypeId::from_str(&extension._type).map_err(InvalidExtensionError::InvalidExtension)?,
+            entity_ty: match extension.entity_type {
+                None => None,
+                Some(entity_type) => Some(EntityTypeId::from_str(&entity_type._type).map_err(InvalidExtensionError::InvalidEntityType)?),
+            },
             description: extension.description,
             extension: extension.extension,
-        }
+        })
     }
 }
 
@@ -128,8 +119,14 @@ impl Deref for Extensions {
     }
 }
 
-impl From<Extensions> for reactive_graph_graph::Extensions {
-    fn from(extensions: Extensions) -> Self {
-        extensions.0.into_iter().map(|extension| extension.into()).collect()
+impl TryFrom<Extensions> for reactive_graph_graph::Extensions {
+    type Error = InvalidExtensionError;
+
+    fn try_from(extensions: Extensions) -> Result<Self, Self::Error> {
+        let extensions_2 = reactive_graph_graph::Extensions::new();
+        for extension in extensions.0 {
+            extensions_2.push(reactive_graph_graph::Extension::try_from(extension)?);
+        }
+        Ok(extensions_2)
     }
 }
