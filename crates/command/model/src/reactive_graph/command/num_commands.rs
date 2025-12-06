@@ -93,20 +93,10 @@ pub enum NumCommandsProperties {
     /// Mutability: `Immutable`
     ///
     NAMESPACE,
-    
-    /// ### Property `test`
-    ///
-    /// Data Type: `Bool`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    TEST,
 }
 impl NumCommandsProperties {
     pub fn len() -> usize {
-        7usize
+        6usize
     }
     
     pub fn property_types() -> reactive_graph_graph::PropertyTypes {
@@ -117,7 +107,6 @@ impl NumCommandsProperties {
         property_types.push(NumCommandsProperties::COMMAND);
         property_types.push(NumCommandsProperties::HELP);
         property_types.push(NumCommandsProperties::NAMESPACE);
-        property_types.push(NumCommandsProperties::TEST);
         property_types
     }
 }
@@ -132,7 +121,6 @@ impl AsRef<str> for NumCommandsProperties {
             NumCommandsProperties::COMMAND => "command",
             NumCommandsProperties::HELP => "help",
             NumCommandsProperties::NAMESPACE => "namespace",
-            NumCommandsProperties::TEST => "test",
         }
     }
 }
@@ -147,7 +135,6 @@ impl From<NumCommandsProperties> for &'static str {
             NumCommandsProperties::COMMAND => "command",
             NumCommandsProperties::HELP => "help",
             NumCommandsProperties::NAMESPACE => "namespace",
-            NumCommandsProperties::TEST => "test",
         }
     }
 }
@@ -162,7 +149,6 @@ impl From<NumCommandsProperties> for String {
             NumCommandsProperties::COMMAND => "command".to_owned(),
             NumCommandsProperties::HELP => "help".to_owned(),
             NumCommandsProperties::NAMESPACE => "namespace".to_owned(),
-            NumCommandsProperties::TEST => "test".to_owned(),
         }
     }
 }
@@ -231,16 +217,6 @@ impl From<NumCommandsProperties> for reactive_graph_graph::PropertyType {
                     reactive_graph_graph::Extensions::new(),
                 )
             }
-            NumCommandsProperties::TEST => {
-                reactive_graph_graph::PropertyType::new_with_all(
-                    "test",
-                    "",
-                    reactive_graph_graph::DataType::Bool,
-                    reactive_graph_graph::SocketType::None,
-                    reactive_graph_graph::Mutability::Mutable,
-                    reactive_graph_graph::Extensions::new(),
-                )
-            }
         }
     }
 }
@@ -267,8 +243,7 @@ impl Iterator for NumCommandsPropertiesIterator {
             }
             Some(NumCommandsProperties::COMMAND) => Some(NumCommandsProperties::HELP),
             Some(NumCommandsProperties::HELP) => Some(NumCommandsProperties::NAMESPACE),
-            Some(NumCommandsProperties::NAMESPACE) => Some(NumCommandsProperties::TEST),
-            Some(NumCommandsProperties::TEST) => None,
+            Some(NumCommandsProperties::NAMESPACE) => None,
         };
         self.0.clone()
     }
@@ -291,7 +266,6 @@ impl core::fmt::Display for NumCommandsProperties {
             NumCommandsProperties::COMMAND => core::fmt::Display::fmt("command", f),
             NumCommandsProperties::HELP => core::fmt::Display::fmt("help", f),
             NumCommandsProperties::NAMESPACE => core::fmt::Display::fmt("namespace", f),
-            NumCommandsProperties::TEST => core::fmt::Display::fmt("test", f),
         }
     }
 }
@@ -300,7 +274,7 @@ impl core::fmt::Display for NumCommandsProperties {
 ///
 /// | Component                          | Description                                                                             | Properties                                                                                                                      |
 /// |------------------------------------|-----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-/// | `reactive_graph::command::Command` | A command which can be executed. The command has a name and can have command arguments. | <ul compact><li>`cmd_ignore`</li><li>`cmd_result`</li><li>`namespace`</li><li>`help`</li><li>`args`</li><li>`command`</li></ul> |
+/// | `reactive_graph::command::Command` | A command which can be executed. The command has a name and can have command arguments. | <ul compact><li>`args`</li><li>`cmd_ignore`</li><li>`cmd_result`</li><li>`command`</li><li>`help`</li><li>`namespace`</li></ul> |
 ///
 pub static NUM_COMMANDS_COMPONENTS: std::sync::LazyLock<
     reactive_graph_graph::ComponentTypeIds,
@@ -341,11 +315,7 @@ pub static NUM_COMMANDS_TYPE: std::sync::LazyLock<reactive_graph_graph::EntityTy
 ///
 /// | Component                          | Description                                                                             | Properties                                                                                                                      |
 /// |------------------------------------|-----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-/// | `reactive_graph::command::Command` | A command which can be executed. The command has a name and can have command arguments. | <ul compact><li>`cmd_ignore`</li><li>`cmd_result`</li><li>`namespace`</li><li>`help`</li><li>`args`</li><li>`command`</li></ul> |
-///
-/// ### Properties
-///
-/// - test
+/// | `reactive_graph::command::Command` | A command which can be executed. The command has a name and can have command arguments. | <ul compact><li>`args`</li><li>`cmd_ignore`</li><li>`cmd_result`</li><li>`command`</li><li>`help`</li><li>`namespace`</li></ul> |
 ///
 /// ### Properties from components
 ///
@@ -448,16 +418,6 @@ pub struct NumCommands {
     ///
     #[builder(setter(into))]
     pub namespace: String,
-    
-    /// ### Property `test`
-    ///
-    /// Data Type: `Bool`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    pub test: bool,
     #[builder(default, setter(into))]
     pub extensions: reactive_graph_graph::Extensions,
 }
@@ -470,7 +430,6 @@ impl NumCommands {
         command: String,
         help: String,
         namespace: String,
-        test: bool,
     ) -> Self {
         Self {
             id: uuid::Uuid::new_v4(),
@@ -480,7 +439,6 @@ impl NumCommands {
             command,
             help,
             namespace,
-            test,
             extensions: reactive_graph_graph::Extensions::new(),
         }
     }
@@ -492,7 +450,6 @@ impl NumCommands {
         command: String,
         help: String,
         namespace: String,
-        test: bool,
     ) -> Self {
         Self {
             id,
@@ -502,7 +459,6 @@ impl NumCommands {
             command,
             help,
             namespace,
-            test,
             extensions: reactive_graph_graph::Extensions::new(),
         }
     }
@@ -514,7 +470,6 @@ impl NumCommands {
         command: String,
         help: String,
         namespace: String,
-        test: bool,
         extensions: reactive_graph_graph::Extensions,
     ) -> Self {
         Self {
@@ -525,7 +480,6 @@ impl NumCommands {
             command,
             help,
             namespace,
-            test,
             extensions,
         }
     }
@@ -632,30 +586,6 @@ impl NumCommands {
         self.namespace.clone()
     }
     
-    /// ### Property `test`
-    ///
-    /// Data Type: `Bool`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    pub fn test(&self) -> bool {
-        self.test
-    }
-    
-    /// ### Property `test`
-    ///
-    /// Data Type: `Bool`
-    ///
-    /// Socket Type: `None`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    pub fn set_test(&mut self, test: bool) {
-        self.test = test;
-    }
-    
     pub fn properties(&self) -> reactive_graph_graph::PropertyInstances {
         reactive_graph_graph::PropertyInstances::new()
             .property(NumCommandsProperties::ARGS, self.args.clone())
@@ -664,7 +594,6 @@ impl NumCommands {
             .property(NumCommandsProperties::COMMAND, self.command.clone())
             .property(NumCommandsProperties::HELP, self.help.clone())
             .property(NumCommandsProperties::NAMESPACE, self.namespace.clone())
-            .property(NumCommandsProperties::TEST, self.test.clone())
     }
     
     pub fn extensions(&self) -> reactive_graph_graph::Extensions {

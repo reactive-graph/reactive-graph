@@ -14,27 +14,6 @@ The number of commands
 |------------------------------------|-----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
 | `reactive_graph::command::Command` | A command which can be executed. The command has a name and can have command arguments. | <ul compact><li>`args`</li><li>`cmd_ignore`</li><li>`cmd_result`</li><li>`command`</li><li>`help`</li><li>`namespace`</li></ul> |
 
-## Properties
-
-| name | description | data_type | socket_type | mutability |
-|------|-------------|-----------|-------------|------------|
-| test |             | Bool      | None        | Mutable    |
-
-### Property `test`
-
-#### Data Type
-
-<details><summary><code>Bool</code></summary>Represents a JSON boolean.</details>
-
-#### Socket Type
-
-<details><summary><code>None</code></summary>The property doesn't act as input or
-output socket.</details>
-
-#### Mutability
-
-<details><summary><code>Mutable</code></summary>The property is mutable.</details>
-
 ## Properties from components
 
 | name       | description                           | data_type | socket_type | mutability |
@@ -211,18 +190,14 @@ immutable.</details>
     "namespace": {
       "description": "The command namespace",
       "type": "string"
-    },
-    "test": {
-      "type": "boolean"
     }
   },
   "required": [
-    "command",
-    "help",
+    "args",
     "cmd_ignore",
     "cmd_result",
-    "test",
-    "args",
+    "command",
+    "help",
     "namespace",
     "id"
   ],
