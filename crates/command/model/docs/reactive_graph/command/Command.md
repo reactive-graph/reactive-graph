@@ -183,12 +183,12 @@ immutable.</details>
     }
   },
   "required": [
+    "args",
     "cmd_ignore",
     "cmd_result",
-    "namespace",
+    "command",
     "help",
-    "args",
-    "command"
+    "namespace"
   ],
   "title": "reactive_graph::command::Command",
   "type": "object"

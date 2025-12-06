@@ -12,6 +12,7 @@ use proc_macro2::Ident;
 use proc_macro2::Span;
 use proc_macro2::TokenStream;
 use quote::quote;
+use reactive_graph_graph::NamespacedTypeContainer;
 use reactive_graph_graph::TypeResolver;
 use reactive_graph_graph::TypeSystem;
 use std::fs::File;
@@ -25,18 +26,24 @@ impl TypeGenerator<Rust> for TypeSystem {
         self.register_root(config, resolver)?;
 
         let mut component_idents = Vec::new();
-        for ty in self.components().iter() {
+        let mut components = self.components().to_vec();
+        components.sort();
+        for ty in components.iter() {
             component_idents.push(ty.fully_qualified_ident_of_type::<ConstTypeIdent>(resolver)?);
         }
         let mut entity_type_idents = Vec::new();
-        for ty in self.entity_types().iter() {
+        let mut entity_types = self.entity_types().to_vec();
+        entity_types.sort();
+        for ty in entity_types.iter() {
             entity_type_idents.push(ty.fully_qualified_ident_of_type::<ConstTypeIdent>(resolver)?);
         }
         let mut relation_type_idents = Vec::new();
-        for ty in self.relation_types().iter() {
+        let mut relation_types = self.relation_types().to_vec();
+        relation_types.sort();
+        for ty in relation_types.iter() {
             relation_type_idents.push(ty.fully_qualified_ident_of_type::<ConstTypeIdent>(resolver)?);
         }
-        // TODO: Implement
+        // TODO: Implement flow types of a type system
         let mut flow_type_idents: Vec<TokenStream> = Vec::new();
         // for ty in self.flow_types().iter() {
         //     flow_type_idents.push(ty.fully_qualified_ident_of_type::<ConstTypeIdIdent>(resolver)?);
