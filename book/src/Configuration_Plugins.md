@@ -21,11 +21,10 @@ disabled_plugins = [
 ]
 ```
 
-```admonish bug "Plugin Dependencies"
-Some plugins depends on other plugins.
-
-Please note, that disabling a plugin may cause that other plugins cannot start!
-```
+> [!IMPORTANT]
+> Plugin Dependencies
+> Some plugins depends on other plugins.
+> Please note, that disabling a plugin may cause that other plugins cannot start!
 
 ### Enable specific plugins
 

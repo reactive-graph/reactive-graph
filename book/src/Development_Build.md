@@ -85,9 +85,9 @@ cargo run --release
     ```
 5. Repeat this for all plugins
 
-```admonish warning "Plugin API version must match"
-The application and the plugins must be compiled with the same version of the Plugin API!
-```
+> [!WARNING]
+> Plugin API version must match
+> The application and the plugins must be compiled with the same version of the Plugin API!
 
 ## Build plugins
 

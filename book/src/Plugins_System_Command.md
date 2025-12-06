@@ -10,9 +10,9 @@ A system command is executed by triggering (i.e. changing) the spawn property. P
 When a program runs, it writes to stdout and stderr. These outputs are available in the corresponding properties after
 the program has ended.
 
-```admonish warning "A word about safety"
-Only activate the plugin if you know what you are doing. Do not run the Reactive Graph Flow as root user, because the system command will be executed as the same user! The GraphQL endpoint should also be specially protected.
-```
+> [!WARNING]
+> Only activate the plugin if you know what you are doing. Do not run the Reactive Graph Flow as root user, because the system command will be executed as the
+> same user! The GraphQL endpoint should also be specially protected.
 
 ## Entity Types
 
