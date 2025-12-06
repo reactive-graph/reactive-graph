@@ -1,7 +1,23 @@
 """
-Entities have a outbound relations and a inbound relations as well as components and properties 
+Any entity.
+"""
+union AllEntities =
+
+"""
+Any flow.
+"""
+union AllFlows =
+
+"""
+Any relation.
+"""
+union AllRelations =
+
+"""
+Entities have outbound and inbound relations as well as components and properties 
 """
 interface Entity {
+	_namespace: ID!
 	id: ID!
 }
 
@@ -9,6 +25,7 @@ interface Entity {
 Flows have entities and relations.
 """
 interface Flow {
+	_namespace: ID!
 	id: ID!
 }
 
@@ -19,16 +36,9 @@ Mutations
 """
 type Mutation {
 	"""
-	Metrics for root
+	Root namespace
 	"""
-	_metrics: NamespaceMetrics!
-}
-
-type NamespaceMetrics {
-	components: Int!
-	entityTypes: Int!
-	relationTypes: Int!
-	flowTypes: Int!
+	_namespace: ID!
 }
 
 """
@@ -36,16 +46,17 @@ Queries
 """
 type Query {
 	"""
-	Metrics for root
+	Root namespace
 	"""
-	_metrics: NamespaceMetrics!
+	_namespace: ID!
 }
 
 """
 Relations have a outbound entity and a inbound entity as well as components and properties,
 """
 interface Relation {
-	key: ID!
+	_namespace: ID!
+	id: ID!
 	instance_id: ID!
 }
 
