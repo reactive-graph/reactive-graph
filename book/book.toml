@@ -73,7 +73,6 @@ additional-css = [
     "./src/design/public/css/organisms/footer.css",
     "./src/design/public/css/organisms/story-matrix.css",
     "././book.css",
-    #    "././mdbook-admonish.css",
     "././graphql-playground.css"
 ]
 theme = "theme"
