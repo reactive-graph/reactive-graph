@@ -170,10 +170,10 @@ output socket.</details>
   },
   "required": [
     "f3dw",
-    "f3dd",
-    "f3dx",
-    "f3dh",
     "f3dz",
+    "f3dx",
+    "f3dd",
+    "f3dh",
     "f3dy"
   ],
   "title": "reactive_graph::flow::Flow3D",

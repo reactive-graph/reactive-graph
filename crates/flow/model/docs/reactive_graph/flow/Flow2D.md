@@ -123,8 +123,8 @@ output socket.</details>
   },
   "required": [
     "f2dh",
-    "f2dx",
     "f2dw",
+    "f2dx",
     "f2dy"
   ],
   "title": "reactive_graph::flow::Flow2D",

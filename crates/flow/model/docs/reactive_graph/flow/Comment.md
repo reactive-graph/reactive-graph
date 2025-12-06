@@ -12,8 +12,8 @@ A simple comment
 
 | Component                      | Description                                                                                            | Properties                                                                                                  |
 |--------------------------------|--------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| `reactive_graph::flow::Flow3D` | The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting). | <ul compact><li>`f3dw`</li><li>`f3dd`</li><li>`f3dx`</li><li>`f3dh`</li><li>`f3dz`</li><li>`f3dy`</li></ul> |
-| `reactive_graph::flow::Flow2D` | The position (x,y) of the entity or relation on a two dimensional flow.                                | <ul compact><li>`f2dh`</li><li>`f2dx`</li><li>`f2dw`</li><li>`f2dy`</li></ul>                               |
+| `reactive_graph::flow::Flow3D` | The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting). | <ul compact><li>`f3dw`</li><li>`f3dz`</li><li>`f3dx`</li><li>`f3dd`</li><li>`f3dh`</li><li>`f3dy`</li></ul> |
+| `reactive_graph::flow::Flow2D` | The position (x,y) of the entity or relation on a two dimensional flow.                                | <ul compact><li>`f2dh`</li><li>`f2dw`</li><li>`f2dx`</li><li>`f2dy`</li></ul>                               |
 
 ## Properties
 
@@ -298,17 +298,17 @@ output socket.</details>
     }
   },
   "required": [
-    "f3dz",
-    "f3dy",
-    "f2dw",
-    "comment",
-    "f3dh",
-    "f2dx",
-    "f2dy",
     "f3dd",
+    "f3dy",
+    "f2dx",
     "f3dw",
-    "f2dh",
+    "f3dz",
+    "f2dw",
     "f3dx",
+    "f2dh",
+    "f3dh",
+    "comment",
+    "f2dy",
     "id"
   ],
   "title": "reactive_graph::flow::Comment",

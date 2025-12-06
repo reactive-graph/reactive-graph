@@ -78,8 +78,8 @@ accepts outgoing connections.</details>
     }
   },
   "required": [
-    "output",
     "input",
+    "output",
     "id"
   ],
   "title": "reactive_graph::flow::SimpleFlow",
