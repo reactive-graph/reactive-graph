@@ -75,7 +75,7 @@ additional-css = [
     "././book.css",
     "././graphql-playground.css"
 ]
-theme = "theme"
-default-theme = "theme"
-preferred-dark-theme = "theme"
+#theme = "theme"
+#default-theme = "theme"
+#preferred-dark-theme = "theme"
 cname = "docs.reactive-graph.io"
