@@ -1,5 +1,5 @@
 #!/bin/bash
-cargo +stable build --release
+cargo +stable build
 echo "Generate zsh completions"
 target/release/reactive-graph shell-completions print zsh > crates/reactive-graph/debian/usr/share/zsh/functions/Completion/Base/_reactive-graph
 target/release/reactive-graph-client shell-completions print zsh > crates/reactive-graph/debian/usr/share/zsh/functions/Completion/Base/_reactive-graph-client
