@@ -1,0 +1,18 @@
+{
+  "$id": "https://schema.reactive-graph.io/schema/json/entity-type.schema.json",
+  "type": "reactive_graph::runtime::Shutdown",
+  "description": "Shutting down the runtime",
+  "components": [
+    "reactive_graph::core::Labeled",
+    "reactive_graph::core::Action"
+  ],
+  "properties": [
+    {
+      "name": "delay",
+      "data_type": "number",
+      "socket_type": "none"
+    }
+  ],
+  "extensions": [
+  ]
+}
