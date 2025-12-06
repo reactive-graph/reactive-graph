@@ -1,0 +1,16 @@
+query GetCoreShutdownEntity {
+  reactive_graph {
+    runtime {
+      Shutdown(label: "/io/reactive-graph/commands/core/shutdown") {
+        # id: "6ba7b810-9e15-11d1-50b4-00c04fd530c7"
+        id
+        trigger
+        label
+        command
+        args
+        help
+        delay
+      }
+    }
+  }
+}

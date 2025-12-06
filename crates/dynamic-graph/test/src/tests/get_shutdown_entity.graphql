@@ -1,7 +1,9 @@
 query GetShutdownEntity {
-  core {
-    shutdown {
-      id
+  reactive_graph {
+    runtime {
+      Shutdown {
+        id
+      }
     }
   }
 }
