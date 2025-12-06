@@ -2,7 +2,7 @@ hostname = "localhost"
 port = 31415
 
 # Enable HTTPS and WSS
-secure = false
+secure = true
 
 # Certificate path
 ssl_certificate_path = "./keys/cert.pem"
