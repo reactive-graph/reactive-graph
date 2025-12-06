@@ -93,8 +93,8 @@ output socket.</details>
     }
   },
   "required": [
-    "label",
     "event",
+    "label",
     "id"
   ],
   "title": "reactive_graph::type_system::TypeSystemEvent",
