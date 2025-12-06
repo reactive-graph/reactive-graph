@@ -6,6 +6,7 @@ use crate::types::config::PropertiesDocumentationConfig;
 use crate::types::config::SubTypesGenerationMode;
 use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentTypeIdContainer;
+use reactive_graph_graph::NamespacedTypeContainer;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyTypeContainer;
 use reactive_graph_graph::PropertyTypes;
@@ -32,7 +33,9 @@ where
             match config.mode {
                 SubTypesGenerationMode::None => {}
                 SubTypesGenerationMode::Short | SubTypesGenerationMode::Table => {
-                    let view: Vec<ComponentView> = components.into_iter().map(|(_, component)| ComponentView::new(component)).collect();
+                    let mut components = components.to_vec();
+                    components.sort();
+                    let view: Vec<ComponentView> = components.into_iter().map(|component| ComponentView::new(component)).collect();
                     let table = Table::new(&mut view.into_iter()).to_owned();
                     document.table(table);
                 }
