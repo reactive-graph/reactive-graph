@@ -1,20 +1,14 @@
 {
-  "namespace": "core",
-  "type_name": "labeled",
+  "$id": "https://schema.reactive-graph.io/schema/json/component.schema.json",
+  "type": "reactive_graph::core::Labeled",
   "description": "The label is a hierarchical path with static segments, named parameters and catch-all parameters.",
   "properties": [
     {
-      // The property label has a special meaning
       "name": "label",
       "description": "Hierarchical path with static segments, named parameters and catch-all parameters",
       "data_type": "string"
     }
   ],
   "extensions": [
-    {
-      "namespace": "core",
-      "type_name": "type_category",
-      "extension": "metadata"
-    }
   ]
 }

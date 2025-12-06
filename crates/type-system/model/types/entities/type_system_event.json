@@ -1,0 +1,13 @@
+{
+  "$id": "https://schema.reactive-graph.io/schema/json/entity-type.schema.json",
+  "type": "reactive_graph::type_system::TypeSystemEvent",
+  "description": "Events of the type system",
+  "components": [
+    "reactive_graph::core::Labeled",
+    "reactive_graph::core::Event"
+  ],
+  "properties": [
+  ],
+  "extensions": [
+  ]
+}

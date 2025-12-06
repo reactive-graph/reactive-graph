@@ -1,0 +1,15 @@
+{
+  "$id": "https://schema.reactive-graph.io/schema/json/component.schema.json",
+  "type": "reactive_graph::meta::Describable",
+  "description": "The entity or relation has a description.",
+  "properties": [
+    {
+      "name": "description",
+      "description": "The description of an entity or a relation",
+      "data_type": "string",
+      "socket_type": "none"
+    }
+  ],
+  "extensions": [
+  ]
+}

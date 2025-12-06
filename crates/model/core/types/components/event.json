@@ -1,6 +1,6 @@
 {
-  "namespace": "core",
-  "type_name": "event",
+  "$id": "https://schema.reactive-graph.io/schema/json/component.schema.json",
+  "type": "reactive_graph::core::Event",
   "description": "This component spawns events.",
   "properties": [
     {

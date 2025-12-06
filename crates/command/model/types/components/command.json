@@ -1,6 +1,6 @@
 {
   "$id": "https://schema.reactive-graph.io/schema/json/component.schema.json",
-  "name": "reactive_graph::command::Command",
+  "type": "reactive_graph::command::Command",
   "description": "A command which can be executed. The command has a name and can have command arguments.",
   "properties": [
     {
@@ -37,6 +37,11 @@
       "data_type": "any",
       "socket_type": "output",
       "mutability": "immutable"
+    },
+    {
+      "name": "cmd_ignore",
+      "description": "blah",
+      "data_type": "any"
     }
   ],
   "extensions": [
