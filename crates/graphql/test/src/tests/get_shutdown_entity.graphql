@@ -1,7 +1,15 @@
 query GetShutdownEntity {
   instances {
     entities(label: "/io/reactive-graph/commands/core/shutdown") {
+      type {
+        type
+        extensions {
+          type
+        }
+      }
       id
+      name
+      description
     }
   }
 }
