@@ -6,10 +6,6 @@
     "reactive_graph::command::Command"
   ],
   "properties": [
-    {
-      "name": "test",
-      "data_type": "bool"
-    }
   ],
   "extensions": [
   ]
