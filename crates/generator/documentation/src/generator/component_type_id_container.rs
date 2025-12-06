@@ -89,10 +89,12 @@ struct ComponentView {
 
 impl ComponentView {
     pub fn new(component: Component) -> Self {
+        let mut nproperty_names = component.properties.names().to_vec();
+        nproperty_names.sort();
         ComponentView {
             namespace: format!("`{}`", component.ty.namespace().to_string()),
             description: component.description.clone(),
-            properties: format!("<ul compact><li>`{}`</li></ul>", component.properties.names().join("`</li><li>`")),
+            properties: format!("<ul compact><li>`{}`</li></ul>", nproperty_names.join("`</li><li>`")),
         }
     }
 }
