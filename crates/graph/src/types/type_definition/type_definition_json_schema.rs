@@ -155,7 +155,8 @@ where
         let property_types = ty.get_own_properties_cloned();
         let mut properties = property_types.as_json_schema_properties();
         properties.insert("$id".to_string(), ty.json_schema_id_property());
-        let required = property_types.names();
+        let mut required = property_types.names();
+        required.sort();
         let schema = json_schema!({
             "$schema": DRAFT2020_12,
             "$id": schema_id,

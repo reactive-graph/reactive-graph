@@ -139,7 +139,6 @@ impl Extension {
         entity_type_properties.insert("$id".to_string(), self.json_schema_id_property());
         let mut required = entity_type.properties.names();
         required.sort();
-
         extension_properties.insert(
             "extension".to_string(),
             json!({

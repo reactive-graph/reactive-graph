@@ -162,8 +162,8 @@ impl core::fmt::Display for TypeSystemEventProperties {
 ///
 /// | Component                       | Description                                                                                       | Properties                        |
 /// |---------------------------------|---------------------------------------------------------------------------------------------------|-----------------------------------|
-/// | `reactive_graph::core::Labeled` | The label is a hierarchical path with static segments, named parameters and catch-all parameters. | <ul compact><li>`label`</li></ul> |
 /// | `reactive_graph::core::Event`   | This component spawns events.                                                                     | <ul compact><li>`event`</li></ul> |
+/// | `reactive_graph::core::Labeled` | The label is a hierarchical path with static segments, named parameters and catch-all parameters. | <ul compact><li>`label`</li></ul> |
 ///
 pub static TYPE_SYSTEM_EVENT_COMPONENTS: std::sync::LazyLock<
     reactive_graph_graph::ComponentTypeIds,
@@ -386,6 +386,36 @@ impl TryFrom<reactive_graph_graph::EntityInstance> for TypeSystemEvent {
         Err(())
     }
 }
+impl reactive_graph_model_core::reactive_graph::core::event::Event for TypeSystemEvent {
+    
+    /// ### Property `event`
+    ///
+    /// On receiving a boolean trigger the action will be executed
+    ///
+    /// Data Type: `Any`
+    ///
+    /// Socket Type: `Output`
+    ///
+    /// Mutability: `Mutable`
+    ///
+    fn event(&self) -> serde_json::Value {
+        self.event.clone()
+    }
+    
+    /// ### Property `event`
+    ///
+    /// On receiving a boolean trigger the action will be executed
+    ///
+    /// Data Type: `Any`
+    ///
+    /// Socket Type: `Output`
+    ///
+    /// Mutability: `Mutable`
+    ///
+    fn set_event(&mut self, event: serde_json::Value) {
+        self.event = event;
+    }
+}
 impl reactive_graph_model_core::reactive_graph::core::labeled::Labeled
 for TypeSystemEvent {
     
@@ -415,35 +445,5 @@ for TypeSystemEvent {
     ///
     fn set_label(&mut self, label: String) {
         self.label = label;
-    }
-}
-impl reactive_graph_model_core::reactive_graph::core::event::Event for TypeSystemEvent {
-    
-    /// ### Property `event`
-    ///
-    /// On receiving a boolean trigger the action will be executed
-    ///
-    /// Data Type: `Any`
-    ///
-    /// Socket Type: `Output`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    fn event(&self) -> serde_json::Value {
-        self.event.clone()
-    }
-    
-    /// ### Property `event`
-    ///
-    /// On receiving a boolean trigger the action will be executed
-    ///
-    /// Data Type: `Any`
-    ///
-    /// Socket Type: `Output`
-    ///
-    /// Mutability: `Mutable`
-    ///
-    fn set_event(&mut self, event: serde_json::Value) {
-        self.event = event;
     }
 }
