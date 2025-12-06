@@ -6,8 +6,8 @@ pub static TYPE_SYSTEM_COMPONENTS: std::sync::LazyLock<reactive_graph_graph::Com
 
 pub static TYPE_SYSTEM_ENTITY_TYPES: std::sync::LazyLock<reactive_graph_graph::EntityTypes> = std::sync::LazyLock::new(|| {
     reactive_graph_graph::EntityTypes::new()
-        .entity(crate::reactive_graph::flow::simple_flow::SIMPLE_FLOW_TYPE.clone())
         .entity(crate::reactive_graph::flow::comment::COMMENT_TYPE.clone())
+        .entity(crate::reactive_graph::flow::simple_flow::SIMPLE_FLOW_TYPE.clone())
 });
 
 pub static TYPE_SYSTEM_RELATION_TYPES: std::sync::LazyLock<reactive_graph_graph::RelationTypes> =
