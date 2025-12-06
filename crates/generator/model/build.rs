@@ -1,7 +1,3 @@
-// use reactive_graph_command_types::CommandComponentsProviderAssets;
-// use reactive_graph_command_types::CommandEntityTypesProviderAssets;
-// use reactive_graph_command_types::CommandFlowTypesProviderAssets;
-// use reactive_graph_command_types::CommandRelationTypesProviderAssets;
 use reactive_graph_generator_codegen::CodeGenerationTargets::Rust;
 use reactive_graph_generator_codegen::GenerateTypeSystemTypesForTarget;
 use reactive_graph_generator_codegen::SRC_DIRECTORY;
@@ -29,8 +25,8 @@ fn main() -> anyhow::Result<()> {
     type_system.merge_own_component_properties()?;
     let resolver = TypeResolver::new();
     resolver.insert(CARGO_CRATE_NAME.to_string(), type_system.clone());
-    // generate_docs(&type_system, &resolver)?;
-    // codegen(&type_system, &resolver)?;
+    generate_docs(&type_system, &resolver)?;
+    codegen(&type_system, &resolver)?;
     Ok(())
 }
 
