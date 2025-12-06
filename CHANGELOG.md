@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Type System: Hierarchical and typesafe namespaces
 - Upgrade log4rs to 1.4.0
+- Refactored dynamic graph using dependency injection
 
 ### Fixed
 
