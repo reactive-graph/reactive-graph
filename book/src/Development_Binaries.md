@@ -12,20 +12,20 @@ cargo build
 cargo build --release
 ```
 
-```admonish tip "Release Profiles"
-For more information about release profiles, please refer to:
-* [https://doc.rust-lang.org/book/ch14-01-release-profiles.html](https://doc.rust-lang.org/book/ch14-01-release-profiles.html)
-```
+> [!TIP]
+> Release Profiles
+> For more information about release profiles, please refer to:
+> * [https://doc.rust-lang.org/book/ch14-01-release-profiles.html](https://doc.rust-lang.org/book/ch14-01-release-profiles.html)
 
-```admonish tip "Optimization Levels"
-For more information about rust compiler optimization levels, please have a look at
-* [https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level](https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level)
-```
+> [!TIP]
+> Optimization Levels
+> For more information about rust compiler optimization levels, please have a look
+> at [https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level](https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level)
 
-```admonish tip "Strip Symbols"
-For more information about strip symbols, please see
-* [https://doc.rust-lang.org/cargo/reference/unstable.html#profile-strip-option](https://doc.rust-lang.org/cargo/reference/unstable.html#profile-strip-option)
-```
+> [!TIP]
+> Strip Symbols
+> For more information about strip symbols, please
+> see [https://doc.rust-lang.org/cargo/reference/unstable.html#profile-strip-option](https://doc.rust-lang.org/cargo/reference/unstable.html#profile-strip-option)
 
 ## Application (exe)
 

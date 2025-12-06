@@ -16,13 +16,12 @@ kind = "console"
 pattern = "{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
 ```
 
-```admonish tip "Documentation of the date format library"
-[Date Formatting Syntax](https://docs.rs/chrono/0.4.11/chrono/format/strftime/index.html)
-```
+> [!TIP]
+> Documentation of the date format library
+> [Date Formatting Syntax](https://docs.rs/chrono/0.4.11/chrono/format/strftime/index.html)
 
-```admonish tip "systemd"
-On linux the systemd unit captures the stdout. Do not use any special characters or colors.
-```
+> [!TIP]
+> On linux the systemd unit captures the stdout. Do not use any special characters or colors.
 
 ### File
 
@@ -56,9 +55,9 @@ Set the log level for a specific module:
 level = "info"
 ```
 
-```admonish tip "Documentation of the logging library"
-[How to configure the loggers](https://docs.rs/log4rs/1.0.0/log4rs/)
-```
+> [!TIP]
+> Documentation of the logging library
+> [How to configure the loggers](https://docs.rs/log4rs/1.0.0/log4rs/)
 
 ## Additive
 
