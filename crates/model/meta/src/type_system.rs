@@ -6,7 +6,11 @@
 
 pub static TYPE_SYSTEM_COMPONENTS: std::sync::LazyLock<
     reactive_graph_graph::Components,
-> = std::sync::LazyLock::new(|| { reactive_graph_graph::Components::new() });
+> = std::sync::LazyLock::new(|| {
+    reactive_graph_graph::Components::new()
+        .component(crate::reactive_graph::meta::describable::DESCRIBABLE_TYPE.clone())
+        .component(crate::reactive_graph::meta::named::NAMED_TYPE.clone())
+});
 
 pub static TYPE_SYSTEM_ENTITY_TYPES: std::sync::LazyLock<
     reactive_graph_graph::EntityTypes,
