@@ -60,6 +60,12 @@ impl From<&BehaviourTypeId> for ComponentBehaviourTypeId {
     }
 }
 
+impl From<&ComponentTypeId> for ComponentBehaviourTypeId {
+    fn from(component_ty: &ComponentTypeId) -> Self {
+        Self::new(component_ty.clone(), NamespacedType::from(component_ty).into())
+    }
+}
+
 impl Display for ComponentBehaviourTypeId {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}{}{}", &self.component_ty, NAMESPACE_SEPARATOR, &self.behaviour_ty)

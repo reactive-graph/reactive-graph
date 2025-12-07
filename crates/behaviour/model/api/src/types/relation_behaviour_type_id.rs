@@ -59,6 +59,12 @@ impl From<&BehaviourTypeId> for RelationBehaviourTypeId {
     }
 }
 
+impl From<&RelationTypeId> for RelationBehaviourTypeId {
+    fn from(relation_ty: &RelationTypeId) -> Self {
+        Self::new(relation_ty.clone(), NamespacedType::from(relation_ty).into())
+    }
+}
+
 impl Display for RelationBehaviourTypeId {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}{}{}", &self.relation_ty, NAMESPACE_SEPARATOR, &self.behaviour_ty)
