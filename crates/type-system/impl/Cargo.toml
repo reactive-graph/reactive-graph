@@ -25,7 +25,6 @@ reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactiv
 reactive-graph-model-core = { version = "0.10.0", path = "../../model/core" }
 reactive-graph-model-meta = { version = "0.10.0", path = "../../model/meta" }
 reactive-graph-serde = { version = "0.10.0", path = "../../serde" }
-# reactive-graph-type-system-api = { version = "0.10.0", path = "../api", features = ["derive"] }
 reactive-graph-type-system-api = { version = "0.10.0", path = "../api" }
 reactive-graph-type-system-model = { version = "0.10.0", path = "../model" }
 
