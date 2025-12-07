@@ -11,6 +11,7 @@ readme = "../../../README.md"
 
 [dependencies]
 serde_json = { workspace = true }
+
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 
 [build-dependencies]
