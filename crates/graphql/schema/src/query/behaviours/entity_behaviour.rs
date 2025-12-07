@@ -7,7 +7,6 @@ use async_graphql::Result;
 
 use reactive_graph_behaviour_model_api::EntityBehaviourTypeId;
 use reactive_graph_behaviour_service_api::EntityBehaviourManager;
-use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_type_system_api::EntityTypeManager;
 
 use crate::query::GraphQLBehaviour;
@@ -28,16 +27,6 @@ impl GraphQLEntityBehaviour {
             .get(&self.entity_behaviour_ty.entity_ty)
             .ok_or(Error::new(format!("Entity type {} does not exist!", &self.entity_behaviour_ty.entity_ty)))?;
         Ok(entity_type.into())
-    }
-
-    /// The namespace the behaviour type belongs to.
-    async fn namespace(&self) -> String {
-        self.entity_behaviour_ty.behaviour_ty.namespace()
-    }
-
-    /// The name of the behaviour type.
-    async fn name(&self) -> String {
-        self.entity_behaviour_ty.behaviour_ty.type_name()
     }
 
     /// The behaviour type.

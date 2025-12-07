@@ -1,27 +1,32 @@
 use core::fmt;
 use fmt::Display;
-use std::collections::HashMap;
-use std::fmt::Formatter;
-
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
-#[cfg(any(test, feature = "test"))]
-use rand_derive3::RandGen;
 use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
 use serde_json::json;
+use std::collections::HashMap;
+use std::fmt::Formatter;
 
 #[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "docs"))]
+use documented::DocumentedVariants;
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
+#[cfg(any(test, feature = "test"))]
+use rand_derive3::RandGen;
+#[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
+#[cfg(any(test, feature = "table"))]
+use tabled::Tabled;
 
 /// Derived from serde_json::Value but without value payload.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Copy, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "lowercase")]
 #[cfg_attr(any(test, feature = "test"), derive(RandGen))]
+#[cfg_attr(any(test, feature = "table"), derive(Tabled))]
+#[cfg_attr(any(test, feature = "docs"), derive(DocumentedVariants))]
 pub enum DataType {
     /// Represents a JSON null value.
     Null,

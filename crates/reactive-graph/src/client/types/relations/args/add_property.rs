@@ -1,33 +1,15 @@
 use crate::client::types::property_type::args::PropertyTypeDefinitionArgs;
-use crate::client::types::relations::args::type_id::RelationTypeIdArgs;
+use crate::client::types::relations::args::parse_relation_ty;
 use clap::Args;
-use reactive_graph_client::PropertyTypeDefinition;
-use reactive_graph_client::types::properties::variables::add_property::variables::AddPropertyVariables;
+use reactive_graph_graph::RelationTypeId;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct RelationTypeAddPropertyArgs {
-    /// The relation type.
-    #[clap(flatten)]
-    pub ty: RelationTypeIdArgs,
+    /// The fully qualified namespace of the relation type.
+    #[clap(name = "relation_type", value_parser = parse_relation_ty)]
+    pub relation_ty: RelationTypeId,
 
     /// The property.
     #[clap(flatten)]
     pub property_type: PropertyTypeDefinitionArgs,
-}
-
-impl From<&RelationTypeAddPropertyArgs> for AddPropertyVariables {
-    fn from(args: &RelationTypeAddPropertyArgs) -> Self {
-        AddPropertyVariables {
-            namespace: args.ty.namespace.clone(),
-            name: args.ty.name.clone(),
-            property: PropertyTypeDefinition {
-                name: args.property_type.property_name.clone(),
-                description: args.property_type.description.clone().unwrap_or_default(),
-                data_type: args.property_type.data_type.into(),
-                socket_type: args.property_type.socket_type.into(),
-                mutability: args.property_type.mutability.into(),
-                extensions: Vec::new(),
-            },
-        }
-    }
 }

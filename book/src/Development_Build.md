@@ -85,9 +85,9 @@ cargo run --release
     ```
 5. Repeat this for all plugins
 
-```admonish warning "Plugin API version must match"
-The application and the plugins must be compiled with the same version of the Plugin API!
-```
+> [!WARNING]
+> Plugin API version must match
+> The application and the plugins must be compiled with the same version of the Plugin API!
 
 ## Build plugins
 
@@ -124,13 +124,12 @@ active = true
 path = "../plugin-mqtt/target/debug/libreactive-graph_plugin_mqtt.so"
 ```
 
-```admonish tip "Artifact Location"
-Release builds are located in `target/release` instead of `target/debug`
-```
+> [!TIP]
+> Release builds are located in `target/release` instead of `target/debug`
 
-```admonish info "Configure plugins"
-Please consult the documentation for [configuring plugins](./Configuration_Plugins.md)
-```
+> [!TIP]
+> Configure plugins
+> Please consult the documentation for [configuring plugins](./Configuration_Plugins.md)
 
 ### Plugin Compatibility
 
@@ -138,6 +137,6 @@ Please consult the documentation for [configuring plugins](./Configuration_Plugi
 17:18:18.642 [ERROR] [main] Cannot load plugin path/libreactive_graph_plugin_base.so because of a compiler version mismatch: rustc 1.81.0 (expected: 1.82.0)
 ```
 
-```admonish warning "Rust Compiler"
-The plugins have to be compiled by the same rust compiler.
-```
+> [!WARNING]
+> Rust Compiler
+> The plugins have to be compiled by the same rust compiler

@@ -11,8 +11,6 @@ readme = "../../../README.md"
 
 [dependencies]
 async-trait = { workspace = true }
-log = { workspace = true, features = ["std", "serde"] }
-rust-embed = { workspace = true, features = ["debug-embed", "compression"] }
 serde_json = { workspace = true }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 

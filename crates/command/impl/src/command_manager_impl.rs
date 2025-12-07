@@ -1,15 +1,16 @@
 use async_trait::async_trait;
 use serde_json::json;
+use std::ops::Deref;
 use std::sync::Arc;
 
 use reactive_graph_command_api::CommandManager;
 use reactive_graph_command_api::CommandRegistrationError;
-use reactive_graph_command_model::component::COMPONENT_COMMAND;
-use reactive_graph_command_model::component::CommandProperties::COMMAND_NAME;
 use reactive_graph_command_model::entity::Command;
 use reactive_graph_command_model::error::NoSuchCommand;
+use reactive_graph_command_model::reactive_graph::command::command::COMMAND;
+use reactive_graph_command_model::reactive_graph::command::command::CommandProperties;
+use reactive_graph_command_model::reactive_graph::command::num_commands::NUM_COMMANDS;
 use reactive_graph_graph::EntityType;
-use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
@@ -29,12 +30,10 @@ pub struct CommandManagerImpl {
 impl CommandManager for CommandManagerImpl {
     fn get_command(&self, name: &str) -> Result<Command, NoSuchCommand> {
         let name = name.into();
-        match self
-            .reactive_entity_manager
-            .get_by_component(&COMPONENT_COMMAND)
-            .iter()
-            .find(|e| e.as_string(COMMAND_NAME).is_some_and(|command_name| command_name == name))
-        {
+        match self.reactive_entity_manager.get_by_component(&COMMAND).iter().find(|e| {
+            e.as_string(CommandProperties::COMMAND.as_ref())
+                .is_some_and(|command_name| command_name == name)
+        }) {
             Some(e) => Command::try_from(e.clone()).map_err(NoSuchCommand::NotACommand),
             None => Err(NoSuchCommand::CommandNotFound(name)),
         }
@@ -42,7 +41,7 @@ impl CommandManager for CommandManagerImpl {
 
     fn get_commands(&self) -> Vec<Command> {
         self.reactive_entity_manager
-            .get_by_component(&COMPONENT_COMMAND)
+            .get_by_component(&COMMAND)
             .iter()
             .filter_map(|e| Command::try_from(e.clone()).ok())
             .collect()
@@ -78,9 +77,9 @@ impl Lifecycle for CommandManagerImpl {
     async fn init(&self) {
         let reactive_entity_manager = self.reactive_entity_manager.clone();
 
-        let executor = Box::new(move |_: &ReactiveEntity| json!(reactive_entity_manager.get_by_component(&COMPONENT_COMMAND).len()));
+        let executor = Box::new(move |_: &ReactiveEntity| json!(reactive_entity_manager.get_by_component(&COMMAND).len()));
         let command = Command::builder()
-            .ty(EntityTypeId::new_from_type("core", "num_commands"))
+            .ty(NUM_COMMANDS.deref())
             .help("Number of commands")
             .description("Number of commands")
             .executor(executor)

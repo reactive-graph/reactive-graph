@@ -5,23 +5,52 @@ use dashmap::DashMap;
 use dashmap::DashSet;
 use wildmatch::WildMatch;
 
+use crate::Namespace;
 use crate::NamespacedTypeGetter;
-use crate::types::Namespaces;
+use crate::Namespaces;
+
+#[cfg(any(test, feature = "test"))]
+use crate::NamespacedTypeError;
+#[cfg(any(test, feature = "test"))]
+use crate::NamespacedTypeIdContainer;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomChildType;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomChildTypes;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedType;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypes;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypesWithId;
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
+#[cfg(any(test, feature = "test"))]
+use rand::rng;
+#[cfg(any(test, feature = "test"))]
+use rand::seq::IndexedRandom;
+#[cfg(any(test, feature = "test"))]
+use std::ops::Range;
 
 pub trait NamespacedTypeContainer
 where
-    Self: Sized + Deref<Target = DashMap<Self::TypeId, Self::Type>> + FromIterator<Self::Type>,
+    Self: Sized + Deref<Target = DashMap<Self::TypeId, Self::Type>> + FromIterator<Self::Type> + From<DashMap<Self::TypeId, Self::Type>>,
     Self::TypeId: Clone + Eq + PartialEq + Hash,
     Self::TypeIds: Clone + FromIterator<Self::TypeId>,
-    Self::Type: Clone + Hash + Ord + Sized + NamespacedTypeGetter,
+    Self::Type: Clone + Hash + Ord + Sized + NamespacedTypeGetter + AsRef<Self::TypeId>,
 {
     type TypeId;
     type TypeIds;
     type Type;
 
-    fn new() -> Self;
+    fn new() -> Self {
+        DashMap::<Self::TypeId, Self::Type>::new().into()
+    }
 
-    fn push<I: Into<Self::Type>>(&self, item_to_add: I);
+    fn push<T: Into<Self::Type>>(&self, type_: T) -> Option<Self::Type> {
+        let type_ = type_.into();
+        DashMap::<Self::TypeId, Self::Type>::insert(self.deref(), type_.as_ref().clone(), type_)
+    }
 
     fn type_ids(&self) -> Self::TypeIds {
         self.iter().map(|item| item.key().clone()).collect()
@@ -38,102 +67,115 @@ where
     }
 
     fn namespaces(&self) -> Namespaces {
-        self.iter().map(|item| item.namespace()).collect()
+        self.iter().map(|item| item.path()).collect()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> Self {
-        self.iter()
-            .filter(|item| item.namespace() == namespace)
-            .map(|item| item.value().clone())
-            .collect()
+    fn get_by_namespace<N: Into<Namespace>>(&self, namespace: N) -> Self {
+        let namespace = namespace.into();
+        self.iter().filter(|item| item.path() == namespace).map(|item| item.value().clone()).collect()
     }
 
-    fn get_types_by_namespace(&self, namespace: &str) -> Self::TypeIds {
-        self.iter()
-            .filter(|item| item.namespace() == namespace)
-            .map(|item| item.key().clone())
-            .collect()
+    fn get_types_by_namespace<N: Into<Namespace>>(&self, namespace: N) -> Self::TypeIds {
+        let namespace = namespace.into();
+        self.iter().filter(|item| item.path() == namespace).map(|item| item.key().clone()).collect()
     }
 
-    fn find_by_type_name(&self, search: &str) -> Self {
+    fn find(&self, search: &str) -> Self {
         let matcher = WildMatch::new(search);
         self.iter()
-            .filter(|item| matcher.matches(item.type_name().as_str()))
+            .filter(|item| matcher.matches(item.namespace().to_string().as_ref()) || matcher.matches(item.type_name().as_ref()))
             .map(|item| item.value().clone())
             .collect()
     }
 
-    fn count_by_namespace(&self, namespace: &str) -> usize {
-        self.iter().filter(|item| item.namespace() == namespace).count()
+    fn count_by_namespace<N: Into<Namespace>>(&self, namespace: N) -> usize {
+        let namespace = namespace.into();
+        self.iter().filter(|item| item.path() == namespace).count()
+    }
+
+    fn push_all(&self, types: Self) {
+        for type_ in types.deref().into_iter() {
+            self.insert(type_.key().clone(), type_.value().clone());
+        }
+    }
+
+    #[cfg(any(test, feature = "test"))]
+    fn pick_random_type(&self) -> Option<Self::Type> {
+        self.to_vec().choose(&mut rng()).map(Clone::clone)
+    }
+
+    #[cfg(any(test, feature = "test"))]
+    fn pick_random_types(&self, range: Range<usize>) -> Self {
+        let mut rng = rand::rng();
+        let types = self.to_vec();
+        let random_types = Self::new();
+        for _ in 0..rng.random_range(range) {
+            if let Some(random_type) = types.choose(&mut rng) {
+                random_types.push(random_type.clone());
+            }
+        }
+        random_types
     }
 }
 
-// impl<O, I> From<I> for O
-//     where
-//         O: Default + Grid,
-//         O::Component: Copy,
-//         I: Grid<Component = O::Component, WIDTH = O::WIDTH, HEIGHT = O::HEIGHT>,
-// {}
-//     <ID=ID, Item=Item, Target=DashMap<ID, Item>
+#[cfg(any(test, feature = "test"))]
+impl<
+    TY: Eq + Hash,
+    TYS: NamespacedTypeIdContainer<TypeIds = TYS, TypeId = TY>,
+    T: RandomNamespacedType<Error = NamespacedTypeError>,
+    TS: NamespacedTypeContainer<TypeIds = TYS, TypeId = TY, Type = T> + Sized,
+> RandomNamespacedTypes for TS
+{
+    type Error = NamespacedTypeError;
 
-// impl <ID, Item> FromIterator<Item> for dyn NamespacedTypeContainer<ID=ID, Item=Item, Target=DashMap<ID, Item>>
-// // where
-//     //     Self: Deref<Target=DashMap<Self::ID, Self::Type>> + FromIterator<Self::Type>,
-//     //     Self::ID: Eq + PartialEq + Hash,
-//     //     Self::Type: Clone + Ord + NamespacedTypeGetter,
-// {
-//     fn from_iter<I: IntoIterator<Item=Item>>(iter: I) -> Self {
-//         let entity_types = Self::new();
-//         for entity_type in iter {
-//             entity_types.insert(entity_type.ty.clone(), entity_type);
-//         }
-//         entity_types
-//     }
-// }
-//
-// impl PartialEq for dyn NamespacedTypeContainer {
-//     fn eq(&self, other: &Self) -> bool {
-//         self.0.iter().all(|self_entity_type| other.contains_key(&self_entity_type.ty))
-//             && other.iter().all(|other_entity_type| self.contains_key(&other_entity_type.ty))
-//     }
-// }
-//
-// impl IntoIterator for NamespacedTypeContainer {
-//     type Item = (EntityTypeId, EntityType);
-//     type IntoIter = OwningIter<EntityTypeId, EntityType>;
-//
-//     fn into_iter(self) -> Self::IntoIter {
-//         self.0.into_iter()
-//     }
-// }
+    fn random_types(range: Range<usize>) -> Result<Self, NamespacedTypeError> {
+        let tys = Self::new();
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(range) {
+            let ty = T::random_type()?;
+            tys.push(ty);
+        }
+        Ok(tys)
+    }
+}
 
-// impl <ID, Item> Deref for dyn NamespacedTypeContainer<ID=ID, Item=Item, Target=DashMap<ID, Item>> {
-//     type Target = DashMap<ID, Item>;
-//     // type Target = DashMap<NamespacedTypeContainer::ID, NamespacedTypeContainer::Item>;
-//
-//     fn deref(&self) -> &Self::Target {
-//         &self.0
-//     }
-// }
-//
-// impl DerefMut for NamespacedTypeContainer {
-//     fn deref_mut(&mut self) -> &mut Self::Target {
-//         &mut self.0
-//     }
-// }
+#[cfg(any(test, feature = "test"))]
+impl<
+    TY: Eq + Hash,
+    TYS: NamespacedTypeIdContainer<TypeIds = TYS, TypeId = TY>,
+    T: RandomNamespacedType<Error = NamespacedTypeError, TypeId = TY>,
+    TS: NamespacedTypeContainer<TypeIds = TYS, TypeId = TY, Type = T> + Sized,
+> RandomNamespacedTypesWithId for TS
+{
+    type TypeIds = TYS;
 
-// impl<R: RngCore + ?Sized, T: DerefMut<Target = R>> RngCore for T { ... }
+    fn random_types_with_ids(tys: &TYS) -> Result<Self, NamespacedTypeError> {
+        let types = Self::new();
+        for ty in tys.deref().iter() {
+            let type_ = T::random_type_with_id(ty.key())?;
+            types.push(type_);
+        }
+        Ok(types)
+    }
+}
 
-// impl <ID, Item> Hash for dyn NamespacedTypeContainer<ID, Item, Target=DashMap<ID, Item>>
-// impl <ID, Item> Hash for dyn NamespacedTypeContainer<ID=ID, Item=Item, Target=DashMap<ID, Item>> {
-//     fn hash<H: Hasher>(&self, state: &mut H) {
-//         // let mut items: Vec<Self::Type> = self.iter()
-//         //     .map(|item| item.value().clone()).collect();
-//         // items.sort();
-//         // items.hash(state);
-//
-//         let v = self.to_vec();
-//         v.hash(state);
-//         self.to_vec().hash(state);
-//     }
-// }
+#[cfg(any(test, feature = "test"))]
+impl<
+    TY,
+    TYS: NamespacedTypeIdContainer<TypeIds = TYS, TypeId = TY>,
+    T: RandomChildType<Error = NamespacedTypeError>,
+    TS: NamespacedTypeContainer<TypeIds = TYS, TypeId = TY, Type = T> + Sized,
+> RandomChildTypes for TS
+{
+    type Error = NamespacedTypeError;
+
+    fn random_child_types(namespace: &Namespace, range: Range<usize>) -> Result<Self, NamespacedTypeError> {
+        let tys = Self::new();
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(range) {
+            let ty = T::random_child_type(namespace)?;
+            tys.push(ty);
+        }
+        Ok(tys)
+    }
+}

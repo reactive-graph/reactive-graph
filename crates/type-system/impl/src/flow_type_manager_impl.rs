@@ -29,9 +29,11 @@ use reactive_graph_graph::FlowTypeUpdateExtensionError;
 use reactive_graph_graph::FlowTypeUpdateRelationInstanceError;
 use reactive_graph_graph::FlowTypeUpdateVariableError;
 use reactive_graph_graph::FlowTypes;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::NamespacedTypeContainer;
 use reactive_graph_graph::NamespacedTypeEntityInstanceContainer;
 use reactive_graph_graph::NamespacedTypeExtensionContainer;
+use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::NamespacedTypeRelationInstanceContainer;
 use reactive_graph_graph::NamespacedTypeVariablesContainer;
 use reactive_graph_graph::Namespaces;
@@ -46,6 +48,7 @@ use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::FlowTypeCreationError;
 use reactive_graph_type_system_api::FlowTypeManager;
 use reactive_graph_type_system_api::FlowTypeRegistrationError;
+use reactive_graph_type_system_api::NamespacedTypeManager;
 use reactive_graph_type_system_api::RelationTypeManager;
 use reactive_graph_type_system_api::TypeSystemEvent;
 use reactive_graph_type_system_api::TypeSystemEventManager;
@@ -55,6 +58,8 @@ pub struct FlowTypeManagerImpl {
     event_manager: Arc<dyn TypeSystemEventManager + Send + Sync>,
 
     entity_type_manager: Arc<dyn EntityTypeManager + Send + Sync>,
+
+    namespaced_type_manager: Arc<dyn NamespacedTypeManager + Send + Sync>,
 
     relation_type_manager: Arc<dyn RelationTypeManager + Send + Sync>,
 
@@ -66,28 +71,29 @@ pub struct FlowTypeManagerImpl {
 #[component_alias]
 impl FlowTypeManager for FlowTypeManagerImpl {
     fn register(&self, flow_type: FlowType) -> Result<FlowType, FlowTypeRegistrationError> {
-        let flow_ty = flow_type.ty.clone();
-        if self.has(&flow_ty) {
-            return Err(FlowTypeRegistrationError::FlowTypeAlreadyExists(flow_ty));
+        let ty = flow_type.ty.clone();
+        self.namespaced_type_manager.register(ty.namespaced_type())?;
+        if self.has(&ty) {
+            return Err(FlowTypeRegistrationError::FlowTypeAlreadyExists(ty));
         }
         // Check that the entity types of every declared entity instance exists
         for entity_ty in flow_type.uses_entity_types() {
             if !self.entity_type_manager.has(&entity_ty) {
-                warn!("Flow type {flow_ty} not fully initialized: No entity type {entity_ty}");
+                warn!("Flow type {ty} not fully initialized: No entity type {entity_ty}");
             }
         }
         // Check that the relation type of every declared relation instance exists
         for relation_ty in flow_type.uses_relation_types() {
             if !self.relation_type_manager.has(&relation_ty) {
-                warn!("Flow type {flow_ty} not fully initialized: No relation type named {relation_ty}");
+                warn!("Flow type {ty} not fully initialized: No relation type named {relation_ty}");
             }
         }
         // TODO: Check that entity instances referenced by a relation instance exists
         // TODO: Check that relation instances outbound entity has correct entity_type
         // TODO: Check that relation instances inbound entity has correct entity_type
         self.flow_types.push(flow_type.clone());
-        debug!("Registered flow type {flow_ty}");
-        self.event_manager.emit_event(TypeSystemEvent::FlowTypeCreated(flow_ty));
+        debug!("Registered flow type {ty}");
+        self.event_manager.emit_event(TypeSystemEvent::FlowTypeCreated(ty));
         Ok(flow_type)
     }
 
@@ -103,11 +109,11 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         self.flow_types.namespaces()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> FlowTypes {
+    fn get_by_namespace(&self, namespace: &Namespace) -> FlowTypes {
         self.flow_types.get_by_namespace(namespace)
     }
 
-    fn get_types_by_namespace(&self, namespace: &str) -> FlowTypeIds {
+    fn get_types_by_namespace(&self, namespace: &Namespace) -> FlowTypeIds {
         self.flow_types.get_types_by_namespace(namespace)
     }
 
@@ -115,27 +121,19 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         self.flow_types.contains_key(ty)
     }
 
-    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool {
-        self.has(&FlowTypeId::new_from_type(namespace, type_name))
-    }
-
     fn get(&self, ty: &FlowTypeId) -> Option<FlowType> {
         self.flow_types.get(ty).map(|entity_type| entity_type.value().clone())
     }
 
-    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<FlowType> {
-        self.get(&FlowTypeId::new_from_type(namespace, type_name))
-    }
-
-    fn find_by_type_name(&self, search: &str) -> FlowTypes {
-        self.flow_types.find_by_type_name(search)
+    fn find(&self, search: &str) -> FlowTypes {
+        self.flow_types.find(search)
     }
 
     fn count(&self) -> usize {
         self.flow_types.len()
     }
 
-    fn count_by_namespace(&self, namespace: &str) -> usize {
+    fn count_by_namespace(&self, namespace: &Namespace) -> usize {
         self.flow_types.count_by_namespace(namespace)
     }
 
@@ -250,9 +248,10 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         // }
     }
 
-    fn delete(&self, flow_ty: &FlowTypeId) -> Option<FlowType> {
-        self.flow_types.remove(flow_ty).map(|(flow_ty, flow_type)| {
-            self.event_manager.emit_event(TypeSystemEvent::FlowTypeDeleted(flow_ty.clone()));
+    fn delete(&self, ty: &FlowTypeId) -> Option<FlowType> {
+        self.namespaced_type_manager.delete(ty.as_ref());
+        self.flow_types.remove(ty).map(|(ty, flow_type)| {
+            self.event_manager.emit_event(TypeSystemEvent::FlowTypeDeleted(ty.clone()));
             flow_type
         })
     }

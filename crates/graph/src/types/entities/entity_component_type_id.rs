@@ -1,6 +1,11 @@
+use dashmap::DashSet;
+use dashmap::iter_set::OwningIter;
 use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
+use std::hash::RandomState;
+use std::ops::Deref;
+use std::ops::DerefMut;
 use typed_builder::TypedBuilder;
 
 use crate::ComponentContainerGetter;
@@ -36,5 +41,47 @@ impl ComponentContainerGetter for EntityComponentTypeId {
 
     fn component_ty(&self) -> ComponentTypeId {
         self.component_ty.clone()
+    }
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct EntityComponentTypeIds(DashSet<EntityComponentTypeId>);
+
+impl EntityComponentTypeIds {
+    pub fn new() -> Self {
+        Self(DashSet::new())
+    }
+}
+
+impl Deref for EntityComponentTypeIds {
+    type Target = DashSet<EntityComponentTypeId>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for EntityComponentTypeIds {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+impl IntoIterator for EntityComponentTypeIds {
+    type Item = EntityComponentTypeId;
+    type IntoIter = OwningIter<EntityComponentTypeId, RandomState>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
+}
+
+impl FromIterator<EntityComponentTypeId> for EntityComponentTypeIds {
+    fn from_iter<I: IntoIterator<Item = EntityComponentTypeId>>(iter: I) -> Self {
+        let tys = EntityComponentTypeIds::new();
+        for ty in iter {
+            tys.insert(ty);
+        }
+        tys
     }
 }

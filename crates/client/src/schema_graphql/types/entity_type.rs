@@ -4,35 +4,15 @@ use crate::schema_graphql::types::extension::Extension;
 use crate::schema_graphql::types::extension::Extensions;
 use crate::schema_graphql::types::property_type::PropertyType;
 use crate::schema_graphql::types::property_type::PropertyTypes;
-use reactive_graph_graph::ComponentOrEntityTypeId;
-use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::InboundOutboundType;
+use reactive_graph_graph::InvalidEntityTypeError;
+use reactive_graph_graph::MatchingInboundOutboundType;
+use reactive_graph_graph::NamespacedTypeContainer;
+use reactive_graph_graph::NamespacedTypeParseError;
 use serde_json::Value;
 use std::ops::Deref;
-
-#[derive(cynic::InputObject, Clone, Debug)]
-#[cynic(
-    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
-    schema_module = "crate::schema_graphql::schema"
-)]
-pub struct EntityTypeId {
-    pub name: String,
-    pub namespace: String,
-}
-
-impl From<reactive_graph_graph::EntityTypeId> for EntityTypeId {
-    fn from(ty: reactive_graph_graph::EntityTypeId) -> Self {
-        EntityTypeId {
-            name: ty.type_name(),
-            namespace: ty.namespace(),
-        }
-    }
-}
-
-impl From<&EntityTypeId> for reactive_graph_graph::EntityTypeId {
-    fn from(ty: &EntityTypeId) -> Self {
-        reactive_graph_graph::EntityTypeId::new_from_type(ty.namespace.clone(), ty.name.clone())
-    }
-}
+use std::str::FromStr;
 
 #[derive(cynic::QueryFragment, Clone, Debug)]
 #[cynic(
@@ -40,11 +20,9 @@ impl From<&EntityTypeId> for reactive_graph_graph::EntityTypeId {
     schema_module = "crate::schema_graphql::schema"
 )]
 pub struct EntityType {
-    /// The namespace of the extension.
-    pub namespace: String,
-
-    /// The name of the extension.
-    pub name: String,
+    /// The fully qualified namespace of the entity type.
+    #[cynic(rename = "type")]
+    pub _type: String,
 
     /// Textual description of the extension.
     pub description: String,
@@ -63,25 +41,25 @@ pub struct EntityType {
 }
 
 impl EntityType {
-    pub fn ty(&self) -> EntityTypeId {
-        EntityTypeId {
-            namespace: self.namespace.clone(),
-            name: self.name.clone(),
-        }
+    pub fn ty(&self) -> Result<EntityTypeId, NamespacedTypeParseError> {
+        EntityTypeId::from_str(&self._type)
     }
 }
 
-impl From<EntityType> for reactive_graph_graph::EntityType {
-    fn from(entity_type: EntityType) -> Self {
-        let ty = (&entity_type.ty()).into();
-        let components: reactive_graph_graph::ComponentTypeIds = Components(entity_type.components).into();
-        reactive_graph_graph::EntityType {
-            ty,
+impl TryFrom<EntityType> for reactive_graph_graph::EntityType {
+    type Error = InvalidEntityTypeError;
+
+    fn try_from(entity_type: EntityType) -> Result<Self, Self::Error> {
+        Ok(reactive_graph_graph::EntityType {
+            ty: EntityTypeId::from_str(&entity_type._type).map_err(InvalidEntityTypeError::InvalidEntityType)?,
             description: entity_type.description,
-            components,
-            properties: PropertyTypes(entity_type.properties).into(),
-            extensions: Extensions(entity_type.extensions).into(),
-        }
+            components: reactive_graph_graph::Components::try_from(Components(entity_type.components))
+                .map_err(InvalidEntityTypeError::InvalidComponent)?
+                .type_ids(),
+            properties: reactive_graph_graph::PropertyTypes::try_from(PropertyTypes(entity_type.properties))
+                .map_err(InvalidEntityTypeError::InvalidPropertyType)?,
+            extensions: reactive_graph_graph::Extensions::try_from(Extensions(entity_type.extensions)).map_err(InvalidEntityTypeError::InvalidExtension)?,
+        })
     }
 }
 
@@ -95,15 +73,24 @@ impl Deref for EntityTypes {
     }
 }
 
-impl From<EntityTypes> for Vec<reactive_graph_graph::EntityType> {
-    fn from(entity_types: EntityTypes) -> Self {
-        entity_types.0.into_iter().map(From::from).collect()
+impl TryFrom<EntityTypes> for reactive_graph_graph::EntityTypes {
+    type Error = InvalidEntityTypeError;
+
+    fn try_from(entity_types: EntityTypes) -> Result<Self, Self::Error> {
+        let entity_types_2 = reactive_graph_graph::EntityTypes::new();
+        for entity_type in entity_types.0 {
+            entity_types_2.push(reactive_graph_graph::EntityType::try_from(entity_type)?);
+        }
+        Ok(entity_types_2)
     }
 }
 
-impl From<EntityType> for ComponentOrEntityTypeId {
-    fn from(entity_type: EntityType) -> Self {
-        let entity_type: reactive_graph_graph::EntityType = entity_type.into();
-        ComponentOrEntityTypeId::EntityType(entity_type.ty)
+impl TryFrom<EntityType> for InboundOutboundType {
+    type Error = InvalidEntityTypeError;
+
+    fn try_from(entity_type: EntityType) -> Result<Self, Self::Error> {
+        Ok(InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(EntityTypeId::from_str(
+            &entity_type._type,
+        )?)))
     }
 }

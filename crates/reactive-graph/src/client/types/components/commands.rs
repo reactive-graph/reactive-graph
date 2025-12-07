@@ -1,12 +1,12 @@
-use clap::Subcommand;
-
 use crate::client::types::components::args::add_extension::ComponentAddExtensionArgs;
 use crate::client::types::components::args::add_property::ComponentAddPropertyArgs;
 use crate::client::types::components::args::component_extension_type::ComponentExtensionTypeIdArgs;
 use crate::client::types::components::args::component_property::ComponentPropertyArgs;
 use crate::client::types::components::args::create::CreateComponentArgs;
-use crate::client::types::components::args::type_id::ComponentTypeIdArgs;
+use crate::client::types::components::args::parse_component_ty;
 use crate::client::types::components::args::update_description::ComponentUpdateDescriptionArgs;
+use clap::Subcommand;
+use reactive_graph_graph::ComponentTypeId;
 
 #[derive(Subcommand, Debug, Clone)]
 pub(crate) enum ComponentsCommands {
@@ -15,22 +15,37 @@ pub(crate) enum ComponentsCommands {
     List,
     /// Prints a single component.
     #[non_exhaustive]
-    Get(ComponentTypeIdArgs),
+    Get {
+        #[arg(name = "component", value_parser = parse_component_ty)]
+        component_ty: ComponentTypeId,
+    },
     /// List the properties of a component.
     #[non_exhaustive]
-    ListProperties(ComponentTypeIdArgs),
+    ListProperties {
+        #[arg(name = "component", value_parser = parse_component_ty)]
+        component_ty: ComponentTypeId,
+    },
     /// List the extensions of a component.
     #[non_exhaustive]
-    ListExtensions(ComponentTypeIdArgs),
+    ListExtensions {
+        #[arg(name = "component", value_parser = parse_component_ty)]
+        component_ty: ComponentTypeId,
+    },
     /// Prints the JSON Schema of a component.
     #[non_exhaustive]
-    GetJsonSchema(ComponentTypeIdArgs),
+    GetJsonSchema {
+        #[arg(name = "component", value_parser = parse_component_ty)]
+        component_ty: ComponentTypeId,
+    },
     /// Creates a new component.
     #[non_exhaustive]
     Create(CreateComponentArgs),
     /// Deletes a component.
     #[non_exhaustive]
-    Delete(ComponentTypeIdArgs),
+    Delete {
+        #[arg(name = "component", value_parser = parse_component_ty)]
+        component_ty: ComponentTypeId,
+    },
     /// Adds a property to a component.
     #[non_exhaustive]
     AddProperty(ComponentAddPropertyArgs),

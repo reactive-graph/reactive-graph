@@ -1,11 +1,12 @@
 use std::sync::Arc;
 
-use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::ComponentTypeIds;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::Extensions;
+use reactive_graph_graph::InboundOutboundType;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypes;
 use reactive_graph_graph::RelationType;
@@ -36,7 +37,7 @@ impl reactive_graph_plugin_api::RelationTypeManager for RelationTypeManagerDeleg
         self.relation_type_manager.get_all()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> RelationTypes {
+    fn get_by_namespace(&self, namespace: &Namespace) -> RelationTypes {
         self.relation_type_manager.get_by_namespace(namespace)
     }
 
@@ -44,35 +45,27 @@ impl reactive_graph_plugin_api::RelationTypeManager for RelationTypeManagerDeleg
         self.relation_type_manager.has(ty)
     }
 
-    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool {
-        self.relation_type_manager.has_by_type(namespace, type_name)
-    }
-
     fn get(&self, ty: &RelationTypeId) -> Option<RelationType> {
         self.relation_type_manager.get(ty)
     }
 
-    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<RelationType> {
-        self.relation_type_manager.get_by_type(namespace, type_name)
-    }
-
-    fn find_by_type_name(&self, search: &str) -> RelationTypes {
-        self.relation_type_manager.find_by_type_name(search)
+    fn find(&self, search: &str) -> RelationTypes {
+        self.relation_type_manager.find(search)
     }
 
     fn count(&self) -> usize {
         self.relation_type_manager.count()
     }
 
-    fn count_by_namespace(&self, namespace: &str) -> usize {
+    fn count_by_namespace(&self, namespace: &Namespace) -> usize {
         self.relation_type_manager.count_by_namespace(namespace)
     }
 
     fn create(
         &self,
-        outbound_type: &ComponentOrEntityTypeId,
+        outbound_type: &InboundOutboundType,
         ty: &RelationTypeId,
-        inbound_type: &ComponentOrEntityTypeId,
+        inbound_type: &InboundOutboundType,
         description: &str,
         components: ComponentTypeIds,
         properties: PropertyTypes,

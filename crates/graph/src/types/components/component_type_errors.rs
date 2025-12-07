@@ -1,6 +1,9 @@
 use crate::AddExtensionError;
 use crate::AddPropertyError;
 use crate::ComponentTypeId;
+use crate::InvalidExtensionError;
+use crate::InvalidPropertyTypeError;
+use crate::NamespacedTypeParseError;
 use crate::RemoveExtensionError;
 use crate::RemovePropertyError;
 use crate::UpdateExtensionError;
@@ -83,4 +86,14 @@ pub enum ComponentRemoveExtensionError {
     ComponentDoesNotExist(ComponentTypeId),
     #[error("Failed to remove extension {0}")]
     RemoveExtensionError(#[from] RemoveExtensionError),
+}
+
+#[derive(Debug, Error)]
+pub enum InvalidComponentError {
+    #[error("The fully qualified namespace of the component is invalid: {0}")]
+    InvalidComponent(NamespacedTypeParseError),
+    #[error("The property type of the component is invalid: {0}")]
+    InvalidPropertyType(InvalidPropertyTypeError),
+    #[error("The extension of the component is invalid: {0}")]
+    InvalidExtension(InvalidExtensionError),
 }

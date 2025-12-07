@@ -28,6 +28,9 @@ use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::Extensions;
 use crate::JSON_SCHEMA_ID_URI_PREFIX;
+use crate::Namespace;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
 use crate::NamespacedTypeContainer;
 use crate::NamespacedTypeGetter;
 use crate::Namespaces;
@@ -40,15 +43,33 @@ use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeDefinitionJsonSchema;
 use crate::TypeDefinitionJsonSchemaGetter;
+use crate::TypeDescriptionGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
+use crate::divergent::DivergentPropertyTypes;
+
+#[cfg(any(test, feature = "test"))]
+use crate::NamespacedTypeError;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomChildType;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomChildTypeId;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedType;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypes;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_utils_test::r_string;
+#[cfg(any(test, feature = "test", feature = "table"))]
+use tabled::Tabled;
 
 pub const JSON_SCHEMA_ID_COMPONENT: &str = formatcp!("{}/component.schema.json", JSON_SCHEMA_ID_URI_PREFIX);
 
 /// A component defines a set of properties to be applied to entity
 /// types and relation types.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[cfg_attr(any(test, feature = "table"), derive(Tabled))]
 #[serde(tag = "$id", rename = "https://schema.reactive-graph.io/schema/json/component.schema.json")]
 #[schemars(
     title = "Component",
@@ -58,7 +79,7 @@ pub const JSON_SCHEMA_ID_COMPONENT: &str = formatcp!("{}/component.schema.json",
 )]
 pub struct Component {
     /// The type definition of the component.
-    #[serde(flatten)]
+    #[serde(rename = "type")]
     #[builder(setter(into))]
     pub ty: ComponentTypeId,
 
@@ -72,12 +93,14 @@ pub struct Component {
     #[serde(default = "PropertyTypes::new")]
     #[schemars(required)]
     #[builder(default, setter(into))]
+    #[cfg_attr(any(test, feature = "table"), tabled(skip))]
     pub properties: PropertyTypes,
 
     /// Component specific extensions
     #[serde(default = "Extensions::new")]
     #[schemars(required)]
     #[builder(default, setter(into))]
+    #[cfg_attr(any(test, feature = "table"), tabled(skip))]
     pub extensions: Extensions,
 }
 
@@ -90,22 +113,6 @@ impl Component {
     ) -> Component {
         Component {
             ty: ty.into(),
-            description: description.into(),
-            properties: properties.into(),
-            extensions: extensions.into(),
-        }
-    }
-
-    /// Constructs a new component with the given name and properties
-    pub fn new_from_type<S: Into<String>, T: Into<String>, D: Into<String>, P: Into<PropertyTypes>, E: Into<Extensions>>(
-        namespace: S,
-        type_name: T,
-        description: D,
-        properties: P,
-        extensions: E,
-    ) -> Component {
-        Component {
-            ty: ComponentTypeId::new_from_type(namespace.into(), type_name.into()),
             description: description.into(),
             properties: properties.into(),
             extensions: extensions.into(),
@@ -155,11 +162,15 @@ impl PropertyTypeContainer for Component {
     }
 
     fn merge_properties<P: Into<PropertyTypes>>(&mut self, properties_to_merge: P) {
-        self.properties.merge_properties(properties_to_merge);
+        self.properties.merge_properties(properties_to_merge)
     }
 
-    fn get_own_properties(&self) -> &PropertyTypes {
-        &self.properties
+    fn merge_non_existent_properties<P: Into<PropertyTypes>>(&self, properties_to_merge: P) -> DivergentPropertyTypes {
+        self.properties.merge_non_existent_properties(properties_to_merge)
+    }
+
+    fn get_own_properties_cloned(&self) -> PropertyTypes {
+        self.properties.clone()
     }
 }
 
@@ -187,14 +198,26 @@ impl ExtensionContainer for Component {
     fn merge_extensions<E: Into<Extensions>>(&mut self, extensions_to_merge: E) {
         self.extensions.merge_extensions(extensions_to_merge)
     }
+
+    fn get_own_extensions_cloned(&self) -> Extensions {
+        self.extensions.clone()
+    }
 }
 
 impl NamespacedTypeGetter for Component {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -203,11 +226,27 @@ impl TypeDefinitionGetter for Component {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
     }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::Component
+    }
+}
+
+impl TypeDescriptionGetter for Component {
+    fn description(&self) -> String {
+        self.description.clone()
+    }
 }
 
 impl TypeDefinitionJsonSchemaGetter for Component {
     fn json_schema(&self) -> Schema {
         TypeDefinitionJsonSchema::new(self).description(&self.description).into()
+    }
+}
+
+impl AsRef<ComponentTypeId> for Component {
+    fn as_ref(&self) -> &ComponentTypeId {
+        &self.ty
     }
 }
 
@@ -231,11 +270,7 @@ impl Ord for Component {
 
 impl From<Component> for TypeDefinition {
     fn from(component: Component) -> Self {
-        TypeDefinition {
-            type_id_type: TypeIdType::Component,
-            namespace: component.ty.namespace(),
-            type_name: component.ty.type_name(),
-        }
+        component.type_definition()
     }
 }
 
@@ -255,6 +290,22 @@ impl From<&Component> for Schema {
 pub struct Components(DashMap<ComponentTypeId, Component>);
 
 impl Components {
+    #[inline]
+    pub fn new() -> Self {
+        NamespacedTypeContainer::new()
+    }
+
+    #[inline]
+    pub fn component<C: Into<Component>>(self, component: C) -> Self {
+        NamespacedTypeContainer::push(&self, component);
+        self
+    }
+
+    #[inline]
+    pub fn push<C: Into<Component>>(&self, component: C) -> Option<Component> {
+        NamespacedTypeContainer::push(self, component)
+    }
+
     pub fn merge<C: Into<Component>>(&self, component_to_merge: C) -> Result<Component, ComponentMergeError> {
         let component_to_merge = component_to_merge.into();
         let Some(mut component) = self.get_mut(&component_to_merge.ty) else {
@@ -267,7 +318,7 @@ impl Components {
     }
 
     pub fn namespaces(&self) -> Namespaces {
-        self.iter().map(|component| component.namespace()).collect()
+        self.iter().map(|component| component.path()).collect()
     }
 
     pub fn get<T: Into<ComponentTypeId>>(&self, ty: T) -> Option<Component> {
@@ -275,9 +326,9 @@ impl Components {
         self.0.iter().find(|component| component.ty == ty).map(|component| component.clone())
     }
 
-    pub fn get_by_namespace<N: Into<String>>(&self, namespace: N) -> Components {
+    pub fn get_by_namespace<N: Into<Namespace>>(&self, namespace: N) -> Components {
         let namespace = namespace.into();
-        self.filter_by(|component| component.ty.namespace() == namespace)
+        self.filter_by(|component| component.ty.path() == namespace)
     }
 
     pub fn get_by_types<C: Into<ComponentTypeIds>>(&self, tys: C) -> Components {
@@ -287,12 +338,12 @@ impl Components {
 
     pub fn find_by_type_name(&self, search: &str) -> Components {
         let matcher = WildMatch::new(search);
-        self.filter_by(|component| matcher.matches(component.type_name().as_str()))
+        self.filter_by(|component| matcher.matches(component.type_name().as_ref()))
     }
 
-    pub fn count_by_namespace<N: Into<String>>(&self, namespace: N) -> usize {
+    pub fn count_by_namespace<N: Into<Namespace>>(&self, namespace: N) -> usize {
         let namespace = namespace.into();
-        self.count_by(|component| component.ty.namespace() == namespace)
+        self.count_by(|component| component.ty.path() == namespace)
     }
 
     #[inline]
@@ -310,21 +361,17 @@ impl Components {
     {
         self.0.iter().filter(predicate).count()
     }
+
+    #[inline]
+    pub fn push_all<C: Into<Self>>(&self, components: C) {
+        NamespacedTypeContainer::push_all(self, components.into())
+    }
 }
 
 impl NamespacedTypeContainer for Components {
     type TypeId = ComponentTypeId;
     type TypeIds = ComponentTypeIds;
     type Type = Component;
-
-    fn new() -> Self {
-        Self(DashMap::new())
-    }
-
-    fn push<C: Into<Component>>(&self, component: C) {
-        let component = component.into();
-        self.insert(component.ty.clone(), component);
-    }
 }
 
 impl Deref for Components {
@@ -356,13 +403,13 @@ impl PartialEq for Components {
     }
 }
 
-impl Eq for Components {}
-
 impl Hash for Components {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.to_vec().hash(state);
     }
 }
+
+impl Eq for Components {}
 
 impl JsonSchema for Components {
     fn schema_name() -> Cow<'static, str> {
@@ -447,32 +494,30 @@ macro_rules! component_model {
 }
 
 #[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
-#[cfg(any(test, feature = "test"))]
-use reactive_graph_utils_test::r_string;
+impl RandomNamespacedType for Component {
+    type Error = NamespacedTypeError;
+    type TypeId = ComponentTypeId;
 
-#[cfg(any(test, feature = "test"))]
-impl DefaultTest for Component {
-    fn default_test() -> Self {
-        Component::builder()
-            .ty(ComponentTypeId::default_test())
+    fn random_type() -> Result<Self, NamespacedTypeError> {
+        Self::random_child_type(&Namespace::random_path()?)
+    }
+
+    fn random_type_with_id(ty: &ComponentTypeId) -> Result<Self, Self::Error> {
+        Ok(Self::builder()
+            .ty(ty)
             .description(r_string())
-            .properties(PropertyTypes::default_test())
-            .extensions(Extensions::default_test())
-            .build()
+            .properties(PropertyTypes::random_types(0..10)?)
+            .extensions(Extensions::random_types(0..10)?)
+            .build())
     }
 }
+
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for Components {
-    fn default_test() -> Self {
-        let components = Components::new();
-        let mut rng = rand::rng();
-        for _ in 0..rng.random_range(0..10) {
-            components.push(Component::default_test());
-        }
-        components
+impl RandomChildType for Component {
+    type Error = NamespacedTypeError;
+
+    fn random_child_type(namespace: &Namespace) -> Result<Self, Self::Error> {
+        Self::random_type_with_id(&NamespacedType::random_child_type_id(namespace)?.into())
     }
 }
 
@@ -482,13 +527,11 @@ fn add_json_schema_id_property(schema: &mut Schema) {
 
 #[cfg(test)]
 mod component_type_tests {
-    use default_test::DefaultTest;
     use schemars::schema_for;
-    use serde_json::json;
+    use std::str::FromStr;
 
     use crate::Component;
     use crate::ComponentTypeId;
-    use crate::DataType;
     use crate::Extension;
     use crate::ExtensionContainer;
     use crate::ExtensionTypeId;
@@ -497,209 +540,281 @@ mod component_type_tests {
     use crate::PropertyType;
     use crate::PropertyTypeContainer;
     use crate::PropertyTypes;
-    use crate::TypeDefinitionGetter;
+    use crate::RandomNamespacedType;
+    use crate::RandomNamespacedTypeId;
+    use crate::RandomNamespacedTypes;
     use crate::TypeDefinitionJsonSchemaGetter;
     use reactive_graph_utils_test::r_string;
 
     #[test]
     fn build_component() {
+        let description = r_string();
+        let ty = ComponentTypeId::random_type_id().unwrap();
         let component = Component::builder()
-            .ty(ComponentTypeId::new_from_type("x", "y"))
-            .description("d")
+            .ty(&ty)
+            .description(&description)
             .properties(Vec::new())
             .extensions(Vec::new())
             .build();
-        assert_eq!("x", component.namespace());
-        assert_eq!("y", component.type_name());
-        assert_eq!("d", component.description);
+        assert_eq!(ty.namespace(), component.namespace());
+        assert_eq!(ty.path(), component.path());
+        assert_eq!(ty.type_name(), component.type_name());
+        assert_eq!(description, component.description);
         assert_eq!(0, component.properties.len());
         assert_eq!(0, component.extensions.len());
     }
 
     #[test]
-    fn component_test() {
-        let namespace = r_string();
-        let component_name = r_string();
+    fn create_component() {
+        let ty = ComponentTypeId::random_type_id().unwrap();
         let description = r_string();
-        let property_name = r_string();
-        let properties = PropertyTypes::new_with_string_property(&property_name);
-        // let property_type = PropertyType::new(&property_name, DataType::String);
-        // property_types.push(property_type.clone());
-
-        let extension_namespace = r_string();
-        let extension_name = r_string();
-        let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
-        let extension_value = json!("extension_value");
-        let extension = Extension {
-            ty: extension_ty.clone(),
-            description: r_string(),
-            extension: extension_value.clone(),
-        };
-        let other_extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
-        let other_extension = Extension::new(&other_extension_ty, r_string(), extension_value.clone());
-
-        let extensions = Extensions::new().extension(extension).extension(other_extension);
-
-        let ty = ComponentTypeId::new_from_type(&namespace, &component_name);
-        let component = Component {
-            ty,
-            description: description.clone(),
-            properties,
-            extensions,
-        };
-
-        assert_eq!(namespace, component.namespace());
-        assert_eq!(component_name, component.type_name());
-        assert_eq!(format!("c__{}__{}", &namespace, &component_name), component.type_definition().to_string());
+        let properties = PropertyTypes::random_types_no_extensions();
+        let extensions = Extensions::random_types(1..10).unwrap();
+        let component = Component::new(&ty, &description, properties.clone(), extensions.clone());
+        assert_eq!(ty.namespace(), component.namespace());
+        assert_eq!(ty.path(), component.path());
+        assert_eq!(ty.type_name(), component.type_name());
         assert_eq!(description, component.description);
-        assert!(component.has_own_extension(&extension_ty));
-        assert_eq!(extension_value, component.get_own_extension(&extension_ty).unwrap().extension);
-        let non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
-        assert!(!component.has_own_extension(&non_existing_extension));
-
-        let component_2 = component.clone();
-        assert_eq!(component_2.type_name(), component.type_name());
-    }
-
-    #[test]
-    fn create_new_component_test() {
-        let namespace = r_string();
-        let component_name = r_string();
-        let description = r_string();
-        let mut property_types = Vec::new();
-        let property_name = r_string();
-        let property_type = PropertyType::new(property_name.clone(), DataType::String);
-        property_types.push(property_type.clone());
-
-        let mut extensions = Vec::new();
-        let extension_namespace = r_string();
-        let extension_name = r_string();
-        let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
-        let extension_value = json!("extension_value");
-        let extension = Extension {
-            ty: extension_ty.clone(),
-            description: r_string(),
-            extension: extension_value.clone(),
-        };
-        extensions.push(extension);
-        let other_extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
-        let other_extension = Extension::new(&other_extension_ty, r_string(), extension_value.clone());
-        extensions.push(other_extension);
-
-        let ty = ComponentTypeId::new_from_type(&namespace, &component_name);
-        let component = Component::new(ty, description.clone(), property_types.clone(), extensions);
-        assert_eq!(namespace, component.namespace());
-        assert_eq!(component_name, component.type_name());
-        assert!(component.has_own_property(&property_name));
-        assert_eq!(property_type, component.get_own_property(&property_name).unwrap());
-        // assert_eq!(property_name.clone(), component.properties.first().unwrap().name);
-        // assert_eq!(property_type.data_type, component.properties.first().unwrap().data_type);
-        assert!(!component.properties.iter().filter(|p| p.key() == &property_name).collect::<Vec<_>>().is_empty());
-        assert!(component.has_own_property(property_name.clone()));
+        assert_eq!(properties.len(), component.properties.len());
+        assert_eq!(extensions.len(), component.extensions.len());
         assert!(!component.has_own_property(r_string()));
+        assert!(!component.has_own_extension(&ExtensionTypeId::random_type_id().unwrap()));
     }
 
     #[test]
-    fn create_new_component_without_properties_test() {
-        let namespace = r_string();
-        let component_name = r_string();
-
-        let mut extensions = Vec::new();
-        let extension_namespace = r_string();
-        let extension_name = r_string();
-        let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
-        let extension_value = json!("extension_value");
-        let extension = Extension {
-            ty: extension_ty.clone(),
-            description: r_string(),
-            extension: extension_value.clone(),
-        };
-        extensions.push(extension);
-        let other_extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
-        let other_extension = Extension::new(&other_extension_ty, r_string(), extension_value.clone());
-        extensions.push(other_extension);
-
-        let ty = ComponentTypeId::new_from_type(&namespace, &component_name);
-        let component = Component::new_without_properties(ty, r_string(), extensions.clone());
-        assert_eq!(namespace, component.namespace());
-        assert_eq!(component_name, component.type_name());
-
-        assert!(component.extensions.contains_key(&extension_ty));
-        assert!(component.has_own_extension(&extension_ty));
-        assert_eq!(extension_value, component.get_own_extension(&extension_ty).unwrap().extension);
-
-        let non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
-        assert!(!component.extensions.contains_key(&non_existing_extension));
-        assert!(!component.has_own_extension(&non_existing_extension));
+    fn create_component_without_properties_test() {
+        let ty = ComponentTypeId::random_type_id().unwrap();
+        let description = r_string();
+        let extensions = Extensions::random_types(1..10).unwrap();
+        let component = Component::new_without_properties(&ty, &description, extensions.clone());
+        assert_eq!(ty.namespace(), component.namespace());
+        assert_eq!(ty.path(), component.path());
+        assert_eq!(ty.type_name(), component.type_name());
+        assert_eq!(description, component.description);
+        assert_eq!(0, component.properties.len());
+        assert_eq!(extensions.len(), component.extensions.len());
+        assert!(!component.has_own_property(r_string()));
+        assert!(!component.has_own_extension(&ExtensionTypeId::random_type_id().unwrap()));
     }
 
     #[test]
     fn create_component_without_extensions_test() {
-        let component_name = r_string();
-        let namespace = r_string();
-
-        let property_name = r_string();
-        let mut property_types = Vec::new();
-        let property_type = PropertyType::new(property_name.clone(), DataType::String);
-        property_types.push(property_type.clone());
-
-        let ty = ComponentTypeId::new_from_type(&namespace, &component_name);
-        let component = Component::new_without_extensions(ty, r_string(), property_types);
-        assert_eq!(namespace, component.namespace());
-        assert_eq!(component_name, component.type_name());
-        assert!(component.has_own_property(&property_name));
-        assert_eq!(property_type, component.get_own_property(&property_name).unwrap());
-        // assert_eq!(property_name.clone(), component.properties.first().unwrap().name);
-        // assert_eq!(property_type.data_type, component.properties.first().unwrap().data_type);
-        assert!(!component.properties.iter().filter(|p| p.key() == &property_name).collect::<Vec<_>>().is_empty());
+        let ty = ComponentTypeId::random_type_id().unwrap();
+        let description = r_string();
+        let properties = PropertyTypes::random_types_no_extensions();
+        let component = Component::new_without_extensions(&ty, &description, properties.clone());
+        assert_eq!(ty.namespace(), component.namespace());
+        assert_eq!(ty.path(), component.path());
+        assert_eq!(ty.type_name(), component.type_name());
+        assert_eq!(description, component.description);
+        assert_eq!(properties.len(), component.properties.len());
+        assert_eq!(0, component.extensions.len());
+        assert!(!component.has_own_property(r_string()));
+        assert!(!component.has_own_extension(&ExtensionTypeId::random_type_id().unwrap()));
     }
 
     #[test]
     fn component_has_property_test() {
-        let namespace = r_string();
-        let component_name = r_string();
-        let mut property_types = Vec::new();
         let property_name = r_string();
-        let property_type = PropertyType::new(property_name.clone(), DataType::String);
-        property_types.push(property_type.clone());
-        let ty = ComponentTypeId::new_from_type(&namespace, &component_name);
-        let component = Component::new(ty, r_string(), property_types.clone(), Vec::new());
+        let properties = PropertyTypes::new().property(PropertyType::string(&property_name));
+        let component = Component::builder()
+            .ty(ComponentTypeId::random_type_id().unwrap())
+            .properties(properties)
+            .build();
+        assert_eq!(1, component.properties.len());
         assert!(component.has_own_property(property_name));
         assert!(!component.has_own_property(r_string()));
     }
 
     #[test]
-    fn component_type_ser_test() {
-        let ty = ComponentTypeId::new_from_type("cnc", "ctc");
-        let c = Component::new(ty, "d", Vec::new(), Vec::new());
-        println!("{}", serde_json::to_string_pretty(&c).expect("Failed to serialize component"));
+    fn component_has_extension_test() {
+        let extension = Extension::random_type().unwrap();
+        let extensions = Extensions::new().extension(extension.clone());
+        let component = Component::builder()
+            .ty(ComponentTypeId::random_type_id().unwrap())
+            .extensions(extensions)
+            .build();
+        assert_eq!(1, component.extensions.len());
+        assert!(component.has_own_extension(&extension.ty));
+        assert!(!component.has_own_extension(&ExtensionTypeId::random_type_id().unwrap()));
     }
 
     #[test]
-    fn component_ser_test() {
-        // TODO: rename "type_name" to "name"
-        // https://github.com/serde-rs/serde/pull/2160
-        // https://github.com/serde-rs/serde/issues/1504)
-        let s = r#"{
-  "namespace": "abc",
-  "type_name": "def",
-  "description": "d",
-  "properties": [
-    {
-      "name": "property_name",
-      "data_type": "string",
-      "socket_type": "input"
-    }
-  ],
-  "extensions": []
-}"#;
-        let component: Component = serde_json::from_str(s).unwrap();
-        assert_eq!("abc", component.namespace());
-        assert_eq!("def", component.type_name());
-        assert_eq!("c__abc__def", component.ty.to_string());
+    fn component_type_deserialize_fully_valid_test() {
+        let component_ty = ComponentTypeId::from_str("fully::qualified::namespace::Component").unwrap();
+        let extension_ty = ExtensionTypeId::from_str("fully::qualified::namespace::Extension").unwrap();
+        let component = serde_json::from_str::<Component>(
+            r#"{
+          "type": "fully::qualified::namespace::Component",
+          "description": "d",
+          "properties": [
+                {
+                  "name": "property_name",
+                  "data_type": "string",
+                  "socket_type": "input"
+                }
+          ],
+          "extensions": [
+                {
+                  "type": "fully::qualified::namespace::Extension",
+                  "extension": ""
+                }
+          ]
+        }"#,
+        )
+        .expect("Failed to deserialize component");
+        assert_eq!(component_ty, component.ty);
         assert_eq!("d", component.description);
         assert_eq!(1, component.properties.len());
-        assert_eq!(0, component.extensions.len());
+        assert!(component.get_own_property("property_name").is_some());
+        assert_eq!(1, component.extensions.len());
+        assert!(component.get_own_extension(&extension_ty).is_some());
+    }
+
+    #[test]
+    fn component_type_deserialize_description_optional_test() {
+        assert!(
+            serde_json::from_str::<Component>(
+                r#"{
+          "type": "fully::qualified::namespace::Type",
+          "properties": [],
+          "extensions": []
+        }"#
+            )
+            .expect("Failed to deserialize component")
+            .description
+            .is_empty()
+        );
+    }
+
+    #[test]
+    fn component_type_deserialize_properties_optional_test() {
+        assert_eq!(
+            0,
+            serde_json::from_str::<Component>(
+                r#"{
+          "type": "fully::qualified::namespace::Type",
+          "description": "d",
+          "extensions": []
+        }"#
+            )
+            .expect("Failed to deserialize component")
+            .properties
+            .len()
+        );
+    }
+
+    #[test]
+    fn component_type_deserialize_invalid_property_test() {
+        assert!(
+            serde_json::from_str::<Component>(
+                r#"{
+          "type": "fully::qualified::namespace::Type",
+          "description": "d",
+          "properties": [
+                {
+                  "name": "property_name",
+                  "data_type": "strng",
+                  "socket_type": "put"
+                }
+          ],
+          "extensions": []
+        }"#
+            )
+            .inspect_err(|e| println!("{}", e))
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn component_type_deserialize_extensions_optional_test() {
+        assert_eq!(
+            0,
+            serde_json::from_str::<Component>(
+                r#"{
+          "type": "fully::qualified::namespace::Type",
+          "description": "d",
+          "properties": []
+        }"#
+            )
+            .expect("Failed to deserialize component")
+            .extensions
+            .len()
+        );
+    }
+
+    #[test]
+    fn component_type_deserialize_invalid_extension_test() {
+        assert!(
+            serde_json::from_str::<Component>(
+                r#"{
+          "type": "fully::qualified::namespace::Type",
+          "description": "d",
+          "properties": [],
+          "extensions": [
+                {
+                  "type": "InvalidTypeName::namespace",
+                  "extension": ""
+                }
+          ]
+        }"#
+            )
+            .inspect_err(|e| println!("{}", e))
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn component_type_deserialize_invalid_namespace_test() {
+        assert!(
+            serde_json::from_str::<Component>(
+                r#"{
+          "type": "invalid::namespace",
+          "description": "d",
+          "properties": [],
+          "extensions": []
+        }"#
+            )
+            .inspect_err(|e| println!("{}", e))
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn component_type_deserialize_invalid_type_test() {
+        assert!(
+            serde_json::from_str::<Component>(
+                r#"{
+          "type": "InvalidTypeName",
+          "description": "d",
+          "properties": [],
+          "extensions": []
+        }"#
+            )
+            .inspect_err(|e| println!("{}", e))
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn component_type_deserialize_missing_type_test() {
+        assert!(
+            serde_json::from_str::<Component>(
+                r#"{
+          "description": "d",
+          "properties": [],
+          "extensions": []
+        }"#
+            )
+            .inspect_err(|e| println!("{}", e))
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn component_type_ser_test() {
+        let component = Component::random_type().unwrap();
+        println!("{}", serde_json::to_string_pretty(&component).expect("Failed to serialize component"));
     }
 
     #[test]
@@ -710,7 +825,7 @@ mod component_type_tests {
 
     #[test]
     fn component_dynamic_json_schema() {
-        let component = Component::default_test();
+        let component = Component::random_type().unwrap();
         let schema = component.json_schema();
         println!("{}", serde_json::to_string_pretty(schema.as_value()).unwrap());
     }

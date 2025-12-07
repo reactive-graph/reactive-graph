@@ -6,44 +6,22 @@ use std::sync::atomic::Ordering;
 use std::time::Instant;
 
 use async_graphql::dynamic::Schema;
-use async_graphql::dynamic::SchemaBuilder;
 use async_graphql::dynamic::SchemaError;
 use async_trait::async_trait;
 use log::debug;
 use log::error;
 use log::info;
 use log::trace;
+use reactive_graph_dynamic_graph_api::DynamicGraphSchemaBuilder;
+use reactive_graph_dynamic_graph_api::DynamicGraphSchemaManager;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_model_core::reactive_graph::core::event::EventProperties::EVENT;
+use reactive_graph_reactive_model_api::ReactivePropertyContainer;
+use reactive_graph_type_system_api::TypeSystemEventManager;
+use reactive_graph_type_system_api::TypeSystemEventTypes;
 use springtime_di::Component;
 use springtime_di::component_alias;
 use uuid::Uuid;
-
-use crate::interface::component::get_interfaces;
-use crate::object::entity::mutation::register_entity_type_mutation_objects;
-use crate::object::entity::query::register_entity_type_query_objects;
-use crate::object::flow::mutation::register_flow_type_mutation_objects;
-use crate::object::flow::query::register_flow_type_query_objects;
-use crate::object::relation::mutation::register_relation_type_mutation_objects;
-use crate::object::relation::query::register_relation_type_query_objects;
-use crate::root::get_mutation;
-use crate::root::get_query;
-use crate::scalar::get_scalars;
-use crate::union::get_unions;
-use reactive_graph_dynamic_graph_api::DynamicGraphSchemaManager;
-use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
-use reactive_graph_graph::PropertyTypeDefinition;
-use reactive_graph_lifecycle::Lifecycle;
-use reactive_graph_reactive_model_api::ReactivePropertyContainer;
-use reactive_graph_reactive_service_api::ReactiveEntityManager;
-use reactive_graph_reactive_service_api::ReactiveFlowManager;
-use reactive_graph_reactive_service_api::ReactiveRelationManager;
-use reactive_graph_runtime_model::EventProperties::EVENT;
-use reactive_graph_type_system_api::ComponentManager;
-use reactive_graph_type_system_api::EntityTypeManager;
-use reactive_graph_type_system_api::FlowTypeManager;
-use reactive_graph_type_system_api::NamespaceManager;
-use reactive_graph_type_system_api::RelationTypeManager;
-use reactive_graph_type_system_api::TypeSystemEventManager;
-use reactive_graph_type_system_api::TypeSystemEventTypes;
 
 static UUID_TYPE_SYSTEM_CHANGED_EVENT: Uuid = Uuid::from_u128(0x6ba7b8109e1511d150b900c04fe530c7);
 
@@ -57,23 +35,9 @@ fn create_dynamic_schema_modified() -> Arc<AtomicBool> {
 
 #[derive(Component)]
 pub struct DynamicGraphSchemaManagerImpl {
+    dynamic_graph_schema_builder: Arc<dyn DynamicGraphSchemaBuilder + Send + Sync>,
+
     type_system_event_manager: Arc<dyn TypeSystemEventManager + Send + Sync>,
-
-    component_manager: Arc<dyn ComponentManager + Send + Sync>,
-
-    entity_type_manager: Arc<dyn EntityTypeManager + Send + Sync>,
-
-    relation_type_manager: Arc<dyn RelationTypeManager + Send + Sync>,
-
-    flow_type_manager: Arc<dyn FlowTypeManager + Send + Sync>,
-
-    namespace_manager: Arc<dyn NamespaceManager + Send + Sync>,
-
-    reactive_entity_manager: Arc<dyn ReactiveEntityManager + Send + Sync>,
-
-    reactive_relation_manager: Arc<dyn ReactiveRelationManager + Send + Sync>,
-
-    reactive_flow_manager: Arc<dyn ReactiveFlowManager + Send + Sync>,
 
     #[component(default = "create_dynamic_schema")]
     dynamic_schema: Arc<RwLock<Option<Arc<Schema>>>>,
@@ -82,46 +46,15 @@ pub struct DynamicGraphSchemaManagerImpl {
     type_system_modified_state: Arc<AtomicBool>,
 }
 
-async fn build_dynamic_schema(context: SchemaBuilderContext, schema: SchemaBuilder) -> Result<Schema, SchemaError> {
-    let mut schema = get_scalars(schema);
-    schema = get_interfaces(schema, &context);
-    schema = get_unions(schema, &context);
-    schema = register_entity_type_query_objects(schema, &context);
-    schema = register_entity_type_mutation_objects(schema, &context);
-    schema = register_relation_type_query_objects(schema, &context);
-    schema = register_relation_type_mutation_objects(schema, &context);
-    schema = register_flow_type_query_objects(schema, &context);
-    schema = register_flow_type_mutation_objects(schema, &context);
-    schema = get_query(schema, &context);
-    schema = get_mutation(schema, &context);
-    schema.finish()
-}
-
-fn build_dynamic_schema_sync(context: SchemaBuilderContext, schema: SchemaBuilder) -> Result<Schema, SchemaError> {
-    let mut schema = get_scalars(schema);
-    schema = get_interfaces(schema, &context);
-    schema = get_unions(schema, &context);
-    schema = register_entity_type_query_objects(schema, &context);
-    schema = register_entity_type_mutation_objects(schema, &context);
-    schema = register_relation_type_query_objects(schema, &context);
-    schema = register_relation_type_mutation_objects(schema, &context);
-    schema = register_flow_type_query_objects(schema, &context);
-    schema = register_flow_type_mutation_objects(schema, &context);
-    schema = get_query(schema, &context);
-    schema = get_mutation(schema, &context);
-    schema.finish()
-}
-
 impl DynamicGraphSchemaManagerImpl {
     async fn generate_dynamic_schema(&self) {
-        let context = self.get_schema_builder_context();
-        let schema = self.get_schema_builder();
         let dynamic_schema_lock = self.dynamic_schema.clone();
         let type_system_modified_state = self.type_system_modified_state.clone();
+        let dynamic_graph_schema_builder = self.dynamic_graph_schema_builder.clone();
         tokio::spawn(async move {
             debug!("Start generating dynamic schema");
             let start = Instant::now();
-            match build_dynamic_schema(context, schema).await {
+            match dynamic_graph_schema_builder.build_dynamic_schema() {
                 Ok(dynamic_schema) => {
                     let mut guard = dynamic_schema_lock.write().unwrap();
                     *guard = Some(Arc::new(dynamic_schema));
@@ -144,39 +77,9 @@ impl DynamicGraphSchemaManager for DynamicGraphSchemaManagerImpl {
         self.type_system_modified_state.load(Ordering::Relaxed)
     }
 
-    fn get_schema_builder_context(&self) -> SchemaBuilderContext {
-        SchemaBuilderContext::new(
-            self.namespace_manager.clone(),
-            self.component_manager.clone(),
-            self.entity_type_manager.clone(),
-            self.relation_type_manager.clone(),
-            self.flow_type_manager.clone(),
-        )
-    }
-
-    fn get_schema_builder(&self) -> SchemaBuilder {
-        Schema::build("Query", Some("Mutation"), None)
-            .data(self.namespace_manager.clone())
-            .data(self.component_manager.clone())
-            .data(self.entity_type_manager.clone())
-            .data(self.relation_type_manager.clone())
-            .data(self.flow_type_manager.clone())
-            .data(self.reactive_entity_manager.clone())
-            .data(self.reactive_relation_manager.clone())
-            .data(self.reactive_flow_manager.clone())
-    }
-
-    async fn create_dynamic_schema(&self) -> Result<Schema, SchemaError> {
-        build_dynamic_schema(self.get_schema_builder_context(), self.get_schema_builder()).await
-    }
-
-    fn create_dynamic_schema_sync(&self) -> Result<Schema, SchemaError> {
-        build_dynamic_schema_sync(self.get_schema_builder_context(), self.get_schema_builder())
-    }
-
     async fn regenerate_dynamic_schema(&self) -> Result<(), SchemaError> {
         trace!("Regenerating dynamic schema");
-        match self.create_dynamic_schema().await {
+        match self.dynamic_graph_schema_builder.build_dynamic_schema() {
             Ok(dynamic_schema) => {
                 info!("Successfully regenerated dynamic schema");
                 trace!("{}", dynamic_schema.sdl());
@@ -228,7 +131,7 @@ impl Lifecycle for DynamicGraphSchemaManagerImpl {
         {
             let type_system_modified_state = self.type_system_modified_state.clone();
             event_type_system_changed.observe_with_handle(
-                &EVENT.property_name(),
+                EVENT.as_ref(),
                 move |v| {
                     if v.is_boolean() && v.as_bool().unwrap() {
                         // The type system has changed -> regenerate the dynamic schema
@@ -246,7 +149,7 @@ impl Lifecycle for DynamicGraphSchemaManagerImpl {
             .type_system_event_manager
             .get_type_system_event_instance(TypeSystemEventTypes::TypeSystemChanged)
         {
-            event_type_system_changed.remove_observer(&EVENT.property_name(), UUID_TYPE_SYSTEM_CHANGED_EVENT.as_u128());
+            event_type_system_changed.remove_observer(&EVENT.as_ref(), UUID_TYPE_SYSTEM_CHANGED_EVENT.as_u128());
         }
     }
 

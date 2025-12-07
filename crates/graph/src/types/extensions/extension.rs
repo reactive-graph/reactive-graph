@@ -1,3 +1,4 @@
+use serde_json::json;
 use std::cmp::Ordering;
 use std::hash::Hash;
 use std::hash::Hasher;
@@ -6,51 +7,82 @@ use std::ops::DerefMut;
 
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
 use schemars::json_schema;
+use schemars::schema_for;
 use serde::Deserialize;
 use serde::Deserializer;
 use serde::Serialize;
 use serde::Serializer;
 use serde_json::Value;
-#[cfg(any(test, feature = "test"))]
-use serde_json::json;
 use std::borrow::Cow;
 use typed_builder::TypedBuilder;
 
 use crate::AddExtensionError;
+use crate::EntityType;
+use crate::EntityTypeId;
 use crate::ExtensionContainer;
+use crate::ExtensionJsonSchemaError;
 use crate::ExtensionTypeId;
 use crate::ExtensionTypeIds;
+use crate::JsonSchemaIdGetter;
+use crate::Namespace;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
 use crate::NamespacedTypeContainer;
 use crate::NamespacedTypeGetter;
 use crate::RemoveExtensionError;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
+use crate::TypeDescriptionGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
+use schemars::consts::meta_schemas::DRAFT2020_12;
+
+#[cfg(any(test, feature = "test"))]
+use crate::NamespacedTypeError;
+#[cfg(any(test, feature = "test"))]
+use crate::PropertyInstances;
+#[cfg(any(test, feature = "test"))]
+use crate::PropertyTypes;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedType;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypeId;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_utils_test::DefaultFrom;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
+#[cfg(any(test, feature = "table"))]
+use tabled::Tabled;
 
 /// Extension on a type. The extension allows to extend information
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[cfg_attr(any(test, feature = "table"), derive(Tabled))]
 pub struct Extension {
-    /// The type definition contains the namespace and the type name.
-    #[serde(flatten)]
+    /// The fully qualified namespace of the extension.
+    #[serde(rename = "type")]
     #[schemars(required)]
+    #[builder(setter(into))]
+    #[cfg_attr(any(test, feature = "table"), tabled(rename = "Type", inline))]
     pub ty: ExtensionTypeId,
+
+    /// The fully qualified namespace of the entity type which is the type constraint of the extension.
+    #[serde(rename = "entity_type")]
+    #[builder(default, setter(into))]
+    #[cfg_attr(any(test, feature = "table"), tabled(rename = "EntityType", inline))]
+    pub entity_ty: Option<EntityTypeId>,
 
     /// Textual description of the extension.
     #[serde(default = "String::new")]
+    #[builder(default, setter(into))]
+    #[cfg_attr(any(test, feature = "table"), tabled(rename = "Description"))]
     pub description: String,
 
     /// The extension as JSON representation.
+    #[cfg_attr(any(test, feature = "table"), tabled(skip))]
     pub extension: Value,
 }
 
@@ -59,26 +91,84 @@ impl Extension {
     pub fn new<T: Into<ExtensionTypeId>, S: Into<String>>(ty: T, description: S, extension: Value) -> Extension {
         Extension {
             ty: ty.into(),
+            entity_ty: None,
             description: description.into(),
             extension,
         }
     }
 
-    pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S, description: S, extension: Value) -> Extension {
+    /// Constructs an extension from the given namespaced type with the given description, components, properties and extensions.
+    pub fn new_with_type_constraint<T: Into<ExtensionTypeId>, ET: Into<EntityTypeId>, S: Into<String>>(
+        ty: T,
+        entity_ty: ET,
+        description: S,
+        extension: Value,
+    ) -> Extension {
         Extension {
-            ty: ExtensionTypeId::new_from_type(namespace, type_name),
+            ty: ty.into(),
+            entity_ty: Some(entity_ty.into()),
             description: description.into(),
             extension,
         }
+    }
+
+    pub fn json_schema(&self, entity_type: &EntityType) -> Result<Schema, ExtensionJsonSchemaError> {
+        let Some(entity_ty) = &self.entity_ty else {
+            return Err(ExtensionJsonSchemaError::NoSchemaEntityType(self.ty.clone()));
+        };
+        if &entity_type.ty != entity_ty {
+            return Err(ExtensionJsonSchemaError::SchemaEntityTypeDoesNotMatch(
+                self.ty.clone(),
+                entity_ty.clone(),
+                entity_type.ty.clone(),
+            ));
+        }
+
+        let mut schema = schema_for!(Extension);
+        let Some(json_schema) = schema.as_object_mut() else {
+            return Err(ExtensionJsonSchemaError::SchemaModificationError);
+        };
+
+        json_schema.insert("$id".to_string(), self.json_schema_id().into());
+
+        let Some(extension_properties) = json_schema.get_mut("properties").and_then(|p| p.as_object_mut()) else {
+            return Err(ExtensionJsonSchemaError::SchemaModificationError);
+        };
+
+        let mut entity_type_properties = entity_type.properties.as_json_schema_properties();
+        entity_type_properties.insert("$id".to_string(), self.json_schema_id_property());
+        let mut required = entity_type.properties.names();
+        required.sort();
+        extension_properties.insert(
+            "extension".to_string(),
+            json!({
+                "$schema": DRAFT2020_12,
+                "$id": entity_type.json_schema_id(),
+                "type": "object",
+                "title": entity_type.type_name(),
+                "description": entity_type.description(),
+                "properties": entity_type_properties,
+                "required": required,
+            }),
+        );
+        Ok(schema)
     }
 }
 
 impl NamespacedTypeGetter for Extension {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -87,15 +177,27 @@ impl TypeDefinitionGetter for Extension {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
     }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::Extension
+    }
+}
+
+impl TypeDescriptionGetter for Extension {
+    fn description(&self) -> String {
+        self.description.clone()
+    }
 }
 
 impl From<&Extension> for TypeDefinition {
     fn from(extension: &Extension) -> Self {
-        TypeDefinition {
-            type_id_type: TypeIdType::Extension,
-            namespace: extension.namespace(),
-            type_name: extension.type_name(),
-        }
+        extension.type_definition()
+    }
+}
+
+impl AsRef<ExtensionTypeId> for Extension {
+    fn as_ref(&self) -> &ExtensionTypeId {
+        &self.ty
     }
 }
 
@@ -131,27 +233,20 @@ impl Hash for Extension {
 pub struct Extensions(DashMap<ExtensionTypeId, Extension>);
 
 impl Extensions {
+    #[inline]
     pub fn new() -> Self {
-        Extensions(DashMap::new())
+        NamespacedTypeContainer::new()
+    }
+
+    #[inline]
+    pub fn push<E: Into<Extension>>(&self, extension: E) -> Option<Extension> {
+        NamespacedTypeContainer::push(self, extension)
     }
 
     pub fn extension<E: Into<Extension>>(self, extension: E) -> Self {
         self.push(extension);
         self
     }
-
-    // pub fn push<E: Into<Extension>>(&self, extension: E) {
-    //     let extension = extension.into();
-    //     self.0.insert(extension.ty.clone(), extension);
-    // }
-    //
-    // // TODO: Impl templated free function
-    // // TODO: Rename to values() ?
-    // pub fn to_vec(&self) -> Vec<Extension> {
-    //     let mut extensions: Vec<Extension> = self.0.iter().map(|extension| extension.value().clone()).collect();
-    //     extensions.sort();
-    //     extensions
-    // }
 }
 
 impl ExtensionContainer for Extensions {
@@ -203,21 +298,16 @@ impl ExtensionContainer for Extensions {
             }
         }
     }
+
+    fn get_own_extensions_cloned(&self) -> Extensions {
+        self.clone()
+    }
 }
 
 impl NamespacedTypeContainer for Extensions {
     type TypeId = ExtensionTypeId;
     type TypeIds = ExtensionTypeIds;
     type Type = Extension;
-
-    fn new() -> Self {
-        Self(DashMap::new())
-    }
-
-    fn push<E: Into<Extension>>(&self, extension: E) {
-        let extension = extension.into();
-        self.insert(extension.ty.clone(), extension);
-    }
 }
 
 impl Deref for Extensions {
@@ -311,7 +401,32 @@ impl From<Vec<Extension>> for Extensions {
 
 impl From<Extensions> for Vec<Extension> {
     fn from(extensions: Extensions) -> Self {
-        extensions.into_iter().map(|(_, extension)| extension).collect()
+        extensions.to_vec()
+        // extensions.into_iter().map(|(_, extension)| extension).collect()
+    }
+}
+
+impl From<&Extensions> for Vec<Extension> {
+    fn from(extensions: &Extensions) -> Self {
+        extensions.0.iter().map(|extension| extension.clone()).collect()
+    }
+}
+
+impl From<DashMap<ExtensionTypeId, Extension>> for Extensions {
+    fn from(extensions: DashMap<ExtensionTypeId, Extension>) -> Self {
+        Self(extensions)
+    }
+}
+
+impl From<&DashMap<ExtensionTypeId, Extension>> for Extensions {
+    fn from(extensions: &DashMap<ExtensionTypeId, Extension>) -> Self {
+        Self(extensions.clone())
+    }
+}
+
+impl From<Extensions> for DashMap<ExtensionTypeId, Extension> {
+    fn from(extensions: Extensions) -> Self {
+        extensions.0
     }
 }
 
@@ -326,37 +441,147 @@ impl FromIterator<Extension> for Extensions {
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for Extension {
-    fn default_test() -> Self {
-        Extension::builder()
-            .ty(ExtensionTypeId::generate_random())
-            .description(r_string())
-            .extension(json!(r_string()))
-            .build()
-    }
-}
+impl RandomNamespacedType for Extension {
+    type Error = NamespacedTypeError;
+    type TypeId = ExtensionTypeId;
 
-#[cfg(any(test, feature = "test"))]
-impl DefaultTest for Extensions {
-    fn default_test() -> Self {
-        let extensions = Extensions::new();
-        let mut rng = rand::rng();
-        for _ in 0..rng.random_range(0..10) {
-            extensions.push(Extension::default_test());
-        }
-        extensions
+    fn random_type() -> Result<Self, NamespacedTypeError> {
+        Self::random_type_with_id(&ExtensionTypeId::random_type_id()?)
+    }
+
+    fn random_type_with_id(ty: &Self::TypeId) -> Result<Self, Self::Error> {
+        let entity_ty = if rand::random_bool(0.2) {
+            Some(EntityTypeId::random_type_id()?)
+        } else {
+            None
+        };
+        let extension = match &entity_ty {
+            None => json!(r_string()),
+            Some(entity_ty) => {
+                let property_types = PropertyTypes::random_types_no_extensions();
+                let property_instances = PropertyInstances::default_from(&property_types).property("$id", entity_ty.json_schema_id());
+                json!(property_instances)
+            }
+        };
+        Ok(Extension::builder()
+            .ty(ty)
+            .entity_ty(entity_ty)
+            .description(r_string())
+            .extension(extension)
+            .build())
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use schemars::schema_for;
-
+    use crate::EntityInstance;
+    use crate::EntityType;
+    use crate::EntityTypeId;
     use crate::Extension;
+    use crate::ExtensionTypeId;
+    use crate::NamespacedTypeGetter;
+    use crate::RandomNamespacedType;
+    use crate::RandomNamespacedTypeId;
+    use reactive_graph_utils_test::DefaultTryFrom;
+    use reactive_graph_utils_test::r_string;
+    use schemars::schema_for;
+    use serde_json::json;
+
+    #[test]
+    fn build_extension_without_entity_type() {
+        let description = r_string();
+        let ty = ExtensionTypeId::random_type_id().unwrap();
+        let extension = Extension::builder()
+            .ty(&ty)
+            .description(&description)
+            .extension(json!({
+                "hello": "World"
+            }))
+            .build();
+        assert_eq!(ty.namespace(), extension.namespace());
+        assert_eq!(ty.path(), extension.path());
+        assert_eq!(ty.type_name(), extension.type_name());
+        assert_eq!(description, extension.description);
+        assert_eq!(None, extension.entity_ty);
+    }
+
+    #[test]
+    fn build_extension_with_entity_type() {
+        let description = r_string();
+        let ty = ExtensionTypeId::random_type_id().unwrap();
+        let entity_type = EntityType::random_type().unwrap();
+        let extension_payload = EntityInstance::default_try_from(&entity_type).unwrap();
+        let extension_value = serde_json::to_value(&extension_payload).unwrap();
+        let extension = Extension::builder()
+            .ty(&ty)
+            .description(&description)
+            .entity_ty(Some(entity_type.ty.clone()))
+            .extension(extension_value.clone())
+            .build();
+        assert_eq!(ty.namespace(), extension.namespace());
+        assert_eq!(ty.path(), extension.path());
+        assert_eq!(ty.type_name(), extension.type_name());
+        assert_eq!(description, extension.description);
+        assert_eq!(Some(entity_type.ty), extension.entity_ty);
+        assert_eq!(extension_value, extension.extension);
+        assert_eq!(extension_payload, serde_json::from_value::<EntityInstance>(extension.extension).unwrap());
+    }
+
+    #[test]
+    fn create_extension() {
+        let ty = ExtensionTypeId::random_type_id().unwrap();
+        let description = r_string();
+        let json = json!({
+            "hello": "World"
+        });
+        let extension = Extension::new(&ty, &description, json.clone());
+        assert_eq!(ty.namespace(), extension.namespace());
+        assert_eq!(ty.path(), extension.path());
+        assert_eq!(ty.type_name(), extension.type_name());
+        assert_eq!(None, extension.entity_ty);
+        assert_eq!(description, extension.description);
+        assert_eq!(json, extension.extension);
+    }
+
+    #[test]
+    fn create_extension_with_type_constraint() {
+        let ty = ExtensionTypeId::random_type_id().unwrap();
+        let entity_ty = EntityTypeId::random_type_id().unwrap();
+        let description = r_string();
+        let json = json!({
+            "hello": "World"
+        });
+        let extension = Extension::new_with_type_constraint(&ty, &entity_ty, &description, json.clone());
+        assert_eq!(ty.namespace(), extension.namespace());
+        assert_eq!(ty.path(), extension.path());
+        assert_eq!(ty.type_name(), extension.type_name());
+        assert_eq!(Some(entity_ty), extension.entity_ty);
+        assert_eq!(description, extension.description);
+        assert_eq!(json, extension.extension);
+    }
 
     #[test]
     fn extension_json_schema() {
         let schema = schema_for!(Extension);
         println!("{}", serde_json::to_string_pretty(&schema).unwrap());
+    }
+
+    #[test]
+    fn extension_dynamic_json_schema() {
+        let description = r_string();
+        let ty = ExtensionTypeId::random_type_id().unwrap();
+        let entity_type = EntityType::random_type().unwrap();
+        let extension_payload = EntityInstance::default_try_from(&entity_type).unwrap();
+        let extension_value = serde_json::to_value(&extension_payload).unwrap();
+        let extension = Extension::builder()
+            .ty(&ty)
+            .description(&description)
+            .entity_ty(Some(entity_type.ty.clone()))
+            .extension(extension_value.clone())
+            .build();
+        let schema = extension
+            .json_schema(&entity_type)
+            .expect("Failed to generate dynamic json schema for extension!");
+        println!("{}", serde_json::to_string_pretty(schema.as_value()).unwrap());
     }
 }

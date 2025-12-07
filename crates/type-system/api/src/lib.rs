@@ -1,27 +1,25 @@
 pub use component_import_export_manager::*;
 pub use component_manager::*;
-pub use component_provider_registry::*;
 pub use component_serialization_manager::*;
 pub use entity_type_import_export_manager::*;
 pub use entity_type_manager::*;
-pub use entity_type_provider_registry::*;
 pub use error::component::*;
 pub use error::entity::*;
 pub use error::flow::*;
+pub use error::namespace::*;
 pub use error::relation::*;
 pub use flow_type_import_export_manager::*;
 pub use flow_type_manager::*;
-pub use flow_type_provider_registry::*;
-pub use namespace_manager::*;
+pub use namespace_tree_manager::*;
+pub use namespaced_type_manager::*;
 pub use relation_type_import_export_manager::*;
 pub use relation_type_manager::*;
-pub use relation_type_provider_registry::*;
-pub use runtime_types_provider::*;
-pub use type_provider::*;
-pub use type_system::*;
 pub use type_system_event_manager::*;
 pub use type_system_event_subscriber::*;
 pub use type_system_events::*;
+pub use type_system_provider_registry::*;
+pub use type_system_system::*;
+pub use type_system_type_system_registrator::*;
 
 #[cfg(feature = "json5")]
 pub use json5;
@@ -36,27 +34,24 @@ pub use springtime_di::injectable;
 pub use springtime_di::instance_provider::ComponentInstancePtr;
 pub use springtime_di::instance_provider::ErrorPtr;
 
-#[cfg(feature = "derive")]
-pub use reactive_graph_type_system_derive::TypeProvider;
+// #[cfg(feature = "derive")]
+// pub use reactive_graph_type_system_derive::TypeProvider;
 
 pub mod component_import_export_manager;
 pub mod component_manager;
-pub mod component_provider_registry;
 pub mod component_serialization_manager;
 pub mod entity_type_import_export_manager;
 pub mod entity_type_manager;
-pub mod entity_type_provider_registry;
 pub mod error;
 pub mod flow_type_import_export_manager;
 pub mod flow_type_manager;
-pub mod flow_type_provider_registry;
-pub mod namespace_manager;
+pub mod namespace_tree_manager;
+pub mod namespaced_type_manager;
 pub mod relation_type_import_export_manager;
 pub mod relation_type_manager;
-pub mod relation_type_provider_registry;
-pub mod runtime_types_provider;
-pub mod type_provider;
-pub mod type_system;
 pub mod type_system_event_manager;
 pub mod type_system_event_subscriber;
 pub mod type_system_events;
+pub mod type_system_provider_registry;
+pub mod type_system_system;
+pub mod type_system_type_system_registrator;

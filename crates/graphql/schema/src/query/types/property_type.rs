@@ -1,10 +1,12 @@
 use async_graphql::Object;
+use async_graphql::Result;
 
+use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::PropertyType;
 
-use crate::mutation::ExtensionTypeIdDefinition;
 use crate::query::GraphQLDataType;
 use crate::query::GraphQLExtension;
+use crate::query::GraphQLExtensions;
 use crate::query::GraphQLMutability;
 use crate::query::GraphQLSocketType;
 
@@ -13,9 +15,9 @@ pub struct GraphQLPropertyType {
     property_type: PropertyType,
 }
 
-/// Property types defines the type of a property instance.
+/// Property types defines the type of property instance.
 /// The property type defines the name, the data type and
-/// the socket type of a property. A property type does not
+/// the socket type of property. A property type does not
 /// contain any value.
 #[Object(name = "PropertyType")]
 impl GraphQLPropertyType {
@@ -44,31 +46,24 @@ impl GraphQLPropertyType {
         self.property_type.mutability.into()
     }
 
-    /// The extensions which are defined by the entity type.
+    /// The extensions which are defined by the property type.
     async fn extensions(
         &self,
-        #[graphql(name = "type")] extension_ty: Option<ExtensionTypeIdDefinition>,
+        #[graphql(name = "name")] namespace: Option<String>,
         #[graphql(desc = "If true, the extensions are sorted by type")] sort: Option<bool>,
-    ) -> Vec<GraphQLExtension> {
-        match extension_ty {
-            Some(extension_ty) => {
-                let extension_ty = extension_ty.into();
-                return self
-                    .property_type
-                    .extensions
-                    .iter()
-                    .filter(|extension| extension.ty == extension_ty)
-                    .map(|extension| extension.value().into())
-                    .collect();
-            }
-            None => {
-                let mut extensions: Vec<GraphQLExtension> = self.property_type.extensions.iter().map(|extension| extension.value().into()).collect();
-                if sort.unwrap_or_default() {
-                    extensions.sort();
-                }
-                extensions
-            }
-        }
+    ) -> Result<Vec<GraphQLExtension>> {
+        let ty = ExtensionTypeId::parse_optional_namespace(namespace)?;
+        let extensions: GraphQLExtensions = self
+            .property_type
+            .extensions
+            .iter()
+            .filter(|extension| match &ty {
+                Some(ty) => &extension.ty == ty,
+                None => true,
+            })
+            .map(|extension| extension.value().clone())
+            .collect();
+        Ok(if sort.unwrap_or_default() { extensions.sorted() } else { extensions.into() })
     }
 }
 

@@ -1,17 +1,14 @@
 #[cynic::schema_for_derives(file = r#"../../schema/graphql/reactive-graph-schema.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod variables {
     use cynic::QueryVariables;
-    use typed_builder::TypedBuilder;
 
     use reactive_graph_graph::ComponentContainerGetter;
     use reactive_graph_graph::NamespacedTypeGetter;
 
-    #[derive(QueryVariables, Debug, TypedBuilder)]
+    #[derive(QueryVariables, Debug)]
     pub struct ComponentContainerVariables {
-        pub namespace: String,
-        pub name: String,
-        pub component_namespace: String,
-        pub component_name: String,
+        pub _type: String,
+        pub component_type: String,
     }
 
     impl<CTY> From<CTY> for ComponentContainerVariables
@@ -21,12 +18,10 @@ pub mod variables {
         fn from(ty: CTY) -> Self {
             let container_ty = ty.container_ty();
             let component_ty = ty.component_ty();
-            Self::builder()
-                .namespace(container_ty.namespace())
-                .name(container_ty.type_name())
-                .component_namespace(component_ty.namespace())
-                .component_name(component_ty.type_name())
-                .build()
+            ComponentContainerVariables {
+                _type: container_ty.namespace().to_string(),
+                component_type: component_ty.namespace().to_string(),
+            }
         }
     }
 }

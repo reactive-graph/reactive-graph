@@ -1,0 +1,23 @@
+{
+  "$id": "https://schema.reactive-graph.io/schema/json/entity-type.schema.json",
+  "type": "reactive_graph::flow::SimpleFlow",
+  "description": "A simple generic flow with a single input and a single output",
+  "components": [
+  ],
+  "properties": [
+    {
+      "name": "input",
+      "description": "Flow input",
+      "socket_type": "input",
+      "data_type": "object"
+    },
+    {
+      "name": "output",
+      "description": "Flow output",
+      "socket_type": "output",
+      "data_type": "object"
+    }
+  ],
+  "extensions": [
+  ]
+}

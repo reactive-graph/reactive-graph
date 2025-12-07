@@ -16,14 +16,16 @@ serde_json = { workspace = true }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 tokio = { workspace = true }
 
+reactive-graph-command-model = { version = "0.10.0", path = "../../../command/model" }
 reactive-graph-graph = { version = "0.10.0", path = "../../../graph" }
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
-reactive-graph-runtime-service-api = { version = "0.10.0", path = "../api" }
-reactive-graph-command-model = { version = "0.10.0", path = "../../../command/model" }
-reactive-graph-runtime-model = { version = "0.10.0", path = "../../../runtime/model" }
 reactive-graph-reactive-model-api = { version = "0.10.0", path = "../../../reactive/model/api" }
 reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../../reactive/model/impl" }
 reactive-graph-reactive-service-api = { version = "0.10.0", path = "../../../reactive/service/api" }
+# reactive-graph-runtime-types = { version = "0.10.0", path = "../../type-provider" }
+reactive-graph-runtime-service-api = { version = "0.10.0", path = "../api" }
+reactive-graph-type-system-api = { version = "0.10.0", path = "../../../type-system/api" }
+reactive-graph-runtime-model = { version = "0.10.0", path = "../../model" }
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }

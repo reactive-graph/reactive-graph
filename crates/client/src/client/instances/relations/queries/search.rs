@@ -15,7 +15,7 @@ pub mod queries {
     #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Instances", variables = "SearchRelationInstancesVariables")]
     pub struct SearchRelationInstancesInstances {
-        #[arguments(outboundId: $outbound_id, type: $ty, inboundId: $inbound_id, properties: $properties, components: $components
+        #[arguments(outboundId: $outbound_id, type: $_type, inboundId: $inbound_id, properties: $properties, components: $components
         )]
         pub relations: Vec<RelationInstance>,
     }

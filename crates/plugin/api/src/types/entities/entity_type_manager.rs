@@ -13,6 +13,7 @@ use reactive_graph_graph::EntityTypes;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::Extensions;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypes;
 use reactive_graph_type_system_api::EntityTypeCreationError;
@@ -22,28 +23,22 @@ pub trait EntityTypeManager: Send + Sync {
     fn get_all(&self) -> EntityTypes;
 
     /// Returns all entity types of the given namespace.
-    fn get_by_namespace(&self, namespace: &str) -> EntityTypes;
+    fn get_by_namespace(&self, namespace: &Namespace) -> EntityTypes;
 
     /// Returns true, if a entity type with the given name exists.
     fn has(&self, ty: &EntityTypeId) -> bool;
 
-    /// Returns true, if a entity type with the given fully qualified name exists.
-    fn has_by_type(&self, namespace: &str, name: &str) -> bool;
-
     /// Returns the entity type with the given name or empty.
     fn get(&self, ty: &EntityTypeId) -> Option<EntityType>;
 
-    /// Returns the entity type with the given fully qualified name or empty.
-    fn get_by_type(&self, namespace: &str, name: &str) -> Option<EntityType>;
-
     /// Returns all entity types whose names matches the given search string.
-    fn find_by_type_name(&self, search: &str) -> EntityTypes;
+    fn find(&self, search: &str) -> EntityTypes;
 
     /// Returns the count of entity types.
     fn count(&self) -> usize;
 
     /// Returns the count of entity types of the given namespace.
-    fn count_by_namespace(&self, namespace: &str) -> usize;
+    fn count_by_namespace(&self, namespace: &Namespace) -> usize;
 
     /// Creates a new entity type.
     fn create(

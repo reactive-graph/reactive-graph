@@ -56,14 +56,14 @@ impl Lifecycle for RelationInstanceImportExportManagerImpl {}
 mod tests {
     use std::env;
 
-    use default_test::DefaultTest;
-
     use crate::InstanceSystemImpl;
     use reactive_graph_graph::EntityType;
+    use reactive_graph_graph::NAMESPACE_SEPARATOR;
     use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_graph::RandomNamespacedType;
+    use reactive_graph_graph::RandomNamespacedTypeId;
     use reactive_graph_graph::RelationType;
     use reactive_graph_graph::RelationTypeId;
-    use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
     use reactive_graph_instance_system_api::InstanceSystem;
     use reactive_graph_reactive_model_api::ReactiveInstance;
     use reactive_graph_reactive_model_impl::ReactiveEntity;
@@ -71,7 +71,7 @@ mod tests {
 
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
-    use reactive_graph_type_system_impl::TypeSystemImpl;
+    use reactive_graph_type_system_impl::TypeSystemSystemImpl;
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
     use reactive_graph_reactive_service_impl::ReactiveSystemImpl;
@@ -83,7 +83,7 @@ mod tests {
     async fn test_relation_instance_import_export_manager() {
         let instance_system = reactive_graph_di::get_container::<InstanceSystemImpl>();
         let reactive_system = instance_system.reactive_system();
-        let type_system = reactive_system.type_system();
+        let type_system = reactive_system.type_system_system();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
         let reactive_entity_manager = reactive_system.get_reactive_entity_manager();
@@ -93,17 +93,20 @@ mod tests {
         // let reactive_relation_manager = runtime.get_reactive_relation_manager();
         // let relation_instance_import_export_manager = runtime.get_relation_instance_import_export_manager();
 
+        let outbound_entity_type = EntityType::random_type().unwrap();
         let outbound_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(outbound_entity_type)
             .expect("Failed to register outbound entity type");
+        let inbound_entity_type = EntityType::random_type().unwrap();
         let inbound_type = entity_type_manager
-            .register(EntityType::default_test())
+            .register(inbound_entity_type)
             .expect("Failed to register inbound entity type");
 
-        let relation_ty = RelationTypeId::default_test();
-        let relation_type = relation_type_manager
-            .register(RelationType::builder_with_ty(&outbound_type, &relation_ty, &inbound_type).build_with_defaults())
-            .expect("Failed to register relation type!");
+        let relation_ty = RelationTypeId::random_type_id().unwrap();
+        let relation_type = RelationType::builder_with_ty(&outbound_type, &relation_ty, &inbound_type)
+            .build_with_defaults()
+            .expect("Failed to construct relation type");
+        let relation_type = relation_type_manager.register(relation_type).expect("Failed to register relation type!");
         println!("Registered {relation_ty} -> {}", relation_type.ty);
 
         let outbound = ReactiveEntity::builder_from_entity_type(&outbound_type).build();
@@ -135,7 +138,7 @@ mod tests {
             "{}--{}{}{}--{}.json",
             relation_instance_id.outbound_id,
             relation_instance_id.namespace(),
-            TYPE_ID_TYPE_SEPARATOR,
+            NAMESPACE_SEPARATOR,
             relation_instance_id.type_name(),
             relation_instance_id.inbound_id
         ));

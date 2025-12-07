@@ -6,17 +6,17 @@ use springtime_di::component_alias;
 
 use reactive_graph_command_api::CommandManager;
 use reactive_graph_command_api::CommandSystem;
-use reactive_graph_command_api::CommandTypeProvider;
+use reactive_graph_command_api::CommandTypeSystemRegistrator;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_reactive_service_api::ReactiveSystem;
-use reactive_graph_type_system_api::TypeSystem;
+use reactive_graph_type_system_api::TypeSystemSystem;
 
 #[derive(Component)]
 pub struct CommandSystemImpl {
     command_manager: Arc<dyn CommandManager + Send + Sync>,
-    command_type_provider: Arc<dyn CommandTypeProvider + Send + Sync>,
+    command_type_provider: Arc<dyn CommandTypeSystemRegistrator + Send + Sync>,
 
-    type_system: Arc<dyn TypeSystem + Send + Sync>,
+    type_system_system: Arc<dyn TypeSystemSystem + Send + Sync>,
     reactive_system: Arc<dyn ReactiveSystem + Send + Sync>,
 }
 
@@ -27,12 +27,12 @@ impl CommandSystem for CommandSystemImpl {
         self.command_manager.clone()
     }
 
-    fn get_command_type_provider(&self) -> Arc<dyn CommandTypeProvider + Send + Sync> {
+    fn get_command_type_system_registrator(&self) -> Arc<dyn CommandTypeSystemRegistrator + Send + Sync> {
         self.command_type_provider.clone()
     }
 
-    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
-        self.type_system.clone()
+    fn type_system_system(&self) -> Arc<dyn TypeSystemSystem + Send + Sync> {
+        self.type_system_system.clone()
     }
 
     fn reactive_system(&self) -> Arc<dyn ReactiveSystem + Send + Sync> {

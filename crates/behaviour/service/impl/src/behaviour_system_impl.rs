@@ -14,7 +14,7 @@ use reactive_graph_behaviour_service_api::RelationBehaviourRegistry;
 use reactive_graph_behaviour_service_api::RelationComponentBehaviourManager;
 use reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
 use reactive_graph_lifecycle::Lifecycle;
-use reactive_graph_type_system_api::TypeSystem;
+use reactive_graph_type_system_api::TypeSystemSystem;
 
 #[derive(Component)]
 pub struct BehaviourSystemImpl {
@@ -27,7 +27,7 @@ pub struct BehaviourSystemImpl {
     relation_component_behaviour_manager: Arc<dyn RelationComponentBehaviourManager + Send + Sync>,
     relation_component_behaviour_registry: Arc<dyn RelationComponentBehaviourRegistry + Send + Sync>,
 
-    type_system: Arc<dyn TypeSystem + Send + Sync>,
+    type_system_system: Arc<dyn TypeSystemSystem + Send + Sync>,
 }
 
 #[async_trait]
@@ -65,8 +65,8 @@ impl BehaviourSystem for BehaviourSystemImpl {
         self.relation_component_behaviour_registry.clone()
     }
 
-    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
-        self.type_system.clone()
+    fn type_system_system(&self) -> Arc<dyn TypeSystemSystem + Send + Sync> {
+        self.type_system_system.clone()
     }
 }
 

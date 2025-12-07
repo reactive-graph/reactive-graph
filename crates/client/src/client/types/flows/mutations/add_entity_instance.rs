@@ -6,9 +6,9 @@ pub mod mutations {
     use crate::client::types::flows::variables::add_entity_instance::variables::AddEntityInstanceVariables;
     use crate::client::types::flows::variables::add_entity_instance::variables::AddEntityInstanceVariablesFields;
 
-    use crate::schema_graphql::instances::entity_instance::EntityInstanceDefinition;
     use crate::schema_graphql::types::flow_type::FlowType;
-    use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_graph::EntityInstance;
+    use reactive_graph_graph::FlowTypeId;
 
     #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Mutation", variables = "AddEntityInstanceVariables")]
@@ -25,26 +25,15 @@ pub mod mutations {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "AddEntityInstanceVariables")]
     pub struct MutationFlowTypes {
-        #[arguments(type: { name: $name, namespace: $namespace }, entityInstance: $entity_instance)]
+        #[arguments(type: $_type, entityInstance: $entity_instance)]
         pub add_entity_instance: FlowType,
     }
 
-    pub fn add_entity_instance_mutation(
-        ty: reactive_graph_graph::FlowTypeId,
-        entity_instance: reactive_graph_graph::EntityInstance,
+    pub fn add_entity_instance_mutation<FT: Into<FlowTypeId>, EI: Into<EntityInstance>>(
+        ty: FT,
+        entity_instance: EI,
     ) -> Operation<AddEntityInstance, AddEntityInstanceVariables> {
         use cynic::MutationBuilder;
-        let entity_instance: EntityInstanceDefinition = entity_instance.into();
-        let vars = AddEntityInstanceVariables {
-            namespace: ty.namespace(),
-            name: ty.type_name(),
-            entity_instance,
-        };
-        AddEntityInstance::build(vars)
-    }
-
-    pub fn add_entity_instance_with_variables(variables: AddEntityInstanceVariables) -> Operation<AddEntityInstance, AddEntityInstanceVariables> {
-        use cynic::MutationBuilder;
-        AddEntityInstance::build(variables)
+        AddEntityInstance::build(AddEntityInstanceVariables::new(ty.into(), entity_instance.into()))
     }
 }

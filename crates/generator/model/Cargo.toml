@@ -1,0 +1,28 @@
+[package]
+name = "reactive-graph-generator-model"
+description = "Reactive Graph - Generator - Model"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+
+[dev-dependencies]
+
+[build-dependencies]
+anyhow = { workspace = true }
+
+reactive-graph-generator-documentation = { version = "0.10.0", path = "../../generator/documentation" }
+reactive-graph-generator-codegen = { version = "0.10.0", path = "../../generator/codegen" }
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+
+[lib]
+crate-type = ["lib"]
+
+[lints]
+workspace = true

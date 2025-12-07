@@ -12,6 +12,11 @@ use serde_json::Value;
 use uuid::Uuid;
 
 pub use entity_instance::*;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_graph::SubscribeEntityInstanceError;
+use reactive_graph_graph::SubscribeRelationInstanceError;
+use reactive_graph_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 pub use relation_instance::*;
 
 use crate::mutation::GraphQLRelationInstanceId;
@@ -34,43 +39,38 @@ impl ReactiveGraphSubscription {
         #[graphql(desc = "The label of the entity instance")] label: Option<String>,
         #[graphql(desc = "The name of the property")] property_name: String,
     ) -> Result<impl Stream<Item = GraphQLPropertyInstance>> {
-        match context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>() {
-            Ok(entity_instance_manager) => {
-                let entity_instance;
-                if let Some(id) = id {
-                    entity_instance = entity_instance_manager.get(id);
-                } else if let Some(label) = label {
-                    entity_instance = entity_instance_manager.get_by_label(label.as_str());
-                } else {
-                    return Err("Either id or label must be given!".into());
-                }
-                match entity_instance {
-                    Some(entity_instance) => {
-                        if !entity_instance.properties.contains_key(&property_name) {
-                            return Err("Error: property by name not found".into());
-                        }
-                        let entity_ty = entity_instance.ty.clone();
-                        let mut stream = EntityPropertyInstanceStream::new(entity_instance, property_name.clone());
-
-                        Ok(async_stream::stream! {
-                            loop {
-                                match stream.next().await {
-                                    Some(value) => {
-                                        futures_timer::Delay::new(Duration::from_millis(10)).await;
-                                        yield GraphQLPropertyInstance::new_entity_property(entity_ty.clone(), property_name.clone(), value.clone());
-                                    }
-                                    None => {
-                                        futures_timer::Delay::new(Duration::from_millis(100)).await;
-                                    }
-                                };
-                            }
-                        })
-                    }
-                    None => Err("Error: id not found".into()),
-                }
-            }
-            Err(_) => Err("Error: REIM".into()),
+        let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
+        let reactive_entity;
+        if let Some(id) = id {
+            reactive_entity = reactive_entity_manager
+                .get(id)
+                .ok_or(SubscribeEntityInstanceError::EntityInstanceDoesNotExist(id))?;
+        } else if let Some(label) = label {
+            reactive_entity = reactive_entity_manager
+                .get_by_label(label.as_str())
+                .ok_or(SubscribeEntityInstanceError::EntityInstanceWithLabelDoesNotExist(label))?;
+        } else {
+            return Err(SubscribeEntityInstanceError::EitherUuidOrLabelMustBeGiven.into());
         }
+        if !reactive_entity.has_property(&property_name) {
+            return Err(SubscribeEntityInstanceError::PropertyNotFound(reactive_entity.id, property_name).into());
+        }
+        let entity_ty = reactive_entity.ty.clone();
+        let mut stream = EntityPropertyInstanceStream::new(reactive_entity, property_name.clone());
+
+        Ok(async_stream::stream! {
+            loop {
+                match stream.next().await {
+                    Some(value) => {
+                        futures_timer::Delay::new(Duration::from_millis(10)).await;
+                        yield GraphQLPropertyInstance::new_entity_property(entity_ty.clone(), property_name.clone(), value.clone());
+                    }
+                    None => {
+                        futures_timer::Delay::new(Duration::from_millis(100)).await;
+                    }
+                };
+            }
+        })
     }
 
     async fn relation(
@@ -79,33 +79,30 @@ impl ReactiveGraphSubscription {
         relation_instance_id: GraphQLRelationInstanceId,
         #[graphql(desc = "The name of the property")] property_name: String,
     ) -> Result<impl Stream<Item = GraphQLPropertyInstance>> {
-        match context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>() {
-            Ok(relation_instance_manager) => match relation_instance_manager.get(&relation_instance_id.into()) {
-                Some(relation_instance) => {
-                    if !relation_instance.properties.contains_key(&property_name) {
-                        return Err("Error: property by name not found".into());
-                    }
-                    let relation_ty = relation_instance.relation_type_id();
-                    let mut stream = RelationPropertyInstanceStream::new(relation_instance, property_name.clone());
-
-                    Ok(async_stream::stream! {
-                        loop {
-                            match stream.next().await {
-                                Some(value) => {
-                                    futures_timer::Delay::new(Duration::from_millis(10)).await;
-                                    yield GraphQLPropertyInstance::new_relation_property(relation_ty.clone(), property_name.clone(), value.clone());
-                                }
-                                None => {
-                                    futures_timer::Delay::new(Duration::from_millis(100)).await;
-                                }
-                            };
-                        }
-                    })
-                }
-                None => Err("Error: id not found".into()),
-            },
-            Err(_) => Err("Error: REIM".into()),
+        let reactive_relation_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
+        let relation_instance_id = RelationInstanceId::try_from(relation_instance_id)?;
+        let reactive_relation = reactive_relation_manager
+            .get(&relation_instance_id)
+            .ok_or(SubscribeRelationInstanceError::RelationInstanceDoesNotExist(relation_instance_id))?;
+        if !reactive_relation.has_property(&property_name) {
+            return Err(SubscribeRelationInstanceError::PropertyNotFound(reactive_relation.id(), property_name).into());
         }
+        let relation_ty = reactive_relation.relation_type_id();
+        let mut stream = RelationPropertyInstanceStream::new(reactive_relation, property_name.clone());
+
+        Ok(async_stream::stream! {
+            loop {
+                match stream.next().await {
+                    Some(value) => {
+                        futures_timer::Delay::new(Duration::from_millis(10)).await;
+                        yield GraphQLPropertyInstance::new_relation_property(relation_ty.clone(), property_name.clone(), value.clone());
+                    }
+                    None => {
+                        futures_timer::Delay::new(Duration::from_millis(100)).await;
+                    }
+                };
+            }
+        })
     }
 }
 

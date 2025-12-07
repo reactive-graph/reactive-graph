@@ -7,10 +7,6 @@ use std::ops::DerefMut;
 use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
@@ -25,11 +21,15 @@ use crate::AddPropertyError;
 use crate::ComponentTypeId;
 use crate::ComponentTypeIdContainer;
 use crate::ComponentTypeIds;
+use crate::Components;
+use crate::EntityComponentTypeId;
+use crate::EntityComponentTypeIds;
 use crate::EntityTypeAddComponentError;
 use crate::EntityTypeAddExtensionError;
 use crate::EntityTypeAddPropertyError;
 use crate::EntityTypeId;
 use crate::EntityTypeIds;
+use crate::EntityTypeMergeComponentPropertiesError;
 use crate::EntityTypeMergeError;
 use crate::EntityTypeMergeExtensionsError;
 use crate::EntityTypeMergePropertiesError;
@@ -42,10 +42,14 @@ use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::Extensions;
 use crate::JSON_SCHEMA_ID_URI_PREFIX;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
+use crate::NamespacedTypeComponentPropertiesContainer;
 use crate::NamespacedTypeComponentTypeIdContainer;
 use crate::NamespacedTypeContainer;
 use crate::NamespacedTypeExtensionContainer;
 use crate::NamespacedTypeGetter;
+use crate::NamespacedTypeIdContainer;
 use crate::NamespacedTypePropertyTypeContainer;
 use crate::PropertyType;
 use crate::PropertyTypeContainer;
@@ -56,10 +60,26 @@ use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeDefinitionJsonSchema;
 use crate::TypeDefinitionJsonSchemaGetter;
+use crate::TypeDescriptionGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
+use crate::divergent::DivergentPropertyTypes;
 use crate::extension::Extension;
+use crate::namespace::Namespace;
+
+#[cfg(any(test, feature = "test"))]
+use crate::NamespacedTypeError;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomChildType;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomChildTypeId;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedType;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypeIds;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypes;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
@@ -75,8 +95,8 @@ pub const JSON_SCHEMA_ID_ENTITY_TYPE: &str = formatcp!("{}/entity-type.schema.js
     transform = add_json_schema_id_property
 )]
 pub struct EntityType {
-    /// The type definition contains the namespace and the type name.
-    #[serde(flatten)]
+    /// The fully qualified namespace of the entity type.
+    #[serde(rename = "type")]
     #[builder(setter(into))]
     pub ty: EntityTypeId,
 
@@ -119,23 +139,6 @@ impl EntityType {
         }
     }
 
-    pub fn new_from_type<N: Into<String>, T: Into<String>, D: Into<String>, C: Into<ComponentTypeIds>, P: Into<PropertyTypes>, E: Into<Extensions>>(
-        namespace: N,
-        type_name: T,
-        description: D,
-        components: C,
-        properties: P,
-        extensions: E,
-    ) -> EntityType {
-        EntityType {
-            ty: EntityTypeId::new_from_type(namespace, type_name),
-            description: description.into(),
-            components: components.into(),
-            properties: properties.into(),
-            extensions: extensions.into(),
-        }
-    }
-
     // TODO: Experimental
     pub fn builder_from_ty<T: Into<EntityTypeId>>(ty: T) -> EntityTypeBuilder<((EntityTypeId,), (), (), (), ())> {
         EntityType::builder().ty(ty.into())
@@ -162,6 +165,10 @@ impl ComponentTypeIdContainer for EntityType {
     fn remove_components<C: Into<ComponentTypeIds>>(&mut self, components_to_remove: C) {
         self.components.remove_components(components_to_remove)
     }
+
+    fn get_components_cloned(&self) -> ComponentTypeIds {
+        self.components.clone()
+    }
 }
 
 impl PropertyTypeContainer for EntityType {
@@ -186,11 +193,15 @@ impl PropertyTypeContainer for EntityType {
     }
 
     fn merge_properties<P: Into<PropertyTypes>>(&mut self, properties_to_merge: P) {
-        self.properties.merge_properties(properties_to_merge);
+        self.properties.merge_properties(properties_to_merge)
     }
 
-    fn get_own_properties(&self) -> &PropertyTypes {
-        &self.properties
+    fn merge_non_existent_properties<P: Into<PropertyTypes>>(&self, properties_to_merge: P) -> DivergentPropertyTypes {
+        self.properties.merge_non_existent_properties(properties_to_merge)
+    }
+
+    fn get_own_properties_cloned(&self) -> PropertyTypes {
+        self.properties.clone()
     }
 }
 
@@ -218,14 +229,26 @@ impl ExtensionContainer for EntityType {
     fn merge_extensions<E: Into<Extensions>>(&mut self, extensions_to_merge: E) {
         self.extensions.merge_extensions(extensions_to_merge)
     }
+
+    fn get_own_extensions_cloned(&self) -> Extensions {
+        self.extensions.clone()
+    }
 }
 
 impl NamespacedTypeGetter for EntityType {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -233,6 +256,16 @@ impl NamespacedTypeGetter for EntityType {
 impl TypeDefinitionGetter for EntityType {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::EntityType
+    }
+}
+
+impl TypeDescriptionGetter for EntityType {
+    fn description(&self) -> String {
+        self.description.clone()
     }
 }
 
@@ -242,6 +275,12 @@ impl TypeDefinitionJsonSchemaGetter for EntityType {
             .description(&self.description)
             .required_id_property("id")
             .into()
+    }
+}
+
+impl AsRef<EntityTypeId> for EntityType {
+    fn as_ref(&self) -> &EntityTypeId {
+        &self.ty
     }
 }
 
@@ -265,11 +304,7 @@ impl Ord for EntityType {
 
 impl From<&EntityType> for TypeDefinition {
     fn from(entity_type: &EntityType) -> Self {
-        TypeDefinition {
-            type_id_type: TypeIdType::EntityType,
-            namespace: entity_type.namespace(),
-            type_name: entity_type.type_name(),
-        }
+        entity_type.type_definition()
     }
 }
 
@@ -284,6 +319,22 @@ impl From<&EntityType> for Schema {
 pub struct EntityTypes(DashMap<EntityTypeId, EntityType>);
 
 impl EntityTypes {
+    #[inline]
+    pub fn new() -> Self {
+        NamespacedTypeContainer::new()
+    }
+
+    #[inline]
+    pub fn entity<E: Into<EntityType>>(self, entity_type: E) -> Self {
+        NamespacedTypeContainer::push(&self, entity_type);
+        self
+    }
+
+    #[inline]
+    pub fn push<E: Into<EntityType>>(&self, entity_type: E) -> Option<EntityType> {
+        NamespacedTypeContainer::push(self, entity_type)
+    }
+
     pub fn merge<C: Into<EntityType>>(&self, entity_type_to_merge: C) -> Result<EntityType, EntityTypeMergeError> {
         let entity_type_to_merge = entity_type_to_merge.into();
         let Some(mut entity_type) = self.get_mut(&entity_type_to_merge.ty) else {
@@ -295,21 +346,17 @@ impl EntityTypes {
         entity_type.merge_extensions(entity_type_to_merge.extensions);
         Ok(entity_type.clone())
     }
+
+    #[inline]
+    pub fn push_all<E: Into<Self>>(&self, entity_types: E) {
+        NamespacedTypeContainer::push_all(self, entity_types.into())
+    }
 }
 
 impl NamespacedTypeContainer for EntityTypes {
     type TypeId = EntityTypeId;
     type TypeIds = EntityTypeIds;
     type Type = EntityType;
-
-    fn new() -> Self {
-        Self(DashMap::new())
-    }
-
-    fn push<E: Into<EntityType>>(&self, entity_type: E) {
-        let entity_type = entity_type.into();
-        self.0.insert(entity_type.ty.clone(), entity_type);
-    }
 }
 
 impl NamespacedTypeComponentTypeIdContainer<EntityTypeId, EntityTypeAddComponentError, EntityTypeRemoveComponentError> for EntityTypes {
@@ -339,6 +386,15 @@ impl NamespacedTypeComponentTypeIdContainer<EntityTypeId, EntityTypeAddComponent
         entity_type
             .remove_component(component_ty)
             .ok_or(EntityTypeRemoveComponentError::IsNotA(component_ty.clone()))
+    }
+
+    fn get_component_type_ids(&self) -> ComponentTypeIds {
+        self.0.iter().map(|entity_type| entity_type.components.clone()).collect()
+        // let all_component_tys = ComponentTypeIds::new();
+        // for component_tys in self.0.iter().map(|entity_type| entity_type.components.clone()) {
+        //     all_component_tys.insert_all(component_tys);
+        // }
+        // all_component_tys
     }
 }
 
@@ -386,6 +442,38 @@ impl
             return Err(EntityTypeMergePropertiesError::EntityTypeDoesNotExist(entity_ty.clone()));
         };
         entity_type.merge_properties(properties_to_merge);
+        Ok(())
+    }
+}
+
+impl NamespacedTypeComponentPropertiesContainer<EntityTypeId, EntityTypeMergeComponentPropertiesError> for EntityTypes {
+    fn merge_component_properties<C: Into<Components>>(&self, components: C) -> Result<(), EntityTypeMergeComponentPropertiesError> {
+        let components = components.into();
+        let lookup_tys = components.type_ids();
+
+        // First check without modification
+        let missing_components: EntityComponentTypeIds = self
+            .0
+            .iter()
+            .map(|entity_type| (entity_type.key().clone(), entity_type.components.clone()))
+            .flat_map(|(entity_ty, component_tys)| {
+                component_tys
+                    .into_iter()
+                    .map(move |component_ty| EntityComponentTypeId::new(entity_ty.clone(), component_ty.clone()))
+            })
+            .filter(|entity_component_ty| !lookup_tys.contains(&entity_component_ty.component_ty))
+            .collect();
+        if !missing_components.is_empty() {
+            return Err(EntityTypeMergeComponentPropertiesError::ComponentDoesNotExist(missing_components));
+        }
+
+        self.0.iter_mut().for_each(|entity_type| {
+            for component_ty in entity_type.components.iter() {
+                if let Some(component) = components.get(component_ty.key()) {
+                    entity_type.merge_non_existent_properties(component.properties);
+                }
+            }
+        });
         Ok(())
     }
 }
@@ -580,27 +668,31 @@ impl EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (PropertyTypes
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for EntityType {
-    fn default_test() -> Self {
-        EntityType::builder()
-            .ty(EntityTypeId::default_test())
+impl RandomNamespacedType for EntityType {
+    type Error = NamespacedTypeError;
+    type TypeId = EntityTypeId;
+
+    fn random_type() -> Result<Self, NamespacedTypeError> {
+        Self::random_child_type(&Namespace::random_path()?)
+    }
+
+    fn random_type_with_id(ty: &Self::TypeId) -> Result<Self, Self::Error> {
+        Ok(Self::builder()
+            .ty(ty)
             .description(r_string())
-            .components(ComponentTypeIds::default_test())
-            .properties(PropertyTypes::default_test())
-            .extensions(Extensions::default_test())
-            .build()
+            .components(ComponentTypeIds::random_type_ids()?)
+            .properties(PropertyTypes::random_types(0..10)?)
+            .extensions(Extensions::random_types(0..10)?)
+            .build())
     }
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for EntityTypes {
-    fn default_test() -> Self {
-        let entity_types = EntityTypes::new();
-        let mut rng = rand::rng();
-        for _ in 0..rng.random_range(0..10) {
-            entity_types.push(EntityType::default_test());
-        }
-        entity_types
+impl RandomChildType for EntityType {
+    type Error = NamespacedTypeError;
+
+    fn random_child_type(namespace: &Namespace) -> Result<Self, Self::Error> {
+        Self::random_type_with_id(&NamespacedType::random_child_type_id(namespace)?.into())
     }
 }
 
@@ -610,144 +702,332 @@ fn add_json_schema_id_property(schema: &mut Schema) {
 
 #[cfg(test)]
 mod tests {
-    use default_test::DefaultTest;
     use schemars::schema_for;
-    use serde_json::json;
+    use std::str::FromStr;
 
     use crate::ComponentTypeId;
     use crate::ComponentTypeIdContainer;
-    use crate::DataType;
+    use crate::ComponentTypeIds;
     use crate::EntityType;
     use crate::EntityTypeId;
     use crate::Extension;
     use crate::ExtensionContainer;
     use crate::ExtensionTypeId;
+    use crate::Extensions;
     use crate::NamespacedTypeGetter;
     use crate::PropertyType;
     use crate::PropertyTypeContainer;
-    use crate::SocketType;
-    use crate::TypeDefinitionGetter;
+    use crate::PropertyTypes;
+    use crate::RandomNamespacedType;
+    use crate::RandomNamespacedTypeId;
+    use crate::RandomNamespacedTypeIds;
+    use crate::RandomNamespacedTypes;
     use crate::TypeDefinitionJsonSchemaGetter;
     use reactive_graph_utils_test::r_string;
 
     #[test]
-    fn create_entity_type_test() {
-        let entity_type_name = r_string();
-
-        let namespace = r_string();
+    fn build_entity_type_test() {
         let description = r_string();
-
-        let component_name = r_string();
-        let mut component_names = Vec::new();
-        let component_ty = ComponentTypeId::new_from_type(&namespace, &component_name);
-        component_names.push(component_ty.clone());
-
-        let mut property_types = Vec::new();
-        let property_name = "property_name";
-        let property_type = PropertyType::new(property_name, DataType::String);
-        property_types.push(property_type.clone());
-
-        let mut extensions = Vec::new();
-        let extension_namespace = r_string();
-        let extension_name = r_string();
-        let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
-        let extension_value = json!("extension_value");
-        let extension = Extension {
-            ty: extension_ty.clone(),
-            description: r_string(),
-            extension: extension_value.clone(),
-        };
-        extensions.push(extension.clone());
-        let other_extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
-        let other_extension = Extension::new(&other_extension_ty, r_string(), extension_value.clone());
-        extensions.push(other_extension);
-
-        let ty = EntityTypeId::new_from_type(&namespace, &entity_type_name);
-        let entity_type = EntityType::new(ty, &description, component_names, property_types, extensions);
-
-        assert_eq!(namespace, entity_type.namespace());
-
-        assert_eq!(entity_type_name, entity_type.type_name());
-
-        assert_eq!(format!("e__{}__{}", &namespace, &entity_type_name), entity_type.type_definition().to_string());
-
+        let ty = EntityTypeId::random_type_id().unwrap();
+        let components = ComponentTypeIds::random_type_ids().unwrap();
+        let properties = PropertyTypes::random_types(1..10).unwrap();
+        let extensions = Extensions::random_types(1..2).unwrap();
+        let entity_type = EntityType::builder()
+            .ty(&ty)
+            .description(&description)
+            .components(components.clone())
+            .properties(properties.clone())
+            .extensions(extensions.clone())
+            .build();
+        assert_eq!(ty.namespace(), entity_type.namespace());
+        assert_eq!(ty.path(), entity_type.path());
+        assert_eq!(ty.type_name(), entity_type.type_name());
         assert_eq!(description, entity_type.description);
+        assert_eq!(components.len(), entity_type.components.len());
+        assert_eq!(properties.len(), entity_type.properties.len());
+        assert_eq!(extensions.len(), entity_type.extensions.len());
+    }
 
-        assert!(entity_type.components.contains(&component_ty));
+    #[test]
+    fn create_entity_type_test() {
+        let ty = EntityTypeId::random_type_id().unwrap();
+        let description = r_string();
+        let properties = PropertyTypes::random_types_no_extensions();
+        let extensions = Extensions::random_types(1..2).unwrap();
+        let components = ComponentTypeIds::random_type_ids().unwrap();
+        let entity_type = EntityType::new(&ty, &description, components.clone(), properties.clone(), extensions.clone());
+        assert_eq!(ty.namespace(), entity_type.namespace());
+        assert_eq!(ty.path(), entity_type.path());
+        assert_eq!(ty.type_name(), entity_type.type_name());
+        assert_eq!(description, entity_type.description);
+        assert_eq!(components.len(), entity_type.components.len());
+        assert_eq!(components, entity_type.components);
+        assert_eq!(properties.len(), entity_type.properties.len());
+        assert_eq!(extensions.len(), entity_type.extensions.len());
+        assert!(!entity_type.has_own_property(r_string()));
+        assert!(!entity_type.has_own_extension(&ExtensionTypeId::random_type_id().unwrap()));
+    }
+
+    #[test]
+    fn entity_type_is_a_test() {
+        let component_ty = ComponentTypeId::from_str("fully::qualified::namespace::Component").unwrap();
+        let component_tys = ComponentTypeIds::new().component(&component_ty);
+        let entity_type = EntityType::builder()
+            .ty(EntityTypeId::random_type_id().unwrap())
+            .components(component_tys)
+            .build();
+        assert_eq!(1, entity_type.components.len());
         assert!(entity_type.is_a(&component_ty));
+        assert!(!entity_type.is_a(&ComponentTypeId::random_type_id().unwrap()));
+    }
 
-        assert!(entity_type.properties.contains_key(property_name));
+    #[test]
+    fn entity_type_has_property_test() {
+        let property_name = r_string();
+        let properties = PropertyTypes::new().property(PropertyType::string(&property_name));
+        let entity_type = EntityType::builder().ty(EntityTypeId::random_type_id().unwrap()).properties(properties).build();
+        assert_eq!(1, entity_type.properties.len());
         assert!(entity_type.has_own_property(property_name));
         assert!(!entity_type.has_own_property(r_string()));
-        assert_eq!(property_name, entity_type.get_own_property(property_name).unwrap().name);
-        assert_eq!(property_type.data_type, entity_type.get_own_property(property_name).unwrap().data_type);
-        assert_eq!(property_type, entity_type.get_own_property(property_name).unwrap());
+    }
 
-        assert!(entity_type.extensions.contains_key(&extension_ty));
-        assert!(entity_type.has_own_extension(&extension_ty));
-        assert_eq!(extension_value, entity_type.get_own_extension(&extension_ty).unwrap().extension);
-        assert_eq!(extension.extension, entity_type.get_own_extension(&extension_ty).unwrap().extension);
+    #[test]
+    fn entity_type_has_extension_test() {
+        let extension = Extension::random_type().unwrap();
+        let extensions = Extensions::new().extension(extension.clone());
+        let entity_type = EntityType::builder().ty(EntityTypeId::random_type_id().unwrap()).extensions(extensions).build();
+        assert_eq!(1, entity_type.extensions.len());
+        assert!(entity_type.has_own_extension(&extension.ty));
+        assert!(!entity_type.has_own_extension(&ExtensionTypeId::random_type_id().unwrap()));
+    }
 
-        let non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
-        assert!(!entity_type.extensions.contains_key(&non_existing_extension));
-        assert!(!entity_type.has_own_extension(&non_existing_extension));
+    #[test]
+    fn entity_type_deserialize_fully_valid_test() {
+        let entity_ty = EntityTypeId::from_str("fully::qualified::namespace::EntityType").unwrap();
+        let component_ty = ComponentTypeId::from_str("fully::qualified::namespace::Component").unwrap();
+        let extension_ty = ExtensionTypeId::from_str("fully::qualified::namespace::Extension").unwrap();
+        let entity_type = serde_json::from_str::<EntityType>(
+            r#"{
+          "type": "fully::qualified::namespace::EntityType",
+          "description": "d",
+          "components": [
+            "fully::qualified::namespace::Component"
+          ],
+          "properties": [
+                {
+                  "name": "property_name",
+                  "data_type": "string",
+                  "socket_type": "input"
+                }
+          ],
+          "extensions": [
+                {
+                  "type": "fully::qualified::namespace::Extension",
+                  "extension": ""
+                }
+          ]
+        }"#,
+        )
+        .expect("Failed to deserialize entity type");
+        assert_eq!(entity_ty, entity_type.ty);
+        assert_eq!("d", entity_type.description);
+        assert_eq!(1, entity_type.components.len());
+        assert!(entity_type.is_a(&component_ty));
+        assert_eq!(1, entity_type.properties.len());
+        assert!(entity_type.get_own_property("property_name").is_some());
+        assert_eq!(1, entity_type.extensions.len());
+        assert!(entity_type.get_own_extension(&extension_ty).is_some());
+    }
+
+    #[test]
+    fn entity_type_deserialize_description_optional_test() {
+        assert!(
+            serde_json::from_str::<EntityType>(
+                r#"{
+          "type": "fully::qualified::namespace::Type",
+          "components": [],
+          "properties": [],
+          "extensions": []
+        }"#
+            )
+            .expect("Failed to deserialize entity type")
+            .description
+            .is_empty()
+        );
+    }
+
+    #[test]
+    fn entity_type_deserialize_components_optional_test() {
+        assert_eq!(
+            0,
+            serde_json::from_str::<EntityType>(
+                r#"{
+          "type": "fully::qualified::namespace::Type",
+          "description": "d",
+          "properties": [],
+          "extensions": []
+        }"#
+            )
+            .expect("Failed to deserialize entity type")
+            .properties
+            .len()
+        );
+    }
+
+    #[test]
+    fn entity_type_deserialize_invalid_component_test() {
+        assert!(
+            serde_json::from_str::<EntityType>(
+                r#"{
+          "type": "fully::qualified::namespace::Type",
+          "description": "d",
+          "components": [
+            "type": "InvalidTypeName::namespace"
+          ],
+          "properties": [],
+          "extensions": []
+        }"#
+            )
+            .inspect_err(|e| println!("{}", e))
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn entity_type_deserialize_properties_optional_test() {
+        assert_eq!(
+            0,
+            serde_json::from_str::<EntityType>(
+                r#"{
+          "type": "fully::qualified::namespace::Type",
+          "description": "d",
+          "components": [],
+          "extensions": []
+        }"#
+            )
+            .expect("Failed to deserialize entity type")
+            .properties
+            .len()
+        );
+    }
+
+    #[test]
+    fn entity_type_deserialize_invalid_property_test() {
+        assert!(
+            serde_json::from_str::<EntityType>(
+                r#"{
+          "type": "fully::qualified::namespace::Type",
+          "description": "d",
+          "components": [],
+          "properties": [
+                {
+                  "name": "property_name",
+                  "data_type": "strng",
+                  "socket_type": "put"
+                }
+          ],
+          "extensions": []
+        }"#
+            )
+            .inspect_err(|e| println!("{}", e))
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn entity_type_deserialize_extensions_optional_test() {
+        assert_eq!(
+            0,
+            serde_json::from_str::<EntityType>(
+                r#"{
+          "type": "fully::qualified::namespace::Type",
+          "description": "d",
+          "components": [],
+          "properties": []
+        }"#
+            )
+            .expect("Failed to deserialize entity type")
+            .extensions
+            .len()
+        );
+    }
+
+    #[test]
+    fn entity_type_deserialize_invalid_extension_test() {
+        assert!(
+            serde_json::from_str::<EntityType>(
+                r#"{
+          "type": "fully::qualified::namespace::Type",
+          "description": "d",
+          "components": [],
+          "properties": [],
+          "extensions": [
+                {
+                  "type": "InvalidTypeName::namespace",
+                  "extension": ""
+                }
+          ]
+        }"#
+            )
+            .inspect_err(|e| println!("{}", e))
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn entity_type_deserialize_invalid_namespace_test() {
+        assert!(
+            serde_json::from_str::<EntityType>(
+                r#"{
+          "type": "invalid::namespace",
+          "description": "d",
+          "components": [],
+          "properties": [],
+          "extensions": []
+        }"#
+            )
+            .inspect_err(|e| println!("{}", e))
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn entity_type_deserialize_invalid_type_test() {
+        assert!(
+            serde_json::from_str::<EntityType>(
+                r#"{
+          "type": "InvalidTypeName",
+          "description": "d",
+          "components": [],
+          "properties": [],
+          "extensions": []
+        }"#
+            )
+            .inspect_err(|e| println!("{}", e))
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn entity_type_deserialize_missing_type_test() {
+        assert!(
+            serde_json::from_str::<EntityType>(
+                r#"{
+          "description": "d",
+          "components": [],
+          "properties": [],
+          "extensions": []
+        }"#
+            )
+            .inspect_err(|e| println!("{}", e))
+            .is_err()
+        );
     }
 
     #[test]
     fn entity_type_ser_test() {
-        let ty = EntityTypeId::new_from_type("ene", "ete");
-        let et = EntityType::new(ty, "d", Vec::new(), Vec::new(), Vec::new());
-        println!("{}", serde_json::to_string_pretty(&et).expect("Failed to serialize entity type"));
-    }
-
-    #[test]
-    fn entity_type_de_test() {
-        let s = r#"{
-  "namespace": "abc",
-  "type_name": "def",
-  "description": "d",
-  "components": [
-    {
-      "namespace": "mno",
-      "type_name": "pqr"
-    }
-  ],
-  "properties": [
-    {
-      "name": "property_name",
-      "data_type": "string",
-      "socket_type": "input"
-    }
-  ],
-  "extensions": [
-    {
-      "namespace": "ext_namespace",
-      "type_name": "ext_name",
-      "extension": "ext_value"
-    }
-  ]
-}"#;
-        let entity_type: EntityType = serde_json::from_str(s).unwrap();
-        assert_eq!("abc", entity_type.namespace());
-        assert_eq!("def", entity_type.type_name());
-        assert_eq!("e__abc__def", entity_type.ty.to_string());
-        assert_eq!("d", entity_type.description);
-        assert_eq!(1, entity_type.components.len());
-        let component = entity_type.components.get(&ComponentTypeId::new_from_type("mno", "pqr")).unwrap();
-        assert_eq!("mno", component.namespace());
-        assert_eq!("pqr", component.type_name());
-        assert_eq!(1, entity_type.properties.len());
-        let property = entity_type.get_own_property("property_name").unwrap();
-        assert_eq!("property_name", property.name);
-        assert_eq!(DataType::String, property.data_type);
-        assert_eq!(SocketType::Input, property.socket_type);
-        assert_eq!(1, entity_type.extensions.len());
-        let extension = entity_type
-            .get_own_extension(&ExtensionTypeId::new_from_type("ext_namespace", "ext_name"))
-            .unwrap();
-        assert_eq!("ext_namespace", extension.ty.namespace());
-        assert_eq!("ext_name", extension.ty.type_name());
-        assert_eq!(json!("ext_value"), extension.extension);
+        let entity_type = EntityType::random_type().unwrap();
+        println!("{}", serde_json::to_string_pretty(&entity_type).expect("Failed to serialize entity type"));
     }
 
     #[test]
@@ -758,7 +1038,7 @@ mod tests {
 
     #[test]
     fn entity_type_dynamic_json_schema() {
-        let entity_type = EntityType::default_test();
+        let entity_type = EntityType::random_type().unwrap();
         let schema = entity_type.json_schema();
         println!("{}", serde_json::to_string_pretty(schema.as_value()).unwrap());
     }

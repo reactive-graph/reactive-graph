@@ -26,7 +26,7 @@ use reactive_graph_reactive_service_api::ReactiveRelationManager;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::FlowTypeManager;
-use reactive_graph_type_system_api::NamespaceManager;
+use reactive_graph_type_system_api::NamespacedTypeManager;
 use reactive_graph_type_system_api::RelationTypeManager;
 
 #[derive(Component)]
@@ -39,7 +39,7 @@ pub struct GraphQLSchemaManagerImpl {
 
     flow_type_manager: Arc<dyn FlowTypeManager + Send + Sync>,
 
-    namespace_manager: Arc<dyn NamespaceManager + Send + Sync>,
+    namespaced_type_manager: Arc<dyn NamespacedTypeManager + Send + Sync>,
 
     entity_instance_manager: Arc<dyn ReactiveEntityManager + Send + Sync>,
 
@@ -77,7 +77,7 @@ impl GraphQLSchemaManager for GraphQLSchemaManagerImpl {
             .data(self.entity_type_manager.clone())
             .data(self.relation_type_manager.clone())
             .data(self.flow_type_manager.clone())
-            .data(self.namespace_manager.clone())
+            .data(self.namespaced_type_manager.clone())
             .data(self.entity_instance_manager.clone())
             .data(self.relation_instance_manager.clone())
             .data(self.flow_instance_manager.clone())

@@ -2,6 +2,11 @@ use std::fmt::Display;
 use std::fmt::Formatter;
 use std::sync::Arc;
 
+use crate::client::instances::Instances;
+use crate::client::json_schema::JsonSchema;
+use crate::client::plugin::api::Plugins;
+use crate::client::runtime::Runtime;
+use crate::client::types::Types;
 use cynic::GraphQlError;
 use cynic::Operation;
 use cynic::QueryBuilder;
@@ -10,16 +15,18 @@ use cynic::http::ReqwestExt;
 use cynic_introspection::IntrospectionQuery;
 use cynic_introspection::Schema;
 use cynic_introspection::SchemaError;
+use reactive_graph_graph::InvalidComponentError;
+use reactive_graph_graph::InvalidEntityInstanceError;
+use reactive_graph_graph::InvalidEntityTypeError;
+use reactive_graph_graph::InvalidFlowInstanceError;
+use reactive_graph_graph::InvalidFlowTypeError;
+use reactive_graph_graph::InvalidRelationInstanceError;
+use reactive_graph_graph::InvalidRelationTypeError;
+use reactive_graph_remotes_model::InstanceAddress;
 use reqwest::Client;
 use reqwest::Error;
 use reqwest::header::InvalidHeaderValue;
-
-use crate::client::instances::Instances;
-use crate::client::json_schema::JsonSchema;
-use crate::client::plugin::api::Plugins;
-use crate::client::runtime::Runtime;
-use crate::client::types::Types;
-use reactive_graph_remotes_model::InstanceAddress;
+use thiserror::Error;
 
 pub mod instances;
 pub mod json_schema;
@@ -48,13 +55,34 @@ impl Display for ReactiveGraphClientError {
 
 impl std::error::Error for ReactiveGraphClientError {}
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum ReactiveGraphClientExecutionError {
+    #[error("Failed to send request: {0}")]
     FailedToSendRequest(CynicReqwestError),
+    #[error("Failed to parse response: {0}")]
     FailedToParseResponse(Error),
-    GraphQlError(Vec<GraphQlError>),
+    #[error("Failed to run graphql query: {0}")]
+    GraphQlError(#[from] GraphQlErrors),
+    #[error("Failed to run introspection query")]
     IntrospectionQueryError,
-    IntrospectionQuerySchemaError(SchemaError),
+    #[error("Schema error on introspection query: {0}")]
+    IntrospectionQuerySchemaError(#[from] SchemaError),
+    // #[error("Failed to parse a namespace type: {0}")]
+    // NamespacedTypeError(#[from] NamespacedTypeError),
+    #[error("Invalid component: {0}")]
+    InvalidComponent(#[from] InvalidComponentError),
+    #[error("Invalid entity type: {0}")]
+    InvalidEntityType(#[from] InvalidEntityTypeError),
+    #[error("Invalid relation type: {0}")]
+    InvalidRelationType(#[from] InvalidRelationTypeError),
+    #[error("Invalid flow type: {0}")]
+    InvalidFlowType(#[from] InvalidFlowTypeError),
+    #[error("Invalid entity instance: {0}")]
+    InvalidEntityInstance(#[from] InvalidEntityInstanceError),
+    #[error("Invalid relation instance: {0}")]
+    InvalidRelationInstance(#[from] InvalidRelationInstanceError),
+    #[error("Invalid flow instance: {0}")]
+    InvalidFlowInstance(#[from] InvalidFlowInstanceError),
 }
 
 impl From<CynicReqwestError> for ReactiveGraphClientExecutionError {
@@ -63,30 +91,15 @@ impl From<CynicReqwestError> for ReactiveGraphClientExecutionError {
     }
 }
 
-impl Display for ReactiveGraphClientExecutionError {
+#[derive(Debug, Error)]
+pub struct GraphQlErrors(Vec<GraphQlError>);
+
+impl Display for GraphQlErrors {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self {
-            ReactiveGraphClientExecutionError::FailedToSendRequest(e) => {
-                writeln!(f, "Failed to send request:\n{e:?}")
-            }
-            ReactiveGraphClientExecutionError::FailedToParseResponse(e) => {
-                writeln!(f, "Failed to parse response:\n{e:?}")
-            }
-            ReactiveGraphClientExecutionError::GraphQlError(e) => {
-                let graphql_errors: Vec<String> = e.iter().map(|graphql_error| format!("{graphql_error}")).collect();
-                writeln!(f, "The response returned errors:\n{}", graphql_errors.join("\n"))
-            }
-            ReactiveGraphClientExecutionError::IntrospectionQueryError => {
-                writeln!(f, "Failed to run introspection query")
-            }
-            ReactiveGraphClientExecutionError::IntrospectionQuerySchemaError(e) => {
-                writeln!(f, "Schema error on introspection query:\n{e:?}")
-            }
-        }
+        let graphql_errors: Vec<String> = self.0.iter().map(|graphql_error| format!("{graphql_error}")).collect();
+        writeln!(f, "The response returned errors:\n{}", graphql_errors.join("\n"))
     }
 }
-
-impl std::error::Error for ReactiveGraphClientExecutionError {}
 
 pub struct ReactiveGraphClient {
     remote: InstanceAddress,
@@ -263,6 +276,6 @@ impl ReactiveGraphClient {
         if let Some(data) = response.data.map(extractor) {
             return Ok(data);
         }
-        Err(ReactiveGraphClientExecutionError::GraphQlError(response.errors.unwrap_or(vec![])))
+        Err(ReactiveGraphClientExecutionError::GraphQlError(GraphQlErrors(response.errors.unwrap_or(vec![]))))
     }
 }

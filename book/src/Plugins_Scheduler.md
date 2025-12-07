@@ -34,16 +34,17 @@ milliseconds or as a string in [ISO 8601 Duration Format](https://en.wikipedia.o
 
 ### ISO 8601 Duration Format
 
-```admonish info "What is the ISO 8601 Duration Format?"
-Durations define the amount of intervening time in a time interval and are represented by the format
-`P[n]Y[n]M[n]DT[n]H[n]M[n]S` or `P[n]W`. In these representations, the `[n]` is replaced by the value
-for each of the date and time elements that follow the `[n]`. Leading zeros are not required, but the
-maximum number of digits for each element should be agreed to by the communicating parties. The
-capital letters `P`, `Y`, `M`, `W`, `D`, `T`, `H`, `M`, and `S` are designators for each of the date
-and time elements and are not replaced.
-
-[https://en.wikipedia.org/wiki/ISO_8601#Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)
-```
+> [!NOTE]
+> What is the ISO 8601 Duration Format?
+>
+> Durations define the amount of intervening time in a time interval and are represented by the format
+> `P[n]Y[n]M[n]DT[n]H[n]M[n]S` or `P[n]W`. In these representations, the `[n]` is replaced by the value
+> for each of the date and time elements that follow the `[n]`. Leading zeros are not required, but the
+> maximum number of digits for each element should be agreed to by the communicating parties. The
+> capital letters `P`, `Y`, `M`, `W`, `D`, `T`, `H`, `M`, and `S` are designators for each of the date
+> and time elements and are not replaced.
+>
+> [https://en.wikipedia.org/wiki/ISO_8601#Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)
 
 #### Designators
 

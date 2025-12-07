@@ -1,14 +1,7 @@
-use std::collections::HashMap;
-use std::fmt;
-use std::fmt::Display;
-use std::fmt::Formatter;
-use std::ops::Deref;
-use std::sync::Arc;
-use std::sync::RwLock;
-
 use crate::ReactiveEntity;
 use crate::ReactiveRelation;
 use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_behaviour_model_api::BehaviourTypeIds;
 use reactive_graph_behaviour_model_api::BehaviourTypesContainer;
 use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentContainer;
@@ -19,6 +12,9 @@ use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::FlowInstance;
 use reactive_graph_graph::Mutability;
+use reactive_graph_graph::Namespace;
+use reactive_graph_graph::NamespaceSegment;
+use reactive_graph_graph::NamespacedType;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyInstanceSetter;
@@ -27,12 +23,21 @@ use reactive_graph_graph::RelationInstance;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::TypeDefinition;
 use reactive_graph_graph::TypeDefinitionGetter;
+use reactive_graph_graph::TypeIdType;
 use reactive_graph_graph::instances::named::NamedInstanceContainer;
 use reactive_graph_reactive_model_api::ReactiveFlowConstructionError;
 use reactive_graph_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactiveInstanceUnidentifiable;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 use serde_json::Map;
 use serde_json::Value;
+use std::collections::HashMap;
+use std::fmt;
+use std::fmt::Display;
+use std::fmt::Formatter;
+use std::ops::Deref;
+use std::sync::Arc;
+use std::sync::RwLock;
 use uuid::Uuid;
 
 pub struct ReactiveFlowInstance {
@@ -210,87 +215,83 @@ impl TryFrom<FlowInstance> for ReactiveFlowInstance {
 }
 
 impl PropertyInstanceGetter for ReactiveFlowInstance {
-    fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.get_entity(self.id).and_then(|e| e.properties.get(&property_name.into()).map(|p| p.get()))
+    fn get(&self, property_name: &str) -> Option<Value> {
+        self.get_entity(self.id).and_then(|e| e.properties.get(property_name).map(|p| p.get()))
     }
 
-    fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.get_entity(self.id)
-            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_bool()))
+    fn as_bool(&self, property_name: &str) -> Option<bool> {
+        self.get_entity(self.id).and_then(|e| e.properties.get(property_name).and_then(|p| p.as_bool()))
     }
 
-    fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.get_entity(self.id)
-            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_u64()))
+    fn as_u64(&self, property_name: &str) -> Option<u64> {
+        self.get_entity(self.id).and_then(|e| e.properties.get(property_name).and_then(|p| p.as_u64()))
     }
 
-    fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.get_entity(self.id)
-            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_i64()))
+    fn as_i64(&self, property_name: &str) -> Option<i64> {
+        self.get_entity(self.id).and_then(|e| e.properties.get(property_name).and_then(|p| p.as_i64()))
     }
 
-    fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.get_entity(self.id)
-            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_f64()))
+    fn as_f64(&self, property_name: &str) -> Option<f64> {
+        self.get_entity(self.id).and_then(|e| e.properties.get(property_name).and_then(|p| p.as_f64()))
     }
 
-    fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
+    fn as_string(&self, property_name: &str) -> Option<String> {
         self.get_entity(self.id)
-            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_string()))
+            .and_then(|e| e.properties.get(property_name).and_then(|p| p.as_string()))
     }
 
-    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
+    fn as_array(&self, property_name: &str) -> Option<Vec<Value>> {
         self.get_entity(self.id)
-            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_array()))
+            .and_then(|e| e.properties.get(property_name).and_then(|p| p.as_array()))
     }
 
-    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
+    fn as_object(&self, property_name: &str) -> Option<Map<String, Value>> {
         self.get_entity(self.id)
-            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_object()))
+            .and_then(|e| e.properties.get(property_name).and_then(|p| p.as_object()))
     }
 }
 
 impl PropertyInstanceSetter for ReactiveFlowInstance {
-    fn set_checked<S: Into<String>>(&self, property_name: S, value: Value) {
+    fn set_checked(&self, property_name: &str, value: Value) {
         if let Some(instance) = self.get_entity(self.id) {
-            if let Some(instance) = instance.properties.get(&property_name.into()) {
+            if let Some(instance) = instance.properties.get(property_name) {
                 instance.set_checked(value);
             }
         }
     }
 
-    fn set<S: Into<String>>(&self, property_name: S, value: Value) {
+    fn set(&self, property_name: &str, value: Value) {
         if let Some(instance) = self.get_entity(self.id) {
-            if let Some(instance) = instance.properties.get(&property_name.into()) {
+            if let Some(instance) = instance.properties.get(property_name) {
                 instance.set(value);
             }
         }
     }
 
-    fn set_no_propagate_checked<S: Into<String>>(&self, property_name: S, value: Value) {
+    fn set_no_propagate_checked(&self, property_name: &str, value: Value) {
         if let Some(instance) = self.get_entity(self.id) {
-            if let Some(instance) = instance.properties.get(&property_name.into()) {
+            if let Some(instance) = instance.properties.get(property_name) {
                 instance.set_no_propagate_checked(value);
             }
         }
     }
 
-    fn set_no_propagate<S: Into<String>>(&self, property_name: S, value: Value) {
+    fn set_no_propagate(&self, property_name: &str, value: Value) {
         if let Some(instance) = self.get_entity(self.id) {
-            if let Some(instance) = instance.properties.get(&property_name.into()) {
+            if let Some(instance) = instance.properties.get(property_name) {
                 instance.set_no_propagate(value);
             }
         }
     }
 
-    fn mutability<S: Into<String>>(&self, property_name: S) -> Option<Mutability> {
+    fn mutability(&self, property_name: &str) -> Option<Mutability> {
         self.get_entity(self.id)
-            .and_then(|instance| instance.properties.get(&property_name.into()).map(|p| p.value().mutability))
+            .and_then(|instance| instance.properties.get(property_name).map(|p| p.value().mutability))
     }
 
-    fn set_mutability<S: Into<String>>(&self, property_name: S, mutability: Mutability) {
+    fn set_mutability(&self, property_name: &str, mutability: Mutability) {
         if let Some(instance) = self.get_entity(self.id) {
-            if let Some(mut property_instance) = instance.properties.get_mut(&property_name.into()) {
+            if let Some(mut property_instance) = instance.properties.get_mut(property_name) {
                 property_instance.set_mutability(mutability);
             }
         }
@@ -301,11 +302,19 @@ impl PropertyInstanceSetter for ReactiveFlowInstance {
 }
 
 impl NamespacedTypeGetter for ReactiveFlowInstance {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -314,11 +323,19 @@ impl TypeDefinitionGetter for ReactiveFlowInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
     }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::FlowType
+    }
 }
 
 impl TypeDefinitionGetter for &ReactiveFlowInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::FlowType
     }
 }
 
@@ -407,6 +424,8 @@ impl Deref for ReactiveFlow {
     }
 }
 
+impl ReactiveInstanceUnidentifiable for ReactiveFlow {}
+
 impl ReactiveInstance<Uuid> for ReactiveFlow {
     fn id(&self) -> Uuid {
         self.id
@@ -432,7 +451,7 @@ impl ReactivePropertyContainer for ReactiveFlow {
             .unwrap_or_default()
     }
 
-    fn add_property<S: Into<String>>(&self, name: S, mutability: Mutability, value: Value) {
+    fn add_property(&self, name: &str, mutability: Mutability, value: Value) {
         if let Some(wrapper_entity_instance) = self.get_wrapper_entity_instance() {
             wrapper_entity_instance.add_property(name, mutability, value);
         }
@@ -444,7 +463,7 @@ impl ReactivePropertyContainer for ReactiveFlow {
         }
     }
 
-    fn remove_property<S: Into<String>>(&self, name: S) {
+    fn remove_property(&self, name: &str) {
         if let Some(wrapper_entity_instance) = self.get_wrapper_entity_instance() {
             wrapper_entity_instance.remove_property(name);
         }
@@ -508,6 +527,12 @@ impl ComponentContainer for ReactiveFlow {
             .map(|wrapper_entity| wrapper_entity.is_a(ty))
             .unwrap_or_default()
     }
+
+    fn is_all(&self, tys: &ComponentTypeIds) -> bool {
+        self.get_wrapper_entity_instance()
+            .map(|wrapper_entity| wrapper_entity.is_all(&tys))
+            .unwrap_or_default()
+    }
 }
 
 impl BehaviourTypesContainer for ReactiveFlow {
@@ -534,80 +559,86 @@ impl BehaviourTypesContainer for ReactiveFlow {
             .map(|wrapper_entity| wrapper_entity.behaves_as(ty))
             .unwrap_or_default()
     }
+
+    fn behaves_as_all(&self, tys: &BehaviourTypeIds) -> bool {
+        self.get_wrapper_entity_instance()
+            .map(|wrapper_entity| wrapper_entity.behaves_as_all(tys))
+            .unwrap_or_default()
+    }
 }
 
 impl PropertyInstanceGetter for ReactiveFlow {
-    fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
+    fn get(&self, property_name: &str) -> Option<Value> {
         self.get_wrapper_entity_instance().and_then(|wrapper_entity| wrapper_entity.get(property_name))
     }
 
-    fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
+    fn as_bool(&self, property_name: &str) -> Option<bool> {
         self.get_wrapper_entity_instance()
             .and_then(|wrapper_entity| wrapper_entity.as_bool(property_name))
     }
 
-    fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
+    fn as_u64(&self, property_name: &str) -> Option<u64> {
         self.get_wrapper_entity_instance()
             .and_then(|wrapper_entity| wrapper_entity.as_u64(property_name))
     }
 
-    fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
+    fn as_i64(&self, property_name: &str) -> Option<i64> {
         self.get_wrapper_entity_instance()
             .and_then(|wrapper_entity| wrapper_entity.as_i64(property_name))
     }
 
-    fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
+    fn as_f64(&self, property_name: &str) -> Option<f64> {
         self.get_wrapper_entity_instance()
             .and_then(|wrapper_entity| wrapper_entity.as_f64(property_name))
     }
 
-    fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
+    fn as_string(&self, property_name: &str) -> Option<String> {
         self.get_wrapper_entity_instance()
             .and_then(|wrapper_entity| wrapper_entity.as_string(property_name))
     }
 
-    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
+    fn as_array(&self, property_name: &str) -> Option<Vec<Value>> {
         self.get_wrapper_entity_instance()
             .and_then(|wrapper_entity| wrapper_entity.as_array(property_name))
     }
 
-    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
+    fn as_object(&self, property_name: &str) -> Option<Map<String, Value>> {
         self.get_wrapper_entity_instance()
             .and_then(|wrapper_entity| wrapper_entity.as_object(property_name))
     }
 }
 
 impl PropertyInstanceSetter for ReactiveFlow {
-    fn set_checked<S: Into<String>>(&self, property_name: S, value: Value) {
+    fn set_checked(&self, property_name: &str, value: Value) {
         if let Some(wrapper_entity_instance) = self.get_wrapper_entity_instance() {
             wrapper_entity_instance.set_checked(property_name, value);
         }
     }
 
-    fn set<S: Into<String>>(&self, property_name: S, value: Value) {
+    fn set(&self, property_name: &str, value: Value) {
         if let Some(wrapper_entity_instance) = self.get_wrapper_entity_instance() {
             wrapper_entity_instance.set(property_name, value);
         }
     }
 
-    fn set_no_propagate_checked<S: Into<String>>(&self, property_name: S, value: Value) {
+    fn set_no_propagate_checked(&self, property_name: &str, value: Value) {
         if let Some(wrapper_entity_instance) = self.get_wrapper_entity_instance() {
             wrapper_entity_instance.set_no_propagate_checked(property_name, value);
         }
     }
 
-    fn set_no_propagate<S: Into<String>>(&self, property_name: S, value: Value) {
+    fn set_no_propagate(&self, property_name: &str, value: Value) {
         if let Some(wrapper_entity_instance) = self.get_wrapper_entity_instance() {
             wrapper_entity_instance.set_no_propagate(property_name, value);
         }
     }
 
-    fn mutability<S: Into<String>>(&self, property_name: S) -> Option<Mutability> {
+    fn mutability(&self, property_name: &str) -> Option<Mutability> {
         self.get_wrapper_entity_instance()
             .and_then(|wrapper_entity| wrapper_entity.mutability(property_name))
     }
 
-    fn set_mutability<S: Into<String>>(&self, property_name: S, mutability: Mutability) {
+    fn set_mutability(&self, property_name: &str, mutability: Mutability) {
         if let Some(wrapper_entity_instance) = self.get_wrapper_entity_instance() {
             wrapper_entity_instance.set_mutability(property_name, mutability);
         }
@@ -618,11 +649,19 @@ impl PropertyInstanceSetter for ReactiveFlow {
 }
 
 impl NamespacedTypeGetter for ReactiveFlow {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -630,6 +669,10 @@ impl NamespacedTypeGetter for ReactiveFlow {
 impl TypeDefinitionGetter for ReactiveFlow {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::FlowType
     }
 }
 

@@ -1,0 +1,26 @@
+[package]
+name = "reactive-graph-generator-schema-json"
+description = "Reactive Graph - Generator - Schema - JSON"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+readme = "../../../../README.md"
+
+[dependencies]
+anyhow = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+workspace_root = { workspace = true }
+
+reactive-graph-instance-system-json-schema = { version = "0.10.0", path = "../../../instance-system/json-schema" }
+reactive-graph-runtime-impl = { version = "0.10.0", path = "../../../runtime/impl" }
+reactive-graph-type-system-json-schema = { version = "0.10.0", path = "../../../type-system/json-schema" }
+
+[lib]
+crate-type = ["lib"]
+
+[lints]
+workspace = true

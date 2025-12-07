@@ -54,18 +54,17 @@ impl Lifecycle for EntityInstanceImportExportManagerImpl {}
 mod tests {
     use std::env;
 
-    use default_test::DefaultTest;
-
     use crate::InstanceSystemImpl;
     use reactive_graph_graph::EntityInstance;
     use reactive_graph_graph::EntityType;
     use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_graph::RandomNamespacedType;
     use reactive_graph_instance_system_api::InstanceSystem;
-    use reactive_graph_utils_test::DefaultFrom;
+    use reactive_graph_utils_test::DefaultTryFrom;
 
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
-    use reactive_graph_type_system_impl::TypeSystemImpl;
+    use reactive_graph_type_system_impl::TypeSystemSystemImpl;
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
     use reactive_graph_reactive_service_impl::ReactiveSystemImpl;
@@ -78,20 +77,19 @@ mod tests {
         reactive_graph_utils_test::init_logger();
         let instance_system = reactive_graph_di::get_container::<InstanceSystemImpl>();
         let reactive_system = instance_system.reactive_system();
-        let type_system = reactive_system.type_system();
+        let type_system = reactive_system.type_system_system();
         let entity_type_manager = type_system.get_entity_type_manager();
         let reactive_entity_manager = reactive_system.get_reactive_entity_manager();
         let entity_instance_import_export_manager = instance_system.get_entity_instance_import_export_manager();
 
-        let entity_type = entity_type_manager
-            .register(EntityType::default_test())
-            .expect("Failed to register entity type");
+        let entity_type = EntityType::random_type().unwrap();
+        let entity_type = entity_type_manager.register(entity_type).expect("Failed to register entity type");
 
         let mut path = env::temp_dir();
         path.push(format!("{}.json", entity_type.type_name()));
         let path = path.into_os_string().into_string().unwrap();
 
-        let entity_instance = EntityInstance::default_from(&entity_type);
+        let entity_instance = EntityInstance::default_try_from(&entity_type).expect("Failed to create random entity instance from an entity type.");
 
         let reactive_entity = reactive_entity_manager
             .create_reactive_instance(entity_instance.clone())
