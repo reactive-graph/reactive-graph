@@ -60,6 +60,12 @@ impl From<&BehaviourTypeId> for EntityBehaviourTypeId {
     }
 }
 
+impl From<&EntityTypeId> for EntityBehaviourTypeId {
+    fn from(entity_ty: &EntityTypeId) -> Self {
+        Self::new(entity_ty.clone(), NamespacedType::from(entity_ty).into())
+    }
+}
+
 impl Display for EntityBehaviourTypeId {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}{}{}", &self.entity_ty, NAMESPACE_SEPARATOR, &self.behaviour_ty)

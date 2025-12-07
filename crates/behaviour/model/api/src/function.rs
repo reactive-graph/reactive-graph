@@ -27,24 +27,25 @@ impl<ID: Clone, T: ReactiveInstance<ID>, FnType: Clone> BehaviourFunctions<ID, T
         Self(DashMap::new(), factory_creator)
     }
 
-    // pub fn with_namespace<N: Into<String>>(
-    //     namespace: N,
-    //     factory_creator: BehaviourFactoryCreator<ID, T, FnType>,
-    // ) -> NamespacedBehaviourFunctions<ID, T, FnType> {
-    //     NamespacedBehaviourFunctions::new(namespace, factory_creator)
-    // }
-
     pub fn behaviour_from_ty<B: Into<BehaviourTypeId>>(self, ty: B, f: FnType) -> Self {
         self.0.insert(ty.into(), f);
         self
     }
 
-    // TODO: use behaviour_from_ty instead!
-    //
-    // pub fn behaviour<N: Into<String>, TN: Into<String>>(self, namespace: N, type_name: TN, f: FnType) -> Self {
-    //     self.0.insert(BehaviourTypeId::new_from_type(namespace, type_name), f);
-    //     self
-    // }
+    pub fn component_behaviour_from_ty<B: Into<ComponentBehaviourTypeId>>(self, ty: B, f: FnType) -> Self {
+        self.0.insert(ty.into().behaviour_ty, f);
+        self
+    }
+
+    pub fn entity_behaviour_from_ty<B: Into<EntityBehaviourTypeId>>(self, ty: B, f: FnType) -> Self {
+        self.0.insert(ty.into().behaviour_ty, f);
+        self
+    }
+
+    pub fn relation_behaviour_from_ty<B: Into<RelationBehaviourTypeId>>(self, ty: B, f: FnType) -> Self {
+        self.0.insert(ty.into().behaviour_ty, f);
+        self
+    }
 
     pub fn get(&self) -> BehaviourFunctionsReadOnlyView<ID, T, FnType> {
         self.into()
@@ -87,30 +88,6 @@ impl<ID: Clone, T: ReactiveInstance<ID>, FnType: Clone> Deref for BehaviourFunct
 impl<ID: Clone, T: ReactiveInstance<ID>, FnType: Clone> From<&BehaviourFunctions<ID, T, FnType>> for BehaviourFunctionsReadOnlyView<ID, T, FnType> {
     fn from(bf: &BehaviourFunctions<ID, T, FnType>) -> Self {
         Self(bf.0.clone().into_read_only(), bf.1)
-    }
-}
-
-pub struct NamespacedBehaviourFunctions<ID: Clone, T: ReactiveInstance<ID>, FnType: Clone>(String, BehaviourFunctions<ID, T, FnType>);
-
-impl<ID: Clone, T: ReactiveInstance<ID>, FnType: Clone> NamespacedBehaviourFunctions<ID, T, FnType> {
-    pub fn new<N: Into<String>>(namespace: N, factory_creator: BehaviourFactoryCreator<ID, T, FnType>) -> Self {
-        Self(namespace.into(), BehaviourFunctions::new(factory_creator))
-    }
-
-    // TODO: TODO: TODO:
-    // pub fn behaviour<TN: Into<String>>(self, type_name: TN, f: FnType) -> Self {
-    //     self.1.0.insert(BehaviourTypeId::new_from_type(self.0.clone(), type_name), f);
-    //     self
-    // }
-
-    pub fn get(&self) -> BehaviourFunctionsReadOnlyView<ID, T, FnType> {
-        self.1.get()
-    }
-}
-
-impl<ID: Clone, T: ReactiveInstance<ID>, FnType: Clone> From<NamespacedBehaviourFunctions<ID, T, FnType>> for BehaviourFunctions<ID, T, FnType> {
-    fn from(f: NamespacedBehaviourFunctions<ID, T, FnType>) -> Self {
-        f.1
     }
 }
 
