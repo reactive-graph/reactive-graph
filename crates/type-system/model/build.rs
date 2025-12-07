@@ -17,6 +17,8 @@ use std::str::FromStr;
 
 const CARGO_MANIFEST_DIR: &str = env!("CARGO_MANIFEST_DIR");
 
+const TYPE_SYSTEM_NAMESPACE: &str = "reactive_graph::type_system";
+
 fn main() -> anyhow::Result<()> {
     println!("cargo::rerun-if-changed={}", TYPES_DIRECTORY);
     let types_path = PathBuf::from(CARGO_MANIFEST_DIR).join(TYPES_DIRECTORY);
@@ -40,7 +42,7 @@ fn generate_docs(type_system: &TypeSystem, resolver: &TypeResolver) -> anyhow::R
 fn codegen(type_system: &TypeSystem, resolver: &TypeResolver) -> anyhow::Result<()> {
     let src_path = PathBuf::from(CARGO_MANIFEST_DIR).join(SRC_DIRECTORY);
     let config = CodeGenerationConfig::new(src_path)
-        .id(Namespace::from_str("reactive_graph::type_system")?)
+        .id(Namespace::from_str(TYPE_SYSTEM_NAMESPACE)?)
         .enable_builders()
         .ignore_formatter_errors();
     type_system.generate_types_for_target(Rust, &config, resolver)?;
