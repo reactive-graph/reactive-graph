@@ -41,7 +41,6 @@ fn codegen(type_system: &TypeSystem, resolver: &TypeResolver) -> anyhow::Result<
     let config = CodeGenerationConfig::new(src_path)
         .id(Namespace::from_str("reactive_graph::core")?)
         .enable_builders();
-    // .ignore_formatter_errors();
     type_system.generate_types_for_target(Rust, &config, resolver)?;
     config.as_ref().try_exists()?;
     Ok(())
