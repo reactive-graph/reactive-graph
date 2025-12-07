@@ -1,6 +1,7 @@
 use reactive_graph_generator_codegen::CodeGenerationTargets::Rust;
 use reactive_graph_generator_codegen::GenerateTypeSystemTypesForTarget;
 use reactive_graph_generator_codegen::SRC_DIRECTORY;
+use reactive_graph_generator_codegen::TYPES_DIRECTORY;
 use reactive_graph_generator_codegen::config::CodeGenerationConfig;
 use reactive_graph_generator_documentation::DOCS_DIRECTORY;
 use reactive_graph_generator_documentation::types::collections::GenerateTypeSystemDocumentations;
@@ -16,13 +17,12 @@ use std::str::FromStr;
 
 const CARGO_MANIFEST_DIR: &str = env!("CARGO_MANIFEST_DIR");
 const CARGO_CRATE_NAME: &str = env!("CARGO_CRATE_NAME");
-const TYPES_DIR: &str = "types";
 
 const TYPE_SYSTEM_NAMESPACE: &str = "reactive_graph::generator";
 
 fn main() -> anyhow::Result<()> {
     println!("cargo:rerun-if-changed=types");
-    let types_path = PathBuf::from(CARGO_MANIFEST_DIR).join(TYPES_DIR);
+    let types_path = PathBuf::from(CARGO_MANIFEST_DIR).join(TYPES_DIRECTORY);
     let type_system = TypeSystem::import(types_path)?;
     type_system.merge_own_component_properties()?;
     let resolver = TypeResolver::new();
