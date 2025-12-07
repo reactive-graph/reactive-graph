@@ -234,32 +234,11 @@ macro_rules! construct_plugin {
             context
         }
 
-        pub fn component_provider_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::ComponentProviderRegistry + Send + Sync> {
+        pub fn type_system_provider_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::TypeSystemProviderRegistry + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
-            context.get_component_provider_registry()
-        }
-
-        pub fn entity_types_provider_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::EntityTypeProviderRegistry + Send + Sync> {
-            let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
-                panic!("The plugin context is uninitialized!");
-            };
-            context.get_entity_type_provider_registry()
-        }
-
-        pub fn relation_types_provider_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::RelationTypeProviderRegistry + Send + Sync> {
-            let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
-                panic!("The plugin context is uninitialized!");
-            };
-            context.get_relation_type_provider_registry()
-        }
-
-        pub fn flow_types_provider_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::FlowTypeProviderRegistry + Send + Sync> {
-            let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
-                panic!("The plugin context is uninitialized!");
-            };
-            context.get_flow_type_provider_registry()
+            context.get_type_system_provider_registry()
         }
 
         pub fn entity_behaviour_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::EntityBehaviourRegistry + Send + Sync> {
