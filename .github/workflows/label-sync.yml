@@ -10,7 +10,7 @@ jobs:
   label_sync:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           sparse-checkout: .github/labels.yml
       - uses: EndBug/label-sync@v2

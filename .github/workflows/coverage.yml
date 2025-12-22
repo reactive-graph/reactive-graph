@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: VCS Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Install latest nightly
         uses: dtolnay/rust-toolchain@master
         with:

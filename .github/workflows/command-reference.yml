@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: VCS Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Deploy command reference to docs.reactive-graph.io
         uses: peaceiris/actions-gh-pages@v4
         if: ${{ github.ref == 'refs/heads/main' }}
