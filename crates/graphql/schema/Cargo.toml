@@ -10,6 +10,7 @@ rust-version.workspace = true
 readme = "../../../README.md"
 
 [dependencies]
+async-stream = { workspace = true }
 async-trait = { workspace = true }
 async-graphql = { workspace = true, features = ["uuid"] }
 crossbeam = { workspace = true }
