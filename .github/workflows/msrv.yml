@@ -34,7 +34,7 @@ jobs:
         with:
           toolchain: nightly-2025-08-05
       - name: Install cargo msrv
-        uses: taiki-e/cache-cargo-install-action@v2
+        uses: taiki-e/cache-cargo-install-action@v3
         with:
           tool: cargo-msrv@0.16.0-beta.25
       - name: Version of cargo msrv
