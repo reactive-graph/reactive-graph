@@ -37,7 +37,7 @@ jobs:
           toolchain: nightly-2025-08-05
           components: rustfmt, rust-src
       - name: Install tarpaulin
-        uses: taiki-e/cache-cargo-install-action@v2
+        uses: taiki-e/cache-cargo-install-action@v3
         with:
           tool: tarpaulin
       - name: Cache dependencies

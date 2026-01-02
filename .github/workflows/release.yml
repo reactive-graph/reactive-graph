@@ -192,7 +192,7 @@ jobs:
         with:
           toolchain: stable
       - name: Install bindgen-cli
-        uses: taiki-e/cache-cargo-install-action@v2
+        uses: taiki-e/cache-cargo-install-action@v3
         with:
           tool: bindgen-cli
         if: |
@@ -254,7 +254,7 @@ jobs:
   #        with:
   #          toolchain: stable
   #      - name: Install cargo-workspaces
-  #        uses: taiki-e/cache-cargo-install-action@v2
+  #        uses: taiki-e/cache-cargo-install-action@v3
   #        with:
   #          tool: cargo-workspaces
   #      - name: Publish on crates.io
@@ -362,7 +362,7 @@ jobs:
         with:
           toolchain: stable
       - name: Install Cargo Deb
-        uses: taiki-e/cache-cargo-install-action@v2
+        uses: taiki-e/cache-cargo-install-action@v3
         with:
           tool: cargo-deb
       - name: Install cross-compilation tools
