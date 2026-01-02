@@ -18,6 +18,7 @@ use reactive_graph_graph::Components;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::Extensions;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::Namespaces;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypes;
@@ -39,34 +40,31 @@ pub trait ComponentManager: Send + Sync + Lifecycle {
     fn get_namespaces(&self) -> Namespaces;
 
     /// Returns all components of the given namespace.
-    fn get_by_namespace(&self, namespace: &str) -> Components;
+    fn get_by_namespace(&self, namespace: &Namespace) -> Components;
 
     /// Returns all component types of the given namespace.
-    fn get_types_by_namespace(&self, namespace: &str) -> ComponentTypeIds;
+    fn get_types_by_namespace(&self, namespace: &Namespace) -> ComponentTypeIds;
 
     /// Returns true, if a component with the given type exists.
     fn has(&self, ty: &ComponentTypeId) -> bool;
 
-    /// Returns true, if a component with the given fully qualified name exists.
-    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool;
+    /// Returns true, if all components with the given types exist.
+    fn has_all(&self, tys: &ComponentTypeIds) -> bool;
 
     /// Returns the component with the given name or empty.
     fn get(&self, ty: &ComponentTypeId) -> Option<Component>;
-
-    /// Returns the component with the given fully qualified name or empty.
-    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<Component>;
 
     /// Returns the components with the given types.
     fn get_by_types(&self, tys: ComponentTypeIds) -> Components;
 
     /// Returns all components whose type names matches the given search string.
-    fn find_by_type_name(&self, search: &str) -> Components;
+    fn find(&self, search: &str) -> Components;
 
     /// Returns the count of components.
     fn count(&self) -> usize;
 
     /// Returns the count of components of the given namespace.
-    fn count_by_namespace(&self, namespace: &str) -> usize;
+    fn count_by_namespace(&self, namespace: &Namespace) -> usize;
 
     /// Creates a new component of the given type with the description, properties and extensions.
     fn create_component(

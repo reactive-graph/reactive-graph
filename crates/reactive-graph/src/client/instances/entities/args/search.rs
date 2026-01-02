@@ -1,11 +1,14 @@
 use crate::client::instances::properties::args::parse_property;
 use crate::client::types::components::args::parse_component_ty;
-use crate::client::types::entities::args::type_id::EntityTypeIdOptions;
+use crate::client::types::entities::args::parse_entity_ty;
 use clap::Args;
-use reactive_graph_client::ComponentTypeIds;
 use reactive_graph_client::PropertyInstanceDefinitions;
 use reactive_graph_client::client::instances::entities::variables::search::variables::SearchEntityInstancesVariables;
 use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::ComponentTypeIds;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::NamespacedTypeIdContainer;
 use reactive_graph_graph::PropertyInstances;
 use serde_json::Value;
 use uuid::Uuid;
@@ -13,9 +16,9 @@ use uuid::Uuid;
 /// CLI argument for searching entity instances.
 #[derive(Args, Debug, Clone)]
 pub(crate) struct SearchEntityInstancesArgs {
-    /// The entity type.
-    #[clap(flatten)]
-    pub ty: EntityTypeIdOptions,
+    /// The fully qualified namespace of the entity type.
+    #[clap(long, name = "entity_type", value_parser = parse_entity_ty)]
+    pub entity_ty: Option<EntityTypeId>,
 
     /// The id of the entity instance.
     #[clap(short, long)]
@@ -35,32 +38,42 @@ pub(crate) struct SearchEntityInstancesArgs {
 }
 
 impl SearchEntityInstancesArgs {
-    pub fn properties(&self) -> PropertyInstances {
+    fn properties(&self) -> Option<PropertyInstances> {
         match &self.properties {
-            None => PropertyInstances::new(),
-            Some(properties) => properties.iter().map(|(name, value)| (name.clone(), value.clone())).collect(),
+            None => None,
+            Some(properties) => Some(properties.iter().map(|(name, value)| (name.clone(), value.clone())).collect()),
         }
     }
 
-    pub fn components(&self) -> ComponentTypeIds {
+    fn components(&self) -> Option<ComponentTypeIds> {
         match &self.components {
-            None => ComponentTypeIds::new(),
-            Some(components) => ComponentTypeIds(components.iter().map(|ty| ty.clone().into()).collect()),
+            None => None,
+            Some(components) => Some(ComponentTypeIds::from_iter(components.iter().map(|ty| ty.clone()))),
         }
+        // self.components
+        //     .clone()
+        //     .map(|components| ComponentTypeIds::from_iter(components.iter().map(|ty| ty.clone())))
     }
 }
 
 impl From<&SearchEntityInstancesArgs> for SearchEntityInstancesVariables {
-    fn from(search: &SearchEntityInstancesArgs) -> Self {
-        let ty: Option<reactive_graph_graph::EntityTypeId> = search.ty.clone().into();
-        let properties: PropertyInstanceDefinitions = search.properties().into();
-        let components: ComponentTypeIds = search.components();
-        SearchEntityInstancesVariables::builder()
-            .ty(ty.map(From::from))
-            .id(search.id.map(From::from))
-            .label(search.label.clone())
-            .properties(Some(properties.0))
-            .components(Some(components.0))
-            .build()
+    fn from(args: &SearchEntityInstancesArgs) -> Self {
+        SearchEntityInstancesVariables {
+            _type: args.entity_ty.clone().map(|relation_ty| relation_ty.namespace().to_string()),
+            id: args.id.map(From::from),
+            label: args.label.clone(),
+            properties: args.properties().map(|properties| PropertyInstanceDefinitions::from(properties).0),
+            components: args.components().map(|components| components.into_fully_qualified_namespaces()),
+        }
+        // let ty: Option<reactive_graph_graph::EntityTypeId> = search.ty.clone().into();
+        // let properties: PropertyInstanceDefinitions = search.properties().into();
+        // let components: ComponentTypeIds = search.components();
+        // SearchEntityInstancesVariables::builder()
+        //     .ty(ty.map(From::from))
+        //     .id(search.id.map(From::from))
+        //     .label(search.label.clone())
+        //     .properties(Some(properties.0))
+        //     .components(Some(components.0))
+        //     .build()
     }
 }

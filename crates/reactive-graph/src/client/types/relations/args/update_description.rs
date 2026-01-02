@@ -1,23 +1,13 @@
-use crate::client::types::relations::args::type_id::RelationTypeIdArgs;
+use crate::client::types::relations::args::parse_relation_ty;
 use clap::Args;
-use reactive_graph_client::types::common::variables::update_description::variables::UpdateDescriptionVariables;
+use reactive_graph_graph::RelationTypeId;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct RelationTypeUpdateDescriptionArgs {
-    /// The relation type.
-    #[clap(flatten)]
-    pub ty: RelationTypeIdArgs,
+    /// The fully qualified namespace of the relation type.
+    #[clap(name = "relation_type", value_parser = parse_relation_ty)]
+    pub relation_ty: RelationTypeId,
 
     /// The description to update.
     pub description: String,
-}
-
-impl From<&RelationTypeUpdateDescriptionArgs> for UpdateDescriptionVariables {
-    fn from(args: &RelationTypeUpdateDescriptionArgs) -> Self {
-        UpdateDescriptionVariables {
-            namespace: args.ty.namespace.clone(),
-            name: args.ty.name.clone(),
-            description: args.description.clone(),
-        }
-    }
 }

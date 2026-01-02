@@ -4,11 +4,11 @@ use clap::Parser;
 #[derive(Debug, Parser)]
 pub struct RepositoryArgs {
     /// The repository owner.
-    #[clap(short, long)]
+    #[clap(short = 'o', long)]
     repository_owner: Option<String>,
 
     /// The repository name.
-    #[clap(short, long)]
+    #[clap(short = 'r', long)]
     repository_name: Option<String>,
 }
 

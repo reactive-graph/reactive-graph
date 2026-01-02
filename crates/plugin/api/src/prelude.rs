@@ -13,7 +13,7 @@ pub mod plugin {
     pub use crate::PluginActivationError;
     pub use crate::PluginContext;
     pub use crate::PluginDeactivationError;
-    pub use crate::TypeProvider;
+    // pub use crate::TypeProvider;
     pub use crate::WebResourceProvider;
     pub use crate::component_alias;
     pub use crate::export_plugin;
@@ -27,9 +27,6 @@ pub mod providers {
     pub use reactive_graph_graph::RelationTypes;
 
     pub use crate::Component;
-    pub use crate::ComponentProviderRegistry;
-    pub use crate::EntityTypeProviderRegistry;
-    pub use crate::FlowTypeProviderRegistry;
-    pub use crate::RelationTypeProviderRegistry;
-    pub use crate::TypeProvider;
+    // pub use crate::TypeProvider;
+    pub use crate::TypeSystemProviderRegistry;
 }

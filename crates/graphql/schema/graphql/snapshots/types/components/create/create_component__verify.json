@@ -2,8 +2,7 @@
   "types": {
     "components": [
       {
-        "namespace": "hurtz",
-        "name": "hurtz"
+        "type": "hurtz::Hurtz"
       }
     ]
   }

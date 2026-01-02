@@ -15,7 +15,7 @@ pub mod queries {
     #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Instances", variables = "SearchFlowInstancesVariables")]
     pub struct SearchFlowInstancesInstances {
-        #[arguments(type: $ty, id: $id, label: $label)]
+        #[arguments(type: $_type, id: $id, label: $label)]
         pub flows: Vec<FlowInstance>,
     }
 

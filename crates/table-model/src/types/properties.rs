@@ -2,13 +2,13 @@ use crate::container::TableInlineFormat;
 use crate::container::TableInlineFormatSetter;
 use crate::container::TableOptions;
 use crate::styles::modern_inline::modern_inline;
-use crate::types::data_type::DataType;
 use crate::types::extension::Extension;
 use crate::types::extension::Extensions;
 use crate::types::extension::display_extensions_html_inline;
 use crate::types::extension::display_extensions_inline_str;
-use crate::types::mutability::Mutability;
-use crate::types::socket_type::SocketType;
+use reactive_graph_graph::DataType;
+use reactive_graph_graph::Mutability;
+use reactive_graph_graph::SocketType;
 use std::fmt;
 use std::fmt::Formatter;
 use table_to_html::HtmlTable;
@@ -60,18 +60,19 @@ impl TableInlineFormatSetter for PropertyType {
     }
 }
 
-impl From<PropertyType> for reactive_graph_graph::PropertyType {
-    fn from(property_type: PropertyType) -> Self {
-        reactive_graph_graph::PropertyType {
-            name: property_type.name,
-            description: property_type.description,
-            data_type: property_type.data_type.into(),
-            socket_type: property_type.socket_type.into(),
-            mutability: property_type.mutability.into(),
-            extensions: Extensions(property_type.extensions).into(),
-        }
-    }
-}
+// impl From<PropertyType> for reactive_graph_graph::PropertyType {
+//     fn from(property_type: PropertyType) -> Self {
+//         let extensions: Extensions = property_type.extensions.iter().map(|e| e.).collect();
+//         reactive_graph_graph::PropertyType {
+//             name: property_type.name,
+//             description: property_type.description,
+//             data_type: property_type.data_type.into(),
+//             socket_type: property_type.socket_type.into(),
+//             mutability: property_type.mutability.into(),
+//             extensions, // : Extensions(property_type.extensions).into()
+//         }
+//     }
+// }
 
 impl From<reactive_graph_graph::PropertyType> for PropertyType {
     fn from(property_type: reactive_graph_graph::PropertyType) -> Self {
@@ -120,11 +121,11 @@ pub fn display_property_types_html_inline(property_types: &[PropertyType]) -> St
 #[derive(Clone, Debug)]
 pub struct PropertyTypes(pub Vec<PropertyType>);
 
-impl From<PropertyTypes> for reactive_graph_graph::PropertyTypes {
-    fn from(property_types: PropertyTypes) -> Self {
-        property_types.0.into_iter().map(|property_type| property_type.into()).collect()
-    }
-}
+// impl From<PropertyTypes> for reactive_graph_graph::PropertyTypes {
+//     fn from(property_types: PropertyTypes) -> Self {
+//         property_types.0.into_iter().map(|property_type| property_type.into()).collect()
+//     }
+// }
 
 impl From<reactive_graph_graph::PropertyTypes> for PropertyTypes {
     fn from(property_types: reactive_graph_graph::PropertyTypes) -> Self {

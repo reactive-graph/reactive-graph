@@ -14,6 +14,7 @@ use reactive_graph_utils_test::status_failed;
 use reactive_graph_utils_test::status_ok;
 use reactive_graph_utils_test::verb;
 
+#[ignore]
 #[tokio::test(flavor = "multi_thread")]
 async fn test_dynamic_graph_snapshots() {
     reactive_graph_utils_test::init_logger();

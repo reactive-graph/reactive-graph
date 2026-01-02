@@ -18,12 +18,7 @@ pub mod queries {
     #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Types", variables = "TypeIdVariables")]
     pub struct GetRelationTypeByTypeTypes {
-        #[arguments(
-          type: {
-            namespace: $namespace,
-            name: $name
-          }
-        )]
+        #[arguments(type: $_type)]
         pub relations: Vec<RelationType>,
     }
 

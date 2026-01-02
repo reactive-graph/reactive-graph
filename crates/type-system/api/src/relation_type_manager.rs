@@ -3,12 +3,14 @@ use springtime_di::injectable;
 
 use crate::RelationTypeCreationError;
 use crate::RelationTypeRegistrationError;
-use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::ComponentTypeIds;
+use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::Extensions;
+use reactive_graph_graph::InboundOutboundType;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::Namespaces;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypes;
@@ -19,6 +21,7 @@ use reactive_graph_graph::RelationTypeAddPropertyError;
 use reactive_graph_graph::RelationTypeId;
 use reactive_graph_graph::RelationTypeIds;
 use reactive_graph_graph::RelationTypeMergeError;
+use reactive_graph_graph::RelationTypeOutboundInboundError;
 use reactive_graph_graph::RelationTypeRemoveComponentError;
 use reactive_graph_graph::RelationTypeRemoveExtensionError;
 use reactive_graph_graph::RelationTypeRemovePropertyError;
@@ -43,48 +46,54 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
     fn get_namespaces(&self) -> Namespaces;
 
     /// Returns all relation types of the given namespace
-    fn get_by_namespace(&self, namespace: &str) -> RelationTypes;
+    fn get_by_namespace(&self, namespace: &Namespace) -> RelationTypes;
 
     /// Returns all relation types of the given namespace
-    fn get_types_by_namespace(&self, namespace: &str) -> RelationTypeIds;
+    fn get_types_by_namespace(&self, namespace: &Namespace) -> RelationTypeIds;
 
     /// Returns all relation types of the given namespace
     fn get_by_having_component(&self, component_ty: &ComponentTypeId) -> RelationTypes;
 
+    /// Returns outbound relation types for the given outbound type.
+    fn get_outbound_relation_types(&self, outbound_ty: &InboundOutboundType, wildcard: bool) -> RelationTypes;
+
     /// Returns outbound relation types for the given entity type.
-    fn get_outbound_relation_types(&self, outbound_ty: &ComponentOrEntityTypeId, wildcard: bool) -> RelationTypes;
+    fn get_outbound_relation_types_by_entity_type(&self, outbound_ty: &EntityTypeId) -> Result<RelationTypes, RelationTypeOutboundInboundError>;
+
+    /// Returns the count of outbound relation types for the given entity type.
+    fn count_outbound_relation_types_by_entity_type(&self, outbound_ty: &EntityTypeId) -> Result<usize, RelationTypeOutboundInboundError>;
+
+    /// Returns inbound relation types for the given inbound type.
+    fn get_inbound_relation_types(&self, inbound_ty: &InboundOutboundType, wildcard: bool) -> RelationTypes;
 
     /// Returns inbound relation types for the given entity type.
-    fn get_inbound_relation_types(&self, inbound_ty: &ComponentOrEntityTypeId, wildcard: bool) -> RelationTypes;
+    fn get_inbound_relation_types_by_entity_type(&self, inbound_ty: &EntityTypeId) -> Result<RelationTypes, RelationTypeOutboundInboundError>;
+
+    /// Returns the count of inbound relation types for the given entity type.
+    fn count_inbound_relation_types_by_entity_type(&self, inbound_ty: &EntityTypeId) -> Result<usize, RelationTypeOutboundInboundError>;
 
     /// Returns true, if a relation type with the given name exists.
     fn has(&self, ty: &RelationTypeId) -> bool;
 
-    /// Returns true, if a relation type with the given fully qualified name exists.
-    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool;
-
     /// Returns the relation type with the given name.
     fn get(&self, ty: &RelationTypeId) -> Option<RelationType>;
 
-    /// Returns the relation type with the given fully qualified name.
-    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<RelationType>;
-
     /// Returns all relation types whose names matches the given search string.
-    fn find_by_type_name(&self, search: &str) -> RelationTypes;
+    fn find(&self, search: &str) -> RelationTypes;
 
     /// Returns the count of relation types.
     fn count(&self) -> usize;
 
     /// Returns the count of relation types of the given namespace.
-    fn count_by_namespace(&self, namespace: &str) -> usize;
+    fn count_by_namespace(&self, namespace: &Namespace) -> usize;
 
     /// Creates a new relation type.
     #[allow(clippy::too_many_arguments)]
     fn create_relation_type(
         &self,
-        outbound_type: &ComponentOrEntityTypeId,
+        outbound_type: &InboundOutboundType,
         ty: &RelationTypeId,
-        inbound_type: &ComponentOrEntityTypeId,
+        inbound_type: &InboundOutboundType,
         description: &str,
         components: ComponentTypeIds,
         properties: PropertyTypes,

@@ -42,6 +42,8 @@ reactive-graph-remotes-impl = { version = "0.10.0", path = "../../remotes/impl" 
 reactive-graph-remotes-model = { version = "0.10.0", path = "../../remotes/model" }
 reactive-graph-dynamic-graph-api = { version = "0.10.0", path = "../../dynamic-graph/api" }
 reactive-graph-dynamic-graph-impl = { version = "0.10.0", path = "../../dynamic-graph/impl" }
+reactive-graph-flow-api = { version = "0.10.0", path = "../../flow/api" }
+reactive-graph-flow-impl = { version = "0.10.0", path = "../../flow/impl" }
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 reactive-graph-graphql-api = { version = "0.10.0", path = "../../graphql/api" }
 reactive-graph-graphql-impl = { version = "0.10.0", path = "../../graphql/impl" }

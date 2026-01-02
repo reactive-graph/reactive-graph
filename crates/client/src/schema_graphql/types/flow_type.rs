@@ -1,37 +1,17 @@
 use crate::schema_graphql::instances::entity_instance::EntityInstance;
+use crate::schema_graphql::instances::entity_instance::EntityInstances;
 use crate::schema_graphql::instances::relation_instance::RelationInstance;
+use crate::schema_graphql::instances::relation_instance::RelationInstances;
 use crate::schema_graphql::types::extension::Extension;
 use crate::schema_graphql::types::extension::Extensions;
 use crate::schema_graphql::types::property_type::PropertyType;
 use crate::schema_graphql::types::property_type::PropertyTypes;
-use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::FlowTypeId;
+use reactive_graph_graph::InvalidFlowTypeError;
+use reactive_graph_graph::NamespacedTypeParseError;
 use serde_json::Value;
 use std::ops::Deref;
-
-#[derive(cynic::InputObject, Clone, Debug)]
-#[cynic(
-    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
-    schema_module = "crate::schema_graphql::schema"
-)]
-pub struct FlowTypeId {
-    pub name: String,
-    pub namespace: String,
-}
-
-impl From<reactive_graph_graph::FlowTypeId> for FlowTypeId {
-    fn from(ty: reactive_graph_graph::FlowTypeId) -> Self {
-        FlowTypeId {
-            name: ty.type_name(),
-            namespace: ty.namespace(),
-        }
-    }
-}
-
-impl From<FlowTypeId> for reactive_graph_graph::FlowTypeId {
-    fn from(ty: FlowTypeId) -> Self {
-        reactive_graph_graph::FlowTypeId::new_from_type(ty.namespace.clone(), ty.name.clone())
-    }
-}
+use std::str::FromStr;
 
 #[derive(cynic::QueryFragment, Clone, Debug)]
 #[cynic(
@@ -39,11 +19,9 @@ impl From<FlowTypeId> for reactive_graph_graph::FlowTypeId {
     schema_module = "crate::schema_graphql::schema"
 )]
 pub struct FlowType {
-    /// The namespace of the flow type.
-    pub namespace: String,
-
-    /// The type name of the flow type.
-    pub name: String,
+    /// The fully qualified namespace of the flow type.
+    #[cynic(rename = "type")]
+    pub _type: String,
 
     /// Textual description of the flow type.
     pub description: String,
@@ -68,33 +46,27 @@ pub struct FlowType {
 }
 
 impl FlowType {
-    pub fn ty(&self) -> FlowTypeId {
-        FlowTypeId {
-            namespace: self.namespace.clone(),
-            name: self.name.clone(),
-        }
+    pub fn ty(&self) -> Result<FlowTypeId, NamespacedTypeParseError> {
+        FlowTypeId::from_str(&self._type)
     }
 }
 
-impl From<FlowType> for reactive_graph_graph::FlowType {
-    fn from(flow_type: FlowType) -> Self {
-        reactive_graph_graph::FlowType {
-            ty: flow_type.ty().into(),
+impl TryFrom<FlowType> for reactive_graph_graph::FlowType {
+    type Error = InvalidFlowTypeError;
+
+    fn try_from(flow_type: FlowType) -> Result<Self, Self::Error> {
+        Ok(reactive_graph_graph::FlowType {
+            ty: flow_type.ty().map_err(InvalidFlowTypeError::InvalidFlowType)?,
             description: flow_type.description,
-            wrapper_entity_instance: flow_type.wrapper_entity_instance.into(),
-            entity_instances: flow_type
-                .entity_instances
-                .into_iter()
-                .map(|entity_instance: EntityInstance| entity_instance.into())
-                .collect(),
-            relation_instances: flow_type
-                .relation_instances
-                .into_iter()
-                .map(|relation_instance| relation_instance.into())
-                .collect(),
-            variables: PropertyTypes(flow_type.variables).into(),
-            extensions: Extensions(flow_type.extensions).into(),
-        }
+            wrapper_entity_instance: reactive_graph_graph::EntityInstance::try_from(flow_type.wrapper_entity_instance)
+                .map_err(InvalidFlowTypeError::InvalidEntityInstance)?,
+            entity_instances: reactive_graph_graph::EntityInstances::try_from(EntityInstances(flow_type.entity_instances))
+                .map_err(InvalidFlowTypeError::InvalidEntityInstance)?,
+            relation_instances: reactive_graph_graph::RelationInstances::try_from(RelationInstances(flow_type.relation_instances))
+                .map_err(InvalidFlowTypeError::InvalidRelationInstance)?,
+            variables: reactive_graph_graph::PropertyTypes::try_from(PropertyTypes(flow_type.variables)).map_err(InvalidFlowTypeError::InvalidVariable)?,
+            extensions: reactive_graph_graph::Extensions::try_from(Extensions(flow_type.extensions)).map_err(InvalidFlowTypeError::InvalidExtension)?,
+        })
     }
 }
 
@@ -108,8 +80,14 @@ impl Deref for FlowTypes {
     }
 }
 
-impl From<FlowTypes> for Vec<reactive_graph_graph::FlowType> {
-    fn from(flow_types: FlowTypes) -> Self {
-        flow_types.0.into_iter().map(From::from).collect()
+impl TryFrom<FlowTypes> for reactive_graph_graph::FlowTypes {
+    type Error = InvalidFlowTypeError;
+
+    fn try_from(flow_types: FlowTypes) -> Result<Self, Self::Error> {
+        let flow_types_2 = reactive_graph_graph::FlowTypes::new();
+        for flow_type in flow_types.0 {
+            flow_types_2.push(reactive_graph_graph::FlowType::try_from(flow_type)?);
+        }
+        Ok(flow_types_2)
     }
 }

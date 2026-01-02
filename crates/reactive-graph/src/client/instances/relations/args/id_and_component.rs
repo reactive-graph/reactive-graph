@@ -1,7 +1,8 @@
 use crate::client::error::CommandError;
 use crate::client::instances::relations::args::id::RelationInstanceIdArgs;
-use crate::client::types::components::args::type_id::ComponentContainerTypeIdArgs;
+use crate::client::types::components::args::parse_component_ty;
 use clap::Args;
+use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::RelationInstanceId;
 
 /// Identifies a component of a relation instance.
@@ -11,9 +12,9 @@ pub(crate) struct RelationInstanceIdAndComponentArgs {
     #[clap(flatten)]
     pub id: RelationInstanceIdArgs,
 
-    /// The component type of the reactive instance.
-    #[clap(flatten)]
-    pub component_ty: ComponentContainerTypeIdArgs,
+    /// The fully qualified namespace of the component.
+    #[clap(name = "component", value_parser = parse_component_ty)]
+    pub component_ty: ComponentTypeId,
 }
 
 impl RelationInstanceIdAndComponentArgs {

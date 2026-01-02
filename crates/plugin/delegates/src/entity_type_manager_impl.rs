@@ -15,6 +15,7 @@ use reactive_graph_graph::EntityTypes;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::Extensions;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypes;
 use reactive_graph_type_system_api::EntityTypeCreationError;
@@ -33,7 +34,7 @@ impl reactive_graph_plugin_api::EntityTypeManager for EntityTypeManagerDelegate 
         self.entity_type_manager.get_all()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> EntityTypes {
+    fn get_by_namespace(&self, namespace: &Namespace) -> EntityTypes {
         self.entity_type_manager.get_by_namespace(namespace)
     }
 
@@ -41,27 +42,19 @@ impl reactive_graph_plugin_api::EntityTypeManager for EntityTypeManagerDelegate 
         self.entity_type_manager.has(ty)
     }
 
-    fn has_by_type(&self, namespace: &str, name: &str) -> bool {
-        self.entity_type_manager.has_by_type(namespace, name)
-    }
-
     fn get(&self, ty: &EntityTypeId) -> Option<EntityType> {
         self.entity_type_manager.get(ty)
     }
 
-    fn get_by_type(&self, namespace: &str, name: &str) -> Option<EntityType> {
-        self.entity_type_manager.get_by_type(namespace, name)
-    }
-
-    fn find_by_type_name(&self, search: &str) -> EntityTypes {
-        self.entity_type_manager.find_by_type_name(search)
+    fn find(&self, search: &str) -> EntityTypes {
+        self.entity_type_manager.find(search)
     }
 
     fn count(&self) -> usize {
         self.entity_type_manager.count()
     }
 
-    fn count_by_namespace(&self, namespace: &str) -> usize {
+    fn count_by_namespace(&self, namespace: &Namespace) -> usize {
         self.entity_type_manager.count_by_namespace(namespace)
     }
 

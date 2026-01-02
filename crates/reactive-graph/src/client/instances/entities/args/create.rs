@@ -1,15 +1,16 @@
 use crate::client::instances::properties::args::parse_property;
-use crate::client::types::entities::args::type_id::EntityTypeIdArgs;
+use crate::client::types::entities::args::parse_entity_ty;
 use clap::Args;
+use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::PropertyInstances;
 use serde_json::Value;
 use uuid::Uuid;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct CreateEntityInstanceArgs {
-    /// The entity type.
-    #[clap(flatten)]
-    pub ty: EntityTypeIdArgs,
+    /// The fully qualified namespace of the entity type.
+    #[clap(name = "entity_type", value_parser = parse_entity_ty)]
+    pub entity_ty: EntityTypeId,
 
     /// The entity instance id.
     #[clap(short, long)]

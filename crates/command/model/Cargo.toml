@@ -7,22 +7,39 @@ edition.workspace = true
 license.workspace = true
 repository.workspace = true
 rust-version.workspace = true
+# TODO: replace with path to the generated documenation!
 readme = "../../../README.md"
 
 [dependencies]
 clap = { workspace = true, features = ["string"] }
+json5 = { workspace = true, optional = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
-strum_macros = { workspace = true }
+toml = { workspace = true, optional = true }
 typed-builder = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
-reactive-graph-runtime-model = { version = "0.10.0", path = "../../runtime/model" }
+reactive-graph-model-core = { version = "0.10.0", path = "../../model/core" }
 reactive-graph-reactive-model-api = { version = "0.10.0", path = "../../reactive/model/api" }
 reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
 
 [dev-dependencies]
+
+[build-dependencies]
+anyhow = { workspace = true }
+json5 = { workspace = true, optional = true }
+toml = { workspace = true, optional = true }
+
+reactive-graph-generator-documentation = { version = "0.10.0", path = "../../generator/documentation" }
+reactive-graph-generator-codegen = { version = "0.10.0", path = "../../generator/codegen" }
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-model-core = { version = "0.10.0", path = "../../model/core" }
+
+[features]
+default = ["json5", "toml"]
+json5 = ["dep:json5"]
+toml = ["dep:toml"]
 
 [lib]
 crate-type = ["lib"]

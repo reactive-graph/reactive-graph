@@ -5,9 +5,8 @@ this happens only at initialization.
 
 ## UUIDs
 
-```admonish info
-The UUIDs of the entity instances are stable.
-```
+> [!NOTE]
+> The UUIDs of the entity instances are stable.
 
 ## Labels
 

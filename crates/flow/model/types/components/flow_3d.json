@@ -1,0 +1,45 @@
+{
+  "$id": "https://schema.reactive-graph.io/schema/json/component.schema.json",
+  "type": "reactive_graph::flow::Flow3D",
+  "description": "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting).",
+  "properties": [
+    {
+      "name": "f3dx",
+      "description": "The X position in a 3D flow",
+      "data_type": "number",
+      "socket_type": "none"
+    },
+    {
+      "name": "f3dy",
+      "description": "The Y position in a 3D flow",
+      "data_type": "number",
+      "socket_type": "none"
+    },
+    {
+      "name": "f3dz",
+      "description": "The Z position in a 3D flow",
+      "data_type": "number",
+      "socket_type": "none"
+    },
+    {
+      "name": "f3dw",
+      "description": "The width (x-axis) in a 3D flow",
+      "data_type": "number",
+      "socket_type": "none"
+    },
+    {
+      "name": "f3dh",
+      "description": "The height (y-axis) in a 3D flow",
+      "data_type": "number",
+      "socket_type": "none"
+    },
+    {
+      "name": "f3dd",
+      "description": "The depth (z-axis) in a 3D flow",
+      "data_type": "number",
+      "socket_type": "none"
+    }
+  ],
+  "extensions": [
+  ]
+}

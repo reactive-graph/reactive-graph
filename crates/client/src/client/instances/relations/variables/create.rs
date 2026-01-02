@@ -6,25 +6,21 @@ pub mod variables {
     use cynic::QueryVariables;
     use reactive_graph_graph::NamespacedTypeGetter;
     use reactive_graph_graph::RelationInstanceId;
-    use typed_builder::TypedBuilder;
 
-    #[derive(QueryVariables, Debug, TypedBuilder)]
+    #[derive(QueryVariables, Debug)]
     pub struct CreateRelationInstanceVariables {
         /// The id of the outbound entity instance.
         pub outbound_id: UUID,
-        /// The relation type id namespace.
-        pub namespace: String,
-        /// The relation type id type name.
-        pub type_name: String,
+        /// The fully qualified namespace of the relation type.
+        #[cynic(rename = "type")]
+        pub _type: String,
         /// The relation type id type name.
         pub instance_id: String,
         /// The id of the inbound entity instance.
         pub inbound_id: UUID,
         /// The description of the relation instance.
-        #[builder(default)]
         pub description: Option<String>,
         /// The properties of the relation instance.
-        #[builder(default)]
         pub properties: Option<Vec<PropertyInstanceDefinition>>,
     }
 
@@ -35,9 +31,8 @@ pub mod variables {
             let properties = Some(properties.0);
             Self {
                 outbound_id: id.outbound_id.into(),
-                namespace: ty.namespace(),
-                type_name: ty.type_name(),
-                instance_id: id.ty.instance_id(),
+                _type: ty.namespace().to_string(),
+                instance_id: id.ty.instance_id().to_string(),
                 inbound_id: id.inbound_id.into(),
                 description,
                 properties,

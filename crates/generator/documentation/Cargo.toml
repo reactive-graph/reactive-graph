@@ -1,0 +1,39 @@
+[package]
+name = "reactive-graph-generator-documentation"
+description = "Reactive Graph - Generator - Documentation"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+#anyhow = { workspace = true }
+convert_case = { workspace = true }
+documented = { workspace = true }
+markdown-builder = "1.0.0"
+serde_json = { workspace = true }
+tabled = { workspace = true }
+thiserror = { workspace = true }
+typed-builder = { workspace = true }
+workspace_root = { workspace = true }
+
+#reactive-graph-instance-system-json-schema = { version = "0.10.0", path = "../../instance-system/json-schema" }
+reactive-graph-graph = { version = "0.10.0", path = "../../graph", features = ["docs"] }
+#reactive-graph-table-model = { version = "0.10.0", path = "../../table-model" }
+#reactive-graph-runtime-impl = { version = "0.10.0", path = "../../runtime/impl" }
+#reactive-graph-type-system-json-schema = { version = "0.10.0", path = "../../type-system/json-schema" }
+
+[dev-dependencies]
+default-test = { workspace = true }
+
+reactive-graph-graph = { version = "0.10.0", path = "../../graph", features = ["test", "docs"] }
+reactive-graph-utils-test = { version = "0.10.0", path = "../../utils/test" }
+
+[lib]
+crate-type = ["lib"]
+
+[lints]
+workspace = true

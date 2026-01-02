@@ -1,34 +1,15 @@
 use crate::client::types::extension::args::ExtensionDefinitionArgs;
-use crate::client::types::relations::args::type_id::RelationTypeIdArgs;
+use crate::client::types::relations::args::parse_relation_ty;
 use clap::Args;
-use reactive_graph_client::ExtensionDefinition;
-use reactive_graph_client::schema_graphql::scalar::Json;
-use reactive_graph_client::types::extensions::variables::add_extension::variables::AddExtensionVariables;
+use reactive_graph_graph::RelationTypeId;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct RelationTypeAddExtensionArgs {
-    /// The relation type.
-    #[clap(flatten)]
-    pub ty: RelationTypeIdArgs,
+    /// The fully qualified namespace of the relation type.
+    #[clap(name = "relation_type", value_parser = parse_relation_ty)]
+    pub relation_ty: RelationTypeId,
 
     /// The extension.
     #[clap(flatten)]
     pub extension: ExtensionDefinitionArgs,
-}
-
-impl From<&RelationTypeAddExtensionArgs> for AddExtensionVariables {
-    fn from(args: &RelationTypeAddExtensionArgs) -> Self {
-        let extension: Json = args.extension.extension.clone().into();
-        let ty: reactive_graph_graph::ExtensionTypeId = args.extension.ty.clone().into();
-        let ty: reactive_graph_client::ExtensionTypeId = ty.into();
-        AddExtensionVariables {
-            namespace: args.ty.namespace.clone(),
-            name: args.ty.name.clone(),
-            extension: ExtensionDefinition {
-                type_: ty,
-                description: args.extension.description.clone(),
-                extension,
-            },
-        }
-    }
 }

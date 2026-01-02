@@ -24,11 +24,8 @@ use reactive_graph_graph::NamespacedTypeGetter;
 
 #[derive(Clone, Debug, Tabled)]
 pub struct RelationType {
-    /// The namespace of the outbound entity type.
-    pub outbound_type_namespace: String,
-
-    /// The name of the outbound entity type.
-    pub outbound_type_name: String,
+    /// The outbound type.
+    pub outbound_type: String,
 
     /// The namespace of the relation type.
     pub namespace: String,
@@ -36,11 +33,8 @@ pub struct RelationType {
     /// The name of the relation type.
     pub name: String,
 
-    /// The namespace of the inbound entity type.
-    pub inbound_type_namespace: String,
-
-    /// The name of the inbound entity type.
-    pub inbound_type_name: String,
+    /// The inbound type.
+    pub inbound_type: String,
 
     /// Textual description of the relation type.
     // #[tabled(skip)]
@@ -92,12 +86,10 @@ impl TableInlineFormatSetter for RelationType {
 impl From<reactive_graph_graph::RelationType> for RelationType {
     fn from(relation_type: reactive_graph_graph::RelationType) -> Self {
         RelationType {
-            outbound_type_namespace: relation_type.outbound_type.namespace(),
-            outbound_type_name: relation_type.outbound_type.type_name(),
-            namespace: relation_type.namespace(),
-            name: relation_type.type_name(),
-            inbound_type_namespace: relation_type.inbound_type.namespace(),
-            inbound_type_name: relation_type.inbound_type.type_name(),
+            outbound_type: relation_type.outbound_type.to_string(),
+            namespace: relation_type.path().to_string(),
+            name: relation_type.type_name().to_string(),
+            inbound_type: relation_type.inbound_type.to_string(),
             description: relation_type.description,
             components: ComponentTypeIds::from(relation_type.components).0,
             properties: PropertyTypes::from(relation_type.properties).0,

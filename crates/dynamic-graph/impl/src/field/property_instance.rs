@@ -1,5 +1,6 @@
 use async_graphql::Error;
 use async_graphql::dynamic::ResolverContext;
+use reactive_graph_dynamic_graph_api::PropertyArgumentMissingError;
 use reactive_graph_dynamic_graph_api::PropertyDataTypeError;
 use serde_json::Value;
 use serde_json::json;
@@ -15,10 +16,16 @@ use reactive_graph_graph::PropertyTypes;
 /// First, initializes the properties with the default values of the property types of
 /// an entity type or relation type. Next, overwrites the properties with the value
 /// provided by the field arguments.
-pub fn create_properties_from_field_arguments(ctx: &ResolverContext, property_types: &PropertyTypes) -> Result<PropertyInstances, Error> {
+pub fn create_properties_from_field_arguments(ctx: &ResolverContext, property_types: &PropertyTypes, optional: bool) -> Result<PropertyInstances, Error> {
     let properties = PropertyInstances::new_from_property_types_with_defaults(property_types);
     for property in property_types.iter() {
-        let field_arg_value = ctx.args.try_get(property.key())?;
+        let Ok(field_arg_value) = ctx.args.try_get(property.key()) else {
+            if optional {
+                continue;
+            } else {
+                return Err(PropertyArgumentMissingError::PropertyArgumentMissing(property.key().clone()).into());
+            }
+        };
         match &property.data_type {
             DataType::Null => {
                 return Err(PropertyDataTypeError::NullIsNotAValidDataType(property.key().clone()).into());

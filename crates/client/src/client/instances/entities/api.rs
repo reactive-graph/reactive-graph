@@ -7,12 +7,13 @@ use crate::client::instances::entities::mutations::add_property::mutations::add_
 use crate::client::instances::entities::mutations::create::mutations::create;
 use crate::client::instances::entities::mutations::delete::mutations::delete_entity_instance_mutation;
 use crate::client::instances::entities::mutations::remove_component::mutations::remove_component;
-use crate::client::instances::entities::mutations::remove_property::mutations::remove_property;
+use crate::client::instances::entities::mutations::remove_property::mutations::remove_property_by_name;
 use crate::client::instances::entities::mutations::set_property::mutations::set_property;
 use crate::client::instances::entities::queries::get_by_id::queries::get_entity_instance_by_id;
 use crate::client::instances::entities::queries::get_by_label::queries::get_entity_instance_by_label;
 use crate::client::instances::entities::queries::search::queries::search;
 use crate::client::instances::entities::variables::search::variables::SearchEntityInstancesVariables;
+use crate::schema_graphql::instances::entity_instance::EntityInstances as EntityInstancesVec;
 use cynic::http::ReqwestExt;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::EntityInstance;
@@ -31,8 +32,11 @@ impl EntityInstances {
         Self { client }
     }
 
-    pub async fn search(&self, search_query: SearchEntityInstancesVariables) -> Result<Option<Vec<EntityInstance>>, ReactiveGraphClientExecutionError> {
-        let entity_instances = self
+    pub async fn search(
+        &self,
+        search_query: SearchEntityInstancesVariables,
+    ) -> Result<Option<reactive_graph_graph::EntityInstances>, ReactiveGraphClientExecutionError> {
+        let Some(entity_instances) = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -40,14 +44,18 @@ impl EntityInstances {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| crate::schema_graphql::instances::entity_instance::EntityInstances(data.instances.entities))
-            .map(From::from);
-        Ok(entity_instances)
+            .map(|data| EntityInstancesVec(data.instances.entities))
+        else {
+            return Ok(None);
+        };
+        Ok(Some(
+            reactive_graph_graph::EntityInstances::try_from(entity_instances).map_err(|e| ReactiveGraphClientExecutionError::InvalidEntityInstance(e))?,
+        ))
     }
 
     pub async fn get_entity_instance_by_id<ID: Into<Uuid>>(&self, id: ID) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
-        let entity_instance = self
+        let Some(entity_instance) = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -56,13 +64,17 @@ impl EntityInstances {
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .and_then(|data| data.instances.entities.first().cloned())
-            .map(From::from);
-        Ok(entity_instance)
+        else {
+            return Ok(None);
+        };
+        Ok(Some(
+            reactive_graph_graph::EntityInstance::try_from(entity_instance).map_err(|e| ReactiveGraphClientExecutionError::InvalidEntityInstance(e))?,
+        ))
     }
 
     pub async fn get_entity_instance_by_label<L: Into<String>>(&self, label: L) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let label = label.into();
-        let entity_instance = self
+        let Some(entity_instance) = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -71,8 +83,12 @@ impl EntityInstances {
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .and_then(|data| data.instances.entities.first().cloned())
-            .map(From::from);
-        Ok(entity_instance)
+        else {
+            return Ok(None);
+        };
+        Ok(Some(
+            reactive_graph_graph::EntityInstance::try_from(entity_instance).map_err(|e| ReactiveGraphClientExecutionError::InvalidEntityInstance(e))?,
+        ))
     }
 
     pub async fn set_property<ID: Into<Uuid>, S: Into<String>, V: Into<Value>>(
@@ -84,7 +100,7 @@ impl EntityInstances {
         let id = id.into();
         let name = name.into();
         let value = value.into();
-        let entity_instance = self
+        let Some(entity_instance) = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -93,8 +109,12 @@ impl EntityInstances {
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.update)
-            .map(From::from);
-        Ok(entity_instance)
+        else {
+            return Ok(None);
+        };
+        Ok(Some(
+            reactive_graph_graph::EntityInstance::try_from(entity_instance).map_err(|e| ReactiveGraphClientExecutionError::InvalidEntityInstance(e))?,
+        ))
     }
 
     pub async fn add_property<ID: Into<Uuid>, PT: Into<PropertyType>>(
@@ -104,7 +124,7 @@ impl EntityInstances {
     ) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let property_type = property_type.into();
-        let entity_instance = self
+        let Some(entity_instance) = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -113,8 +133,12 @@ impl EntityInstances {
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.update)
-            .map(From::from);
-        Ok(entity_instance)
+        else {
+            return Ok(None);
+        };
+        Ok(Some(
+            reactive_graph_graph::EntityInstance::try_from(entity_instance).map_err(|e| ReactiveGraphClientExecutionError::InvalidEntityInstance(e))?,
+        ))
     }
 
     pub async fn remove_property<ID: Into<Uuid>, S: Into<String>>(
@@ -124,17 +148,21 @@ impl EntityInstances {
     ) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let property_name = property_name.into();
-        let entity_instance = self
+        let Some(entity_instance) = self
             .client
             .client
             .post(self.client.url_reactive_graph())
-            .run_graphql(remove_property(id, property_name))
+            .run_graphql(remove_property_by_name(id, property_name))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.update)
-            .map(From::from);
-        Ok(entity_instance)
+        else {
+            return Ok(None);
+        };
+        Ok(Some(
+            reactive_graph_graph::EntityInstance::try_from(entity_instance).map_err(|e| ReactiveGraphClientExecutionError::InvalidEntityInstance(e))?,
+        ))
     }
 
     pub async fn add_component<ID: Into<Uuid>, C: Into<ComponentTypeId>>(
@@ -144,7 +172,7 @@ impl EntityInstances {
     ) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let component_ty = component_ty.into();
-        let entity_instance = self
+        let Some(entity_instance) = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -153,8 +181,12 @@ impl EntityInstances {
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.update)
-            .map(From::from);
-        Ok(entity_instance)
+        else {
+            return Ok(None);
+        };
+        Ok(Some(
+            reactive_graph_graph::EntityInstance::try_from(entity_instance).map_err(|e| ReactiveGraphClientExecutionError::InvalidEntityInstance(e))?,
+        ))
     }
 
     pub async fn remove_component<ID: Into<Uuid>, C: Into<ComponentTypeId>>(
@@ -164,7 +196,7 @@ impl EntityInstances {
     ) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let component_ty = component_ty.into();
-        let entity_instance = self
+        let Some(entity_instance) = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -173,8 +205,12 @@ impl EntityInstances {
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.update)
-            .map(From::from);
-        Ok(entity_instance)
+        else {
+            return Ok(None);
+        };
+        Ok(Some(
+            reactive_graph_graph::EntityInstance::try_from(entity_instance).map_err(|e| ReactiveGraphClientExecutionError::InvalidEntityInstance(e))?,
+        ))
     }
 
     pub async fn create<TY: Into<EntityTypeId>, ID: Into<Uuid>>(
@@ -186,7 +222,7 @@ impl EntityInstances {
     ) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let ty = ty.into();
         let id = id.map(|id| id.into());
-        let entity_instance = self
+        let Some(entity_instance) = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -195,13 +231,17 @@ impl EntityInstances {
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.create)
-            .map(From::from);
-        Ok(entity_instance)
+        else {
+            return Ok(None);
+        };
+        Ok(Some(
+            reactive_graph_graph::EntityInstance::try_from(entity_instance).map_err(|e| ReactiveGraphClientExecutionError::InvalidEntityInstance(e))?,
+        ))
     }
 
     pub async fn delete_entity_instance<ID: Into<Uuid>>(&self, id: ID) -> Result<Option<bool>, ReactiveGraphClientExecutionError> {
         let id = id.into();
-        let entity_instance = self
+        let success = self
             .client
             .client
             .post(self.client.url_reactive_graph())
@@ -210,6 +250,6 @@ impl EntityInstances {
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.delete);
-        Ok(entity_instance)
+        Ok(success)
     }
 }

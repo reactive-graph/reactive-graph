@@ -92,9 +92,9 @@ impl From<reactive_graph_graph::RelationInstance> for RelationInstance {
     fn from(relation_instance: reactive_graph_graph::RelationInstance) -> Self {
         RelationInstance {
             outbound_id: relation_instance.outbound_id,
-            namespace: relation_instance.namespace(),
-            name: relation_instance.relation_type_id().type_name(),
-            instance_id: relation_instance.instance_id(),
+            namespace: relation_instance.path().to_string(),
+            name: relation_instance.relation_type_id().type_name().to_string(),
+            instance_id: relation_instance.instance_id().to_string(),
             inbound_id: relation_instance.inbound_id,
             description: relation_instance.description,
             properties: PropertyInstances::from(relation_instance.properties).0,

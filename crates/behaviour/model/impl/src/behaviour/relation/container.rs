@@ -39,6 +39,10 @@ impl BehaviourTypesContainer for RelationReactiveInstanceContainerImpl {
     fn behaves_as(&self, ty: &BehaviourTypeId) -> bool {
         self.reactive_instance.behaves_as(ty)
     }
+
+    fn behaves_as_all(&self, tys: &BehaviourTypeIds) -> bool {
+        self.reactive_instance.behaves_as_all(tys)
+    }
 }
 
 impl BehaviourRelationInstanceContainer for RelationReactiveInstanceContainerImpl {

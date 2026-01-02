@@ -42,15 +42,10 @@ jobs:
         uses: peaceiris/actions-mdbook@v2
         with:
           mdbook-version: 'latest'
-      - name: Install preprocessor mdbook-admonish
-        uses: taiki-e/cache-cargo-install-action@v2
-        with:
-          tool: mdbook-admonish
       - name: Install preprocessor mdbook-mermaid
         uses: taiki-e/cache-cargo-install-action@v2
         with:
           tool: mdbook-mermaid
-
       - name: Install preprocessor mdbook-preprocessor-graphql-playground
         uses: taiki-e/cache-cargo-install-action@v2
         with:

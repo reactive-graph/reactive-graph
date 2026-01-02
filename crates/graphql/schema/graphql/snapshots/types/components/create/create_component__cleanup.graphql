@@ -1,12 +1,7 @@
 mutation {
   types {
     components {
-      delete(
-        type: {
-          namespace: "hurtz"
-          name: "hurtz"
-        }
-      )
+      delete(type: "hurtz::Hurtz")
     }
   }
 }

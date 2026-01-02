@@ -7,10 +7,6 @@ use std::ops::DerefMut;
 use const_format::formatcp;
 use dashmap::DashMap;
 use dashmap::iter::OwningIter;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
@@ -57,6 +53,9 @@ use crate::FlowTypeUpdateRelationInstanceError;
 use crate::FlowTypeUpdateVariableError;
 use crate::JSON_SCHEMA_ID_URI_PREFIX;
 use crate::JsonSchemaIdGetter;
+use crate::Namespace;
+use crate::NamespaceSegment;
+use crate::NamespacedType;
 use crate::NamespacedTypeContainer;
 use crate::NamespacedTypeEntityInstanceContainer;
 use crate::NamespacedTypeExtensionContainer;
@@ -76,6 +75,7 @@ use crate::RemoveRelationInstanceError;
 use crate::RemoveVariableError;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
+use crate::TypeDescriptionGetter;
 use crate::TypeIdType;
 use crate::UpdateEntityInstanceError;
 use crate::UpdateExtensionError;
@@ -84,6 +84,22 @@ use crate::UpdateVariableError;
 use crate::Variable;
 use crate::Variables;
 use crate::VariablesContainer;
+use crate::divergent::DivergentPropertyTypes;
+
+#[cfg(any(test, feature = "test"))]
+use crate::NamespacedTypeError;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomChildType;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomChildTypeId;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomInstance;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomInstances;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedType;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypes;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
@@ -108,7 +124,7 @@ pub struct FlowTypeCreationError;
 )]
 pub struct FlowType {
     /// The type definition of the entity type.
-    #[serde(flatten)]
+    #[serde(rename = "type")]
     #[builder(setter(into))]
     pub ty: FlowTypeId,
 
@@ -160,36 +176,6 @@ impl FlowType {
     ) -> FlowType {
         FlowType {
             ty: ty.into(),
-            description: description.into(),
-            wrapper_entity_instance,
-            entity_instances: entity_instances.into(),
-            relation_instances: relation_instances.into(),
-            variables: variables.into(),
-            extensions: extensions.into(),
-        }
-    }
-
-    #[allow(clippy::too_many_arguments)]
-    pub fn new_from_type<
-        N: Into<String>,
-        T: Into<String>,
-        D: Into<String>,
-        EI: Into<EntityInstances>,
-        RI: Into<RelationInstances>,
-        V: Into<PropertyTypes>,
-        E: Into<Extensions>,
-    >(
-        namespace: N,
-        type_name: T,
-        description: D,
-        wrapper_entity_instance: EntityInstance,
-        entity_instances: EI,
-        relation_instances: RI,
-        variables: V,
-        extensions: E,
-    ) -> FlowType {
-        FlowType {
-            ty: FlowTypeId::new_from_type(namespace.into(), type_name.into()),
             description: description.into(),
             wrapper_entity_instance,
             entity_instances: entity_instances.into(),
@@ -363,6 +349,14 @@ impl VariablesContainer for FlowType {
     fn merge_variables<V: Into<Variables>>(&mut self, variables_to_merge: V) {
         self.variables.merge_properties(variables_to_merge)
     }
+
+    fn merge_non_existent_variables<V: Into<Variables>>(&self, variables_to_merge: V) -> DivergentPropertyTypes {
+        self.variables.merge_non_existent_properties(variables_to_merge)
+    }
+
+    fn get_own_variables_cloned(&self) -> Variables {
+        self.variables.clone()
+    }
 }
 
 impl ExtensionContainer for FlowType {
@@ -389,14 +383,26 @@ impl ExtensionContainer for FlowType {
     fn merge_extensions<E: Into<Extensions>>(&mut self, extensions_to_merge: E) {
         self.extensions.merge_extensions(extensions_to_merge)
     }
+
+    fn get_own_extensions_cloned(&self) -> Extensions {
+        self.extensions.clone()
+    }
 }
 
 impl NamespacedTypeGetter for FlowType {
-    fn namespace(&self) -> String {
+    fn namespaced_type(&self) -> NamespacedType {
+        self.ty.namespaced_type()
+    }
+
+    fn namespace(&self) -> Namespace {
         self.ty.namespace()
     }
 
-    fn type_name(&self) -> String {
+    fn path(&self) -> Namespace {
+        self.ty.path()
+    }
+
+    fn type_name(&self) -> NamespaceSegment {
         self.ty.type_name()
     }
 }
@@ -404,6 +410,22 @@ impl NamespacedTypeGetter for FlowType {
 impl TypeDefinitionGetter for FlowType {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+
+    fn type_id_type() -> TypeIdType {
+        TypeIdType::FlowType
+    }
+}
+
+impl TypeDescriptionGetter for FlowType {
+    fn description(&self) -> String {
+        self.description.clone()
+    }
+}
+
+impl AsRef<FlowTypeId> for FlowType {
+    fn as_ref(&self) -> &FlowTypeId {
+        &self.ty
     }
 }
 
@@ -427,32 +449,35 @@ impl Ord for FlowType {
 
 impl From<&FlowType> for TypeDefinition {
     fn from(flow_type: &FlowType) -> Self {
-        TypeDefinition {
-            type_id_type: TypeIdType::FlowType,
-            namespace: flow_type.namespace(),
-            type_name: flow_type.type_name(),
-        }
+        flow_type.type_definition()
     }
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct FlowTypes(DashMap<FlowTypeId, FlowType>);
 
-impl FlowTypes {}
+impl FlowTypes {
+    #[inline]
+    pub fn new() -> Self {
+        NamespacedTypeContainer::new()
+    }
+
+    #[inline]
+    pub fn flow<F: Into<FlowType>>(self, flow_type: F) -> Self {
+        NamespacedTypeContainer::push(&self, flow_type);
+        self
+    }
+
+    #[inline]
+    pub fn push<F: Into<FlowType>>(&self, flow_type: F) -> Option<FlowType> {
+        NamespacedTypeContainer::push(self, flow_type)
+    }
+}
 
 impl NamespacedTypeContainer for FlowTypes {
     type TypeId = FlowTypeId;
     type TypeIds = FlowTypeIds;
     type Type = FlowType;
-
-    fn new() -> Self {
-        Self(DashMap::new())
-    }
-
-    fn push<F: Into<FlowType>>(&self, flow_type: F) {
-        let flow_type = flow_type.into();
-        self.0.insert(flow_type.ty.clone(), flow_type);
-    }
 }
 
 impl
@@ -776,30 +801,34 @@ impl FromIterator<FlowType> for FlowTypes {
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for FlowType {
-    fn default_test() -> Self {
-        let wrapper_entity_instance = EntityInstance::default_test();
-        FlowType::builder()
-            .ty(FlowTypeId::default_test())
+impl RandomNamespacedType for FlowType {
+    type Error = NamespacedTypeError;
+    type TypeId = FlowTypeId;
+
+    fn random_type() -> Result<Self, NamespacedTypeError> {
+        Self::random_child_type(&Namespace::random_path()?)
+    }
+
+    fn random_type_with_id(ty: &Self::TypeId) -> Result<Self, Self::Error> {
+        let wrapper_entity_instance = EntityInstance::random_instance()?;
+        Ok(Self::builder()
+            .ty(ty)
             .description(r_string())
             .wrapper_entity_instance(wrapper_entity_instance)
-            .entity_instances(EntityInstances::default_test())
-            .relation_instances(RelationInstances::default_test())
-            .extensions(Extensions::default_test())
-            .variables(PropertyTypes::default_test())
-            .build()
+            .entity_instances(EntityInstances::random_instances()?)
+            .relation_instances(RelationInstances::random_instances()?)
+            .extensions(Extensions::random_types(0..10)?)
+            .variables(PropertyTypes::random_types(0..10)?)
+            .build())
     }
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for FlowTypes {
-    fn default_test() -> Self {
-        let flow_types = FlowTypes::new();
-        let mut rng = rand::rng();
-        for _ in 0..rng.random_range(0..10) {
-            flow_types.push(FlowType::default_test());
-        }
-        flow_types
+impl RandomChildType for FlowType {
+    type Error = NamespacedTypeError;
+
+    fn random_child_type(namespace: &Namespace) -> Result<Self, Self::Error> {
+        Self::random_type_with_id(&NamespacedType::random_child_type_id(namespace)?.into())
     }
 }
 
@@ -809,185 +838,205 @@ fn add_json_schema_id_property(schema: &mut Schema) {
 
 #[cfg(test)]
 mod tests {
-    use default_test::DefaultTest;
-    use schemars::schema_for;
-    use serde_json::json;
-    use uuid::Uuid;
-
     use crate::ComponentTypeIds;
-    use crate::DataType;
-    use crate::EntityInstanceContainer;
+    use crate::EntityInstance;
+    use crate::EntityInstances;
     use crate::EntityType;
-    use crate::Extension;
+    use crate::EntityTypeId;
     use crate::ExtensionContainer;
     use crate::ExtensionTypeId;
     use crate::Extensions;
     use crate::FlowType;
     use crate::FlowTypeId;
+    use crate::InstanceId;
     use crate::NamespacedTypeGetter;
-    use crate::PropertyInstances;
-    use crate::PropertyType;
+    use crate::PropertyInstanceGetter;
     use crate::PropertyTypes;
-    use crate::RelationInstance;
-    use crate::RelationInstanceContainer;
+    use crate::RandomInstance;
+    use crate::RandomInstances;
+    use crate::RandomNamespacedType;
+    use crate::RandomNamespacedTypeId;
+    use crate::RandomNamespacedTypeIds;
+    use crate::RandomNamespacedTypes;
+    use crate::RelationInstanceId;
     use crate::RelationInstanceTypeId;
-    use crate::Variable;
-    use crate::Variables;
+    use crate::RelationInstances;
+    use crate::RelationTypeId;
     use crate::VariablesContainer;
-    use crate::entity_instance_tests::create_entity_instance_with_property;
     use reactive_graph_utils_test::r_string;
+    use schemars::schema_for;
+    use std::str::FromStr;
+    use uuid::Uuid;
+
+    #[test]
+    fn build_flow_type_test() {
+        let ty = FlowTypeId::random_type_id().unwrap();
+        let description = r_string();
+        let wrapper_entity_instance = EntityInstance::random_instance().unwrap();
+        let entity_instances = EntityInstances::random_instances().unwrap();
+        let relation_instances = RelationInstances::random_instances().unwrap();
+        let variables = PropertyTypes::random_types(0..5).unwrap();
+        let extensions = Extensions::random_types(0..10).unwrap();
+        let flow_type = FlowType::builder()
+            .ty(&ty)
+            .description(&description)
+            .wrapper_entity_instance(wrapper_entity_instance.clone())
+            .entity_instances(entity_instances.clone())
+            .relation_instances(relation_instances.clone())
+            .variables(variables.clone())
+            .extensions(extensions.clone())
+            .build();
+        assert_eq!(ty.namespace(), flow_type.namespace());
+        assert_eq!(ty.path(), flow_type.path());
+        assert_eq!(ty.type_name(), flow_type.type_name());
+        assert_eq!(description, flow_type.description);
+        assert_eq!(wrapper_entity_instance.ty, flow_type.wrapper_type());
+        assert_eq!(wrapper_entity_instance, flow_type.wrapper_entity_instance);
+        assert_eq!(entity_instances.len(), flow_type.entity_instances.len());
+        assert_eq!(relation_instances.len(), flow_type.relation_instances.len());
+        assert_eq!(variables.len(), flow_type.variables.len());
+        assert_eq!(extensions.len(), flow_type.extensions.len());
+    }
 
     #[test]
     fn create_flow_type_test() {
-        let flow_type_name = "flow_type_name";
-
-        let relation_type_name = "relation_type_name";
-        let relation_type_name_2 = "relation_type_name_2";
-
-        let namespace = "namespace";
-        let description = "Lorem ipsum";
-
-        let wrapper_entity_instance = create_entity_instance_with_property("property");
-        let entity_instance_2 = create_entity_instance_with_property("property2");
-        let entity_instance_3 = create_entity_instance_with_property("property3");
-        let entity_instances = vec![entity_instance_2.clone(), entity_instance_3.clone()];
-
-        let r_ty = RelationInstanceTypeId::new_from_type_unique_id(namespace, relation_type_name);
-        let r_ty_2 = RelationInstanceTypeId::new_from_type_unique_id(namespace, relation_type_name_2);
-        let relation_instance_1 = RelationInstance::new(wrapper_entity_instance.id, r_ty.clone(), entity_instance_2.id, PropertyInstances::new());
-        let relation_instance_2 = RelationInstance::new(entity_instance_2.id, r_ty, entity_instance_3.id, PropertyInstances::new());
-        let relation_instance_3 = RelationInstance::new(entity_instance_3.id, r_ty_2, wrapper_entity_instance.id, PropertyInstances::new());
-        let relation_instances = vec![relation_instance_1.clone(), relation_instance_2.clone(), relation_instance_3.clone()];
-
-        let variable_name = "variable_name";
-        let variable_data_type = DataType::Object;
-        let variable = Variable::new(variable_name, variable_data_type);
-        let variables = Variables::new().property(variable);
-
-        let mut extensions = Vec::new();
-        let extension_namespace = r_string();
-        let extension_name = r_string();
-        let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
-        let extension_value = json!("extension_value");
-        let extension = Extension {
-            ty: extension_ty.clone(),
-            description: r_string(),
-            extension: extension_value.clone(),
-        };
-        extensions.push(extension);
-        let other_extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
-        let other_extension = Extension::new(&other_extension_ty, r_string(), extension_value.clone());
-        extensions.push(other_extension);
-
-        let f_ty = FlowTypeId::new_from_type(namespace, flow_type_name);
+        let ty = FlowTypeId::random_type_id().unwrap();
+        let description = r_string();
+        let wrapper_entity_instance = EntityInstance::random_instance().unwrap();
+        let entity_instances = EntityInstances::random_instances().unwrap();
+        let relation_instances = RelationInstances::random_instances().unwrap();
+        let variables = PropertyTypes::random_types(1..5).unwrap();
+        let extensions = Extensions::random_types(1..3).unwrap();
         let flow_type = FlowType::new(
-            f_ty,
-            description,
+            ty.clone(),
+            description.clone(),
             wrapper_entity_instance.clone(),
-            entity_instances,
-            relation_instances,
-            variables,
-            extensions,
+            entity_instances.clone(),
+            relation_instances.clone(),
+            variables.clone(),
+            extensions.clone(),
         );
-
-        assert_eq!(namespace, flow_type.namespace());
-
-        assert_eq!(flow_type_name, flow_type.type_name());
-
-        assert_eq!(wrapper_entity_instance.id, flow_type.id());
-        assert_eq!(wrapper_entity_instance.ty, flow_type.wrapper_type());
-        assert_eq!(&wrapper_entity_instance.namespace(), &flow_type.wrapper_entity_instance.namespace());
-        assert_eq!(&wrapper_entity_instance.type_name(), &flow_type.wrapper_entity_instance.type_name());
-
+        assert_eq!(ty.namespace(), flow_type.namespace());
+        assert_eq!(ty.path(), flow_type.path());
+        assert_eq!(ty.type_name(), flow_type.type_name());
         assert_eq!(description, flow_type.description);
+        assert_eq!(wrapper_entity_instance.ty, flow_type.wrapper_type());
+        assert_eq!(wrapper_entity_instance, flow_type.wrapper_entity_instance);
+        assert_eq!(entity_instances.len(), flow_type.entity_instances.len());
+        assert_eq!(relation_instances.len(), flow_type.relation_instances.len());
+        assert_eq!(variables.len(), flow_type.variables.len());
+        assert_eq!(extensions.len(), flow_type.extensions.len());
+    }
 
-        assert!(flow_type.has_entity_instance(wrapper_entity_instance.id));
-        assert!(flow_type.has_entity_instance(entity_instance_2.id));
-        assert!(flow_type.has_entity_instance(entity_instance_3.id));
-
-        assert!(flow_type.has_relation_instance(&relation_instance_1.id()));
-        assert!(flow_type.has_relation_instance(&relation_instance_2.id()));
-        assert!(flow_type.has_relation_instance(&relation_instance_3.id()));
-
-        assert_eq!(
-            relation_instance_1.outbound_id,
-            flow_type.relation_instances.get(&relation_instance_1.id()).unwrap().outbound_id
-        );
-        assert_eq!(
-            relation_instance_2.outbound_id,
-            flow_type.relation_instances.get(&relation_instance_2.id()).unwrap().outbound_id
-        );
-        assert_eq!(
-            relation_instance_3.outbound_id,
-            flow_type.relation_instances.get(&relation_instance_3.id()).unwrap().outbound_id
-        );
-        assert_eq!(wrapper_entity_instance.id, flow_type.relation_instances.get(&relation_instance_1.id()).unwrap().outbound_id);
-
-        assert_eq!(entity_instance_2.id, flow_type.relation_instances.get(&relation_instance_1.id()).unwrap().inbound_id);
-
-        assert_eq!(variable_name, flow_type.variables.get(variable_name).unwrap().name.as_str());
-        assert_eq!(variable_data_type, flow_type.variables.get(variable_name).unwrap().data_type);
-
-        assert_eq!(3, flow_type.uses_entity_types().len());
-        assert!(flow_type.uses_entity_types().contains(&wrapper_entity_instance.ty));
-        assert!(flow_type.uses_entity_types().contains(&entity_instance_2.ty));
-        assert!(flow_type.uses_entity_types().contains(&entity_instance_3.ty));
-
-        assert_eq!(3, flow_type.entity_instances().len());
-
-        assert_eq!(2, flow_type.uses_relation_types().len());
-        assert!(flow_type.uses_relation_types().contains(&relation_instance_1.relation_type_id()));
-        assert!(flow_type.uses_relation_types().contains(&relation_instance_2.relation_type_id()));
-        assert!(flow_type.uses_relation_types().contains(&relation_instance_3.relation_type_id()));
-
-        assert_eq!(3, flow_type.relation_instances().len());
-
-        assert!(flow_type.has_variable(variable_name));
-        assert!(!flow_type.has_variable(r_string()));
-
-        assert!(flow_type.has_own_extension(&extension_ty));
-        assert_eq!(extension_value, flow_type.extensions.get_own_extension(&extension_ty).unwrap().extension);
-        let non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
-        assert!(!flow_type.has_own_extension(&non_existing_extension));
-
-        assert!(flow_type.has_entity_instance(entity_instance_2.id));
-        assert!(!flow_type.has_entity_instance(Uuid::new_v4()));
-
-        assert!(flow_type.has_relation_which_uses_entity_instance(entity_instance_2.id));
-        assert!(!flow_type.has_relation_which_uses_entity_instance(Uuid::new_v4()));
-
-        // let flow_type = flow_type;
-        let entity_instance_4 = create_entity_instance_with_property("property3");
-        flow_type
-            .add_entity_instance(entity_instance_4.clone())
-            .expect("Failed to add entity instance 4");
-        assert_eq!(4, flow_type.entity_instances().len());
-        assert!(flow_type.has_entity_instance(entity_instance_4.id));
-        flow_type
-            .remove_entity_instance(entity_instance_4.id)
-            .expect("Failed to remove entity instance 4");
-        assert_eq!(3, flow_type.entity_instances().len());
-        assert!(!flow_type.has_entity_instance(entity_instance_4.id));
-
-        let variable_2_name = "variable_name_2";
-        let variable_2 = PropertyType::new(variable_2_name, DataType::Object);
-        flow_type.add_variable(variable_2).expect("Failed to add variable 2");
-        assert_eq!(2, flow_type.variables.len());
-        assert!(flow_type.has_variable(variable_2_name));
-        flow_type.remove_variable(variable_2_name).expect("Failed to remove variable 2");
+    #[test]
+    fn flow_type_deserialize_fully_valid_test() {
+        let flow_ty = FlowTypeId::from_str("fully::qualified::namespace::FlowType").unwrap();
+        let wrapper_ty = EntityTypeId::from_str("fully::qualified::namespace::WrapperEntityType").unwrap();
+        let wrapper_id = Uuid::from_str("bc21d797-da21-4252-a0c7-2958e5c5c7d1").unwrap();
+        let entity_ty = EntityTypeId::from_str("fully::qualified::namespace::EntityType").unwrap();
+        let entity_id = Uuid::from_str("a61fa341-e1fd-45ba-be3e-089b7acc7910").unwrap();
+        let relation_ty = RelationTypeId::from_str("fully::qualified::namespace::RelationType").unwrap();
+        let instance_id = InstanceId::Id(Uuid::from_str("1a451c8e-f9f8-41e8-9828-991aee8af642").unwrap());
+        let relation_instance_type_id = RelationInstanceTypeId::new(relation_ty, instance_id.clone());
+        let relation_instance_id = RelationInstanceId::new(entity_id, relation_instance_type_id.clone(), wrapper_id);
+        let extension_ty = ExtensionTypeId::from_str("fully::qualified::namespace::Extension").unwrap();
+        let flow_type = serde_json::from_str::<FlowType>(
+            r#"{
+          "type": "fully::qualified::namespace::FlowType",
+          "description": "d",
+          "wrapper_entity_instance": {
+            "$id": "https://schema.reactive-graph.io/schema/json/entity-instance.schema.json",
+            "type": "fully::qualified::namespace::WrapperEntityType",
+            "id": "bc21d797-da21-4252-a0c7-2958e5c5c7d1",
+            "properties": {
+              "property_name": "property_value"
+            },
+            "components": [],
+            "extensions": []
+          },
+          "entity_instances": [
+            {
+            "$id": "https://schema.reactive-graph.io/schema/json/entity-instance.schema.json",
+            "type": "fully::qualified::namespace::EntityType",
+            "id": "a61fa341-e1fd-45ba-be3e-089b7acc7910",
+            "properties": {
+              "property_name": "property_value"
+            },
+            "components": [],
+            "extensions": []
+            }
+          ],
+          "relation_instances": [
+            {
+              "$id": "https://schema.reactive-graph.io/schema/json/relation-instance.schema.json",
+              "outbound_id": "a61fa341-e1fd-45ba-be3e-089b7acc7910",
+              "type": "fully::qualified::namespace::RelationType",
+              "instance_id": "1a451c8e-f9f8-41e8-9828-991aee8af642",
+              "inbound_id": "bc21d797-da21-4252-a0c7-2958e5c5c7d1",
+              "properties": {
+                "property_name": "property_value"
+              },
+              "components": [],
+              "extensions": []
+            }
+          ],
+          "variables": [
+            {
+              "name": "variable_name",
+              "description": "jXDlcgeZko",
+              "data_type": "number",
+              "socket_type": "output",
+              "mutability": "immutable"
+            }
+          ],
+          "extensions": [
+            {
+              "type": "fully::qualified::namespace::Extension",
+              "extension": ""
+            }
+          ]
+        }"#,
+        )
+        .expect("Failed to deserialize entity type");
+        assert_eq!(flow_ty, flow_type.ty);
+        assert_eq!("d", flow_type.description);
+        assert_eq!(wrapper_ty, flow_type.wrapper_entity_instance.ty);
+        assert_eq!(wrapper_id, flow_type.wrapper_entity_instance.id);
+        assert_eq!(1, flow_type.wrapper_entity_instance.properties.len());
+        assert_eq!("property_value", flow_type.wrapper_entity_instance.as_string("property_name").unwrap());
+        assert_eq!(1, flow_type.entity_instances.len());
+        assert!(flow_type.entity_instances.get(&entity_id).is_some());
+        assert_eq!(entity_ty, flow_type.entity_instances.get(&entity_id).unwrap().ty);
+        assert_eq!(entity_id, flow_type.entity_instances.get(&entity_id).unwrap().id);
+        assert_eq!(1, flow_type.relation_instances.len());
+        assert!(flow_type.relation_instances.get(&relation_instance_id).is_some());
+        assert_eq!(relation_instance_type_id, flow_type.relation_instances.get(&relation_instance_id).unwrap().ty);
+        assert_eq!(instance_id, flow_type.relation_instances.get(&relation_instance_id).unwrap().instance_id());
+        assert_eq!(entity_id, flow_type.relation_instances.get(&relation_instance_id).unwrap().outbound_id);
+        assert_eq!(wrapper_id, flow_type.relation_instances.get(&relation_instance_id).unwrap().inbound_id);
         assert_eq!(1, flow_type.variables.len());
-        assert!(!flow_type.has_variable(variable_2_name));
+        assert!(flow_type.get_variable("variable_name").is_some());
+        assert_eq!(1, flow_type.extensions.len());
+        assert!(flow_type.get_own_extension(&extension_ty).is_some());
+    }
 
-        let extension_3_name = "extension_name_3";
-        let extension_3_value = json!("extension_value");
-        let extension_3_ty = ExtensionTypeId::new_from_type(&extension_namespace, &String::from(extension_3_name));
-        let extension_3 = Extension::new(extension_3_ty.clone(), r_string(), extension_3_value);
-        flow_type.add_extension(extension_3).expect("Failed to add extension 3");
-        assert_eq!(3, flow_type.extensions.len());
-        assert!(flow_type.has_own_extension(&extension_3_ty));
-        flow_type.remove_extension(&extension_3_ty).expect("Failed to remove extension 3");
-        assert_eq!(2, flow_type.extensions.len());
-        assert!(!flow_type.has_own_extension(&extension_3_ty));
+    // TODO: Implement unit tests:
+    // - Deserialize description optional
+    // - Deserialize missing wrapper entity instance
+    // - Deserialize invalid entity instance
+    // - Deserialize invalid relation instance
+    // - Deserialize variables optional
+    // - Deserialize invalid variable
+    // - Deserialize extensions optional
+    // - Deserialize invalid extension
+    // - Deserialize invalid namespace
+    // - Deserialize invalid type name
+    // - Deserialize missing type
+
+    #[test]
+    fn flow_type_ser_test() {
+        let flow_type = FlowType::random_type().unwrap();
+        println!("{}", serde_json::to_string_pretty(&flow_type).expect("Failed to serialize flow type"));
     }
 
     #[test]
@@ -998,14 +1047,15 @@ mod tests {
 
     #[test]
     fn flow_type_dynamic_json_schema() {
-        let flow_type = FlowType::default_test();
+        let flow_type = FlowType::random_type().unwrap();
         let entity_type = EntityType::builder()
             .ty(flow_type.wrapper_type())
             .description(r_string())
-            .components(ComponentTypeIds::default_test())
-            .properties(PropertyTypes::default_test())
-            .extensions(Extensions::default_test())
+            .components(ComponentTypeIds::random_type_ids().unwrap())
+            .properties(PropertyTypes::random_types(1..5).unwrap())
+            .extensions(Extensions::random_types(1..3).unwrap())
             .build();
+        // The dynamic JSON schema of the flow type depends on the entity type of the wrapper entity instance.
         let schema = flow_type
             .json_schema(&entity_type)
             .expect("Failed to generate dynamic json schema for flow type!");

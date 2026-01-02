@@ -1,8 +1,8 @@
 pub use default_from::DefaultFrom;
 
 use random_string::generate;
-use serde_json::json;
 use serde_json::Value;
+use serde_json::json;
 
 pub mod default_from;
 
@@ -23,13 +23,3 @@ pub fn r_string_1000() -> String {
 pub fn r_json_string() -> Value {
     json!(r_string())
 }
-
-
-// mod reactive_entity_instance_test;
-// mod reactive_property_instance_test;
-// mod reactive_relation_instance_test;
-//
-// mod reactive_flow_instance_test;
-
-// #[tarpaulin::skip]
-// pub mod utils;

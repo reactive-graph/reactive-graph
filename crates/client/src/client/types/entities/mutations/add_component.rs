@@ -1,11 +1,11 @@
 #[cynic::schema_for_derives(file = r#"../../schema/graphql/reactive-graph-schema.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod mutations {
-    use cynic::Operation;
-    use cynic::QueryFragment;
-
     use crate::schema_graphql::types::entity_type::EntityType;
     use crate::types::components::variables::container::variables::ComponentContainerVariables;
     use crate::types::components::variables::container::variables::ComponentContainerVariablesFields;
+    use cynic::Operation;
+    use cynic::QueryFragment;
+    use reactive_graph_graph::EntityComponentTypeId;
 
     #[derive(cynic::QueryFragment, Debug)]
     #[cynic(graphql_type = "Mutation", variables = "ComponentContainerVariables")]
@@ -22,18 +22,12 @@ pub mod mutations {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "ComponentContainerVariables")]
     pub struct MutationEntityTypes {
-        #[arguments(type: { name: $name, namespace: $namespace }, component: { name: $component_name, namespace: $component_namespace }
-        )]
+        #[arguments(type: $_type, component: $component_type)]
         pub add_component: EntityType,
     }
 
-    pub fn add_component_mutation(ty: reactive_graph_graph::EntityComponentTypeId) -> Operation<AddComponent, ComponentContainerVariables> {
+    pub fn add_component_mutation<EC: Into<EntityComponentTypeId>>(ty: EC) -> Operation<AddComponent, ComponentContainerVariables> {
         use cynic::MutationBuilder;
-        AddComponent::build(ty.into())
-    }
-
-    pub fn add_component_with_variables(variables: ComponentContainerVariables) -> Operation<AddComponent, ComponentContainerVariables> {
-        use cynic::MutationBuilder;
-        AddComponent::build(variables)
+        AddComponent::build(ty.into().into())
     }
 }

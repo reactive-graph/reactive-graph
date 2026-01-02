@@ -1,23 +1,13 @@
-use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
+use crate::client::types::flows::args::parse_flow_ty;
 use clap::Args;
-use reactive_graph_client::types::common::variables::update_description::variables::UpdateDescriptionVariables;
+use reactive_graph_graph::FlowTypeId;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct FlowTypeUpdateDescriptionArgs {
-    /// The flow type.
-    #[clap(flatten)]
-    pub ty: FlowTypeIdArgs,
+    /// The fully qualified namespace of the flow type.
+    #[clap(name = "flow_type", value_parser = parse_flow_ty)]
+    pub flow_ty: FlowTypeId,
 
     /// The description to update.
     pub description: String,
-}
-
-impl From<&FlowTypeUpdateDescriptionArgs> for UpdateDescriptionVariables {
-    fn from(args: &FlowTypeUpdateDescriptionArgs) -> Self {
-        UpdateDescriptionVariables {
-            namespace: args.ty.namespace.clone(),
-            name: args.ty.name.clone(),
-            description: args.description.clone(),
-        }
-    }
 }

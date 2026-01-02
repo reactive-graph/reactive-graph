@@ -3,6 +3,7 @@ use crate::PropertyType;
 use crate::PropertyTypes;
 use crate::RemoveVariableError;
 use crate::UpdateVariableError;
+use crate::divergent::DivergentPropertyTypes;
 
 pub type Variable = PropertyType;
 pub type Variables = PropertyTypes;
@@ -39,6 +40,13 @@ pub trait VariablesContainer {
 
     /// Merges the given variables with the existing variables.
     fn merge_variables<V: Into<Variables>>(&mut self, variables_to_merge: V);
+
+    /// Merges only new variables into the own variables.
+    /// Returns true, if the variable already exists and the data type is divergent.
+    fn merge_non_existent_variables<V: Into<Variables>>(&self, variables_to_merge: V) -> DivergentPropertyTypes;
+
+    /// Returns all own properties.
+    fn get_own_variables_cloned(&self) -> Variables;
 }
 
 /// Collection of a type which contains variables.

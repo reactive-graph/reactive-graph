@@ -21,14 +21,20 @@ use reactive_graph_behaviour_service_api::RelationComponentBehaviourManager;
 use reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
 use reactive_graph_command_api::CommandManager;
 use reactive_graph_command_api::CommandSystem;
-use reactive_graph_command_api::CommandTypeProvider;
+use reactive_graph_command_api::CommandTypeSystemRegistrator;
 use reactive_graph_command_impl::CommandSystemImpl;
 use reactive_graph_config_api::ConfigManager;
 use reactive_graph_config_api::ConfigSystem;
 use reactive_graph_config_impl::ConfigSystemImpl;
 use reactive_graph_dynamic_graph_api::DynamicGraphQueryService;
+use reactive_graph_dynamic_graph_api::DynamicGraphSchemaBuilder;
 use reactive_graph_dynamic_graph_api::DynamicGraphSchemaManager;
 use reactive_graph_dynamic_graph_api::DynamicGraphSystem;
+use reactive_graph_dynamic_graph_api::SchemaBuilderContextManager;
+use reactive_graph_dynamic_graph_api::SchemaBuilderManager;
+use reactive_graph_flow_api::FlowSystem;
+use reactive_graph_flow_api::FlowTypeSystemRegistrator;
+use reactive_graph_flow_impl::flow_system_impl::FlowSystemImpl;
 use reactive_graph_graphql_api::GraphQLQueryService;
 use reactive_graph_graphql_api::GraphQLSchemaManager;
 use reactive_graph_graphql_api::GraphQLSystem;
@@ -65,19 +71,17 @@ use reactive_graph_runtime_web_api::WebResourceManager;
 use reactive_graph_runtime_web_api::WebSystem;
 use reactive_graph_type_system_api::ComponentImportExportManager;
 use reactive_graph_type_system_api::ComponentManager;
-use reactive_graph_type_system_api::ComponentProviderRegistry;
 use reactive_graph_type_system_api::EntityTypeImportExportManager;
 use reactive_graph_type_system_api::EntityTypeManager;
-use reactive_graph_type_system_api::EntityTypeProviderRegistry;
 use reactive_graph_type_system_api::FlowTypeImportExportManager;
 use reactive_graph_type_system_api::FlowTypeManager;
-use reactive_graph_type_system_api::FlowTypeProviderRegistry;
-use reactive_graph_type_system_api::NamespaceManager;
+use reactive_graph_type_system_api::NamespaceTreeManager;
+use reactive_graph_type_system_api::NamespacedTypeManager;
 use reactive_graph_type_system_api::RelationTypeImportExportManager;
 use reactive_graph_type_system_api::RelationTypeManager;
-use reactive_graph_type_system_api::RelationTypeProviderRegistry;
-use reactive_graph_type_system_api::TypeSystem;
 use reactive_graph_type_system_api::TypeSystemEventManager;
+use reactive_graph_type_system_api::TypeSystemProviderRegistry;
+use reactive_graph_type_system_api::TypeSystemSystem;
 
 pub struct RunningState(Arc<AtomicBool>);
 
@@ -89,10 +93,11 @@ fn create_running_state() -> RunningState {
 pub struct RuntimeImpl {
     #[component(default = "create_running_state")]
     running: RunningState,
-    type_system: Arc<dyn TypeSystem + Send + Sync>,
+    type_system_system: Arc<dyn TypeSystemSystem + Send + Sync>,
     reactive_system: Arc<dyn ReactiveSystem + Send + Sync>,
     behaviour_system: Arc<dyn BehaviourSystem + Send + Sync>,
     instance_system: Arc<dyn InstanceSystem + Send + Sync>,
+    flow_system: Arc<FlowSystemImpl>,
     command_system: Arc<CommandSystemImpl>,
     runtime_system: Arc<dyn RuntimeSystem + Send + Sync>,
     remotes_system: Arc<RemotesSystemImpl>,
@@ -209,61 +214,53 @@ impl Runtime for RuntimeImpl {
     }
 }
 
-impl TypeSystem for RuntimeImpl {
+impl TypeSystemSystem for RuntimeImpl {
     fn get_component_manager(&self) -> Arc<dyn ComponentManager + Send + Sync> {
-        self.type_system.get_component_manager()
+        self.type_system_system.get_component_manager()
     }
 
     fn get_component_import_export_manager(&self) -> Arc<dyn ComponentImportExportManager + Send + Sync> {
-        self.type_system.get_component_import_export_manager()
-    }
-
-    fn get_component_provider_registry(&self) -> Arc<dyn ComponentProviderRegistry + Send + Sync> {
-        self.type_system.get_component_provider_registry()
+        self.type_system_system.get_component_import_export_manager()
     }
 
     fn get_entity_type_manager(&self) -> Arc<dyn EntityTypeManager + Send + Sync> {
-        self.type_system.get_entity_type_manager()
+        self.type_system_system.get_entity_type_manager()
     }
 
     fn get_entity_type_import_export_manager(&self) -> Arc<dyn EntityTypeImportExportManager + Send + Sync> {
-        self.type_system.get_entity_type_import_export_manager()
-    }
-
-    fn get_entity_type_provider_registry(&self) -> Arc<dyn EntityTypeProviderRegistry + Send + Sync> {
-        self.type_system.get_entity_type_provider_registry()
+        self.type_system_system.get_entity_type_import_export_manager()
     }
 
     fn get_flow_type_manager(&self) -> Arc<dyn FlowTypeManager + Send + Sync> {
-        self.type_system.get_flow_type_manager()
+        self.type_system_system.get_flow_type_manager()
     }
 
     fn get_flow_type_import_export_manager(&self) -> Arc<dyn FlowTypeImportExportManager + Send + Sync> {
-        self.type_system.get_flow_type_import_export_manager()
+        self.type_system_system.get_flow_type_import_export_manager()
     }
 
-    fn get_flow_type_provider_registry(&self) -> Arc<dyn FlowTypeProviderRegistry + Send + Sync> {
-        self.type_system.get_flow_type_provider_registry()
+    fn get_namespace_tree_manager(&self) -> Arc<dyn NamespaceTreeManager + Send + Sync> {
+        self.type_system_system.get_namespace_tree_manager()
     }
 
-    fn get_namespace_manager(&self) -> Arc<dyn NamespaceManager + Send + Sync> {
-        self.type_system.get_namespace_manager()
+    fn get_namespaced_type_manager(&self) -> Arc<dyn NamespacedTypeManager + Send + Sync> {
+        self.type_system_system.get_namespaced_type_manager()
     }
 
     fn get_relation_type_manager(&self) -> Arc<dyn RelationTypeManager + Send + Sync> {
-        self.type_system.get_relation_type_manager()
+        self.type_system_system.get_relation_type_manager()
     }
 
     fn get_relation_type_import_export_manager(&self) -> Arc<dyn RelationTypeImportExportManager + Send + Sync> {
-        self.type_system.get_relation_type_import_export_manager()
-    }
-
-    fn get_relation_type_provider_registry(&self) -> Arc<dyn RelationTypeProviderRegistry + Send + Sync> {
-        self.type_system.get_relation_type_provider_registry()
+        self.type_system_system.get_relation_type_import_export_manager()
     }
 
     fn get_type_system_event_manager(&self) -> Arc<dyn TypeSystemEventManager + Send + Sync> {
-        self.type_system.get_type_system_event_manager()
+        self.type_system_system.get_type_system_event_manager()
+    }
+
+    fn get_type_system_provider_registry(&self) -> Arc<dyn TypeSystemProviderRegistry + Send + Sync> {
+        self.type_system_system.get_type_system_provider_registry()
     }
 }
 
@@ -284,8 +281,8 @@ impl ReactiveSystem for RuntimeImpl {
         self.reactive_system.get_reactive_instance_event_manager()
     }
 
-    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
-        self.reactive_system.type_system()
+    fn type_system_system(&self) -> Arc<dyn TypeSystemSystem + Send + Sync> {
+        self.reactive_system.type_system_system()
     }
 
     fn behaviour_system(&self) -> Arc<dyn BehaviourSystem + Send + Sync> {
@@ -326,8 +323,8 @@ impl BehaviourSystem for RuntimeImpl {
         self.behaviour_system.get_relation_component_behaviour_registry()
     }
 
-    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
-        self.behaviour_system.type_system()
+    fn type_system_system(&self) -> Arc<dyn TypeSystemSystem + Send + Sync> {
+        self.behaviour_system.type_system_system()
     }
 }
 
@@ -345,17 +342,23 @@ impl InstanceSystem for RuntimeImpl {
     }
 }
 
+impl FlowSystem for RuntimeImpl {
+    fn get_flow_type_system_registrator(&self) -> Arc<dyn FlowTypeSystemRegistrator + Send + Sync> {
+        self.flow_system.get_flow_type_system_registrator()
+    }
+}
+
 impl CommandSystem for RuntimeImpl {
     fn get_command_manager(&self) -> Arc<dyn CommandManager + Send + Sync> {
         self.command_system.get_command_manager()
     }
 
-    fn get_command_type_provider(&self) -> Arc<dyn CommandTypeProvider + Send + Sync> {
-        self.command_system.get_command_type_provider()
+    fn get_command_type_system_registrator(&self) -> Arc<dyn CommandTypeSystemRegistrator + Send + Sync> {
+        self.command_system.get_command_type_system_registrator()
     }
 
-    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
-        self.command_system.type_system()
+    fn type_system_system(&self) -> Arc<dyn TypeSystemSystem + Send + Sync> {
+        self.command_system.type_system_system()
     }
 
     fn reactive_system(&self) -> Arc<dyn ReactiveSystem + Send + Sync> {
@@ -398,8 +401,8 @@ impl WebSystem for RuntimeImpl {
         self.web_system.get_web_resource_manager()
     }
 
-    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
-        self.web_system.type_system()
+    fn type_system_system(&self) -> Arc<dyn TypeSystemSystem + Send + Sync> {
+        self.web_system.type_system_system()
     }
 
     fn reactive_system(&self) -> Arc<dyn ReactiveSystem + Send + Sync> {
@@ -442,12 +445,24 @@ impl DynamicGraphSystem for RuntimeImpl {
         self.dynamic_graph_system.get_dynamic_graph_query_service()
     }
 
+    fn get_dynamic_graph_schema_builder(&self) -> Arc<dyn DynamicGraphSchemaBuilder + Send + Sync> {
+        self.dynamic_graph_system.get_dynamic_graph_schema_builder()
+    }
+
     fn get_dynamic_graph_schema_manager(&self) -> Arc<dyn DynamicGraphSchemaManager + Send + Sync> {
         self.dynamic_graph_system.get_dynamic_graph_schema_manager()
     }
 
-    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
-        self.dynamic_graph_system.type_system()
+    fn get_schema_builder_context_manager(&self) -> Arc<dyn SchemaBuilderContextManager + Send + Sync> {
+        self.dynamic_graph_system.get_schema_builder_context_manager()
+    }
+
+    fn get_schema_builder_manager(&self) -> Arc<dyn SchemaBuilderManager + Send + Sync> {
+        self.dynamic_graph_system.get_schema_builder_manager()
+    }
+
+    fn type_system_system(&self) -> Arc<dyn TypeSystemSystem + Send + Sync> {
+        self.dynamic_graph_system.type_system_system()
     }
 
     fn reactive_system(&self) -> Arc<dyn ReactiveSystem + Send + Sync> {
@@ -497,13 +512,14 @@ impl PluginSystem for RuntimeImpl {
 impl Lifecycle for RuntimeImpl {
     async fn init(&self) {
         // Order matters
-        self.type_system.init().await;
+        self.type_system_system.init().await;
         self.reactive_system.init().await;
         self.behaviour_system.init().await;
         self.instance_system.init().await;
+        self.flow_system.init().await;
         //
-        self.command_system.init().await;
         self.runtime_system.init().await;
+        self.command_system.init().await;
         // self.shutdown_manager.init().await;
         self.remotes_system.init().await;
         //
@@ -519,14 +535,15 @@ impl Lifecycle for RuntimeImpl {
 
     async fn post_init(&self) {
         // Order matters
-        self.type_system.post_init().await;
+        self.type_system_system.post_init().await;
         self.reactive_system.post_init().await;
         self.behaviour_system.post_init().await;
         self.instance_system.post_init().await;
+        self.flow_system.post_init().await;
         //
+        self.runtime_system.post_init().await;
         self.command_system.post_init().await;
         // self.shutdown_manager.post_init().await;
-        self.runtime_system.post_init().await;
         self.remotes_system.post_init().await;
         //
         self.graphql_system.post_init().await;
@@ -552,13 +569,14 @@ impl Lifecycle for RuntimeImpl {
         //
         self.remotes_system.pre_shutdown().await;
         // self.shutdown_manager.pre_shutdown().await;
+        self.command_system.pre_shutdown().await;
         self.runtime_system.pre_shutdown().await;
-        self.command_system.init().await;
         //
+        self.flow_system.pre_shutdown().await;
         self.instance_system.pre_shutdown().await;
         self.behaviour_system.pre_shutdown().await;
         self.reactive_system.pre_shutdown().await;
-        self.type_system.pre_shutdown().await;
+        self.type_system_system.pre_shutdown().await;
     }
 
     async fn shutdown(&self) {
@@ -574,13 +592,14 @@ impl Lifecycle for RuntimeImpl {
         //
         self.remotes_system.shutdown().await;
         // self.shutdown_manager.shutdown().await;
+        self.command_system.shutdown().await;
         self.runtime_system.shutdown().await;
-        self.command_system.init().await;
         //
+        self.flow_system.shutdown().await;
         self.instance_system.shutdown().await;
         self.behaviour_system.shutdown().await;
         self.reactive_system.shutdown().await;
-        self.type_system.shutdown().await;
+        self.type_system_system.shutdown().await;
     }
 }
 

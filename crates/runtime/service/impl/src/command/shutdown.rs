@@ -12,20 +12,20 @@ use reactive_graph_command_model::entity::Command;
 use reactive_graph_command_model::entity::CommandArg;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
-use reactive_graph_runtime_model::ENTITY_TYPE_SHUTDOWN;
-use reactive_graph_runtime_model::ShutdownProperties::DELAY;
+use reactive_graph_runtime_model::reactive_graph::runtime::shutdown::SHUTDOWN;
+use reactive_graph_runtime_model::reactive_graph::runtime::shutdown::ShutdownProperties::DELAY;
 use reactive_graph_runtime_service_api::UUID_SHUTDOWN;
 
 pub(crate) fn shutdown_command(shutdown_state: Arc<AtomicBool>) -> Command {
     let args = CommandArgs::new().arg(
-        CommandArg::new(DELAY)
+        CommandArg::new(DELAY.as_ref())
             .short('d')
             .long("delay")
             .help("Delay shutdown by N seconds")
             .required(false),
     );
     let executor = Box::new(move |e: &ReactiveEntity| {
-        let delay = e.as_u64(DELAY).unwrap_or(0);
+        let delay = e.as_u64(DELAY.as_ref()).unwrap_or(0);
         if delay > 0 {
             let shutdown_in_seconds = time::Duration::from_secs(delay);
             let shutdown_state_deferred = shutdown_state.clone();
@@ -44,7 +44,7 @@ pub(crate) fn shutdown_command(shutdown_state: Arc<AtomicBool>) -> Command {
         }
     });
     Command::builder()
-        .ty(ENTITY_TYPE_SHUTDOWN.deref())
+        .ty(SHUTDOWN.deref())
         .id(UUID_SHUTDOWN)
         .namespace("core")
         .name("shutdown")

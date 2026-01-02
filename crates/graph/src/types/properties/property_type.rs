@@ -1,8 +1,12 @@
+use std::borrow::Cow;
 use std::cmp::Ordering;
 use std::hash::Hash;
 use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
+use std::str::FromStr;
+use std::string::ToString;
+use std::sync::LazyLock;
 
 use dashmap::DashMap;
 use schemars::JsonSchema;
@@ -16,8 +20,6 @@ use serde::Serializer;
 use serde_json::Map;
 use serde_json::Value;
 use serde_json::json;
-use std::borrow::Cow;
-use std::sync::LazyLock;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
@@ -35,15 +37,35 @@ use crate::RemovePropertyError;
 use crate::SocketType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
+use crate::divergent::DivergentPropertyTypes;
+
+#[cfg(any(test, feature = "test"))]
+use crate::NamespacedTypeError;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedType;
+#[cfg(any(test, feature = "test"))]
+use crate::RandomNamespacedTypes;
+#[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_utils_test::r_string;
+#[cfg(any(test, feature = "test"))]
+use std::ops::Range;
+#[cfg(any(test, feature = "table"))]
+use tabled::Tabled;
 
 pub static NAMESPACE_PROPERTY_TYPE: Uuid = Uuid::from_u128(0x1ab7c8109dcd11c180b400d02fd540c7);
 
-pub static EXTENSION_JSON_SCHEMA_PROPERTIES: LazyLock<ExtensionTypeId> = LazyLock::new(|| ExtensionTypeId::new_from_type("json_schema", "properties"));
+pub static EXTENSION_JSON_SCHEMA_PROPERTIES: LazyLock<ExtensionTypeId> =
+    LazyLock::new(|| ExtensionTypeId::from_str("reactive_graph::schema::json::Properties").unwrap());
 
 /// Definition of a property. The definition contains
 /// the name of the property, the data type and the socket
 /// type.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[cfg_attr(any(test, feature = "table"), derive(Tabled))]
 #[schemars(deny_unknown_fields)]
 pub struct PropertyType {
     /// The name of the property
@@ -75,6 +97,7 @@ pub struct PropertyType {
     /// Property specific extensions
     #[serde(default = "Extensions::new")]
     #[builder(default, setter(into))]
+    #[cfg_attr(any(test, feature = "table"), tabled(skip))]
     pub extensions: Extensions,
 }
 
@@ -236,6 +259,10 @@ impl ExtensionContainer for PropertyType {
     fn merge_extensions<E: Into<Extensions>>(&mut self, extensions_to_merge: E) {
         self.extensions.merge_extensions(extensions_to_merge)
     }
+
+    fn get_own_extensions_cloned(&self) -> Extensions {
+        self.extensions.clone()
+    }
 }
 
 impl PartialOrd<Self> for PropertyType {
@@ -364,8 +391,23 @@ impl PropertyTypeContainer for PropertyTypes {
         });
     }
 
-    fn get_own_properties(&self) -> &PropertyTypes {
-        &self
+    fn merge_non_existent_properties<P: Into<PropertyTypes>>(&self, properties_to_merge: P) -> DivergentPropertyTypes {
+        let mut divergent_properties = DivergentPropertyTypes::new();
+        let properties_to_merge = properties_to_merge.into();
+        properties_to_merge.into_iter().for_each(|(property_name, property_to_merge)| {
+            if !self.0.contains_key(&property_name) {
+                self.push(property_to_merge);
+            } else if let Some(existing_property) = self.get_own_property(&property_name) {
+                if property_to_merge.data_type != existing_property.data_type {
+                    divergent_properties.push(&existing_property, &property_to_merge);
+                }
+            }
+        });
+        divergent_properties
+    }
+
+    fn get_own_properties_cloned(&self) -> PropertyTypes {
+        self.clone()
     }
 }
 
@@ -477,35 +519,49 @@ impl FromIterator<PropertyType> for PropertyTypes {
 }
 
 #[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
-#[cfg(any(test, feature = "test"))]
-use reactive_graph_utils_test::r_string;
+impl RandomNamespacedType for PropertyType {
+    type Error = NamespacedTypeError;
+    type TypeId = ();
+
+    fn random_type() -> Result<Self, NamespacedTypeError> {
+        Ok(PropertyType::builder()
+            .name(r_string())
+            .description(r_string())
+            .data_type(DataType::default_test())
+            .mutability(Mutability::default_test())
+            .socket_type(SocketType::default_test())
+            .extensions(Extensions::random_types(0..10)?)
+            .build())
+    }
+
+    fn random_type_with_id(_: &Self::TypeId) -> Result<Self, Self::Error> {
+        Self::random_type()
+    }
+}
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for PropertyType {
-    fn default_test() -> Self {
+impl PropertyType {
+    pub fn random_type_no_extensions() -> Self {
         PropertyType::builder()
             .name(r_string())
             .description(r_string())
             .data_type(DataType::default_test())
             .mutability(Mutability::default_test())
             .socket_type(SocketType::default_test())
-            .extensions(Extensions::default_test())
             .build()
     }
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for PropertyTypes {
-    fn default_test() -> Self {
-        let property_types = PropertyTypes::new();
+impl RandomNamespacedTypes for PropertyTypes {
+    type Error = NamespacedTypeError;
+    fn random_types(range: Range<usize>) -> Result<Self, NamespacedTypeError> {
+        let types = Self::new();
         let mut rng = rand::rng();
-        for _ in 0..rng.random_range(0..10) {
-            property_types.push(PropertyType::default_test());
+        for _ in 0..rng.random_range(range) {
+            types.push(PropertyType::random_type()?);
         }
-        property_types
+        Ok(types)
     }
 }
 
@@ -515,6 +571,15 @@ impl PropertyTypes {
         let property_types = PropertyTypes::new();
         property_types.push(PropertyType::new(property_name, DataType::String));
         property_types
+    }
+
+    pub fn random_types_no_extensions() -> Self {
+        let types = Self::new();
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
+            types.push(PropertyType::random_type_no_extensions());
+        }
+        types
     }
 }
 

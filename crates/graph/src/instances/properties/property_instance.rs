@@ -21,6 +21,17 @@ use crate::MutablePropertyInstanceSetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyTypes;
 
+#[cfg(any(test, feature = "test"))]
+use crate::test_utils::default_from::DefaultFrom;
+#[cfg(any(test, feature = "test"))]
+use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_utils_test::r_string;
+#[cfg(any(test, feature = "test"))]
+use serde_json::json;
+
 pub struct ContainerPropertyInstance<IdType: Clone> {
     /// Id of the container
     pub id: IdType,
@@ -85,36 +96,36 @@ impl PropertyInstances {
 }
 
 impl PropertyInstanceGetter for PropertyInstances {
-    fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.0.get(&property_name.into()).map(|property| property.value().clone())
+    fn get(&self, property_name: &str) -> Option<Value> {
+        self.0.get(property_name).map(|property| property.value().clone())
     }
 
-    fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.0.get(&property_name.into()).and_then(|p| p.as_bool())
+    fn as_bool(&self, property_name: &str) -> Option<bool> {
+        self.0.get(property_name).and_then(|p| p.as_bool())
     }
 
-    fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.0.get(&property_name.into()).and_then(|p| p.as_u64())
+    fn as_u64(&self, property_name: &str) -> Option<u64> {
+        self.0.get(property_name).and_then(|p| p.as_u64())
     }
 
-    fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.0.get(&property_name.into()).and_then(|p| p.as_i64())
+    fn as_i64(&self, property_name: &str) -> Option<i64> {
+        self.0.get(property_name).and_then(|p| p.as_i64())
     }
 
-    fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.0.get(&property_name.into()).and_then(|p| p.as_f64())
+    fn as_f64(&self, property_name: &str) -> Option<f64> {
+        self.0.get(property_name).and_then(|p| p.as_f64())
     }
 
-    fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-        self.0.get(&property_name.into()).and_then(|p| p.as_str().map(|s| s.to_string()))
+    fn as_string(&self, property_name: &str) -> Option<String> {
+        self.0.get(property_name).and_then(|p| p.as_str().map(|s| s.to_string()))
     }
 
-    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
-        self.0.get(&property_name.into()).and_then(|p| p.as_array().cloned())
+    fn as_array(&self, property_name: &str) -> Option<Vec<Value>> {
+        self.0.get(property_name).and_then(|p| p.as_array().cloned())
     }
 
-    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
-        self.0.get(&property_name.into()).and_then(|p| p.as_object().cloned())
+    fn as_object(&self, property_name: &str) -> Option<Map<String, Value>> {
+        self.0.get(property_name).and_then(|p| p.as_object().cloned())
     }
 }
 
@@ -246,17 +257,6 @@ impl FromIterator<(String, Value)> for PropertyInstances {
 }
 
 #[cfg(any(test, feature = "test"))]
-use crate::test_utils::default_from::DefaultFrom;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
-#[cfg(any(test, feature = "test"))]
-use reactive_graph_utils_test::r_string;
-#[cfg(any(test, feature = "test"))]
-use serde_json::json;
-
-#[cfg(any(test, feature = "test"))]
 impl DefaultTest for PropertyInstances {
     fn default_test() -> Self {
         let property_instances = PropertyInstances::new();
@@ -269,7 +269,7 @@ impl DefaultTest for PropertyInstances {
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultFrom<PropertyTypes> for PropertyInstances {
+impl DefaultFrom<&PropertyTypes> for PropertyInstances {
     fn default_from(property_types: &PropertyTypes) -> Self {
         let properties = Self::new();
         for property_type in property_types.iter() {

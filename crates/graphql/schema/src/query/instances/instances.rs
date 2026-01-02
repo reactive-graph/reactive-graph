@@ -6,24 +6,23 @@ use async_graphql::Result;
 use uuid::Uuid;
 
 use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_behaviour_model_api::BehaviourTypeIds;
 use reactive_graph_behaviour_model_api::BehaviourTypesContainer;
 use reactive_graph_graph::ComponentContainer;
 use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::ComponentTypeIds;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::RelationTypeId;
 use reactive_graph_reactive_service_api::ReactiveEntityManager;
 use reactive_graph_reactive_service_api::ReactiveFlowManager;
 use reactive_graph_reactive_service_api::ReactiveRelationManager;
 
-use crate::mutation::BehaviourTypeIdDefinition;
-use crate::mutation::ComponentTypeIdDefinition;
-use crate::mutation::EntityTypeIdDefinition;
 use crate::mutation::GraphQLRelationInstanceId;
-use crate::mutation::RelationTypeIdDefinition;
 use crate::query::GraphQLEntityInstance;
 use crate::query::GraphQLFlowInstance;
 use crate::query::GraphQLPropertyInstance;
 use crate::query::GraphQLRelationInstance;
+use crate::validator::NamespacedTypeValidator;
 
 #[derive(Default)]
 pub struct Instances;
@@ -42,12 +41,20 @@ impl Instances {
         context: &Context<'_>,
         #[graphql(desc = "Returns only the entity instance with the given id.")] id: Option<Uuid>,
         #[graphql(desc = "Returns the entity instance with the given label.")] label: Option<String>,
-        #[graphql(name = "type", desc = "Filters the entity instances by type.")] entity_type: Option<EntityTypeIdDefinition>,
-        #[graphql(desc = "Filters the entity instances by applied components.")] components: Option<Vec<ComponentTypeIdDefinition>>,
-        #[graphql(desc = "Filters the entity instances by applied behaviours.")] behaviours: Option<Vec<BehaviourTypeIdDefinition>>,
+        #[graphql(
+            name = "type",
+            desc = "Filters the entity instances by the fully qualified namespace of the entity type.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: Option<String>,
+        #[graphql(desc = "Filters the entity instances by applied components.")] components: Option<Vec<String>>,
+        #[graphql(desc = "Filters the entity instances by applied behaviours.")] behaviours: Option<Vec<String>>,
         #[graphql(name = "properties", desc = "Query by properties.")] property_query: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<Vec<GraphQLEntityInstance>> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
+        let entity_ty = EntityTypeId::parse_optional_namespace(_type)?;
+        let components = ComponentTypeIds::parse_optional_namespaces(components)?;
+        let behaviours = BehaviourTypeIds::parse_optional_namespaces(behaviours)?;
         if let Some(id) = id {
             let entity_instance = entity_instance_manager.get(id).map(|entity_instance| {
                 let entity_instance: GraphQLEntityInstance = entity_instance.into();
@@ -73,19 +80,9 @@ impl Instances {
         let entities = entity_instance_manager
             .get_all()
             .iter()
-            .filter(|entity_instance| entity_type.is_none() || entity_instance.ty == EntityTypeId::from(entity_type.clone().unwrap()))
-            .filter(|entity_instance| {
-                components.is_none() || {
-                    let components = components.clone().unwrap();
-                    components.iter().cloned().all(|component_ty| entity_instance.is_a(&component_ty.into()))
-                }
-            })
-            .filter(|entity_instance| {
-                behaviours.is_none() || {
-                    let behaviours = behaviours.clone().unwrap();
-                    behaviours.iter().cloned().all(|behaviour_ty| entity_instance.behaves_as(&behaviour_ty.into()))
-                }
-            })
+            .filter(|entity_instance| entity_ty.is_none() || entity_instance.ty == entity_ty.clone().unwrap())
+            .filter(|entity_instance| components.is_empty() || { entity_instance.is_all(&components) })
+            .filter(|entity_instance| behaviours.is_empty() || { entity_instance.behaves_as_all(&behaviours) })
             .filter(|entity_instance| {
                 property_query.is_none() || {
                     let property_query = property_query.clone().unwrap();
@@ -114,34 +111,35 @@ impl Instances {
     async fn count_entity_instances(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type", desc = "Counts the entity instances of the given type only.")] ty: Option<EntityTypeIdDefinition>,
-        #[graphql(name = "component", desc = "Counts the entity instances which are composed by the given component only.")] component_ty: Option<
-            ComponentTypeIdDefinition,
-        >,
-        #[graphql(name = "behaviour", desc = "Counts the entity instances which behaves as the behaviour only.")] behaviour_ty: Option<
-            BehaviourTypeIdDefinition,
-        >,
+        #[graphql(
+            name = "type",
+            desc = "Counts the entity instances of the given entity type only.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: Option<String>,
+        #[graphql(name = "component", desc = "Counts the entity instances which are composed by the given component only.")] component_type: Option<String>,
+        #[graphql(name = "behaviour", desc = "Counts the entity instances which behaves as the behaviour only.")] behaviour_type: Option<String>,
     ) -> Result<usize> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
-        let ty: Option<EntityTypeId> = ty.map(|ty| ty.into());
-        let component_ty: Option<ComponentTypeId> = component_ty.map(|component_ty| component_ty.into());
-        let behaviour_ty: Option<BehaviourTypeId> = behaviour_ty.map(|behaviour_ty| behaviour_ty.into());
-        if ty.is_none() && component_ty.is_none() && behaviour_ty.is_none() {
+        let entity_ty = EntityTypeId::parse_optional_namespace(_type)?;
+        let component_ty: Option<ComponentTypeId> = ComponentTypeId::parse_optional_namespace(component_type)?;
+        let behaviour_ty: Option<BehaviourTypeId> = BehaviourTypeId::parse_optional_namespace(behaviour_type)?;
+        if entity_ty.is_none() && component_ty.is_none() && behaviour_ty.is_none() {
             return Ok(entity_instance_manager.count());
         }
         if component_ty.is_none() && behaviour_ty.is_none() {
-            return Ok(entity_instance_manager.count_by_type(&ty.unwrap()));
+            return Ok(entity_instance_manager.count_by_type(&entity_ty.unwrap()));
         }
-        if ty.is_none() && behaviour_ty.is_none() {
+        if entity_ty.is_none() && behaviour_ty.is_none() {
             return Ok(entity_instance_manager.count_by_component(&component_ty.unwrap()));
         }
-        if ty.is_none() && component_ty.is_none() {
+        if entity_ty.is_none() && component_ty.is_none() {
             return Ok(entity_instance_manager.count_by_behaviour(&behaviour_ty.unwrap()));
         }
         let count = entity_instance_manager
             .get_all()
             .iter()
-            .filter(|e| ty.is_none() || { e.ty == ty.clone().unwrap() })
+            .filter(|e| entity_ty.is_none() || { e.ty == entity_ty.clone().unwrap() })
             .filter(|e| component_ty.is_none() || e.is_a(&component_ty.clone().unwrap()))
             .filter(|e| behaviour_ty.is_none() || e.behaves_as(&behaviour_ty.clone().unwrap()))
             .count();
@@ -159,28 +157,42 @@ impl Instances {
         &self,
         context: &Context<'_>,
         #[graphql(desc = "Returns only the relation instance with the given id.")] id: Option<GraphQLRelationInstanceId>,
-        #[graphql(desc = "Filters the relation instances by the entity type of the outbound entity instance.")] outbound_entity_ty: Option<
-            EntityTypeIdDefinition,
-        >,
-        #[graphql(desc = "Filters the relation instances by the component of the outbound entity instance.")] outbound_component_ty: Option<
-            ComponentTypeIdDefinition,
-        >,
+        #[graphql(
+            name = "outboundEntity",
+            desc = "Filters the relation instances by the entity type of the outbound entity instance."
+        )]
+        outbound_entity_type: Option<String>,
+        #[graphql(
+            name = "outboundComponent",
+            desc = "Filters the relation instances by the component of the outbound entity instance."
+        )]
+        outbound_component_type: Option<String>,
         #[graphql(desc = "Filters the relation instances by the id of the outbound entity instance")] outbound_id: Option<Uuid>,
-        #[graphql(name = "type", desc = "Filters the relation instances by relation type")] relation_ty: Option<RelationTypeIdDefinition>, // TODO: RelationInstanceTypeIdDefinition ?
-        #[graphql(desc = "Filters the relation instances by the entity type of the inbound entity instance.")] inbound_entity_ty: Option<
-            EntityTypeIdDefinition,
-        >,
-        #[graphql(desc = "Filters the relation instances by the component of the inbound entity instance.")] inbound_component_ty: Option<
-            ComponentTypeIdDefinition,
-        >,
+        #[graphql(
+            name = "type",
+            desc = "Filters the relation instances by relation type",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: Option<String>,
+        #[graphql(
+            name = "inboundEntity",
+            desc = "Filters the relation instances by the entity type of the inbound entity instance."
+        )]
+        inbound_entity_type: Option<String>,
+        #[graphql(
+            name = "inboundComponent",
+            desc = "Filters the relation instances by the component of the inbound entity instance."
+        )]
+        inbound_component_type: Option<String>,
         #[graphql(desc = "Filters the relation instances by the id of the inbound entity instance")] inbound_id: Option<Uuid>,
-        #[graphql(desc = "Filters the relation instances by applied components.")] components: Option<Vec<ComponentTypeIdDefinition>>,
-        #[graphql(desc = "Filters the relation instances by applied behaviours.")] behaviours: Option<Vec<BehaviourTypeIdDefinition>>,
+        #[graphql(desc = "Filters the relation instances by applied components.")] components: Option<Vec<String>>,
+        #[graphql(desc = "Filters the relation instances by applied behaviours.")] behaviours: Option<Vec<String>>,
         #[graphql(name = "properties", desc = "Query by properties.")] property_query: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<Vec<GraphQLRelationInstance>> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
         if let Some(id) = id {
-            let id = id.into();
+            // let id = id.ty()?;
+            let id = id.try_into()?;
             let relation_instance = relation_instance_manager.get(&id).map(|relation_instance| {
                 let relation_instance: GraphQLRelationInstance = relation_instance.into();
                 relation_instance
@@ -192,15 +204,17 @@ impl Instances {
             };
         }
 
-        let outbound_entity_ty: Option<EntityTypeId> = outbound_entity_ty.map(|outbound_entity_ty| outbound_entity_ty.into());
-        let outbound_component_ty: Option<ComponentTypeId> = outbound_component_ty.map(|outbound_component_ty| outbound_component_ty.into());
-        let relation_ty: Option<RelationTypeId> = relation_ty.map(|relation_ty| relation_ty.into());
-        let inbound_entity_ty: Option<EntityTypeId> = inbound_entity_ty.map(|inbound_entity_ty| inbound_entity_ty.into());
-        let inbound_component_ty: Option<ComponentTypeId> = inbound_component_ty.map(|inbound_component_ty| inbound_component_ty.into());
-        let components: Option<Vec<ComponentTypeId>> =
-            components.map(|components| components.iter().cloned().map(|component_ty| component_ty.into()).collect());
-        let behaviours: Option<Vec<BehaviourTypeId>> =
-            behaviours.map(|behaviours| behaviours.iter().cloned().map(|behaviour_ty| behaviour_ty.into()).collect());
+        let outbound_entity_ty = EntityTypeId::parse_optional_namespace(outbound_entity_type)?;
+        let outbound_component_ty = ComponentTypeId::parse_optional_namespace(outbound_component_type)?;
+        let relation_ty = RelationTypeId::parse_optional_namespace(_type)?;
+        let inbound_entity_ty = EntityTypeId::parse_optional_namespace(inbound_entity_type)?;
+        let inbound_component_ty = ComponentTypeId::parse_optional_namespace(inbound_component_type)?;
+        let components = ComponentTypeIds::parse_optional_namespaces(components)?;
+        // let components: Option<Vec<ComponentTypeId>> =
+        //     components.map(|components| components.iter().cloned().map(|component_ty| component_ty.into()).collect());
+        let behaviours = BehaviourTypeIds::parse_optional_namespaces(behaviours)?;
+        // let behaviours: Option<Vec<BehaviourTypeId>> =
+        //     behaviours.map(|behaviours| behaviours.iter().cloned().map(|behaviour_ty| behaviour_ty.into()).collect());
         let relation_instances = relation_instance_manager
             .get_all()
             .iter()
@@ -212,15 +226,15 @@ impl Instances {
             .filter(|relation_instance| outbound_id.is_none() || outbound_id.unwrap() == relation_instance.outbound.id)
             .filter(|relation_instance| inbound_id.is_none() || inbound_id.unwrap() == relation_instance.inbound.id)
             .filter(|relation_instance| {
-                components.is_none() || {
-                    let components = components.clone().unwrap();
-                    components.iter().all(|component_ty| relation_instance.is_a(component_ty))
+                components.is_empty() || {
+                    // let components = components.clone().unwrap();
+                    components.iter().all(|component_ty| relation_instance.is_a(&component_ty))
                 }
             })
             .filter(|relation_instance| {
-                behaviours.is_none() || {
-                    let behaviours = behaviours.clone().unwrap();
-                    behaviours.iter().all(|behaviour_ty| relation_instance.behaves_as(behaviour_ty))
+                behaviours.is_empty() || {
+                    // let behaviours = behaviours.clone().unwrap();
+                    behaviours.iter().all(|behaviour_ty| relation_instance.behaves_as(&behaviour_ty))
                 }
             })
             .filter(|relation_instance| {
@@ -251,14 +265,38 @@ impl Instances {
     async fn count_relation_instances(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type", desc = "Counts the entity instances of the given type only.")] ty: Option<RelationTypeIdDefinition>,
+        #[graphql(
+            name = "type",
+            desc = "Counts the relation instances of the given relation type only.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: Option<String>,
+        #[graphql(name = "component", desc = "Counts the relation instances which are composed by the given component only.")] component_type: Option<String>,
+        #[graphql(name = "behaviour", desc = "Counts the relation instances which behaves as the behaviour only.")] behaviour_type: Option<String>,
     ) -> Result<usize> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
-        let ty: Option<RelationTypeId> = ty.map(|ty| ty.into());
-        let count = match ty {
-            Some(ty) => relation_instance_manager.count_by_type(&ty),
-            None => relation_instance_manager.count(),
-        };
+        let relation_ty = RelationTypeId::parse_optional_namespace(_type)?;
+        let component_ty: Option<ComponentTypeId> = ComponentTypeId::parse_optional_namespace(component_type)?;
+        let behaviour_ty: Option<BehaviourTypeId> = BehaviourTypeId::parse_optional_namespace(behaviour_type)?;
+        if relation_ty.is_none() && component_ty.is_none() && behaviour_ty.is_none() {
+            return Ok(relation_instance_manager.count());
+        }
+        if component_ty.is_none() && behaviour_ty.is_none() {
+            return Ok(relation_instance_manager.count_by_type(&relation_ty.unwrap()));
+        }
+        if relation_ty.is_none() && behaviour_ty.is_none() {
+            return Ok(relation_instance_manager.count_by_component(&component_ty.unwrap()));
+        }
+        if relation_ty.is_none() && component_ty.is_none() {
+            return Ok(relation_instance_manager.count_by_behaviour(&behaviour_ty.unwrap()));
+        }
+        let count = relation_instance_manager
+            .get_all()
+            .iter()
+            .filter(|reactive_relation| relation_ty.is_none() || { reactive_relation.relation_type_id() == relation_ty.clone().unwrap() })
+            .filter(|reactive_relation| component_ty.is_none() || reactive_relation.is_a(&component_ty.clone().unwrap()))
+            .filter(|reactive_relation| behaviour_ty.is_none() || reactive_relation.behaves_as(&behaviour_ty.clone().unwrap()))
+            .count();
         Ok(count)
     }
 
@@ -268,7 +306,12 @@ impl Instances {
         context: &Context<'_>,
         #[graphql(desc = "Filters by the id of the flow")] id: Option<Uuid>,
         #[graphql(desc = "Filters by the label of the flow")] label: Option<String>,
-        #[graphql(name = "type", desc = "Filters by the entity type of the flow instance")] entity_ty: Option<EntityTypeIdDefinition>,
+        #[graphql(
+            name = "type",
+            desc = "Filters by the entity type of the flow instance",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: Option<String>,
         // TODO: Add filter by contains entity instance
         // TODO: Add filter by contains relation instance
         // TODO: Add filter by property
@@ -287,6 +330,7 @@ impl Instances {
             });
             return if flow.is_some() { Ok(vec![flow.unwrap()]) } else { Ok(Vec::new()) };
         }
+        let entity_ty = EntityTypeId::parse_optional_namespace(_type)?;
         let flow_instances = reactive_flow_manager
             .get_all()
             .iter()
@@ -305,17 +349,22 @@ impl Instances {
     async fn count_flow_instances(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type", desc = "Counts the flow instances of the given entity type only.")] ty: Option<EntityTypeIdDefinition>,
+        #[graphql(
+            name = "type",
+            desc = "Counts the flow instances of the given entity type only.",
+            validator(custom = "NamespacedTypeValidator::new()")
+        )]
+        _type: Option<String>,
         // TODO: Add filter by contains entity instance
         // TODO: Add filter by contains relation instance
         // TODO: Add filter by property
     ) -> Result<usize> {
         let reactive_flow_manager = context.data::<Arc<dyn ReactiveFlowManager + Send + Sync>>()?;
-        let ty: Option<EntityTypeId> = ty.map(|ty| ty.into());
+        let entity_ty = EntityTypeId::parse_optional_namespace(_type)?;
         let count = reactive_flow_manager
             .get_all()
             .iter()
-            .filter(|flow| ty.is_none() || { flow.ty == ty.clone().unwrap() })
+            .filter(|flow| entity_ty.is_none() || { flow.ty == entity_ty.clone().unwrap() })
             .count();
         Ok(count)
     }

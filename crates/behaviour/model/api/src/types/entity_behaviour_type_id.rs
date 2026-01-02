@@ -9,12 +9,6 @@ use std::ops::DerefMut;
 
 use dashmap::DashSet;
 use dashmap::iter_set::OwningIter;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
-#[cfg(any(test, feature = "test"))]
-use rand_derive3::RandGen;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
@@ -23,14 +17,23 @@ use serde::Deserialize;
 use serde::Serialize;
 use typed_builder::TypedBuilder;
 
-use crate::BehaviourTypeId;
 use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::NAMESPACE_SEPARATOR;
 use reactive_graph_graph::NamespacedType;
-use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
+
+use crate::BehaviourTypeId;
+
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_graph::NamespacedTypeError;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_graph::RandomNamespacedTypeId;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_graph::RandomNamespacedTypeIds;
 
 /// The behaviour of an entity type.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema, TypedBuilder)]
-#[cfg_attr(any(test, feature = "test"), derive(RandGen))]
 pub struct EntityBehaviourTypeId {
     /// The entity type.
     pub entity_ty: EntityTypeId,
@@ -42,11 +45,6 @@ pub struct EntityBehaviourTypeId {
 impl EntityBehaviourTypeId {
     pub fn new(entity_ty: EntityTypeId, behaviour_ty: BehaviourTypeId) -> Self {
         Self { entity_ty, behaviour_ty }
-    }
-
-    pub fn new_from_type<N: Into<String>, T: Into<String>>(namespace: N, type_name: T) -> Self {
-        let namespaced_type = NamespacedType::new(namespace, type_name);
-        Self::new(namespaced_type.clone().into(), namespaced_type.into())
     }
 }
 
@@ -62,9 +60,15 @@ impl From<&BehaviourTypeId> for EntityBehaviourTypeId {
     }
 }
 
+impl From<&EntityTypeId> for EntityBehaviourTypeId {
+    fn from(entity_ty: &EntityTypeId) -> Self {
+        Self::new(entity_ty.clone(), NamespacedType::from(entity_ty).into())
+    }
+}
+
 impl Display for EntityBehaviourTypeId {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}{}{}", &self.entity_ty, TYPE_ID_TYPE_SEPARATOR, &self.behaviour_ty)
+        write!(f, "{}{}{}", &self.entity_ty, NAMESPACE_SEPARATOR, &self.behaviour_ty)
     }
 }
 
@@ -200,20 +204,24 @@ macro_rules! entity_behaviour_ty {
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for EntityBehaviourTypeId {
-    fn default_test() -> Self {
-        NamespacedType::generate_random().into()
+impl RandomNamespacedTypeId for EntityBehaviourTypeId {
+    type Error = NamespacedTypeError;
+
+    fn random_type_id() -> Result<Self, NamespacedTypeError> {
+        Ok(Self::new(EntityTypeId::random_type_id()?, BehaviourTypeId::random_type_id()?))
     }
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for EntityBehaviourTypeIds {
-    fn default_test() -> Self {
+impl RandomNamespacedTypeIds for EntityBehaviourTypeIds {
+    type Error = NamespacedTypeError;
+
+    fn random_type_ids() -> Result<Self, NamespacedTypeError> {
         let tys = Self::new();
         let mut rng = rand::rng();
         for _ in 0..rng.random_range(0..10) {
-            tys.insert(EntityBehaviourTypeId::default_test());
+            tys.insert(EntityBehaviourTypeId::random_type_id()?);
         }
-        tys
+        Ok(tys)
     }
 }

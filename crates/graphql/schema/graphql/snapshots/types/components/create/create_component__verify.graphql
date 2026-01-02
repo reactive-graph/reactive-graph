@@ -1,13 +1,7 @@
 query {
   types {
-    components(
-      type: {
-        namespace: "hurtz"
-        name: "hurtz"
-      }
-    ) {
-      namespace
-      name
+    components(type: "hurtz::Hurtz") {
+      type
     }
   }
 }

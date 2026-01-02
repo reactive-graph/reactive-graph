@@ -1,8 +1,8 @@
 # Limitations
 
-```admonish warning "Not yet ready for production"
-Currently there are limitations which prevents to use this software in production.
-```
+> [!WARNING]
+> Not yet ready for production
+> Currently there are limitations which prevents to use this software in production.
 
 ## 1. No security layer
 

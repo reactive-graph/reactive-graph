@@ -1,5 +1,6 @@
 use crate::ComponentTypeId;
 use crate::ComponentTypeIds;
+use crate::Components;
 
 pub trait ComponentTypeIdContainer {
     /// Returns true, if the type is composed with a component of the given type.
@@ -26,6 +27,8 @@ pub trait ComponentTypeIdContainer {
 
     /// Removes the given components.
     fn remove_components<C: Into<ComponentTypeIds>>(&mut self, components_to_remove: C);
+
+    fn get_components_cloned(&self) -> ComponentTypeIds;
 }
 
 pub trait NamespacedTypeComponentTypeIdContainer<T, AddComponentError, RemoveComponentError> {
@@ -37,4 +40,12 @@ pub trait NamespacedTypeComponentTypeIdContainer<T, AddComponentError, RemoveCom
 
     /// Remove the component with the given component_name from the entity type with the given name.
     fn remove_component(&self, ty: &T, component_ty: &ComponentTypeId) -> Result<ComponentTypeId, RemoveComponentError>;
+
+    /// Returns all component type ids of the component type id container.
+    fn get_component_type_ids(&self) -> ComponentTypeIds;
+}
+
+pub trait NamespacedTypeComponentPropertiesContainer<T, MergeComponentPropertiesError> {
+    /// Resolves properties from the given components and merges them into the .
+    fn merge_component_properties<C: Into<Components>>(&self, components: C) -> Result<(), MergeComponentPropertiesError>;
 }

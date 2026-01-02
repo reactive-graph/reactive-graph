@@ -1,33 +1,15 @@
-use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
+use crate::client::types::flows::args::parse_flow_ty;
 use crate::client::types::property_type::args::PropertyTypeDefinitionArgs;
 use clap::Args;
-use reactive_graph_client::PropertyTypeDefinition;
-use reactive_graph_client::types::flows::variables::add_variable::variables::AddVariableVariables;
+use reactive_graph_graph::FlowTypeId;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct FlowTypeAddVariableArgs {
-    /// The flow type.
-    #[clap(flatten)]
-    pub ty: FlowTypeIdArgs,
+    /// The fully qualified namespace of the flow type.
+    #[clap(name = "flow_type", value_parser = parse_flow_ty)]
+    pub flow_ty: FlowTypeId,
 
     /// The variable.
     #[clap(flatten)]
     pub variable: PropertyTypeDefinitionArgs,
-}
-
-impl From<&FlowTypeAddVariableArgs> for AddVariableVariables {
-    fn from(args: &FlowTypeAddVariableArgs) -> Self {
-        AddVariableVariables {
-            namespace: args.ty.namespace.clone(),
-            name: args.ty.name.clone(),
-            variable: PropertyTypeDefinition {
-                name: args.variable.property_name.clone(),
-                description: args.variable.description.clone().unwrap_or_default(),
-                data_type: args.variable.data_type.into(),
-                socket_type: args.variable.socket_type.into(),
-                mutability: args.variable.mutability.into(),
-                extensions: Vec::new(),
-            },
-        }
-    }
 }

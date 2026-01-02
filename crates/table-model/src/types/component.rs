@@ -69,8 +69,8 @@ impl TableInlineFormatSetter for Component {
 impl From<reactive_graph_graph::Component> for Component {
     fn from(component: reactive_graph_graph::Component) -> Self {
         Component {
-            namespace: component.namespace(),
-            name: component.type_name(),
+            namespace: component.path().to_string(),
+            name: component.type_name().to_string(),
             description: component.description,
             properties: PropertyTypes::from(component.properties).0,
             extensions: Extensions::from(component.extensions).0,
@@ -100,8 +100,8 @@ impl TableInlineFormatSetter for ComponentTypeId {
 impl From<reactive_graph_graph::ComponentTypeId> for ComponentTypeId {
     fn from(ty: reactive_graph_graph::ComponentTypeId) -> Self {
         ComponentTypeId {
-            namespace: ty.namespace(),
-            name: ty.type_name(),
+            namespace: ty.path().to_string(),
+            name: ty.type_name().to_string(),
             inline_format: Default::default(),
         }
     }

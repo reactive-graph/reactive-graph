@@ -5,7 +5,7 @@ use springtime_di::injectable;
 
 use reactive_graph_behaviour_service_api::BehaviourSystem;
 use reactive_graph_lifecycle::Lifecycle;
-use reactive_graph_type_system_api::TypeSystem;
+use reactive_graph_type_system_api::TypeSystemSystem;
 
 use crate::ReactiveEntityManager;
 use crate::ReactiveFlowManager;
@@ -23,7 +23,7 @@ pub trait ReactiveSystem: Lifecycle {
 
     fn get_reactive_instance_event_manager(&self) -> Arc<dyn ReactiveInstanceEventManager + Send + Sync>;
 
-    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync>;
+    fn type_system_system(&self) -> Arc<dyn TypeSystemSystem + Send + Sync>;
 
     fn behaviour_system(&self) -> Arc<dyn BehaviourSystem + Send + Sync>;
 }

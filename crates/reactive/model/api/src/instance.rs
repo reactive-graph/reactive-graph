@@ -8,11 +8,11 @@ use reactive_graph_graph::PropertyInstanceSetter;
 
 use crate::ReactivePropertyContainer;
 
+pub trait ReactiveInstanceUnidentifiable: ComponentContainer + PropertyInstanceSetter + NamespacedTypeGetter + Send + Sync {}
+
 /// A reactive instance is a container for properties and components.
-/// Furthermore the reactive instance has a namespaced type.
-pub trait ReactiveInstance<ID>:
-    ReactivePropertyContainer + ComponentContainer + PropertyInstanceSetter + NamespacedTypeGetter + Display + Clone + Send + Sync
-{
+/// Furthermore, the reactive instance has a namespaced type.
+pub trait ReactiveInstance<ID>: ReactiveInstanceUnidentifiable + ReactivePropertyContainer + Display + Clone {
     /// Returns the id of the reactive instance.
     fn id(&self) -> ID;
 }

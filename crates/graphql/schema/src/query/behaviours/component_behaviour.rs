@@ -11,6 +11,7 @@ use reactive_graph_type_system_api::ComponentManager;
 
 use crate::query::GraphQLBehaviour;
 use crate::query::GraphQLComponent;
+use crate::query::GraphQLNamespacedType;
 
 pub struct GraphQLComponentBehaviour {
     component_behaviour_ty: ComponentBehaviourTypeId,
@@ -28,14 +29,11 @@ impl GraphQLComponentBehaviour {
         Ok(component.into())
     }
 
-    /// The namespace the behaviour type belongs to.
-    async fn namespace(&self) -> String {
-        self.component_behaviour_ty.behaviour_ty.namespace()
-    }
-
-    /// The name of the behaviour type.
-    async fn name(&self) -> String {
-        self.component_behaviour_ty.behaviour_ty.type_name()
+    // TODO: this is already available via the behaviour resolver below
+    /// The namespace and type name.
+    #[graphql(name = "type")]
+    async fn ty(&self) -> GraphQLNamespacedType {
+        self.component_behaviour_ty.behaviour_ty.namespaced_type().into()
     }
 
     /// The behaviour type.

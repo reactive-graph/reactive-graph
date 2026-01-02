@@ -1,0 +1,12 @@
+{
+  "$id": "https://schema.reactive-graph.io/schema/json/entity-type.schema.json",
+  "type": "reactive_graph::command::NumCommands",
+  "description": "The number of commands",
+  "components": [
+    "reactive_graph::command::Command"
+  ],
+  "properties": [
+  ],
+  "extensions": [
+  ]
+}

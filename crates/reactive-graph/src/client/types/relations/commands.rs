@@ -1,12 +1,13 @@
 use crate::client::types::relations::args::add_extension::RelationTypeAddExtensionArgs;
 use crate::client::types::relations::args::add_property::RelationTypeAddPropertyArgs;
 use crate::client::types::relations::args::create::CreateRelationTypeArgs;
+use crate::client::types::relations::args::parse_relation_ty;
 use crate::client::types::relations::args::relation_component_type::RelationComponentTypeIdArgs;
 use crate::client::types::relations::args::relation_extension_type::RelationExtensionTypeIdArgs;
 use crate::client::types::relations::args::relation_type_property::RelationTypePropertyArgs;
-use crate::client::types::relations::args::type_id::RelationTypeIdArgs;
 use crate::client::types::relations::args::update_description::RelationTypeUpdateDescriptionArgs;
 use clap::Subcommand;
+use reactive_graph_graph::RelationTypeId;
 
 #[derive(Subcommand, Debug, Clone)]
 pub(crate) enum RelationTypesCommands {
@@ -15,25 +16,43 @@ pub(crate) enum RelationTypesCommands {
     List,
     /// Prints a single relation type.
     #[non_exhaustive]
-    Get(RelationTypeIdArgs),
+    Get {
+        #[arg(name = "relation_type", value_parser = parse_relation_ty)]
+        relation_ty: RelationTypeId,
+    },
     /// List the properties of an relation type.
     #[non_exhaustive]
-    ListProperties(RelationTypeIdArgs),
+    ListProperties {
+        #[arg(name = "relation_type", value_parser = parse_relation_ty)]
+        relation_ty: RelationTypeId,
+    },
     /// List the extensions of an relation type.
     #[non_exhaustive]
-    ListExtensions(RelationTypeIdArgs),
+    ListExtensions {
+        #[arg(name = "relation_type", value_parser = parse_relation_ty)]
+        relation_ty: RelationTypeId,
+    },
     /// List the components of an relation type.
     #[non_exhaustive]
-    ListComponents(RelationTypeIdArgs),
+    ListComponents {
+        #[arg(name = "relation_type", value_parser = parse_relation_ty)]
+        relation_ty: RelationTypeId,
+    },
     /// Prints the JSON Schema of an relation type.
     #[non_exhaustive]
-    GetJsonSchema(RelationTypeIdArgs),
+    GetJsonSchema {
+        #[arg(name = "relation_type", value_parser = parse_relation_ty)]
+        relation_ty: RelationTypeId,
+    },
     /// Creates a new relation type.
     #[non_exhaustive]
     Create(CreateRelationTypeArgs),
     /// Deletes a relation type.
     #[non_exhaustive]
-    Delete(RelationTypeIdArgs),
+    Delete {
+        #[arg(name = "relation_type", value_parser = parse_relation_ty)]
+        relation_ty: RelationTypeId,
+    },
     /// Adds a property to a relation type.
     #[non_exhaustive]
     AddProperty(RelationTypeAddPropertyArgs),

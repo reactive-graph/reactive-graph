@@ -1,5 +1,6 @@
 use thiserror::Error;
 
+use crate::NamespacedTypeRegistrationError;
 use reactive_graph_graph::prelude::*;
 use reactive_graph_serde::error::DeserializationError;
 use reactive_graph_serde::error::SerializationError;
@@ -8,6 +9,8 @@ use reactive_graph_serde::error::SerializationError;
 pub enum ComponentRegistrationError {
     #[error("Failed to register component {0} because it already exists!")]
     ComponentAlreadyExists(ComponentTypeId),
+    #[error("Failed to register component because the namespaced type is already registered: {0}")]
+    NamespacedTypeRegistrationError(#[from] NamespacedTypeRegistrationError),
 }
 
 #[derive(Debug, Error)]

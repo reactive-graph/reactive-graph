@@ -16,6 +16,7 @@ cynic-introspection = { workspace = true }
 reqwest = { workspace = true, features = ["json", "rustls-tls"], default-features = false }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
+thiserror = { workspace = true }
 typed-builder = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
@@ -32,7 +33,8 @@ tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread
 
 [build-dependencies]
 anyhow = { workspace = true }
-reactive-graph-utils-schema-generator = { version = "0.10.0", path = "../utils/schema-generator" }
+reactive-graph-generator-schema-graphql = { version = "0.10.0", path = "../generator/schema/graphql" }
+reactive-graph-generator-schema-json = { version = "0.10.0", path = "../generator/schema/json" }
 
 [features]
 default = []

@@ -1,7 +1,7 @@
 #[cynic::schema_for_derives(file = r#"../../schema/graphql/reactive-graph-schema.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod mutations {
-    use crate::client::instances::variables::uuid::queries::UuidVariables;
-    use crate::client::instances::variables::uuid::queries::UuidVariablesFields;
+    use crate::client::instances::variables::uuid::variables::UuidVariables;
+    use crate::client::instances::variables::uuid::variables::UuidVariablesFields;
     use cynic::Operation;
     use cynic::QueryFragment;
     use uuid::Uuid;

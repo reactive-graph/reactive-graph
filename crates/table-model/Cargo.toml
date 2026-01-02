@@ -17,5 +17,5 @@ table_to_html = { workspace = true }
 uuid = { workspace = true }
 
 reactive-graph-remotes-model = { version = "0.10.0", path = "../remotes/model" }
-reactive-graph-graph = { version = "0.10.0", path = "../graph" }
+reactive-graph-graph = { version = "0.10.0", path = "../graph", features = ["table"] }
 reactive-graph-plugin-model = { version = "0.10.0", path = "../plugin/model" }

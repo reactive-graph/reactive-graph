@@ -1,12 +1,13 @@
-use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
+use crate::client::types::flows::args::parse_flow_ty;
 use clap::Args;
+use reactive_graph_graph::FlowTypeId;
 use uuid::Uuid;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct CreateFlowInstanceArgs {
-    /// The entity type.
-    #[clap(flatten)]
-    pub ty: FlowTypeIdArgs,
+    /// The fully qualified namespace of the flow type.
+    #[clap(name = "flow_type", value_parser = parse_flow_ty)]
+    pub flow_ty: FlowTypeId,
 
     /// The entity instance id.
     #[clap(short, long)]

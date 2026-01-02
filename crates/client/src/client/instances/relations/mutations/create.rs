@@ -23,7 +23,7 @@ pub mod mutations {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "CreateRelationInstanceVariables")]
     pub struct MutationRelationInstances {
-        #[arguments(relationInstanceId: { outboundId: $outbound_id, namespace: $namespace, typeName: $type_name, instanceId: $instance_id, inboundId: $inbound_id}, description: $description, properties: $properties
+        #[arguments(relationInstanceId: { outboundId: $outbound_id, type: $_type, instanceId: $instance_id, inboundId: $inbound_id}, description: $description, properties: $properties
         )]
         pub create: RelationInstance,
     }

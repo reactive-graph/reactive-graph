@@ -1,15 +1,16 @@
 use crate::client::instances::properties::args::parse_property;
-use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
+use crate::client::types::flows::args::parse_flow_ty;
 use clap::Args;
+use reactive_graph_graph::FlowTypeId;
 use reactive_graph_graph::PropertyInstances;
 use serde_json::Value;
 use uuid::Uuid;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct CreateFlowInstanceFromTypeArgs {
-    /// The flow type.
-    #[clap(flatten)]
-    pub ty: FlowTypeIdArgs,
+    /// The fully qualified namespace of the flow type.
+    #[clap(name = "flow_type", value_parser = parse_flow_ty)]
+    pub flow_ty: FlowTypeId,
 
     /// The id of the flow instance and the wrapper entity instance.
     #[clap(short, long)]

@@ -1,0 +1,19 @@
+{
+  "$id": "https://schema.reactive-graph.io/schema/json/entity-type.schema.json",
+  "type": "reactive_graph::flow::Comment",
+  "description": "A simple comment",
+  "components": [
+    "reactive_graph::flow::Flow2D",
+    "reactive_graph::flow::Flow3D"
+  ],
+  "properties": [
+    {
+      "name": "comment",
+      "description": "Comment",
+      "socket_type": "none",
+      "data_type": "string"
+    }
+  ],
+  "extensions": [
+  ]
+}

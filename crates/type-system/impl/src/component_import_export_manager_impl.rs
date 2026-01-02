@@ -84,21 +84,21 @@ impl Lifecycle for ComponentImportExportManagerImpl {}
 mod test {
     use std::env;
 
-    use default_test::DefaultTest;
-
-    use crate::TypeSystemImpl;
+    use crate::TypeSystemSystemImpl;
     use reactive_graph_graph::Component;
     use reactive_graph_graph::NamespacedTypeGetter;
-    use reactive_graph_type_system_api::TypeSystem;
+    use reactive_graph_graph::RandomNamespacedType;
+    use reactive_graph_type_system_api::TypeSystemSystem;
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_export_import_component() {
         reactive_graph_utils_test::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
+        let type_system = reactive_graph_di::get_container::<TypeSystemSystemImpl>();
         let component_manager = type_system.get_component_manager();
         let component_import_export_manager = type_system.get_component_import_export_manager();
 
-        let component = component_manager.register(Component::default_test()).expect("Failed to create component");
+        let component = Component::random_type().expect("Failed to construct a random component");
+        let component = component_manager.register(component).expect("Failed to register component");
         let component_orig = component.clone();
         let component_ty = component.ty.clone();
 

@@ -18,6 +18,7 @@ use reactive_graph_graph::FlowTypeUpdateError;
 use reactive_graph_graph::FlowTypeUpdateExtensionError;
 use reactive_graph_graph::FlowTypeUpdateVariableError;
 use reactive_graph_graph::FlowTypes;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypes;
 use reactive_graph_graph::RelationInstances;
@@ -37,28 +38,22 @@ pub trait FlowTypeManager: Send + Sync {
     fn get_all(&self) -> FlowTypes;
 
     /// Returns all flow types.
-    fn get_by_namespace(&self, namespace: &str) -> FlowTypes;
+    fn get_by_namespace(&self, namespace: &Namespace) -> FlowTypes;
 
     /// Returns true, if a flow type with the given name exists.
     fn has(&self, ty: &FlowTypeId) -> bool;
 
-    /// Returns true, if a flow type with the given name exists.
-    fn has_by_type(&self, namespace: &str, name: &str) -> bool;
-
     /// Returns the flow type with the given name or empty.
     fn get(&self, ty: &FlowTypeId) -> Option<FlowType>;
 
-    /// Returns the flow type with the given name or empty.
-    fn get_by_type(&self, namespace: &str, name: &str) -> Option<FlowType>;
-
     /// Returns all flow types whose names matches the given search string.
-    fn find_by_type_name(&self, search: &str) -> FlowTypes;
+    fn find(&self, search: &str) -> FlowTypes;
 
     /// Returns the count of flow types.
     fn count(&self) -> usize;
 
     /// Returns the count of flow types of the given namespace.
-    fn count_by_namespace(&self, namespace: &str) -> usize;
+    fn count_by_namespace(&self, namespace: &Namespace) -> usize;
 
     /// Creates a new flow type.
     #[allow(clippy::too_many_arguments)]

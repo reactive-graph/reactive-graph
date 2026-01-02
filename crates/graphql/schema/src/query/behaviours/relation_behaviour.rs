@@ -7,7 +7,6 @@ use async_graphql::Result;
 
 use reactive_graph_behaviour_model_api::RelationBehaviourTypeId;
 use reactive_graph_behaviour_service_api::RelationBehaviourManager;
-use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_type_system_api::RelationTypeManager;
 
 use crate::query::GraphQLBehaviour;
@@ -28,16 +27,6 @@ impl GraphQLRelationBehaviour {
             .get(&self.relation_behaviour_ty.relation_ty)
             .ok_or(Error::new(format!("Relation type {} does not exist!", &self.relation_behaviour_ty.relation_ty)))?;
         Ok(relation_type.into())
-    }
-
-    /// The namespace the behaviour type belongs to.
-    async fn namespace(&self) -> String {
-        self.relation_behaviour_ty.behaviour_ty.namespace()
-    }
-
-    /// The name of the behaviour type.
-    async fn name(&self) -> String {
-        self.relation_behaviour_ty.behaviour_ty.type_name()
     }
 
     /// The behaviour type.

@@ -258,7 +258,7 @@ impl<IdType: Clone> From<&ReactiveProperties<IdType>> for PropertyInstances {
 // is_64 is_array is_boolean is_i64 is_null is_number is_object is_string is_u64
 
 #[cfg(test)]
-pub mod tests {
+mod tests {
     use std::ops::DerefMut;
     use std::ops::Index;
     use std::sync::Arc;

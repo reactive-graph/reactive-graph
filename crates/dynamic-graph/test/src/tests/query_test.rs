@@ -1,6 +1,5 @@
 use convert_case::Case::Camel;
 use convert_case::Casing;
-use default_test::DefaultTest;
 use log::LevelFilter;
 use log4rs::Config;
 use log4rs::append::console::ConsoleAppender;
@@ -8,6 +7,7 @@ use log4rs::config::Appender;
 use log4rs::config::Root;
 use reactive_graph_graph::EntityType;
 use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::RandomNamespacedType;
 use std::sync::Arc;
 use std::time::Duration;
 
@@ -35,11 +35,11 @@ async fn test_dynamic_graph_query() {
         runtime.pre_shutdown().await;
         runtime.shutdown().await;
     });
-    rt.wait_for_started(Duration::from_secs(5)).await.expect("Runtime didn't came up");
+    rt.wait_for_started(Duration::from_secs(5)).await.expect("Runtime didn't come up");
 
     let entity_type_manager = rt.get_entity_type_manager();
     println!("Entity Types: {}", entity_type_manager.count());
-    let entity_type = EntityType::default_test();
+    let entity_type = EntityType::random_type().unwrap();
     println!("{}", entity_type.ty);
     let entity_type = entity_type_manager.register(entity_type).expect("Failed to register entity type");
 
@@ -61,8 +61,8 @@ async fn test_dynamic_graph_query() {
               }}
             }}
         "#,
-        entity_type.namespace().to_case(Camel),
-        entity_type.type_name().to_case(Camel)
+        entity_type.path().to_string().to_case(Camel),
+        entity_type.type_name().to_string().to_case(Camel)
     );
     println!("{query}");
     let result = rt

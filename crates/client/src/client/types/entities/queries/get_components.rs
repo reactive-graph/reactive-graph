@@ -16,12 +16,7 @@ pub mod queries {
     #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Types", variables = "TypeIdVariables")]
     pub struct GetEntityTypeComponentsTypes {
-        #[arguments(
-          type: {
-            namespace: $namespace,
-            name: $name
-          }
-        )]
+        #[arguments(type: $_type)]
         pub entities: Vec<GetEntityTypeComponentsComponents>,
     }
 
@@ -31,8 +26,8 @@ pub mod queries {
         pub components: Vec<Component>,
     }
 
-    pub fn get_entity_type_components_query(ty: &EntityTypeId) -> Operation<GetEntityTypeComponents, TypeIdVariables> {
+    pub fn get_entity_type_components_query<E: Into<EntityTypeId>>(ty: E) -> Operation<GetEntityTypeComponents, TypeIdVariables> {
         use cynic::QueryBuilder;
-        GetEntityTypeComponents::build(ty.clone().into())
+        GetEntityTypeComponents::build(ty.into().into())
     }
 }

@@ -9,12 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Type System: Generate rust types for the system based on the type definitions
+- Documentation: Generate Markdown documentation for the type system based on the type definitions
 - Plugins: Hot deploy archives (.tar.gz and .zip) containing plugins placed in the deploy folder
 - CLI: Install plugins from a plugin repository (GitHub Releases)
 
 ### Changed
 
+- Type System: Hierarchical and typesafe namespaces
 - Upgrade log4rs to 1.4.0
+- Refactored dynamic graph using dependency injection
 
 ### Fixed
 
@@ -27,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Infrastructure
 
-- CI: Update rust nightly toolchain to nightly-2025-08-05
+- CI: Update rust nightly toolchain to nightly-2025-12-05
 - CI: Added CODEOWNERS
 - Build: Use resolver version 3
 - Build: Specify default members of the workspace (exclude utils and generators)

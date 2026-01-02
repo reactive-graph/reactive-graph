@@ -3,6 +3,7 @@ use reactive_graph_client as client;
 use client::ReactiveGraphClient;
 use client::ReactiveGraphClientError;
 use client::ReactiveGraphClientExecutionError;
+use reactive_graph_graph::NamespacedTypeContainer;
 use reactive_graph_table_model::container::TableContainer;
 use reactive_graph_table_model::types::component::ComponentTableContainer;
 
@@ -29,7 +30,7 @@ async fn main() -> Result<(), ListComponentsError> {
         .map_err(ListComponentsError::ReactiveGraphClientExecutionError)?
         .unwrap_or_default();
     // Convert client model into table model
-    let components = ComponentTableContainer::from(components);
+    let components = ComponentTableContainer::from(components.to_vec());
     // Generate table
     let table = components.table();
     // Print table

@@ -1,7 +1,8 @@
 use crate::client::error::CommandError;
 use crate::client::error::CommandError::NotFound;
-use crate::client::types::components::args::type_id::ComponentTypeIdArgs;
+use crate::client::types::components::args::parse_component_ty;
 use clap::Args;
+use reactive_graph_graph::ComponentTypeId;
 use uuid::Uuid;
 
 /// Identifies a component of an entity instance.
@@ -10,9 +11,9 @@ pub(crate) struct IdAndComponentArgs {
     /// The id of the reactive instance.
     pub id: Uuid,
 
-    /// The component type of the reactive instance.
-    #[clap(flatten)]
-    pub component_ty: ComponentTypeIdArgs,
+    /// The fully qualified namespace of the component.
+    #[clap(name = "component", value_parser = parse_component_ty)]
+    pub component_ty: ComponentTypeId,
 }
 
 impl IdAndComponentArgs {

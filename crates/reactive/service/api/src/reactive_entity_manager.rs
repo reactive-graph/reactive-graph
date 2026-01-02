@@ -17,6 +17,7 @@ use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::Mutability;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::PropertyInstances;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
@@ -51,7 +52,7 @@ pub trait ReactiveEntityManager: Send + Sync + Lifecycle {
     fn get_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) -> Vec<ReactiveEntity>;
 
     /// Returns all reactive entity instances of the given namespace.
-    fn get_by_namespace(&self, namespace: &str) -> Vec<ReactiveEntity>;
+    fn get_by_namespace(&self, namespace: &Namespace) -> Vec<ReactiveEntity>;
 
     /// Returns the ids of all registered reactive entity instances.
     fn get_ids(&self) -> Vec<Uuid>;

@@ -1,5 +1,6 @@
 use thiserror::Error;
 
+use crate::NamespacedTypeRegistrationError;
 use reactive_graph_graph::prelude::*;
 use reactive_graph_serde::error::DeserializationError;
 use reactive_graph_serde::error::SerializationError;
@@ -8,6 +9,8 @@ use reactive_graph_serde::error::SerializationError;
 pub enum FlowTypeRegistrationError {
     #[error("The flow type {0} already exists")]
     FlowTypeAlreadyExists(FlowTypeId),
+    #[error("Failed to register flow type because the namespaced type is already registered: {0}")]
+    NamespacedTypeRegistrationError(#[from] NamespacedTypeRegistrationError),
     // OutboundComponentDoesNotExist(RelationTypeId, ComponentTypeId),
     // OutboundEntityTypeDoesNotExist(RelationTypeId, EntityTypeId),
     // InboundComponentDoesNotExist(RelationTypeId, ComponentTypeId),

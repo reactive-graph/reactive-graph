@@ -1,9 +1,13 @@
 use std::sync::Arc;
 
-use async_graphql::*;
+use async_graphql::Context;
+use async_graphql::Error;
+use async_graphql::Object;
+use async_graphql::Result;
+use uuid::Uuid;
+
 use reactive_graph_plugin_api::PLUGIN_NAME_PREFIX;
 use reactive_graph_plugin_service_api::PluginContainerManager;
-use uuid::Uuid;
 
 pub struct GraphQLPlugin {
     pub id: Uuid,

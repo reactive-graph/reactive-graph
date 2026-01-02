@@ -1,34 +1,45 @@
 use async_graphql::OneofObject;
 use serde::Deserialize;
 use serde::Serialize;
+use std::str::FromStr;
 
-use reactive_graph_graph::ComponentOrEntityTypeId;
-
-use crate::mutation::ComponentTypeIdDefinition;
-use crate::mutation::EntityTypeIdDefinition;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::InboundOutboundType;
+use reactive_graph_graph::MatchingInboundOutboundType;
+use reactive_graph_graph::NamespacedTypeParseError;
 
 #[derive(Serialize, Deserialize, Clone, Debug, OneofObject)]
-#[graphql(name = "ComponentOrEntityTypeIdDefinition")]
-pub enum ComponentOrEntityTypeIdDefinition {
+#[graphql(name = "InboundOutboundType")]
+pub enum GraphQLInboundOutboundType {
     #[serde(rename = "component")]
-    Component(ComponentTypeIdDefinition),
+    Component(String),
     #[serde(rename = "entity_type")]
-    EntityType(EntityTypeIdDefinition),
+    EntityType(String),
 }
-impl From<ComponentOrEntityTypeIdDefinition> for ComponentOrEntityTypeId {
-    fn from(ty: ComponentOrEntityTypeIdDefinition) -> Self {
-        match ty {
-            ComponentOrEntityTypeIdDefinition::Component(ty) => ComponentOrEntityTypeId::Component(ty.into()),
-            ComponentOrEntityTypeIdDefinition::EntityType(ty) => ComponentOrEntityTypeId::EntityType(ty.into()),
-        }
+
+impl TryFrom<GraphQLInboundOutboundType> for InboundOutboundType {
+    type Error = NamespacedTypeParseError;
+
+    fn try_from(ty: GraphQLInboundOutboundType) -> Result<Self, Self::Error> {
+        Ok(match ty {
+            GraphQLInboundOutboundType::Component(_type) => match _type.as_str() {
+                "*" => InboundOutboundType::Component(MatchingInboundOutboundType::Any),
+                _ => InboundOutboundType::Component(MatchingInboundOutboundType::NamespacedType(ComponentTypeId::from_str(&_type)?)),
+            },
+            GraphQLInboundOutboundType::EntityType(_type) => match _type.as_str() {
+                "*" => InboundOutboundType::EntityType(MatchingInboundOutboundType::Any),
+                _ => InboundOutboundType::EntityType(MatchingInboundOutboundType::NamespacedType(EntityTypeId::from_str(&_type)?)),
+            },
+        })
     }
 }
 
-impl From<ComponentOrEntityTypeId> for ComponentOrEntityTypeIdDefinition {
-    fn from(ty: ComponentOrEntityTypeId) -> Self {
+impl From<InboundOutboundType> for GraphQLInboundOutboundType {
+    fn from(ty: InboundOutboundType) -> Self {
         match ty {
-            ComponentOrEntityTypeId::Component(ty) => ComponentOrEntityTypeIdDefinition::Component(ty.into()),
-            ComponentOrEntityTypeId::EntityType(ty) => ComponentOrEntityTypeIdDefinition::EntityType(ty.into()),
+            InboundOutboundType::Component(ty) => GraphQLInboundOutboundType::Component(ty.to_string()),
+            InboundOutboundType::EntityType(ty) => GraphQLInboundOutboundType::EntityType(ty.to_string()),
         }
     }
 }

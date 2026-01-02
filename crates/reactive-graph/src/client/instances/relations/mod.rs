@@ -10,7 +10,6 @@ use crate::client::types::components::output_format::ComponentTypeIdsOutputForma
 use reactive_graph_client::ReactiveGraphClient;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::PropertyInstanceGetter;
-use reactive_graph_graph::PropertyType;
 use reactive_graph_table_model::instances::properties::PropertyInstance;
 use std::sync::Arc;
 
@@ -25,7 +24,7 @@ pub(crate) async fn relation_instances(client: &Arc<ReactiveGraphClient>, relati
     };
     match command {
         RelationInstancesCommands::List(args) => match client.instances().relations().search((&args).into()).await {
-            Ok(Some(relation_instances)) => output_format_wrapper.collection(relation_instances),
+            Ok(Some(relation_instances)) => output_format_wrapper.collection(relation_instances.to_vec()),
             Ok(None) => Err(NoContent("No relation instances found".to_string())),
             Err(e) => Err(e.into()),
         },
@@ -48,7 +47,7 @@ pub(crate) async fn relation_instances(client: &Arc<ReactiveGraphClient>, relati
             Err(e) => Err(e.into()),
         },
         RelationInstancesCommands::GetProperty(args) => match client.instances().relations().get_by_id(&args).await {
-            Ok(Some(relation_instance)) => Ok(relation_instance.get(args.property_name.clone()).ok_or(args.property_not_found())?.into()),
+            Ok(Some(relation_instance)) => Ok(relation_instance.get(&args.property_name).ok_or(args.property_not_found())?.into()),
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
@@ -65,14 +64,11 @@ pub(crate) async fn relation_instances(client: &Arc<ReactiveGraphClient>, relati
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
-        RelationInstancesCommands::AddProperty(args) => {
-            let property_type: PropertyType = args.property_type.clone().into();
-            match client.instances().relations().add_property(&args.id, property_type.clone()).await {
-                Ok(Some(relation_instance)) => output_format_wrapper.single(relation_instance),
-                Ok(None) => Err(args.id_not_found()),
-                Err(e) => Err(e.into()),
-            }
-        }
+        RelationInstancesCommands::AddProperty(args) => match client.instances().relations().add_property(&args.id, &args.property_type).await {
+            Ok(Some(relation_instance)) => output_format_wrapper.single(relation_instance),
+            Ok(None) => Err(args.id_not_found()),
+            Err(e) => Err(e.into()),
+        },
         RelationInstancesCommands::RemoveProperty(args) => match client.instances().relations().remove_property(&args.id, args.property_name.clone()).await {
             Ok(Some(relation_instance)) => output_format_wrapper.single(relation_instance),
             Ok(None) => Err(args.not_found()),

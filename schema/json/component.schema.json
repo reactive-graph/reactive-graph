@@ -1,7 +1,12 @@
 {
   "$defs": {
+    "ComponentTypeId": {
+      "$ref": "#/$defs/NamespacedType"
+    },
+    "EntityTypeId": {
+      "$ref": "#/$defs/NamespacedType"
+    },
     "Extension": {
-      "$ref": "#/$defs/NamespacedType",
       "description": "Extension on a type. The extension allows to extend information",
       "properties": {
         "description": {
@@ -9,11 +14,27 @@
           "description": "Textual description of the extension.",
           "type": "string"
         },
+        "entity_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EntityTypeId"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The fully qualified namespace of the entity type which is the type constraint of the extension."
+        },
         "extension": {
           "description": "The extension as JSON representation."
+        },
+        "type": {
+          "$ref": "#/$defs/NamespacedType",
+          "description": "The fully qualified namespace of the extension."
         }
       },
       "required": [
+        "type",
         "extension"
       ],
       "type": "object"
@@ -27,21 +48,7 @@
     },
     "NamespacedType": {
       "description": "Defines the namespace and the name of a type.",
-      "properties": {
-        "namespace": {
-          "description": "The namespace of the type.",
-          "type": "string"
-        },
-        "type_name": {
-          "description": "The name of the type.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "namespace",
-        "type_name"
-      ],
-      "type": "object"
+      "type": "string"
     },
     "PropertyType": {
       "additionalProperties": false,
@@ -147,8 +154,8 @@
     }
   },
   "$id": "https://schema.reactive-graph.io/schema/json/component.schema.json",
-  "$ref": "#/$defs/NamespacedType",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
   "description": "A component defines a set of properties to be applied to entity\ntypes and relation types.",
   "properties": {
     "$id": {
@@ -176,9 +183,15 @@
         "$ref": "#/$defs/PropertyType"
       },
       "type": "array"
+    },
+    "type": {
+      "$ref": "#/$defs/ComponentTypeId",
+      "description": "The type definition of the component."
     }
   },
+  "required": [
+    "type"
+  ],
   "title": "Component",
-  "type": "object",
-  "unevaluatedProperties": false
+  "type": "object"
 }

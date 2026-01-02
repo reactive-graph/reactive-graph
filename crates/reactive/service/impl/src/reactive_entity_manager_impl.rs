@@ -25,15 +25,17 @@ use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::Mutability;
+use reactive_graph_graph::Namespace;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyInstances;
 use reactive_graph_graph::PropertyTypeContainer;
-use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_graph::TypeDefinitionComponent;
 use reactive_graph_graph::TypeDefinitionGetter;
 use reactive_graph_graph::TypeDefinitionProperty;
 use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_model_core::reactive_graph::core::event::EventProperties;
+use reactive_graph_model_core::reactive_graph::core::labeled::LabeledProperties::LABEL;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
 use reactive_graph_reactive_service_api::ReactiveEntityComponentAddError;
@@ -45,8 +47,6 @@ use reactive_graph_reactive_service_api::ReactiveEntityRegistrationError;
 use reactive_graph_reactive_service_api::ReactiveInstanceEvent;
 use reactive_graph_reactive_service_api::ReactiveInstanceEventManager;
 use reactive_graph_reactive_service_api::event_channels::EventChannels;
-use reactive_graph_runtime_model::EventProperties::EVENT;
-use reactive_graph_runtime_model::LabeledProperties::LABEL;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::TypeSystemEventManager;
@@ -158,10 +158,10 @@ impl ReactiveEntityManager for ReactiveEntityManagerImpl {
             .collect()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> Vec<ReactiveEntity> {
+    fn get_by_namespace(&self, namespace: &Namespace) -> Vec<ReactiveEntity> {
         self.reactive_entity_instances
             .iter()
-            .filter(|r| r.namespace() == namespace)
+            .filter(|r| &r.path() == namespace)
             .map(|r| r.value().clone())
             .collect()
     }
@@ -244,7 +244,7 @@ impl ReactiveEntityManager for ReactiveEntityManagerImpl {
         // Add entity behaviours
         self.entity_behaviour_manager.add_behaviours(reactive_entity.clone());
         // Register label
-        if let Some(value) = reactive_entity.get(LABEL.property_name()).and_then(|v| v.as_str().map(|s| s.to_string())) {
+        if let Some(value) = reactive_entity.get(LABEL.as_ref()).and_then(|v| v.as_str().map(|s| s.to_string())) {
             let mut writer = self.label_path_tree.write().unwrap();
             let _ = writer.insert(&value, reactive_entity.id);
         }
@@ -555,7 +555,7 @@ impl TypeSystemEventSubscriber for ReactiveEntityManagerImpl {
         if let Some(entity_instance) = self.type_system_event_manager.get_type_system_event_instance(event_type) {
             if let Some(sender) = self.event_channels.sender(&handle_id) {
                 entity_instance.observe_with_handle(
-                    &EVENT.property_name(),
+                    EventProperties::EVENT.as_ref(),
                     move |v| {
                         let _ = sender.send(v.clone());
                     },
@@ -567,7 +567,7 @@ impl TypeSystemEventSubscriber for ReactiveEntityManagerImpl {
 
     fn unsubscribe_type_system_event(&self, event_type: TypeSystemEventTypes, handle_id: u128) {
         if let Some(entity_instance) = self.type_system_event_manager.get_type_system_event_instance(event_type) {
-            entity_instance.remove_observer(&EVENT.property_name(), handle_id);
+            entity_instance.remove_observer(EventProperties::EVENT.as_ref(), handle_id);
         }
     }
 }
@@ -618,20 +618,20 @@ impl Lifecycle for ReactiveEntityManagerImpl {
 
 #[cfg(test)]
 mod tests {
-    use default_test::DefaultTest;
-
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
     use reactive_graph_behaviour_service_impl::BehaviourSystemImpl;
     use reactive_graph_graph::EntityType;
     use reactive_graph_graph::EntityTypeId;
     use reactive_graph_graph::PropertyTypes;
+    use reactive_graph_graph::RandomNamespacedType;
+    use reactive_graph_graph::RandomNamespacedTypeId;
     use reactive_graph_reactive_model_impl::ReactiveEntity;
     use reactive_graph_reactive_service_api::ReactiveSystem;
     use reactive_graph_utils_test::r_string;
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
-    use reactive_graph_type_system_impl::TypeSystemImpl;
+    use reactive_graph_type_system_impl::TypeSystemSystemImpl;
 
     use crate::ReactiveSystemImpl;
 
@@ -640,12 +640,12 @@ mod tests {
         reactive_graph_utils_test::init_logger();
 
         let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
-        let type_system = reactive_system.type_system();
+        let type_system = reactive_system.type_system_system();
 
         let entity_type_manager = type_system.get_entity_type_manager();
         let reactive_entity_manager = reactive_system.get_reactive_entity_manager();
 
-        let entity_type = EntityType::default_test();
+        let entity_type = EntityType::random_type().unwrap();
         let reactive_entity = ReactiveEntity::builder_from_entity_type(&entity_type).build();
 
         // Check that we cannot register an reactive entity with an entity type which doesn't exist
@@ -678,12 +678,13 @@ mod tests {
         reactive_graph_utils_test::init_logger();
 
         let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
-        let type_system = reactive_system.type_system();
+        let type_system = reactive_system.type_system_system();
         let entity_type_manager = type_system.get_entity_type_manager();
         let reactive_entity_manager = reactive_system.get_reactive_entity_manager();
 
+        let entity_ty = EntityTypeId::random_type_id().unwrap();
         let entity_type = EntityType::builder()
-            .ty(EntityTypeId::default_test())
+            .ty(entity_ty)
             .properties(PropertyTypes::new_with_string_property(r_string()))
             .build();
         // Register entity type
@@ -707,12 +708,13 @@ mod tests {
         reactive_graph_utils_test::init_logger();
 
         let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
-        let type_system = reactive_system.type_system();
+        let type_system = reactive_system.type_system_system();
         let entity_type_manager = type_system.get_entity_type_manager();
         let reactive_entity_manager = reactive_system.get_reactive_entity_manager();
 
+        let entity_ty = EntityTypeId::random_type_id().unwrap();
         let entity_type = EntityType::builder()
-            .ty(EntityTypeId::default_test())
+            .ty(entity_ty)
             .properties(PropertyTypes::new_with_string_property(r_string()))
             .build();
 

@@ -5,7 +5,9 @@ use crate::schema_graphql::instances::relation_instance::RelationInstances;
 use crate::schema_graphql::scalar::UUID;
 use crate::schema_graphql::types::entity_type::EntityType;
 use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::InvalidFlowInstanceError;
 use std::ops::Deref;
+use std::str::FromStr;
 
 #[derive(cynic::QueryFragment, Clone, Debug)]
 #[cynic(
@@ -13,9 +15,9 @@ use std::ops::Deref;
     schema_module = "crate::schema_graphql::schema"
 )]
 pub struct FlowInstance {
-    pub id: UUID,
     #[cynic(rename = "type")]
-    pub ty: EntityType,
+    pub entity_type: EntityType,
+    pub id: UUID,
     pub name: String,
     pub description: String,
     pub entities: Vec<EntityInstance>,
@@ -23,25 +25,25 @@ pub struct FlowInstance {
 }
 
 impl FlowInstance {
-    pub fn ty(&self) -> EntityTypeId {
-        EntityTypeId::new_from_type(self.ty.namespace.clone(), self.ty.name.clone())
+    pub fn ty(&self) -> Result<EntityTypeId, InvalidFlowInstanceError> {
+        EntityTypeId::from_str(&self.entity_type._type).map_err(InvalidFlowInstanceError::InvalidEntityType)
     }
 }
 
-impl From<FlowInstance> for reactive_graph_graph::FlowInstance {
-    fn from(flow_instance: FlowInstance) -> Self {
-        let ty = flow_instance.ty();
-        let id = flow_instance.id.into();
-        let entity_instances = EntityInstances(flow_instance.entities).into();
-        let relation_instances = RelationInstances(flow_instance.relations).into();
-        reactive_graph_graph::FlowInstance {
-            id,
-            ty,
+impl TryFrom<FlowInstance> for reactive_graph_graph::FlowInstance {
+    type Error = InvalidFlowInstanceError;
+
+    fn try_from(flow_instance: FlowInstance) -> Result<Self, Self::Error> {
+        Ok(reactive_graph_graph::FlowInstance {
+            ty: EntityTypeId::from_str(&flow_instance.entity_type._type).map_err(InvalidFlowInstanceError::InvalidEntityType)?,
+            id: flow_instance.id.into(),
             name: flow_instance.name.clone(),
             description: flow_instance.description.clone(),
-            entity_instances,
-            relation_instances,
-        }
+            entity_instances: reactive_graph_graph::EntityInstances::try_from(EntityInstances(flow_instance.entities))
+                .map_err(InvalidFlowInstanceError::InvalidEntityInstance)?,
+            relation_instances: reactive_graph_graph::RelationInstances::try_from(RelationInstances(flow_instance.relations))
+                .map_err(InvalidFlowInstanceError::InvalidRelationInstance)?,
+        })
     }
 }
 
@@ -55,14 +57,14 @@ impl Deref for FlowInstances {
     }
 }
 
-impl From<FlowInstances> for Vec<reactive_graph_graph::FlowInstance> {
-    fn from(flows: FlowInstances) -> Self {
-        flows.0.into_iter().map(From::from).collect()
+impl TryFrom<FlowInstances> for reactive_graph_graph::FlowInstances {
+    type Error = InvalidFlowInstanceError;
+
+    fn try_from(flows: FlowInstances) -> Result<Self, Self::Error> {
+        let flow_instances = reactive_graph_graph::FlowInstances::new();
+        for flow_instance in flows.0 {
+            flow_instances.push(reactive_graph_graph::FlowInstance::try_from(flow_instance)?);
+        }
+        Ok(flow_instances)
     }
 }
-
-// impl From<FlowInstances> for reactive_graph_graph::FlowInstances {
-//     fn from(flows: FlowInstances) -> Self {
-//         flows.0.into_iter().map(From::from).collect()
-//     }
-// }

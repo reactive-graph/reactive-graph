@@ -34,7 +34,7 @@ jobs:
       - name: Install latest nightly
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: nightly-2025-08-05
+          toolchain: nightly-2025-12-05
           components: rustfmt, rust-src
       - name: Install tarpaulin
         uses: taiki-e/cache-cargo-install-action@v2

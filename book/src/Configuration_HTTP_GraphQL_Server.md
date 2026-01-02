@@ -11,10 +11,8 @@ hostname = "localhost"
 port = 31415
 ```
 
-```admonish tip "Hostname"
-If you bind on localhost the GraphQL server is not reachable from outside. Use the hostname or ip which is
-reachable from outside.
-```
+> [!TIP]
+> If you bind on localhost the GraphQL server is not reachable from outside. Use the hostname or ip which is reachable from outside.
 
 ## Secure connections (HTTPS/WSS)
 
@@ -35,9 +33,8 @@ still alive after the timeout are force dropped. By default, shutdown timeout is
 shutdown_timeout = 3
 ```
 
-```admonish tip "Development"
-If you have to restart often during development, set this to a low value.
-```
+> [!TIP]
+> If you have to restart often during development, set this to a low value.
 
 ## Number of workers
 
@@ -64,10 +61,9 @@ WebResourceProvider binary and is doing the same as
 default_context_path = "binary"
 ```
 
-```admonish tip "Default Base Path"
-In particular, this is very useful for web applications which shall handle the root URL:
-https://hostname:31415/
-```
+> [!TIP]
+> In particular, this is very useful for web applications which shall handle the root URL:
+> https://hostname:31415/
 
 ## Logging
 
@@ -80,6 +76,6 @@ enabled = true
 format = "%a \"%r\" %s %b \"%{Referer}i\" \"%{User-Agent}i\" %T"
 ```
 
-```admonish tip "List of Log Format Variables"
-https://docs.rs/actix-web/latest/actix_web/middleware/struct.Logger.html#format
-```
+> [!TIP]
+> See a list of log format variables here:
+> https://docs.rs/actix-web/latest/actix_web/middleware/struct.Logger.html#format

@@ -33,7 +33,7 @@ async fn main() -> Result<(), ListComponentTypeIdsError> {
     let components: ComponentTypeIdTableContainer = components
         .into_iter()
         // Convert full component into only the type ids
-        .map(|component| (&component).into())
+        .map(|component| component.0.into())
         // Sort types by namespace and type name
         .sorted()
         .into();

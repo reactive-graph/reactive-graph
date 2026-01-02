@@ -9,12 +9,9 @@ use std::ops::DerefMut;
 
 use dashmap::DashSet;
 use dashmap::iter_set::OwningIter;
-#[cfg(any(test, feature = "test"))]
-use default_test::DefaultTest;
-#[cfg(any(test, feature = "test"))]
-use rand::Rng;
-#[cfg(any(test, feature = "test"))]
-use rand_derive3::RandGen;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::NAMESPACE_SEPARATOR;
+use reactive_graph_graph::NamespacedType;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
@@ -25,13 +22,18 @@ use typed_builder::TypedBuilder;
 
 use crate::BehaviourTypeId;
 use crate::BehaviourTypeIds;
-use reactive_graph_graph::ComponentTypeId;
-use reactive_graph_graph::NamespacedType;
-use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
+
+#[cfg(any(test, feature = "test"))]
+use rand::Rng;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_graph::NamespacedTypeError;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_graph::RandomNamespacedTypeId;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_graph::RandomNamespacedTypeIds;
 
 /// The behaviour of a component.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema, TypedBuilder)]
-#[cfg_attr(any(test, feature = "test"), derive(RandGen))]
 pub struct ComponentBehaviourTypeId {
     /// The component type.
     pub component_ty: ComponentTypeId,
@@ -43,11 +45,6 @@ pub struct ComponentBehaviourTypeId {
 impl ComponentBehaviourTypeId {
     pub fn new(component_ty: ComponentTypeId, behaviour_ty: BehaviourTypeId) -> Self {
         Self { component_ty, behaviour_ty }
-    }
-
-    pub fn new_from_type<N: Into<String>, T: Into<String>>(namespace: N, type_name: T) -> Self {
-        let namespaced_type = NamespacedType::new(namespace, type_name);
-        Self::new(namespaced_type.clone().into(), namespaced_type.into())
     }
 }
 
@@ -63,9 +60,15 @@ impl From<&BehaviourTypeId> for ComponentBehaviourTypeId {
     }
 }
 
+impl From<&ComponentTypeId> for ComponentBehaviourTypeId {
+    fn from(component_ty: &ComponentTypeId) -> Self {
+        Self::new(component_ty.clone(), NamespacedType::from(component_ty).into())
+    }
+}
+
 impl Display for ComponentBehaviourTypeId {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}{}{}", &self.component_ty, TYPE_ID_TYPE_SEPARATOR, &self.behaviour_ty)
+        write!(f, "{}{}{}", &self.component_ty, NAMESPACE_SEPARATOR, &self.behaviour_ty)
     }
 }
 
@@ -207,20 +210,24 @@ macro_rules! component_behaviour_ty {
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for ComponentBehaviourTypeId {
-    fn default_test() -> Self {
-        NamespacedType::generate_random().into()
+impl RandomNamespacedTypeId for ComponentBehaviourTypeId {
+    type Error = NamespacedTypeError;
+
+    fn random_type_id() -> Result<Self, NamespacedTypeError> {
+        Ok(Self::new(ComponentTypeId::random_type_id()?, BehaviourTypeId::random_type_id()?))
     }
 }
 
 #[cfg(any(test, feature = "test"))]
-impl DefaultTest for ComponentBehaviourTypeIds {
-    fn default_test() -> Self {
+impl RandomNamespacedTypeIds for ComponentBehaviourTypeIds {
+    type Error = NamespacedTypeError;
+
+    fn random_type_ids() -> Result<Self, NamespacedTypeError> {
         let tys = Self::new();
         let mut rng = rand::rng();
         for _ in 0..rng.random_range(0..10) {
-            tys.insert(ComponentBehaviourTypeId::default_test());
+            tys.insert(ComponentBehaviourTypeId::random_type_id()?);
         }
-        tys
+        Ok(tys)
     }
 }

@@ -1,0 +1,15 @@
+{
+  "$id": "https://schema.reactive-graph.io/schema/json/component.schema.json",
+  "type": "reactive_graph::core::Event",
+  "description": "This component spawns events.",
+  "properties": [
+    {
+      "name": "event",
+      "description": "On receiving a boolean trigger the action will be executed",
+      "data_type": "any",
+      "socket_type": "output"
+    }
+  ],
+  "extensions": [
+  ]
+}

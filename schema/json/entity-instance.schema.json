@@ -9,8 +9,10 @@
       },
       "type": "array"
     },
+    "EntityTypeId": {
+      "$ref": "#/$defs/NamespacedType"
+    },
     "Extension": {
-      "$ref": "#/$defs/NamespacedType",
       "description": "Extension on a type. The extension allows to extend information",
       "properties": {
         "description": {
@@ -18,11 +20,27 @@
           "description": "Textual description of the extension.",
           "type": "string"
         },
+        "entity_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EntityTypeId"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The fully qualified namespace of the entity type which is the type constraint of the extension."
+        },
         "extension": {
           "description": "The extension as JSON representation."
+        },
+        "type": {
+          "$ref": "#/$defs/NamespacedType",
+          "description": "The fully qualified namespace of the extension."
         }
       },
       "required": [
+        "type",
         "extension"
       ],
       "type": "object"
@@ -36,21 +54,7 @@
     },
     "NamespacedType": {
       "description": "Defines the namespace and the name of a type.",
-      "properties": {
-        "namespace": {
-          "description": "The namespace of the type.",
-          "type": "string"
-        },
-        "type_name": {
-          "description": "The name of the type.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "namespace",
-        "type_name"
-      ],
-      "type": "object"
+      "type": "string"
     },
     "PropertyInstances": {
       "description": "Properties",
@@ -58,8 +62,8 @@
     }
   },
   "$id": "https://schema.reactive-graph.io/schema/json/entity-instance.schema.json",
-  "$ref": "#/$defs/NamespacedType",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
   "description": "Entity instances represents an typed object which contains properties.\n\nThe entity type defines the properties (name, data type and socket type).\n\nIn contrast to the entity type the entity instance stores values in its\nproperties.",
   "properties": {
     "$id": {
@@ -96,12 +100,16 @@
       "$ref": "#/$defs/PropertyInstances",
       "default": {},
       "description": "The properties of the entity instance.\n\nEach property is represented by its name (String) and it's value. The value is\na representation of a JSON. Therefore, the value can be boolean, number, string,\narray or an object. For more information about the data types please look at\n<https://docs.serde.rs/serde_json/value/enum.Value.html>"
+    },
+    "type": {
+      "$ref": "#/$defs/EntityTypeId",
+      "description": "The type definition of the entity type."
     }
   },
   "required": [
+    "type",
     "id"
   ],
   "title": "EntityInstance",
-  "type": "object",
-  "unevaluatedProperties": false
+  "type": "object"
 }

@@ -12,8 +12,8 @@ use typed_builder::TypedBuilder;
     schema_module = "crate::schema_graphql::schema"
 )]
 pub struct EntityInstanceDefinition {
-    pub namespace: String,
-    pub type_name: String,
+    #[cynic(rename = "type")]
+    pub _type: String,
     pub id: UUID,
     pub description: String,
     pub properties: Vec<PropertyInstanceDefinition>,
@@ -30,8 +30,9 @@ impl From<EntityInstance> for EntityInstanceDefinition {
             .collect();
         let extensions = entity_instance.extensions.into_iter().map(|(_, extension)| extension.into()).collect();
         EntityInstanceDefinition {
-            namespace: ty.namespace(),
-            type_name: ty.type_name(),
+            _type: ty.namespace().to_string(),
+            // namespace: ty.namespace(),
+            // type_name: ty.type_name(),
             id: UUID(entity_instance.id),
             description: entity_instance.description.clone(),
             properties,

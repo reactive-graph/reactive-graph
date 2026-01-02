@@ -1,0 +1,40 @@
+[package]
+name = "reactive-graph-type-system-model"
+description = "Reactive Graph - Type System - Model"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+typed-builder = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-model-core = { version = "0.10.0", path = "../../model/core" }
+
+[build-dependencies]
+anyhow = { workspace = true }
+json5 = { workspace = true, optional = true }
+toml = { workspace = true, optional = true }
+
+reactive-graph-generator-documentation = { version = "0.10.0", path = "../../generator/documentation" }
+reactive-graph-generator-codegen = { version = "0.10.0", path = "../../generator/codegen" }
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-model-core = { version = "0.10.0", path = "../../model/core" }
+
+[features]
+default = ["json5", "toml"]
+json5 = ["dep:json5"]
+toml = ["dep:toml"]
+
+[lib]
+crate-type = ["lib"]
+
+[lints]
+workspace = true
