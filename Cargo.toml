@@ -169,7 +169,7 @@ actix-web-extras = "0.1"
 anyhow = "1.0"
 # async-graphql features: uuid, chrono, url, log
 async-graphql = { version = "7.0", features = ["uuid", "dynamic-schema"] }
-async-graphql-actix-web = { version = "7.0" }
+async-graphql-actix-web = { version = "7.1" }
 async-trait = "0.1"
 #async-std = { version = "1.13", features = ["attributes", "tokio1"] }
 aws-lc-rs = { version = "1.15", features = ["prebuilt-nasm"] }
