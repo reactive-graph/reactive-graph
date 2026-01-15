@@ -169,7 +169,7 @@ actix-web-extras = "0.1"
 anyhow = "1.0"
 # async-graphql features: uuid, chrono, url, log
 async-graphql = { version = "7.0", features = ["uuid", "dynamic-schema"] }
-async-graphql-actix-web = { version = "7.0" }
+async-graphql-actix-web = { version = "7.1" }
 async-trait = "0.1"
 #async-std = { version = "1.13", features = ["attributes", "tokio1"] }
 aws-lc-rs = { version = "1.15", features = ["prebuilt-nasm"] }
@@ -216,9 +216,9 @@ rand_derive3 = { version = "0.2", git = "https://github.com/reactive-graph/rand_
 random-string = "1.1"
 rcgen = { version = "0.13", default-features = false, features = ["aws_lc_rs"] }
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
-rust-embed = { version = "8.9", features = ["debug-embed", "compression"] }
+rust-embed = { version = "8.11", features = ["debug-embed", "compression"] }
 rustc-hash = "2.1.1"
-rustls = { version = "0.23.35", features = ["aws_lc_rs"] }
+rustls = { version = "0.23.36", features = ["aws_lc_rs"] }
 rustls-cert-gen = { version = "0.1", default-features = false, features = ["aws_lc_rs"] }
 rustls-pemfile = "2.2"
 rustversion = "1.0"
