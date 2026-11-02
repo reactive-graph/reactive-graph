@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["property_container_property_fields","property_container_update_field_arguments","property_container_update_properties","property_container_validate_input_fields","to_property_field"],"mod":["datatype"]};

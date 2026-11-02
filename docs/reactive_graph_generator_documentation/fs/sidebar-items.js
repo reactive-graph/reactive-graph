@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["DOCS_DIRECTORY"],"fn":["create_and_get_documentation_path","get_workspace_root_docs_path"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["component_id_field","component_id_field_name","component_type_id_container_component_fields","instance_component_id_field","property_type_interface_field"],"struct":["InterfaceManagerImpl"]};

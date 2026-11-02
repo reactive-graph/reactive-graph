@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["const_namespace","fully_qualified_ident","generator","item_sort"]};

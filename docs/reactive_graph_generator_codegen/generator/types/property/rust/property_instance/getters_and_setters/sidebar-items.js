@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["property_instance_getters_and_setters"]};

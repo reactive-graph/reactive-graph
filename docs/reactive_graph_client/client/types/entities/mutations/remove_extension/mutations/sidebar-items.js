@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["remove_extension_mutation"],"struct":["MutationEntityTypes","MutationTypes","RemoveExtension"]};

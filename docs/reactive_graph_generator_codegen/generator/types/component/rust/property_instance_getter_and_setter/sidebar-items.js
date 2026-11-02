@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["generate_impl_trait_property_instance_getter_and_setter_default_impl","generate_impl_trait_property_instance_getter_and_setter_method_signatures","trait_doc_comment"]};

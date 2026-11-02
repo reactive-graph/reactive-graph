@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"attr":["async_trait","component_alias","injectable"],"derive":["Component","TypeProvider"],"macro":["export_plugin"],"struct":["Arc","Components","EntityTypes","FlowTypes","RelationTypes"],"trait":["TypeProvider"]};
+window.SIDEBAR_ITEMS = {"attr":["async_trait","component_alias","injectable"],"derive":["Component"],"macro":["export_plugin"],"struct":["Arc","Components","EntityTypes","FlowTypes","RelationTypes"]};

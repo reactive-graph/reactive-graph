@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["NAMESPACE_COMMAND"],"mod":["builder","component","entity","error"]};
+window.SIDEBAR_ITEMS = {"mod":["builder","entity","error","reactive_graph","type_system"]};

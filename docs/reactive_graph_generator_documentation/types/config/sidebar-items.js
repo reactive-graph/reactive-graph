@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["DocumentationConfigPreset","EnumGenerationMode","SubTypesGenerationMode"],"struct":["DocumentationConfig","ExtensionsDocumentationConfig","JsonSchemaDocumentationConfig","PropertiesDocumentationConfig","PropertyDocumentationConfig"],"trait":["FromDocumentationConfigPreset"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["generate_struct_definition","struct_doc_comment"],"mod":["constructor","into_entity_instance","try_from_entity_instance"]};

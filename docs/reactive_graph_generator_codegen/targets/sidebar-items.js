@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["CodeGenerationTargets"],"mod":["java","rust"],"trait":["CodeGenerationTarget"]};

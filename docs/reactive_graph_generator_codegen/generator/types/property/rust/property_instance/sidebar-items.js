@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["field","getter","getters_and_setters","setter","visibility"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["AddExtensionError","RemoveExtensionError","UpdateExtensionError"]};
+window.SIDEBAR_ITEMS = {"enum":["AddExtensionError","ExtensionJsonSchemaError","InvalidExtensionError","RemoveExtensionError","UpdateExtensionError"]};

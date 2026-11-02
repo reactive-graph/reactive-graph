@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["__fields","_include_arguments","_skip_arguments","variable"],"struct":["Command","CommandArgument","CommandResult","InstanceAddress","InstanceInfo","JSON","JSONObject","Mutation","MutationCommands","MutationRemotes","Query","include","skip"],"type":["Boolean","Float","ID","Int","String"]};

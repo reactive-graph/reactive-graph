@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["assoc_types","type_definition_ident","types"]};

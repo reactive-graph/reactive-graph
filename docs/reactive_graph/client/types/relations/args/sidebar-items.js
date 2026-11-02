@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["add_extension","add_property","create","relation_component_type","relation_extension_type","relation_type_property","type_id","update_description"],"struct":["RelationTypesArgs"]};
+window.SIDEBAR_ITEMS = {"fn":["parse_instance_id","parse_relation_ty"],"mod":["add_extension","add_property","create","relation_component_type","relation_extension_type","relation_type_property","update_description"],"struct":["RelationTypesArgs"]};

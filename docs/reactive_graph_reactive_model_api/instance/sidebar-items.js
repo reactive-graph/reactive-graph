@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":["ReactiveInstance","ReactiveInstanceContainer","ReactiveInstanceGetter"]};
+window.SIDEBAR_ITEMS = {"trait":["ReactiveInstance","ReactiveInstanceContainer","ReactiveInstanceGetter","ReactiveInstanceUnidentifiable"]};

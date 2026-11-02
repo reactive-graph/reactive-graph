@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["relation_trigger_field"]};

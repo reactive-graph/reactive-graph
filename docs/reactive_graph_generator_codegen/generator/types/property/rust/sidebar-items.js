@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["const_properties","data_type","mutability","property_instance","socket_type"]};

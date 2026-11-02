@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["components","entities","flows","registry","relations","type_system_event_manager"]};
+window.SIDEBAR_ITEMS = {"mod":["components","entities","flows","relations","type_system"]};

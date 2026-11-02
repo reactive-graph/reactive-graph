@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["const_property_variant_ident","property_name_ident"]};

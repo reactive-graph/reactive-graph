@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["add_extension_mutation"],"struct":["AddExtension","MutationFlowTypes","MutationTypes"]};

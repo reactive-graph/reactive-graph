@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["directives","error","mutation","query","subscription"],"type":["ReactiveGraphSchema"]};
+window.SIDEBAR_ITEMS = {"mod":["directives","error","mutation","query","subscription","validator"],"type":["ReactiveGraphSchema"]};

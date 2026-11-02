@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["generate_property_instances_getter"]};

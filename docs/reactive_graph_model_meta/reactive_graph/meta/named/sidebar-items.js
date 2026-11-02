@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["NAMED_NAMESPACE"],"enum":["NamedProperties"],"static":["NAMED","NAMED_EXTENSIONS","NAMED_TYPE"],"struct":["NamedPropertiesIterator"],"trait":["Named"]};

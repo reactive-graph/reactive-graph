@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["_redeploy_arguments","_restart_arguments","_start_arguments","_stop_arguments","_uninstall_arguments"],"struct":["__typename","redeploy","restart","start","stop","uninstall"]};

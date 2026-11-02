@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["LABELED_NAMESPACE"],"enum":["LabeledProperties"],"static":["LABELED","LABELED_EXTENSIONS","LABELED_TYPE"],"struct":["LabeledPropertiesIterator"],"trait":["Labeled"]};

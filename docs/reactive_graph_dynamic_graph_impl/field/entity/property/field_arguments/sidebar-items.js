@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["add_entity_type_properties_as_field_arguments"]};

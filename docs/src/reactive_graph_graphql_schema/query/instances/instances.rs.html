@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/graphql/schema/src/query/instances/instances.rs`."><title>instances.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="reactive_graph_graphql_schema" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (0060d5a2a 2025-08-04)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../../../static.files/storage-68b7e25d.js"></script><script defer src="../../../../static.files/src-script-813739b1.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">reactive_graph_graphql_schema/query/instances/</div>instances.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>std::sync::Arc;
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/graphql/schema/src/query/instances/instances.rs`."><title>instances.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="reactive_graph_graphql_schema" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0-nightly (b33119ffd 2025-12-04)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../../static.files/src-script-813739b1.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">reactive_graph_graphql_schema/query/instances/</div>instances.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>std::sync::Arc;
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a><span class="kw">use </span>async_graphql::Context;
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>async_graphql::Object;
@@ -6,317 +6,367 @@
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>uuid::Uuid;
 <a href=#7 id=7 data-nosnippet>7</a>
 <a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span>reactive_graph_behaviour_model_api::BehaviourTypeId;
-<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span>reactive_graph_behaviour_model_api::BehaviourTypesContainer;
-<a href=#10 id=10 data-nosnippet>10</a><span class="kw">use </span>reactive_graph_graph::ComponentContainer;
-<a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span>reactive_graph_graph::ComponentTypeId;
-<a href=#12 id=12 data-nosnippet>12</a><span class="kw">use </span>reactive_graph_graph::EntityTypeId;
-<a href=#13 id=13 data-nosnippet>13</a><span class="kw">use </span>reactive_graph_graph::RelationTypeId;
-<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span>reactive_graph_reactive_service_api::ReactiveEntityManager;
-<a href=#15 id=15 data-nosnippet>15</a><span class="kw">use </span>reactive_graph_reactive_service_api::ReactiveFlowManager;
-<a href=#16 id=16 data-nosnippet>16</a><span class="kw">use </span>reactive_graph_reactive_service_api::ReactiveRelationManager;
-<a href=#17 id=17 data-nosnippet>17</a>
-<a href=#18 id=18 data-nosnippet>18</a><span class="kw">use </span><span class="kw">crate</span>::mutation::BehaviourTypeIdDefinition;
-<a href=#19 id=19 data-nosnippet>19</a><span class="kw">use </span><span class="kw">crate</span>::mutation::ComponentTypeIdDefinition;
-<a href=#20 id=20 data-nosnippet>20</a><span class="kw">use </span><span class="kw">crate</span>::mutation::EntityTypeIdDefinition;
-<a href=#21 id=21 data-nosnippet>21</a><span class="kw">use </span><span class="kw">crate</span>::mutation::GraphQLRelationInstanceId;
-<a href=#22 id=22 data-nosnippet>22</a><span class="kw">use </span><span class="kw">crate</span>::mutation::RelationTypeIdDefinition;
-<a href=#23 id=23 data-nosnippet>23</a><span class="kw">use </span><span class="kw">crate</span>::query::GraphQLEntityInstance;
-<a href=#24 id=24 data-nosnippet>24</a><span class="kw">use </span><span class="kw">crate</span>::query::GraphQLFlowInstance;
-<a href=#25 id=25 data-nosnippet>25</a><span class="kw">use </span><span class="kw">crate</span>::query::GraphQLPropertyInstance;
-<a href=#26 id=26 data-nosnippet>26</a><span class="kw">use </span><span class="kw">crate</span>::query::GraphQLRelationInstance;
-<a href=#27 id=27 data-nosnippet>27</a>
-<a href=#28 id=28 data-nosnippet>28</a><span class="attr">#[derive(Default)]
-<a href=#29 id=29 data-nosnippet>29</a></span><span class="kw">pub struct </span>Instances;
-<a href=#30 id=30 data-nosnippet>30</a>
-<a href=#31 id=31 data-nosnippet>31</a><span class="doccomment">/// Search for instances
-<a href=#32 id=32 data-nosnippet>32</a></span><span class="attr">#[Object]
-<a href=#33 id=33 data-nosnippet>33</a></span><span class="kw">impl </span>Instances {
-<a href=#34 id=34 data-nosnippet>34</a>    <span class="doccomment">/// Search for entity instances.
-<a href=#35 id=35 data-nosnippet>35</a>    ///
-<a href=#36 id=36 data-nosnippet>36</a>    /// If an id is given, the entity instance with the given id will be returned.
-<a href=#37 id=37 data-nosnippet>37</a>    ///
-<a href=#38 id=38 data-nosnippet>38</a>    /// If an entity type is given, only entity instances of the given type are returned.
-<a href=#39 id=39 data-nosnippet>39</a>    </span><span class="attr">#[allow(clippy::too_many_arguments)]
-<a href=#40 id=40 data-nosnippet>40</a>    </span><span class="kw">async fn </span>entities(
-<a href=#41 id=41 data-nosnippet>41</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#42 id=42 data-nosnippet>42</a>        context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
-<a href=#43 id=43 data-nosnippet>43</a>        <span class="attr">#[graphql(desc = <span class="string">"Returns only the entity instance with the given id."</span>)] </span>id: <span class="prelude-ty">Option</span>&lt;Uuid&gt;,
-<a href=#44 id=44 data-nosnippet>44</a>        <span class="attr">#[graphql(desc = <span class="string">"Returns the entity instance with the given label."</span>)] </span>label: <span class="prelude-ty">Option</span>&lt;String&gt;,
-<a href=#45 id=45 data-nosnippet>45</a>        <span class="attr">#[graphql(name = <span class="string">"type"</span>, desc = <span class="string">"Filters the entity instances by type."</span>)] </span>entity_type: <span class="prelude-ty">Option</span>&lt;EntityTypeIdDefinition&gt;,
-<a href=#46 id=46 data-nosnippet>46</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the entity instances by applied components."</span>)] </span>components: <span class="prelude-ty">Option</span>&lt;Vec&lt;ComponentTypeIdDefinition&gt;&gt;,
-<a href=#47 id=47 data-nosnippet>47</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the entity instances by applied behaviours."</span>)] </span>behaviours: <span class="prelude-ty">Option</span>&lt;Vec&lt;BehaviourTypeIdDefinition&gt;&gt;,
-<a href=#48 id=48 data-nosnippet>48</a>        <span class="attr">#[graphql(name = <span class="string">"properties"</span>, desc = <span class="string">"Query by properties."</span>)] </span>property_query: <span class="prelude-ty">Option</span>&lt;Vec&lt;GraphQLPropertyInstance&gt;&gt;,
-<a href=#49 id=49 data-nosnippet>49</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;GraphQLEntityInstance&gt;&gt; {
-<a href=#50 id=50 data-nosnippet>50</a>        <span class="kw">let </span>entity_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveEntityManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
-<a href=#51 id=51 data-nosnippet>51</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = id {
-<a href=#52 id=52 data-nosnippet>52</a>            <span class="kw">let </span>entity_instance = entity_instance_manager.get(id).map(|entity_instance| {
-<a href=#53 id=53 data-nosnippet>53</a>                <span class="kw">let </span>entity_instance: GraphQLEntityInstance = entity_instance.into();
-<a href=#54 id=54 data-nosnippet>54</a>                entity_instance
-<a href=#55 id=55 data-nosnippet>55</a>            });
-<a href=#56 id=56 data-nosnippet>56</a>            <span class="kw">return if </span>entity_instance.is_some() {
-<a href=#57 id=57 data-nosnippet>57</a>                <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[entity_instance.unwrap()])
-<a href=#58 id=58 data-nosnippet>58</a>            } <span class="kw">else </span>{
-<a href=#59 id=59 data-nosnippet>59</a>                <span class="prelude-val">Ok</span>(Vec::new())
-<a href=#60 id=60 data-nosnippet>60</a>            };
-<a href=#61 id=61 data-nosnippet>61</a>        }
-<a href=#62 id=62 data-nosnippet>62</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(label) = label {
-<a href=#63 id=63 data-nosnippet>63</a>            <span class="kw">let </span>entity_instance = entity_instance_manager.get_by_label(label.as_str()).map(|entity_instance| {
-<a href=#64 id=64 data-nosnippet>64</a>                <span class="kw">let </span>entity_instance: GraphQLEntityInstance = entity_instance.into();
-<a href=#65 id=65 data-nosnippet>65</a>                entity_instance
-<a href=#66 id=66 data-nosnippet>66</a>            });
-<a href=#67 id=67 data-nosnippet>67</a>            <span class="kw">return if </span>entity_instance.is_some() {
-<a href=#68 id=68 data-nosnippet>68</a>                <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[entity_instance.unwrap()])
-<a href=#69 id=69 data-nosnippet>69</a>            } <span class="kw">else </span>{
-<a href=#70 id=70 data-nosnippet>70</a>                <span class="prelude-val">Ok</span>(Vec::new())
-<a href=#71 id=71 data-nosnippet>71</a>            };
-<a href=#72 id=72 data-nosnippet>72</a>        }
-<a href=#73 id=73 data-nosnippet>73</a>        <span class="kw">let </span>entities = entity_instance_manager
-<a href=#74 id=74 data-nosnippet>74</a>            .get_all()
-<a href=#75 id=75 data-nosnippet>75</a>            .iter()
-<a href=#76 id=76 data-nosnippet>76</a>            .filter(|entity_instance| entity_type.is_none() || entity_instance.ty == EntityTypeId::from(entity_type.clone().unwrap()))
-<a href=#77 id=77 data-nosnippet>77</a>            .filter(|entity_instance| {
-<a href=#78 id=78 data-nosnippet>78</a>                components.is_none() || {
-<a href=#79 id=79 data-nosnippet>79</a>                    <span class="kw">let </span>components = components.clone().unwrap();
-<a href=#80 id=80 data-nosnippet>80</a>                    components.iter().cloned().all(|component_ty| entity_instance.is_a(<span class="kw-2">&amp;</span>component_ty.into()))
-<a href=#81 id=81 data-nosnippet>81</a>                }
-<a href=#82 id=82 data-nosnippet>82</a>            })
-<a href=#83 id=83 data-nosnippet>83</a>            .filter(|entity_instance| {
-<a href=#84 id=84 data-nosnippet>84</a>                behaviours.is_none() || {
-<a href=#85 id=85 data-nosnippet>85</a>                    <span class="kw">let </span>behaviours = behaviours.clone().unwrap();
-<a href=#86 id=86 data-nosnippet>86</a>                    behaviours.iter().cloned().all(|behaviour_ty| entity_instance.behaves_as(<span class="kw-2">&amp;</span>behaviour_ty.into()))
-<a href=#87 id=87 data-nosnippet>87</a>                }
-<a href=#88 id=88 data-nosnippet>88</a>            })
-<a href=#89 id=89 data-nosnippet>89</a>            .filter(|entity_instance| {
-<a href=#90 id=90 data-nosnippet>90</a>                property_query.is_none() || {
-<a href=#91 id=91 data-nosnippet>91</a>                    <span class="kw">let </span>property_query = property_query.clone().unwrap();
-<a href=#92 id=92 data-nosnippet>92</a>                    <span class="kw">if </span>property_query.is_empty() {
-<a href=#93 id=93 data-nosnippet>93</a>                        <span class="kw">return </span><span class="bool-val">true</span>;
+<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span>reactive_graph_behaviour_model_api::BehaviourTypeIds;
+<a href=#10 id=10 data-nosnippet>10</a><span class="kw">use </span>reactive_graph_behaviour_model_api::BehaviourTypesContainer;
+<a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span>reactive_graph_graph::ComponentContainer;
+<a href=#12 id=12 data-nosnippet>12</a><span class="kw">use </span>reactive_graph_graph::ComponentTypeId;
+<a href=#13 id=13 data-nosnippet>13</a><span class="kw">use </span>reactive_graph_graph::ComponentTypeIds;
+<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span>reactive_graph_graph::EntityTypeId;
+<a href=#15 id=15 data-nosnippet>15</a><span class="kw">use </span>reactive_graph_graph::RelationTypeId;
+<a href=#16 id=16 data-nosnippet>16</a><span class="kw">use </span>reactive_graph_reactive_service_api::ReactiveEntityManager;
+<a href=#17 id=17 data-nosnippet>17</a><span class="kw">use </span>reactive_graph_reactive_service_api::ReactiveFlowManager;
+<a href=#18 id=18 data-nosnippet>18</a><span class="kw">use </span>reactive_graph_reactive_service_api::ReactiveRelationManager;
+<a href=#19 id=19 data-nosnippet>19</a>
+<a href=#20 id=20 data-nosnippet>20</a><span class="kw">use </span><span class="kw">crate</span>::mutation::GraphQLRelationInstanceId;
+<a href=#21 id=21 data-nosnippet>21</a><span class="kw">use </span><span class="kw">crate</span>::query::GraphQLEntityInstance;
+<a href=#22 id=22 data-nosnippet>22</a><span class="kw">use </span><span class="kw">crate</span>::query::GraphQLFlowInstance;
+<a href=#23 id=23 data-nosnippet>23</a><span class="kw">use </span><span class="kw">crate</span>::query::GraphQLPropertyInstance;
+<a href=#24 id=24 data-nosnippet>24</a><span class="kw">use </span><span class="kw">crate</span>::query::GraphQLRelationInstance;
+<a href=#25 id=25 data-nosnippet>25</a><span class="kw">use </span><span class="kw">crate</span>::validator::NamespacedTypeValidator;
+<a href=#26 id=26 data-nosnippet>26</a>
+<a href=#27 id=27 data-nosnippet>27</a><span class="attr">#[derive(Default)]
+<a href=#28 id=28 data-nosnippet>28</a></span><span class="kw">pub struct </span>Instances;
+<a href=#29 id=29 data-nosnippet>29</a>
+<a href=#30 id=30 data-nosnippet>30</a><span class="doccomment">/// Search for instances
+<a href=#31 id=31 data-nosnippet>31</a></span><span class="attr">#[Object]
+<a href=#32 id=32 data-nosnippet>32</a></span><span class="kw">impl </span>Instances {
+<a href=#33 id=33 data-nosnippet>33</a>    <span class="doccomment">/// Search for entity instances.
+<a href=#34 id=34 data-nosnippet>34</a>    ///
+<a href=#35 id=35 data-nosnippet>35</a>    /// If an id is given, the entity instance with the given id will be returned.
+<a href=#36 id=36 data-nosnippet>36</a>    ///
+<a href=#37 id=37 data-nosnippet>37</a>    /// If an entity type is given, only entity instances of the given type are returned.
+<a href=#38 id=38 data-nosnippet>38</a>    </span><span class="attr">#[allow(clippy::too_many_arguments)]
+<a href=#39 id=39 data-nosnippet>39</a>    </span><span class="kw">async fn </span>entities(
+<a href=#40 id=40 data-nosnippet>40</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
+<a href=#41 id=41 data-nosnippet>41</a>        context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
+<a href=#42 id=42 data-nosnippet>42</a>        <span class="attr">#[graphql(desc = <span class="string">"Returns only the entity instance with the given id."</span>)] </span>id: <span class="prelude-ty">Option</span>&lt;Uuid&gt;,
+<a href=#43 id=43 data-nosnippet>43</a>        <span class="attr">#[graphql(desc = <span class="string">"Returns the entity instance with the given label."</span>)] </span>label: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#44 id=44 data-nosnippet>44</a>        <span class="attr">#[graphql(
+<a href=#45 id=45 data-nosnippet>45</a>            name = <span class="string">"type"</span>,
+<a href=#46 id=46 data-nosnippet>46</a>            desc = <span class="string">"Filters the entity instances by the fully qualified namespace of the entity type."</span>,
+<a href=#47 id=47 data-nosnippet>47</a>            validator(custom = <span class="string">"NamespacedTypeValidator::new()"</span>)
+<a href=#48 id=48 data-nosnippet>48</a>        )]
+<a href=#49 id=49 data-nosnippet>49</a>        </span>_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#50 id=50 data-nosnippet>50</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the entity instances by applied components."</span>)] </span>components: <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt;,
+<a href=#51 id=51 data-nosnippet>51</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the entity instances by applied behaviours."</span>)] </span>behaviours: <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt;,
+<a href=#52 id=52 data-nosnippet>52</a>        <span class="attr">#[graphql(name = <span class="string">"properties"</span>, desc = <span class="string">"Query by properties."</span>)] </span>property_query: <span class="prelude-ty">Option</span>&lt;Vec&lt;GraphQLPropertyInstance&gt;&gt;,
+<a href=#53 id=53 data-nosnippet>53</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;GraphQLEntityInstance&gt;&gt; {
+<a href=#54 id=54 data-nosnippet>54</a>        <span class="kw">let </span>entity_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveEntityManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
+<a href=#55 id=55 data-nosnippet>55</a>        <span class="kw">let </span>entity_ty = EntityTypeId::parse_optional_namespace(_type)<span class="question-mark">?</span>;
+<a href=#56 id=56 data-nosnippet>56</a>        <span class="kw">let </span>components = ComponentTypeIds::parse_optional_namespaces(components)<span class="question-mark">?</span>;
+<a href=#57 id=57 data-nosnippet>57</a>        <span class="kw">let </span>behaviours = BehaviourTypeIds::parse_optional_namespaces(behaviours)<span class="question-mark">?</span>;
+<a href=#58 id=58 data-nosnippet>58</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = id {
+<a href=#59 id=59 data-nosnippet>59</a>            <span class="kw">let </span>entity_instance = entity_instance_manager.get(id).map(|entity_instance| {
+<a href=#60 id=60 data-nosnippet>60</a>                <span class="kw">let </span>entity_instance: GraphQLEntityInstance = entity_instance.into();
+<a href=#61 id=61 data-nosnippet>61</a>                entity_instance
+<a href=#62 id=62 data-nosnippet>62</a>            });
+<a href=#63 id=63 data-nosnippet>63</a>            <span class="kw">return if </span>entity_instance.is_some() {
+<a href=#64 id=64 data-nosnippet>64</a>                <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[entity_instance.unwrap()])
+<a href=#65 id=65 data-nosnippet>65</a>            } <span class="kw">else </span>{
+<a href=#66 id=66 data-nosnippet>66</a>                <span class="prelude-val">Ok</span>(Vec::new())
+<a href=#67 id=67 data-nosnippet>67</a>            };
+<a href=#68 id=68 data-nosnippet>68</a>        }
+<a href=#69 id=69 data-nosnippet>69</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(label) = label {
+<a href=#70 id=70 data-nosnippet>70</a>            <span class="kw">let </span>entity_instance = entity_instance_manager.get_by_label(label.as_str()).map(|entity_instance| {
+<a href=#71 id=71 data-nosnippet>71</a>                <span class="kw">let </span>entity_instance: GraphQLEntityInstance = entity_instance.into();
+<a href=#72 id=72 data-nosnippet>72</a>                entity_instance
+<a href=#73 id=73 data-nosnippet>73</a>            });
+<a href=#74 id=74 data-nosnippet>74</a>            <span class="kw">return if </span>entity_instance.is_some() {
+<a href=#75 id=75 data-nosnippet>75</a>                <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[entity_instance.unwrap()])
+<a href=#76 id=76 data-nosnippet>76</a>            } <span class="kw">else </span>{
+<a href=#77 id=77 data-nosnippet>77</a>                <span class="prelude-val">Ok</span>(Vec::new())
+<a href=#78 id=78 data-nosnippet>78</a>            };
+<a href=#79 id=79 data-nosnippet>79</a>        }
+<a href=#80 id=80 data-nosnippet>80</a>        <span class="kw">let </span>entities = entity_instance_manager
+<a href=#81 id=81 data-nosnippet>81</a>            .get_all()
+<a href=#82 id=82 data-nosnippet>82</a>            .iter()
+<a href=#83 id=83 data-nosnippet>83</a>            .filter(|entity_instance| entity_ty.is_none() || entity_instance.ty == entity_ty.clone().unwrap())
+<a href=#84 id=84 data-nosnippet>84</a>            .filter(|entity_instance| components.is_empty() || { entity_instance.is_all(<span class="kw-2">&amp;</span>components) })
+<a href=#85 id=85 data-nosnippet>85</a>            .filter(|entity_instance| behaviours.is_empty() || { entity_instance.behaves_as_all(<span class="kw-2">&amp;</span>behaviours) })
+<a href=#86 id=86 data-nosnippet>86</a>            .filter(|entity_instance| {
+<a href=#87 id=87 data-nosnippet>87</a>                property_query.is_none() || {
+<a href=#88 id=88 data-nosnippet>88</a>                    <span class="kw">let </span>property_query = property_query.clone().unwrap();
+<a href=#89 id=89 data-nosnippet>89</a>                    <span class="kw">if </span>property_query.is_empty() {
+<a href=#90 id=90 data-nosnippet>90</a>                        <span class="kw">return </span><span class="bool-val">true</span>;
+<a href=#91 id=91 data-nosnippet>91</a>                    }
+<a href=#92 id=92 data-nosnippet>92</a>                    <span class="kw">if </span>entity_instance.properties.is_empty() {
+<a href=#93 id=93 data-nosnippet>93</a>                        <span class="kw">return </span><span class="bool-val">false</span>;
 <a href=#94 id=94 data-nosnippet>94</a>                    }
-<a href=#95 id=95 data-nosnippet>95</a>                    <span class="kw">if </span>entity_instance.properties.is_empty() {
-<a href=#96 id=96 data-nosnippet>96</a>                        <span class="kw">return </span><span class="bool-val">false</span>;
-<a href=#97 id=97 data-nosnippet>97</a>                    }
-<a href=#98 id=98 data-nosnippet>98</a>                    property_query
-<a href=#99 id=99 data-nosnippet>99</a>                        .iter()
-<a href=#100 id=100 data-nosnippet>100</a>                        .all(|property_query| <span class="kw">match </span>entity_instance.properties.get(property_query.name.as_str()) {
-<a href=#101 id=101 data-nosnippet>101</a>                            <span class="prelude-val">Some</span>(property_instance) =&gt; property_query.value == property_instance.get(),
-<a href=#102 id=102 data-nosnippet>102</a>                            <span class="prelude-val">None </span>=&gt; <span class="bool-val">false</span>,
-<a href=#103 id=103 data-nosnippet>103</a>                        })
-<a href=#104 id=104 data-nosnippet>104</a>                }
-<a href=#105 id=105 data-nosnippet>105</a>            })
-<a href=#106 id=106 data-nosnippet>106</a>            .map(|entity_instance| {
-<a href=#107 id=107 data-nosnippet>107</a>                <span class="kw">let </span>entity_instance: GraphQLEntityInstance = entity_instance.clone().into();
-<a href=#108 id=108 data-nosnippet>108</a>                entity_instance
-<a href=#109 id=109 data-nosnippet>109</a>            })
-<a href=#110 id=110 data-nosnippet>110</a>            .collect();
-<a href=#111 id=111 data-nosnippet>111</a>        <span class="prelude-val">Ok</span>(entities)
-<a href=#112 id=112 data-nosnippet>112</a>    }
-<a href=#113 id=113 data-nosnippet>113</a>
-<a href=#114 id=114 data-nosnippet>114</a>    <span class="kw">async fn </span>count_entity_instances(
-<a href=#115 id=115 data-nosnippet>115</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#116 id=116 data-nosnippet>116</a>        context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
-<a href=#117 id=117 data-nosnippet>117</a>        <span class="attr">#[graphql(name = <span class="string">"type"</span>, desc = <span class="string">"Counts the entity instances of the given type only."</span>)] </span>ty: <span class="prelude-ty">Option</span>&lt;EntityTypeIdDefinition&gt;,
-<a href=#118 id=118 data-nosnippet>118</a>        <span class="attr">#[graphql(name = <span class="string">"component"</span>, desc = <span class="string">"Counts the entity instances which are composed by the given component only."</span>)] </span>component_ty: <span class="prelude-ty">Option</span>&lt;
-<a href=#119 id=119 data-nosnippet>119</a>            ComponentTypeIdDefinition,
-<a href=#120 id=120 data-nosnippet>120</a>        &gt;,
-<a href=#121 id=121 data-nosnippet>121</a>        <span class="attr">#[graphql(name = <span class="string">"behaviour"</span>, desc = <span class="string">"Counts the entity instances which behaves as the behaviour only."</span>)] </span>behaviour_ty: <span class="prelude-ty">Option</span>&lt;
-<a href=#122 id=122 data-nosnippet>122</a>            BehaviourTypeIdDefinition,
-<a href=#123 id=123 data-nosnippet>123</a>        &gt;,
-<a href=#124 id=124 data-nosnippet>124</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
-<a href=#125 id=125 data-nosnippet>125</a>        <span class="kw">let </span>entity_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveEntityManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
-<a href=#126 id=126 data-nosnippet>126</a>        <span class="kw">let </span>ty: <span class="prelude-ty">Option</span>&lt;EntityTypeId&gt; = ty.map(|ty| ty.into());
-<a href=#127 id=127 data-nosnippet>127</a>        <span class="kw">let </span>component_ty: <span class="prelude-ty">Option</span>&lt;ComponentTypeId&gt; = component_ty.map(|component_ty| component_ty.into());
-<a href=#128 id=128 data-nosnippet>128</a>        <span class="kw">let </span>behaviour_ty: <span class="prelude-ty">Option</span>&lt;BehaviourTypeId&gt; = behaviour_ty.map(|behaviour_ty| behaviour_ty.into());
-<a href=#129 id=129 data-nosnippet>129</a>        <span class="kw">if </span>ty.is_none() &amp;&amp; component_ty.is_none() &amp;&amp; behaviour_ty.is_none() {
-<a href=#130 id=130 data-nosnippet>130</a>            <span class="kw">return </span><span class="prelude-val">Ok</span>(entity_instance_manager.count());
-<a href=#131 id=131 data-nosnippet>131</a>        }
-<a href=#132 id=132 data-nosnippet>132</a>        <span class="kw">if </span>component_ty.is_none() &amp;&amp; behaviour_ty.is_none() {
-<a href=#133 id=133 data-nosnippet>133</a>            <span class="kw">return </span><span class="prelude-val">Ok</span>(entity_instance_manager.count_by_type(<span class="kw-2">&amp;</span>ty.unwrap()));
-<a href=#134 id=134 data-nosnippet>134</a>        }
-<a href=#135 id=135 data-nosnippet>135</a>        <span class="kw">if </span>ty.is_none() &amp;&amp; behaviour_ty.is_none() {
-<a href=#136 id=136 data-nosnippet>136</a>            <span class="kw">return </span><span class="prelude-val">Ok</span>(entity_instance_manager.count_by_component(<span class="kw-2">&amp;</span>component_ty.unwrap()));
-<a href=#137 id=137 data-nosnippet>137</a>        }
-<a href=#138 id=138 data-nosnippet>138</a>        <span class="kw">if </span>ty.is_none() &amp;&amp; component_ty.is_none() {
-<a href=#139 id=139 data-nosnippet>139</a>            <span class="kw">return </span><span class="prelude-val">Ok</span>(entity_instance_manager.count_by_behaviour(<span class="kw-2">&amp;</span>behaviour_ty.unwrap()));
-<a href=#140 id=140 data-nosnippet>140</a>        }
-<a href=#141 id=141 data-nosnippet>141</a>        <span class="kw">let </span>count = entity_instance_manager
-<a href=#142 id=142 data-nosnippet>142</a>            .get_all()
-<a href=#143 id=143 data-nosnippet>143</a>            .iter()
-<a href=#144 id=144 data-nosnippet>144</a>            .filter(|e| ty.is_none() || { e.ty == ty.clone().unwrap() })
-<a href=#145 id=145 data-nosnippet>145</a>            .filter(|e| component_ty.is_none() || e.is_a(<span class="kw-2">&amp;</span>component_ty.clone().unwrap()))
-<a href=#146 id=146 data-nosnippet>146</a>            .filter(|e| behaviour_ty.is_none() || e.behaves_as(<span class="kw-2">&amp;</span>behaviour_ty.clone().unwrap()))
-<a href=#147 id=147 data-nosnippet>147</a>            .count();
-<a href=#148 id=148 data-nosnippet>148</a>        <span class="prelude-val">Ok</span>(count)
-<a href=#149 id=149 data-nosnippet>149</a>    }
-<a href=#150 id=150 data-nosnippet>150</a>
-<a href=#151 id=151 data-nosnippet>151</a>    <span class="doccomment">/// Search for relations instances.
-<a href=#152 id=152 data-nosnippet>152</a>    ///
-<a href=#153 id=153 data-nosnippet>153</a>    /// Relation instances can be searched by relation type name, the entity type of the outbound
-<a href=#154 id=154 data-nosnippet>154</a>    /// entity instance, the entity type of the inbound entity instance, the id of the outbound
-<a href=#155 id=155 data-nosnippet>155</a>    /// entity instance or the id of the inbound entity instance. All of these filters can be
-<a href=#156 id=156 data-nosnippet>156</a>    /// combined.
-<a href=#157 id=157 data-nosnippet>157</a>    </span><span class="attr">#[allow(clippy::too_many_arguments)]
-<a href=#158 id=158 data-nosnippet>158</a>    </span><span class="kw">async fn </span>relations(
-<a href=#159 id=159 data-nosnippet>159</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#160 id=160 data-nosnippet>160</a>        context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
-<a href=#161 id=161 data-nosnippet>161</a>        <span class="attr">#[graphql(desc = <span class="string">"Returns only the relation instance with the given id."</span>)] </span>id: <span class="prelude-ty">Option</span>&lt;GraphQLRelationInstanceId&gt;,
-<a href=#162 id=162 data-nosnippet>162</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the relation instances by the entity type of the outbound entity instance."</span>)] </span>outbound_entity_ty: <span class="prelude-ty">Option</span>&lt;
-<a href=#163 id=163 data-nosnippet>163</a>            EntityTypeIdDefinition,
-<a href=#164 id=164 data-nosnippet>164</a>        &gt;,
-<a href=#165 id=165 data-nosnippet>165</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the relation instances by the component of the outbound entity instance."</span>)] </span>outbound_component_ty: <span class="prelude-ty">Option</span>&lt;
-<a href=#166 id=166 data-nosnippet>166</a>            ComponentTypeIdDefinition,
-<a href=#167 id=167 data-nosnippet>167</a>        &gt;,
-<a href=#168 id=168 data-nosnippet>168</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the relation instances by the id of the outbound entity instance"</span>)] </span>outbound_id: <span class="prelude-ty">Option</span>&lt;Uuid&gt;,
-<a href=#169 id=169 data-nosnippet>169</a>        <span class="attr">#[graphql(name = <span class="string">"type"</span>, desc = <span class="string">"Filters the relation instances by relation type"</span>)] </span>relation_ty: <span class="prelude-ty">Option</span>&lt;RelationTypeIdDefinition&gt;, <span class="comment">// TODO: RelationInstanceTypeIdDefinition ?
-<a href=#170 id=170 data-nosnippet>170</a>        </span><span class="attr">#[graphql(desc = <span class="string">"Filters the relation instances by the entity type of the inbound entity instance."</span>)] </span>inbound_entity_ty: <span class="prelude-ty">Option</span>&lt;
-<a href=#171 id=171 data-nosnippet>171</a>            EntityTypeIdDefinition,
-<a href=#172 id=172 data-nosnippet>172</a>        &gt;,
-<a href=#173 id=173 data-nosnippet>173</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the relation instances by the component of the inbound entity instance."</span>)] </span>inbound_component_ty: <span class="prelude-ty">Option</span>&lt;
-<a href=#174 id=174 data-nosnippet>174</a>            ComponentTypeIdDefinition,
-<a href=#175 id=175 data-nosnippet>175</a>        &gt;,
-<a href=#176 id=176 data-nosnippet>176</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the relation instances by the id of the inbound entity instance"</span>)] </span>inbound_id: <span class="prelude-ty">Option</span>&lt;Uuid&gt;,
-<a href=#177 id=177 data-nosnippet>177</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the relation instances by applied components."</span>)] </span>components: <span class="prelude-ty">Option</span>&lt;Vec&lt;ComponentTypeIdDefinition&gt;&gt;,
-<a href=#178 id=178 data-nosnippet>178</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the relation instances by applied behaviours."</span>)] </span>behaviours: <span class="prelude-ty">Option</span>&lt;Vec&lt;BehaviourTypeIdDefinition&gt;&gt;,
-<a href=#179 id=179 data-nosnippet>179</a>        <span class="attr">#[graphql(name = <span class="string">"properties"</span>, desc = <span class="string">"Query by properties."</span>)] </span>property_query: <span class="prelude-ty">Option</span>&lt;Vec&lt;GraphQLPropertyInstance&gt;&gt;,
-<a href=#180 id=180 data-nosnippet>180</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;GraphQLRelationInstance&gt;&gt; {
-<a href=#181 id=181 data-nosnippet>181</a>        <span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
-<a href=#182 id=182 data-nosnippet>182</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = id {
-<a href=#183 id=183 data-nosnippet>183</a>            <span class="kw">let </span>id = id.into();
-<a href=#184 id=184 data-nosnippet>184</a>            <span class="kw">let </span>relation_instance = relation_instance_manager.get(<span class="kw-2">&amp;</span>id).map(|relation_instance| {
-<a href=#185 id=185 data-nosnippet>185</a>                <span class="kw">let </span>relation_instance: GraphQLRelationInstance = relation_instance.into();
-<a href=#186 id=186 data-nosnippet>186</a>                relation_instance
-<a href=#187 id=187 data-nosnippet>187</a>            });
-<a href=#188 id=188 data-nosnippet>188</a>            <span class="kw">return if </span>relation_instance.is_some() {
-<a href=#189 id=189 data-nosnippet>189</a>                <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[relation_instance.unwrap()])
-<a href=#190 id=190 data-nosnippet>190</a>            } <span class="kw">else </span>{
-<a href=#191 id=191 data-nosnippet>191</a>                <span class="prelude-val">Ok</span>(Vec::new())
-<a href=#192 id=192 data-nosnippet>192</a>            };
-<a href=#193 id=193 data-nosnippet>193</a>        }
-<a href=#194 id=194 data-nosnippet>194</a>
-<a href=#195 id=195 data-nosnippet>195</a>        <span class="kw">let </span>outbound_entity_ty: <span class="prelude-ty">Option</span>&lt;EntityTypeId&gt; = outbound_entity_ty.map(|outbound_entity_ty| outbound_entity_ty.into());
-<a href=#196 id=196 data-nosnippet>196</a>        <span class="kw">let </span>outbound_component_ty: <span class="prelude-ty">Option</span>&lt;ComponentTypeId&gt; = outbound_component_ty.map(|outbound_component_ty| outbound_component_ty.into());
-<a href=#197 id=197 data-nosnippet>197</a>        <span class="kw">let </span>relation_ty: <span class="prelude-ty">Option</span>&lt;RelationTypeId&gt; = relation_ty.map(|relation_ty| relation_ty.into());
-<a href=#198 id=198 data-nosnippet>198</a>        <span class="kw">let </span>inbound_entity_ty: <span class="prelude-ty">Option</span>&lt;EntityTypeId&gt; = inbound_entity_ty.map(|inbound_entity_ty| inbound_entity_ty.into());
-<a href=#199 id=199 data-nosnippet>199</a>        <span class="kw">let </span>inbound_component_ty: <span class="prelude-ty">Option</span>&lt;ComponentTypeId&gt; = inbound_component_ty.map(|inbound_component_ty| inbound_component_ty.into());
-<a href=#200 id=200 data-nosnippet>200</a>        <span class="kw">let </span>components: <span class="prelude-ty">Option</span>&lt;Vec&lt;ComponentTypeId&gt;&gt; =
-<a href=#201 id=201 data-nosnippet>201</a>            components.map(|components| components.iter().cloned().map(|component_ty| component_ty.into()).collect());
-<a href=#202 id=202 data-nosnippet>202</a>        <span class="kw">let </span>behaviours: <span class="prelude-ty">Option</span>&lt;Vec&lt;BehaviourTypeId&gt;&gt; =
-<a href=#203 id=203 data-nosnippet>203</a>            behaviours.map(|behaviours| behaviours.iter().cloned().map(|behaviour_ty| behaviour_ty.into()).collect());
-<a href=#204 id=204 data-nosnippet>204</a>        <span class="kw">let </span>relation_instances = relation_instance_manager
-<a href=#205 id=205 data-nosnippet>205</a>            .get_all()
-<a href=#206 id=206 data-nosnippet>206</a>            .iter()
-<a href=#207 id=207 data-nosnippet>207</a>            .filter(|relation_instance| outbound_entity_ty.is_none() || relation_instance.outbound.ty == outbound_entity_ty.clone().unwrap())
-<a href=#208 id=208 data-nosnippet>208</a>            .filter(|relation_instance| outbound_component_ty.is_none() || relation_instance.outbound.is_a(<span class="kw-2">&amp;</span>outbound_component_ty.clone().unwrap()))
-<a href=#209 id=209 data-nosnippet>209</a>            .filter(|relation_instance| relation_ty.is_none() || relation_instance.relation_type_id() == relation_ty.clone().unwrap())
-<a href=#210 id=210 data-nosnippet>210</a>            .filter(|relation_instance| inbound_entity_ty.is_none() || relation_instance.inbound.ty == inbound_entity_ty.clone().unwrap())
-<a href=#211 id=211 data-nosnippet>211</a>            .filter(|relation_instance| inbound_component_ty.is_none() || relation_instance.inbound.is_a(<span class="kw-2">&amp;</span>inbound_component_ty.clone().unwrap()))
-<a href=#212 id=212 data-nosnippet>212</a>            .filter(|relation_instance| outbound_id.is_none() || outbound_id.unwrap() == relation_instance.outbound.id)
-<a href=#213 id=213 data-nosnippet>213</a>            .filter(|relation_instance| inbound_id.is_none() || inbound_id.unwrap() == relation_instance.inbound.id)
-<a href=#214 id=214 data-nosnippet>214</a>            .filter(|relation_instance| {
-<a href=#215 id=215 data-nosnippet>215</a>                components.is_none() || {
-<a href=#216 id=216 data-nosnippet>216</a>                    <span class="kw">let </span>components = components.clone().unwrap();
-<a href=#217 id=217 data-nosnippet>217</a>                    components.iter().all(|component_ty| relation_instance.is_a(component_ty))
-<a href=#218 id=218 data-nosnippet>218</a>                }
-<a href=#219 id=219 data-nosnippet>219</a>            })
-<a href=#220 id=220 data-nosnippet>220</a>            .filter(|relation_instance| {
-<a href=#221 id=221 data-nosnippet>221</a>                behaviours.is_none() || {
-<a href=#222 id=222 data-nosnippet>222</a>                    <span class="kw">let </span>behaviours = behaviours.clone().unwrap();
-<a href=#223 id=223 data-nosnippet>223</a>                    behaviours.iter().all(|behaviour_ty| relation_instance.behaves_as(behaviour_ty))
-<a href=#224 id=224 data-nosnippet>224</a>                }
-<a href=#225 id=225 data-nosnippet>225</a>            })
-<a href=#226 id=226 data-nosnippet>226</a>            .filter(|relation_instance| {
-<a href=#227 id=227 data-nosnippet>227</a>                property_query.is_none() || {
-<a href=#228 id=228 data-nosnippet>228</a>                    <span class="kw">let </span>property_query = property_query.clone().unwrap();
-<a href=#229 id=229 data-nosnippet>229</a>                    <span class="kw">if </span>property_query.is_empty() {
-<a href=#230 id=230 data-nosnippet>230</a>                        <span class="kw">return </span><span class="bool-val">true</span>;
-<a href=#231 id=231 data-nosnippet>231</a>                    }
-<a href=#232 id=232 data-nosnippet>232</a>                    <span class="kw">if </span>relation_instance.properties.is_empty() {
-<a href=#233 id=233 data-nosnippet>233</a>                        <span class="kw">return </span><span class="bool-val">false</span>;
-<a href=#234 id=234 data-nosnippet>234</a>                    }
-<a href=#235 id=235 data-nosnippet>235</a>                    property_query
-<a href=#236 id=236 data-nosnippet>236</a>                        .iter()
-<a href=#237 id=237 data-nosnippet>237</a>                        .all(|property_query| <span class="kw">match </span>relation_instance.properties.get(property_query.name.as_str()) {
-<a href=#238 id=238 data-nosnippet>238</a>                            <span class="prelude-val">Some</span>(property_instance) =&gt; property_query.value == property_instance.get(),
-<a href=#239 id=239 data-nosnippet>239</a>                            <span class="prelude-val">None </span>=&gt; <span class="bool-val">false</span>,
-<a href=#240 id=240 data-nosnippet>240</a>                        })
-<a href=#241 id=241 data-nosnippet>241</a>                }
-<a href=#242 id=242 data-nosnippet>242</a>            })
-<a href=#243 id=243 data-nosnippet>243</a>            .map(|relation_instance| {
-<a href=#244 id=244 data-nosnippet>244</a>                <span class="kw">let </span>relation_instance: GraphQLRelationInstance = relation_instance.clone().into();
-<a href=#245 id=245 data-nosnippet>245</a>                relation_instance
-<a href=#246 id=246 data-nosnippet>246</a>            })
-<a href=#247 id=247 data-nosnippet>247</a>            .collect();
-<a href=#248 id=248 data-nosnippet>248</a>        <span class="prelude-val">Ok</span>(relation_instances)
-<a href=#249 id=249 data-nosnippet>249</a>    }
-<a href=#250 id=250 data-nosnippet>250</a>
-<a href=#251 id=251 data-nosnippet>251</a>    <span class="kw">async fn </span>count_relation_instances(
-<a href=#252 id=252 data-nosnippet>252</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#253 id=253 data-nosnippet>253</a>        context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
-<a href=#254 id=254 data-nosnippet>254</a>        <span class="attr">#[graphql(name = <span class="string">"type"</span>, desc = <span class="string">"Counts the entity instances of the given type only."</span>)] </span>ty: <span class="prelude-ty">Option</span>&lt;RelationTypeIdDefinition&gt;,
-<a href=#255 id=255 data-nosnippet>255</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
-<a href=#256 id=256 data-nosnippet>256</a>        <span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
-<a href=#257 id=257 data-nosnippet>257</a>        <span class="kw">let </span>ty: <span class="prelude-ty">Option</span>&lt;RelationTypeId&gt; = ty.map(|ty| ty.into());
-<a href=#258 id=258 data-nosnippet>258</a>        <span class="kw">let </span>count = <span class="kw">match </span>ty {
-<a href=#259 id=259 data-nosnippet>259</a>            <span class="prelude-val">Some</span>(ty) =&gt; relation_instance_manager.count_by_type(<span class="kw-2">&amp;</span>ty),
-<a href=#260 id=260 data-nosnippet>260</a>            <span class="prelude-val">None </span>=&gt; relation_instance_manager.count(),
-<a href=#261 id=261 data-nosnippet>261</a>        };
-<a href=#262 id=262 data-nosnippet>262</a>        <span class="prelude-val">Ok</span>(count)
+<a href=#95 id=95 data-nosnippet>95</a>                    property_query
+<a href=#96 id=96 data-nosnippet>96</a>                        .iter()
+<a href=#97 id=97 data-nosnippet>97</a>                        .all(|property_query| <span class="kw">match </span>entity_instance.properties.get(property_query.name.as_str()) {
+<a href=#98 id=98 data-nosnippet>98</a>                            <span class="prelude-val">Some</span>(property_instance) =&gt; property_query.value == property_instance.get(),
+<a href=#99 id=99 data-nosnippet>99</a>                            <span class="prelude-val">None </span>=&gt; <span class="bool-val">false</span>,
+<a href=#100 id=100 data-nosnippet>100</a>                        })
+<a href=#101 id=101 data-nosnippet>101</a>                }
+<a href=#102 id=102 data-nosnippet>102</a>            })
+<a href=#103 id=103 data-nosnippet>103</a>            .map(|entity_instance| {
+<a href=#104 id=104 data-nosnippet>104</a>                <span class="kw">let </span>entity_instance: GraphQLEntityInstance = entity_instance.clone().into();
+<a href=#105 id=105 data-nosnippet>105</a>                entity_instance
+<a href=#106 id=106 data-nosnippet>106</a>            })
+<a href=#107 id=107 data-nosnippet>107</a>            .collect();
+<a href=#108 id=108 data-nosnippet>108</a>        <span class="prelude-val">Ok</span>(entities)
+<a href=#109 id=109 data-nosnippet>109</a>    }
+<a href=#110 id=110 data-nosnippet>110</a>
+<a href=#111 id=111 data-nosnippet>111</a>    <span class="kw">async fn </span>count_entity_instances(
+<a href=#112 id=112 data-nosnippet>112</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
+<a href=#113 id=113 data-nosnippet>113</a>        context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
+<a href=#114 id=114 data-nosnippet>114</a>        <span class="attr">#[graphql(
+<a href=#115 id=115 data-nosnippet>115</a>            name = <span class="string">"type"</span>,
+<a href=#116 id=116 data-nosnippet>116</a>            desc = <span class="string">"Counts the entity instances of the given entity type only."</span>,
+<a href=#117 id=117 data-nosnippet>117</a>            validator(custom = <span class="string">"NamespacedTypeValidator::new()"</span>)
+<a href=#118 id=118 data-nosnippet>118</a>        )]
+<a href=#119 id=119 data-nosnippet>119</a>        </span>_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#120 id=120 data-nosnippet>120</a>        <span class="attr">#[graphql(name = <span class="string">"component"</span>, desc = <span class="string">"Counts the entity instances which are composed by the given component only."</span>)] </span>component_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#121 id=121 data-nosnippet>121</a>        <span class="attr">#[graphql(name = <span class="string">"behaviour"</span>, desc = <span class="string">"Counts the entity instances which behaves as the behaviour only."</span>)] </span>behaviour_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#122 id=122 data-nosnippet>122</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
+<a href=#123 id=123 data-nosnippet>123</a>        <span class="kw">let </span>entity_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveEntityManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
+<a href=#124 id=124 data-nosnippet>124</a>        <span class="kw">let </span>entity_ty = EntityTypeId::parse_optional_namespace(_type)<span class="question-mark">?</span>;
+<a href=#125 id=125 data-nosnippet>125</a>        <span class="kw">let </span>component_ty: <span class="prelude-ty">Option</span>&lt;ComponentTypeId&gt; = ComponentTypeId::parse_optional_namespace(component_type)<span class="question-mark">?</span>;
+<a href=#126 id=126 data-nosnippet>126</a>        <span class="kw">let </span>behaviour_ty: <span class="prelude-ty">Option</span>&lt;BehaviourTypeId&gt; = BehaviourTypeId::parse_optional_namespace(behaviour_type)<span class="question-mark">?</span>;
+<a href=#127 id=127 data-nosnippet>127</a>        <span class="kw">if </span>entity_ty.is_none() &amp;&amp; component_ty.is_none() &amp;&amp; behaviour_ty.is_none() {
+<a href=#128 id=128 data-nosnippet>128</a>            <span class="kw">return </span><span class="prelude-val">Ok</span>(entity_instance_manager.count());
+<a href=#129 id=129 data-nosnippet>129</a>        }
+<a href=#130 id=130 data-nosnippet>130</a>        <span class="kw">if </span>component_ty.is_none() &amp;&amp; behaviour_ty.is_none() {
+<a href=#131 id=131 data-nosnippet>131</a>            <span class="kw">return </span><span class="prelude-val">Ok</span>(entity_instance_manager.count_by_type(<span class="kw-2">&amp;</span>entity_ty.unwrap()));
+<a href=#132 id=132 data-nosnippet>132</a>        }
+<a href=#133 id=133 data-nosnippet>133</a>        <span class="kw">if </span>entity_ty.is_none() &amp;&amp; behaviour_ty.is_none() {
+<a href=#134 id=134 data-nosnippet>134</a>            <span class="kw">return </span><span class="prelude-val">Ok</span>(entity_instance_manager.count_by_component(<span class="kw-2">&amp;</span>component_ty.unwrap()));
+<a href=#135 id=135 data-nosnippet>135</a>        }
+<a href=#136 id=136 data-nosnippet>136</a>        <span class="kw">if </span>entity_ty.is_none() &amp;&amp; component_ty.is_none() {
+<a href=#137 id=137 data-nosnippet>137</a>            <span class="kw">return </span><span class="prelude-val">Ok</span>(entity_instance_manager.count_by_behaviour(<span class="kw-2">&amp;</span>behaviour_ty.unwrap()));
+<a href=#138 id=138 data-nosnippet>138</a>        }
+<a href=#139 id=139 data-nosnippet>139</a>        <span class="kw">let </span>count = entity_instance_manager
+<a href=#140 id=140 data-nosnippet>140</a>            .get_all()
+<a href=#141 id=141 data-nosnippet>141</a>            .iter()
+<a href=#142 id=142 data-nosnippet>142</a>            .filter(|e| entity_ty.is_none() || { e.ty == entity_ty.clone().unwrap() })
+<a href=#143 id=143 data-nosnippet>143</a>            .filter(|e| component_ty.is_none() || e.is_a(<span class="kw-2">&amp;</span>component_ty.clone().unwrap()))
+<a href=#144 id=144 data-nosnippet>144</a>            .filter(|e| behaviour_ty.is_none() || e.behaves_as(<span class="kw-2">&amp;</span>behaviour_ty.clone().unwrap()))
+<a href=#145 id=145 data-nosnippet>145</a>            .count();
+<a href=#146 id=146 data-nosnippet>146</a>        <span class="prelude-val">Ok</span>(count)
+<a href=#147 id=147 data-nosnippet>147</a>    }
+<a href=#148 id=148 data-nosnippet>148</a>
+<a href=#149 id=149 data-nosnippet>149</a>    <span class="doccomment">/// Search for relations instances.
+<a href=#150 id=150 data-nosnippet>150</a>    ///
+<a href=#151 id=151 data-nosnippet>151</a>    /// Relation instances can be searched by relation type name, the entity type of the outbound
+<a href=#152 id=152 data-nosnippet>152</a>    /// entity instance, the entity type of the inbound entity instance, the id of the outbound
+<a href=#153 id=153 data-nosnippet>153</a>    /// entity instance or the id of the inbound entity instance. All of these filters can be
+<a href=#154 id=154 data-nosnippet>154</a>    /// combined.
+<a href=#155 id=155 data-nosnippet>155</a>    </span><span class="attr">#[allow(clippy::too_many_arguments)]
+<a href=#156 id=156 data-nosnippet>156</a>    </span><span class="kw">async fn </span>relations(
+<a href=#157 id=157 data-nosnippet>157</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
+<a href=#158 id=158 data-nosnippet>158</a>        context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
+<a href=#159 id=159 data-nosnippet>159</a>        <span class="attr">#[graphql(desc = <span class="string">"Returns only the relation instance with the given id."</span>)] </span>id: <span class="prelude-ty">Option</span>&lt;GraphQLRelationInstanceId&gt;,
+<a href=#160 id=160 data-nosnippet>160</a>        <span class="attr">#[graphql(
+<a href=#161 id=161 data-nosnippet>161</a>            name = <span class="string">"outboundEntity"</span>,
+<a href=#162 id=162 data-nosnippet>162</a>            desc = <span class="string">"Filters the relation instances by the entity type of the outbound entity instance."
+<a href=#163 id=163 data-nosnippet>163</a>        </span>)]
+<a href=#164 id=164 data-nosnippet>164</a>        </span>outbound_entity_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#165 id=165 data-nosnippet>165</a>        <span class="attr">#[graphql(
+<a href=#166 id=166 data-nosnippet>166</a>            name = <span class="string">"outboundComponent"</span>,
+<a href=#167 id=167 data-nosnippet>167</a>            desc = <span class="string">"Filters the relation instances by the component of the outbound entity instance."
+<a href=#168 id=168 data-nosnippet>168</a>        </span>)]
+<a href=#169 id=169 data-nosnippet>169</a>        </span>outbound_component_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#170 id=170 data-nosnippet>170</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the relation instances by the id of the outbound entity instance"</span>)] </span>outbound_id: <span class="prelude-ty">Option</span>&lt;Uuid&gt;,
+<a href=#171 id=171 data-nosnippet>171</a>        <span class="attr">#[graphql(
+<a href=#172 id=172 data-nosnippet>172</a>            name = <span class="string">"type"</span>,
+<a href=#173 id=173 data-nosnippet>173</a>            desc = <span class="string">"Filters the relation instances by relation type"</span>,
+<a href=#174 id=174 data-nosnippet>174</a>            validator(custom = <span class="string">"NamespacedTypeValidator::new()"</span>)
+<a href=#175 id=175 data-nosnippet>175</a>        )]
+<a href=#176 id=176 data-nosnippet>176</a>        </span>_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#177 id=177 data-nosnippet>177</a>        <span class="attr">#[graphql(
+<a href=#178 id=178 data-nosnippet>178</a>            name = <span class="string">"inboundEntity"</span>,
+<a href=#179 id=179 data-nosnippet>179</a>            desc = <span class="string">"Filters the relation instances by the entity type of the inbound entity instance."
+<a href=#180 id=180 data-nosnippet>180</a>        </span>)]
+<a href=#181 id=181 data-nosnippet>181</a>        </span>inbound_entity_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#182 id=182 data-nosnippet>182</a>        <span class="attr">#[graphql(
+<a href=#183 id=183 data-nosnippet>183</a>            name = <span class="string">"inboundComponent"</span>,
+<a href=#184 id=184 data-nosnippet>184</a>            desc = <span class="string">"Filters the relation instances by the component of the inbound entity instance."
+<a href=#185 id=185 data-nosnippet>185</a>        </span>)]
+<a href=#186 id=186 data-nosnippet>186</a>        </span>inbound_component_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#187 id=187 data-nosnippet>187</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the relation instances by the id of the inbound entity instance"</span>)] </span>inbound_id: <span class="prelude-ty">Option</span>&lt;Uuid&gt;,
+<a href=#188 id=188 data-nosnippet>188</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the relation instances by applied components."</span>)] </span>components: <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt;,
+<a href=#189 id=189 data-nosnippet>189</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters the relation instances by applied behaviours."</span>)] </span>behaviours: <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt;,
+<a href=#190 id=190 data-nosnippet>190</a>        <span class="attr">#[graphql(name = <span class="string">"properties"</span>, desc = <span class="string">"Query by properties."</span>)] </span>property_query: <span class="prelude-ty">Option</span>&lt;Vec&lt;GraphQLPropertyInstance&gt;&gt;,
+<a href=#191 id=191 data-nosnippet>191</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;GraphQLRelationInstance&gt;&gt; {
+<a href=#192 id=192 data-nosnippet>192</a>        <span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
+<a href=#193 id=193 data-nosnippet>193</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = id {
+<a href=#194 id=194 data-nosnippet>194</a>            <span class="comment">// let id = id.ty()?;
+<a href=#195 id=195 data-nosnippet>195</a>            </span><span class="kw">let </span>id = id.try_into()<span class="question-mark">?</span>;
+<a href=#196 id=196 data-nosnippet>196</a>            <span class="kw">let </span>relation_instance = relation_instance_manager.get(<span class="kw-2">&amp;</span>id).map(|relation_instance| {
+<a href=#197 id=197 data-nosnippet>197</a>                <span class="kw">let </span>relation_instance: GraphQLRelationInstance = relation_instance.into();
+<a href=#198 id=198 data-nosnippet>198</a>                relation_instance
+<a href=#199 id=199 data-nosnippet>199</a>            });
+<a href=#200 id=200 data-nosnippet>200</a>            <span class="kw">return if </span>relation_instance.is_some() {
+<a href=#201 id=201 data-nosnippet>201</a>                <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[relation_instance.unwrap()])
+<a href=#202 id=202 data-nosnippet>202</a>            } <span class="kw">else </span>{
+<a href=#203 id=203 data-nosnippet>203</a>                <span class="prelude-val">Ok</span>(Vec::new())
+<a href=#204 id=204 data-nosnippet>204</a>            };
+<a href=#205 id=205 data-nosnippet>205</a>        }
+<a href=#206 id=206 data-nosnippet>206</a>
+<a href=#207 id=207 data-nosnippet>207</a>        <span class="kw">let </span>outbound_entity_ty = EntityTypeId::parse_optional_namespace(outbound_entity_type)<span class="question-mark">?</span>;
+<a href=#208 id=208 data-nosnippet>208</a>        <span class="kw">let </span>outbound_component_ty = ComponentTypeId::parse_optional_namespace(outbound_component_type)<span class="question-mark">?</span>;
+<a href=#209 id=209 data-nosnippet>209</a>        <span class="kw">let </span>relation_ty = RelationTypeId::parse_optional_namespace(_type)<span class="question-mark">?</span>;
+<a href=#210 id=210 data-nosnippet>210</a>        <span class="kw">let </span>inbound_entity_ty = EntityTypeId::parse_optional_namespace(inbound_entity_type)<span class="question-mark">?</span>;
+<a href=#211 id=211 data-nosnippet>211</a>        <span class="kw">let </span>inbound_component_ty = ComponentTypeId::parse_optional_namespace(inbound_component_type)<span class="question-mark">?</span>;
+<a href=#212 id=212 data-nosnippet>212</a>        <span class="kw">let </span>components = ComponentTypeIds::parse_optional_namespaces(components)<span class="question-mark">?</span>;
+<a href=#213 id=213 data-nosnippet>213</a>        <span class="comment">// let components: Option&lt;Vec&lt;ComponentTypeId&gt;&gt; =
+<a href=#214 id=214 data-nosnippet>214</a>        //     components.map(|components| components.iter().cloned().map(|component_ty| component_ty.into()).collect());
+<a href=#215 id=215 data-nosnippet>215</a>        </span><span class="kw">let </span>behaviours = BehaviourTypeIds::parse_optional_namespaces(behaviours)<span class="question-mark">?</span>;
+<a href=#216 id=216 data-nosnippet>216</a>        <span class="comment">// let behaviours: Option&lt;Vec&lt;BehaviourTypeId&gt;&gt; =
+<a href=#217 id=217 data-nosnippet>217</a>        //     behaviours.map(|behaviours| behaviours.iter().cloned().map(|behaviour_ty| behaviour_ty.into()).collect());
+<a href=#218 id=218 data-nosnippet>218</a>        </span><span class="kw">let </span>relation_instances = relation_instance_manager
+<a href=#219 id=219 data-nosnippet>219</a>            .get_all()
+<a href=#220 id=220 data-nosnippet>220</a>            .iter()
+<a href=#221 id=221 data-nosnippet>221</a>            .filter(|relation_instance| outbound_entity_ty.is_none() || relation_instance.outbound.ty == outbound_entity_ty.clone().unwrap())
+<a href=#222 id=222 data-nosnippet>222</a>            .filter(|relation_instance| outbound_component_ty.is_none() || relation_instance.outbound.is_a(<span class="kw-2">&amp;</span>outbound_component_ty.clone().unwrap()))
+<a href=#223 id=223 data-nosnippet>223</a>            .filter(|relation_instance| relation_ty.is_none() || relation_instance.relation_type_id() == relation_ty.clone().unwrap())
+<a href=#224 id=224 data-nosnippet>224</a>            .filter(|relation_instance| inbound_entity_ty.is_none() || relation_instance.inbound.ty == inbound_entity_ty.clone().unwrap())
+<a href=#225 id=225 data-nosnippet>225</a>            .filter(|relation_instance| inbound_component_ty.is_none() || relation_instance.inbound.is_a(<span class="kw-2">&amp;</span>inbound_component_ty.clone().unwrap()))
+<a href=#226 id=226 data-nosnippet>226</a>            .filter(|relation_instance| outbound_id.is_none() || outbound_id.unwrap() == relation_instance.outbound.id)
+<a href=#227 id=227 data-nosnippet>227</a>            .filter(|relation_instance| inbound_id.is_none() || inbound_id.unwrap() == relation_instance.inbound.id)
+<a href=#228 id=228 data-nosnippet>228</a>            .filter(|relation_instance| {
+<a href=#229 id=229 data-nosnippet>229</a>                components.is_empty() || {
+<a href=#230 id=230 data-nosnippet>230</a>                    <span class="comment">// let components = components.clone().unwrap();
+<a href=#231 id=231 data-nosnippet>231</a>                    </span>components.iter().all(|component_ty| relation_instance.is_a(<span class="kw-2">&amp;</span>component_ty))
+<a href=#232 id=232 data-nosnippet>232</a>                }
+<a href=#233 id=233 data-nosnippet>233</a>            })
+<a href=#234 id=234 data-nosnippet>234</a>            .filter(|relation_instance| {
+<a href=#235 id=235 data-nosnippet>235</a>                behaviours.is_empty() || {
+<a href=#236 id=236 data-nosnippet>236</a>                    <span class="comment">// let behaviours = behaviours.clone().unwrap();
+<a href=#237 id=237 data-nosnippet>237</a>                    </span>behaviours.iter().all(|behaviour_ty| relation_instance.behaves_as(<span class="kw-2">&amp;</span>behaviour_ty))
+<a href=#238 id=238 data-nosnippet>238</a>                }
+<a href=#239 id=239 data-nosnippet>239</a>            })
+<a href=#240 id=240 data-nosnippet>240</a>            .filter(|relation_instance| {
+<a href=#241 id=241 data-nosnippet>241</a>                property_query.is_none() || {
+<a href=#242 id=242 data-nosnippet>242</a>                    <span class="kw">let </span>property_query = property_query.clone().unwrap();
+<a href=#243 id=243 data-nosnippet>243</a>                    <span class="kw">if </span>property_query.is_empty() {
+<a href=#244 id=244 data-nosnippet>244</a>                        <span class="kw">return </span><span class="bool-val">true</span>;
+<a href=#245 id=245 data-nosnippet>245</a>                    }
+<a href=#246 id=246 data-nosnippet>246</a>                    <span class="kw">if </span>relation_instance.properties.is_empty() {
+<a href=#247 id=247 data-nosnippet>247</a>                        <span class="kw">return </span><span class="bool-val">false</span>;
+<a href=#248 id=248 data-nosnippet>248</a>                    }
+<a href=#249 id=249 data-nosnippet>249</a>                    property_query
+<a href=#250 id=250 data-nosnippet>250</a>                        .iter()
+<a href=#251 id=251 data-nosnippet>251</a>                        .all(|property_query| <span class="kw">match </span>relation_instance.properties.get(property_query.name.as_str()) {
+<a href=#252 id=252 data-nosnippet>252</a>                            <span class="prelude-val">Some</span>(property_instance) =&gt; property_query.value == property_instance.get(),
+<a href=#253 id=253 data-nosnippet>253</a>                            <span class="prelude-val">None </span>=&gt; <span class="bool-val">false</span>,
+<a href=#254 id=254 data-nosnippet>254</a>                        })
+<a href=#255 id=255 data-nosnippet>255</a>                }
+<a href=#256 id=256 data-nosnippet>256</a>            })
+<a href=#257 id=257 data-nosnippet>257</a>            .map(|relation_instance| {
+<a href=#258 id=258 data-nosnippet>258</a>                <span class="kw">let </span>relation_instance: GraphQLRelationInstance = relation_instance.clone().into();
+<a href=#259 id=259 data-nosnippet>259</a>                relation_instance
+<a href=#260 id=260 data-nosnippet>260</a>            })
+<a href=#261 id=261 data-nosnippet>261</a>            .collect();
+<a href=#262 id=262 data-nosnippet>262</a>        <span class="prelude-val">Ok</span>(relation_instances)
 <a href=#263 id=263 data-nosnippet>263</a>    }
 <a href=#264 id=264 data-nosnippet>264</a>
-<a href=#265 id=265 data-nosnippet>265</a>    <span class="doccomment">/// Search for flows and their contained instances.
-<a href=#266 id=266 data-nosnippet>266</a>    </span><span class="kw">async fn </span>flows(
-<a href=#267 id=267 data-nosnippet>267</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#268 id=268 data-nosnippet>268</a>        context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
-<a href=#269 id=269 data-nosnippet>269</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters by the id of the flow"</span>)] </span>id: <span class="prelude-ty">Option</span>&lt;Uuid&gt;,
-<a href=#270 id=270 data-nosnippet>270</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters by the label of the flow"</span>)] </span>label: <span class="prelude-ty">Option</span>&lt;String&gt;,
-<a href=#271 id=271 data-nosnippet>271</a>        <span class="attr">#[graphql(name = <span class="string">"type"</span>, desc = <span class="string">"Filters by the entity type of the flow instance"</span>)] </span>entity_ty: <span class="prelude-ty">Option</span>&lt;EntityTypeIdDefinition&gt;,
-<a href=#272 id=272 data-nosnippet>272</a>        <span class="comment">// TODO: Add filter by contains entity instance
-<a href=#273 id=273 data-nosnippet>273</a>        // TODO: Add filter by contains relation instance
-<a href=#274 id=274 data-nosnippet>274</a>        // TODO: Add filter by property
-<a href=#275 id=275 data-nosnippet>275</a>    </span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;GraphQLFlowInstance&gt;&gt; {
-<a href=#276 id=276 data-nosnippet>276</a>        <span class="kw">let </span>reactive_flow_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveFlowManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
-<a href=#277 id=277 data-nosnippet>277</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = id {
-<a href=#278 id=278 data-nosnippet>278</a>            <span class="kw">return match </span>reactive_flow_manager.get(id).map(|flow| flow.into()) {
-<a href=#279 id=279 data-nosnippet>279</a>                <span class="prelude-val">Some</span>(flow) =&gt; <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[flow]),
-<a href=#280 id=280 data-nosnippet>280</a>                <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(Vec::new()),
-<a href=#281 id=281 data-nosnippet>281</a>            };
-<a href=#282 id=282 data-nosnippet>282</a>        }
-<a href=#283 id=283 data-nosnippet>283</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(label) = label {
-<a href=#284 id=284 data-nosnippet>284</a>            <span class="kw">let </span>flow = reactive_flow_manager.get_by_label(label.as_str()).map(|flow| {
-<a href=#285 id=285 data-nosnippet>285</a>                <span class="kw">let </span>flow: GraphQLFlowInstance = flow.into();
-<a href=#286 id=286 data-nosnippet>286</a>                flow
-<a href=#287 id=287 data-nosnippet>287</a>            });
-<a href=#288 id=288 data-nosnippet>288</a>            <span class="kw">return if </span>flow.is_some() { <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[flow.unwrap()]) } <span class="kw">else </span>{ <span class="prelude-val">Ok</span>(Vec::new()) };
+<a href=#265 id=265 data-nosnippet>265</a>    <span class="kw">async fn </span>count_relation_instances(
+<a href=#266 id=266 data-nosnippet>266</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
+<a href=#267 id=267 data-nosnippet>267</a>        context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
+<a href=#268 id=268 data-nosnippet>268</a>        <span class="attr">#[graphql(
+<a href=#269 id=269 data-nosnippet>269</a>            name = <span class="string">"type"</span>,
+<a href=#270 id=270 data-nosnippet>270</a>            desc = <span class="string">"Counts the relation instances of the given relation type only."</span>,
+<a href=#271 id=271 data-nosnippet>271</a>            validator(custom = <span class="string">"NamespacedTypeValidator::new()"</span>)
+<a href=#272 id=272 data-nosnippet>272</a>        )]
+<a href=#273 id=273 data-nosnippet>273</a>        </span>_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#274 id=274 data-nosnippet>274</a>        <span class="attr">#[graphql(name = <span class="string">"component"</span>, desc = <span class="string">"Counts the relation instances which are composed by the given component only."</span>)] </span>component_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#275 id=275 data-nosnippet>275</a>        <span class="attr">#[graphql(name = <span class="string">"behaviour"</span>, desc = <span class="string">"Counts the relation instances which behaves as the behaviour only."</span>)] </span>behaviour_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#276 id=276 data-nosnippet>276</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
+<a href=#277 id=277 data-nosnippet>277</a>        <span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
+<a href=#278 id=278 data-nosnippet>278</a>        <span class="kw">let </span>relation_ty = RelationTypeId::parse_optional_namespace(_type)<span class="question-mark">?</span>;
+<a href=#279 id=279 data-nosnippet>279</a>        <span class="kw">let </span>component_ty: <span class="prelude-ty">Option</span>&lt;ComponentTypeId&gt; = ComponentTypeId::parse_optional_namespace(component_type)<span class="question-mark">?</span>;
+<a href=#280 id=280 data-nosnippet>280</a>        <span class="kw">let </span>behaviour_ty: <span class="prelude-ty">Option</span>&lt;BehaviourTypeId&gt; = BehaviourTypeId::parse_optional_namespace(behaviour_type)<span class="question-mark">?</span>;
+<a href=#281 id=281 data-nosnippet>281</a>        <span class="kw">if </span>relation_ty.is_none() &amp;&amp; component_ty.is_none() &amp;&amp; behaviour_ty.is_none() {
+<a href=#282 id=282 data-nosnippet>282</a>            <span class="kw">return </span><span class="prelude-val">Ok</span>(relation_instance_manager.count());
+<a href=#283 id=283 data-nosnippet>283</a>        }
+<a href=#284 id=284 data-nosnippet>284</a>        <span class="kw">if </span>component_ty.is_none() &amp;&amp; behaviour_ty.is_none() {
+<a href=#285 id=285 data-nosnippet>285</a>            <span class="kw">return </span><span class="prelude-val">Ok</span>(relation_instance_manager.count_by_type(<span class="kw-2">&amp;</span>relation_ty.unwrap()));
+<a href=#286 id=286 data-nosnippet>286</a>        }
+<a href=#287 id=287 data-nosnippet>287</a>        <span class="kw">if </span>relation_ty.is_none() &amp;&amp; behaviour_ty.is_none() {
+<a href=#288 id=288 data-nosnippet>288</a>            <span class="kw">return </span><span class="prelude-val">Ok</span>(relation_instance_manager.count_by_component(<span class="kw-2">&amp;</span>component_ty.unwrap()));
 <a href=#289 id=289 data-nosnippet>289</a>        }
-<a href=#290 id=290 data-nosnippet>290</a>        <span class="kw">let </span>flow_instances = reactive_flow_manager
-<a href=#291 id=291 data-nosnippet>291</a>            .get_all()
-<a href=#292 id=292 data-nosnippet>292</a>            .iter()
-<a href=#293 id=293 data-nosnippet>293</a>            .filter(|flow_instance| <span class="kw">match </span><span class="kw-2">&amp;</span>entity_ty {
-<a href=#294 id=294 data-nosnippet>294</a>                <span class="prelude-val">Some</span>(entity_ty) =&gt; flow_instance.ty == entity_ty.clone().into(),
-<a href=#295 id=295 data-nosnippet>295</a>                <span class="prelude-val">None </span>=&gt; <span class="bool-val">true</span>,
-<a href=#296 id=296 data-nosnippet>296</a>            })
-<a href=#297 id=297 data-nosnippet>297</a>            .map(|flow| {
-<a href=#298 id=298 data-nosnippet>298</a>                <span class="kw">let </span>flow: GraphQLFlowInstance = flow.clone().into();
-<a href=#299 id=299 data-nosnippet>299</a>                flow
-<a href=#300 id=300 data-nosnippet>300</a>            })
-<a href=#301 id=301 data-nosnippet>301</a>            .collect();
-<a href=#302 id=302 data-nosnippet>302</a>        <span class="prelude-val">Ok</span>(flow_instances)
-<a href=#303 id=303 data-nosnippet>303</a>    }
-<a href=#304 id=304 data-nosnippet>304</a>
-<a href=#305 id=305 data-nosnippet>305</a>    <span class="kw">async fn </span>count_flow_instances(
-<a href=#306 id=306 data-nosnippet>306</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#307 id=307 data-nosnippet>307</a>        context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
-<a href=#308 id=308 data-nosnippet>308</a>        <span class="attr">#[graphql(name = <span class="string">"type"</span>, desc = <span class="string">"Counts the flow instances of the given entity type only."</span>)] </span>ty: <span class="prelude-ty">Option</span>&lt;EntityTypeIdDefinition&gt;,
-<a href=#309 id=309 data-nosnippet>309</a>        <span class="comment">// TODO: Add filter by contains entity instance
-<a href=#310 id=310 data-nosnippet>310</a>        // TODO: Add filter by contains relation instance
-<a href=#311 id=311 data-nosnippet>311</a>        // TODO: Add filter by property
-<a href=#312 id=312 data-nosnippet>312</a>    </span>) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
-<a href=#313 id=313 data-nosnippet>313</a>        <span class="kw">let </span>reactive_flow_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveFlowManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
-<a href=#314 id=314 data-nosnippet>314</a>        <span class="kw">let </span>ty: <span class="prelude-ty">Option</span>&lt;EntityTypeId&gt; = ty.map(|ty| ty.into());
-<a href=#315 id=315 data-nosnippet>315</a>        <span class="kw">let </span>count = reactive_flow_manager
-<a href=#316 id=316 data-nosnippet>316</a>            .get_all()
-<a href=#317 id=317 data-nosnippet>317</a>            .iter()
-<a href=#318 id=318 data-nosnippet>318</a>            .filter(|flow| ty.is_none() || { flow.ty == ty.clone().unwrap() })
-<a href=#319 id=319 data-nosnippet>319</a>            .count();
-<a href=#320 id=320 data-nosnippet>320</a>        <span class="prelude-val">Ok</span>(count)
-<a href=#321 id=321 data-nosnippet>321</a>    }
-<a href=#322 id=322 data-nosnippet>322</a>}</code></pre></div></section></main></body></html>
+<a href=#290 id=290 data-nosnippet>290</a>        <span class="kw">if </span>relation_ty.is_none() &amp;&amp; component_ty.is_none() {
+<a href=#291 id=291 data-nosnippet>291</a>            <span class="kw">return </span><span class="prelude-val">Ok</span>(relation_instance_manager.count_by_behaviour(<span class="kw-2">&amp;</span>behaviour_ty.unwrap()));
+<a href=#292 id=292 data-nosnippet>292</a>        }
+<a href=#293 id=293 data-nosnippet>293</a>        <span class="kw">let </span>count = relation_instance_manager
+<a href=#294 id=294 data-nosnippet>294</a>            .get_all()
+<a href=#295 id=295 data-nosnippet>295</a>            .iter()
+<a href=#296 id=296 data-nosnippet>296</a>            .filter(|reactive_relation| relation_ty.is_none() || { reactive_relation.relation_type_id() == relation_ty.clone().unwrap() })
+<a href=#297 id=297 data-nosnippet>297</a>            .filter(|reactive_relation| component_ty.is_none() || reactive_relation.is_a(<span class="kw-2">&amp;</span>component_ty.clone().unwrap()))
+<a href=#298 id=298 data-nosnippet>298</a>            .filter(|reactive_relation| behaviour_ty.is_none() || reactive_relation.behaves_as(<span class="kw-2">&amp;</span>behaviour_ty.clone().unwrap()))
+<a href=#299 id=299 data-nosnippet>299</a>            .count();
+<a href=#300 id=300 data-nosnippet>300</a>        <span class="prelude-val">Ok</span>(count)
+<a href=#301 id=301 data-nosnippet>301</a>    }
+<a href=#302 id=302 data-nosnippet>302</a>
+<a href=#303 id=303 data-nosnippet>303</a>    <span class="doccomment">/// Search for flows and their contained instances.
+<a href=#304 id=304 data-nosnippet>304</a>    </span><span class="kw">async fn </span>flows(
+<a href=#305 id=305 data-nosnippet>305</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
+<a href=#306 id=306 data-nosnippet>306</a>        context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
+<a href=#307 id=307 data-nosnippet>307</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters by the id of the flow"</span>)] </span>id: <span class="prelude-ty">Option</span>&lt;Uuid&gt;,
+<a href=#308 id=308 data-nosnippet>308</a>        <span class="attr">#[graphql(desc = <span class="string">"Filters by the label of the flow"</span>)] </span>label: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#309 id=309 data-nosnippet>309</a>        <span class="attr">#[graphql(
+<a href=#310 id=310 data-nosnippet>310</a>            name = <span class="string">"type"</span>,
+<a href=#311 id=311 data-nosnippet>311</a>            desc = <span class="string">"Filters by the entity type of the flow instance"</span>,
+<a href=#312 id=312 data-nosnippet>312</a>            validator(custom = <span class="string">"NamespacedTypeValidator::new()"</span>)
+<a href=#313 id=313 data-nosnippet>313</a>        )]
+<a href=#314 id=314 data-nosnippet>314</a>        </span>_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#315 id=315 data-nosnippet>315</a>        <span class="comment">// TODO: Add filter by contains entity instance
+<a href=#316 id=316 data-nosnippet>316</a>        // TODO: Add filter by contains relation instance
+<a href=#317 id=317 data-nosnippet>317</a>        // TODO: Add filter by property
+<a href=#318 id=318 data-nosnippet>318</a>    </span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;GraphQLFlowInstance&gt;&gt; {
+<a href=#319 id=319 data-nosnippet>319</a>        <span class="kw">let </span>reactive_flow_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveFlowManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
+<a href=#320 id=320 data-nosnippet>320</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = id {
+<a href=#321 id=321 data-nosnippet>321</a>            <span class="kw">return match </span>reactive_flow_manager.get(id).map(|flow| flow.into()) {
+<a href=#322 id=322 data-nosnippet>322</a>                <span class="prelude-val">Some</span>(flow) =&gt; <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[flow]),
+<a href=#323 id=323 data-nosnippet>323</a>                <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(Vec::new()),
+<a href=#324 id=324 data-nosnippet>324</a>            };
+<a href=#325 id=325 data-nosnippet>325</a>        }
+<a href=#326 id=326 data-nosnippet>326</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(label) = label {
+<a href=#327 id=327 data-nosnippet>327</a>            <span class="kw">let </span>flow = reactive_flow_manager.get_by_label(label.as_str()).map(|flow| {
+<a href=#328 id=328 data-nosnippet>328</a>                <span class="kw">let </span>flow: GraphQLFlowInstance = flow.into();
+<a href=#329 id=329 data-nosnippet>329</a>                flow
+<a href=#330 id=330 data-nosnippet>330</a>            });
+<a href=#331 id=331 data-nosnippet>331</a>            <span class="kw">return if </span>flow.is_some() { <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[flow.unwrap()]) } <span class="kw">else </span>{ <span class="prelude-val">Ok</span>(Vec::new()) };
+<a href=#332 id=332 data-nosnippet>332</a>        }
+<a href=#333 id=333 data-nosnippet>333</a>        <span class="kw">let </span>entity_ty = EntityTypeId::parse_optional_namespace(_type)<span class="question-mark">?</span>;
+<a href=#334 id=334 data-nosnippet>334</a>        <span class="kw">let </span>flow_instances = reactive_flow_manager
+<a href=#335 id=335 data-nosnippet>335</a>            .get_all()
+<a href=#336 id=336 data-nosnippet>336</a>            .iter()
+<a href=#337 id=337 data-nosnippet>337</a>            .filter(|flow_instance| <span class="kw">match </span><span class="kw-2">&amp;</span>entity_ty {
+<a href=#338 id=338 data-nosnippet>338</a>                <span class="prelude-val">Some</span>(entity_ty) =&gt; flow_instance.ty == entity_ty.clone().into(),
+<a href=#339 id=339 data-nosnippet>339</a>                <span class="prelude-val">None </span>=&gt; <span class="bool-val">true</span>,
+<a href=#340 id=340 data-nosnippet>340</a>            })
+<a href=#341 id=341 data-nosnippet>341</a>            .map(|flow| {
+<a href=#342 id=342 data-nosnippet>342</a>                <span class="kw">let </span>flow: GraphQLFlowInstance = flow.clone().into();
+<a href=#343 id=343 data-nosnippet>343</a>                flow
+<a href=#344 id=344 data-nosnippet>344</a>            })
+<a href=#345 id=345 data-nosnippet>345</a>            .collect();
+<a href=#346 id=346 data-nosnippet>346</a>        <span class="prelude-val">Ok</span>(flow_instances)
+<a href=#347 id=347 data-nosnippet>347</a>    }
+<a href=#348 id=348 data-nosnippet>348</a>
+<a href=#349 id=349 data-nosnippet>349</a>    <span class="kw">async fn </span>count_flow_instances(
+<a href=#350 id=350 data-nosnippet>350</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
+<a href=#351 id=351 data-nosnippet>351</a>        context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
+<a href=#352 id=352 data-nosnippet>352</a>        <span class="attr">#[graphql(
+<a href=#353 id=353 data-nosnippet>353</a>            name = <span class="string">"type"</span>,
+<a href=#354 id=354 data-nosnippet>354</a>            desc = <span class="string">"Counts the flow instances of the given entity type only."</span>,
+<a href=#355 id=355 data-nosnippet>355</a>            validator(custom = <span class="string">"NamespacedTypeValidator::new()"</span>)
+<a href=#356 id=356 data-nosnippet>356</a>        )]
+<a href=#357 id=357 data-nosnippet>357</a>        </span>_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+<a href=#358 id=358 data-nosnippet>358</a>        <span class="comment">// TODO: Add filter by contains entity instance
+<a href=#359 id=359 data-nosnippet>359</a>        // TODO: Add filter by contains relation instance
+<a href=#360 id=360 data-nosnippet>360</a>        // TODO: Add filter by property
+<a href=#361 id=361 data-nosnippet>361</a>    </span>) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
+<a href=#362 id=362 data-nosnippet>362</a>        <span class="kw">let </span>reactive_flow_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveFlowManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
+<a href=#363 id=363 data-nosnippet>363</a>        <span class="kw">let </span>entity_ty = EntityTypeId::parse_optional_namespace(_type)<span class="question-mark">?</span>;
+<a href=#364 id=364 data-nosnippet>364</a>        <span class="kw">let </span>count = reactive_flow_manager
+<a href=#365 id=365 data-nosnippet>365</a>            .get_all()
+<a href=#366 id=366 data-nosnippet>366</a>            .iter()
+<a href=#367 id=367 data-nosnippet>367</a>            .filter(|flow| entity_ty.is_none() || { flow.ty == entity_ty.clone().unwrap() })
+<a href=#368 id=368 data-nosnippet>368</a>            .count();
+<a href=#369 id=369 data-nosnippet>369</a>        <span class="prelude-val">Ok</span>(count)
+<a href=#370 id=370 data-nosnippet>370</a>    }
+<a href=#371 id=371 data-nosnippet>371</a>}
+</code></pre></div></section></main></body></html>

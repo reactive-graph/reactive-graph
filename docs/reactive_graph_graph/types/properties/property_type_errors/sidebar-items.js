@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["AddPropertyError","RemovePropertyError","UpdatePropertyError"]};
+window.SIDEBAR_ITEMS = {"enum":["AddPropertyError","InvalidPropertyTypeError","RemovePropertyError","UpdatePropertyError"]};

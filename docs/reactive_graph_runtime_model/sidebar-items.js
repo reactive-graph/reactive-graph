@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["NAMESPACE_CORE"],"mod":["component","entity","extension"]};
+window.SIDEBAR_ITEMS = {"mod":["reactive_graph","type_system"]};

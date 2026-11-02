@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["entity_inbound_relation_field"]};

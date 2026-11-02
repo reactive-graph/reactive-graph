@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["add_entity_instance_mutation"],"struct":["AddEntityInstance","MutationFlowTypes","MutationTypes"]};

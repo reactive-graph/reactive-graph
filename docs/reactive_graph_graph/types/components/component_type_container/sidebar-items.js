@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":["ComponentTypeIdContainer","NamespacedTypeComponentTypeIdContainer"]};
+window.SIDEBAR_ITEMS = {"trait":["ComponentTypeIdContainer","NamespacedTypeComponentPropertiesContainer","NamespacedTypeComponentTypeIdContainer"]};

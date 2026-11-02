@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["entity_instance","entity_instance_definition"]};

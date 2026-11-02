@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["runtime_system","shutdown_manager"]};
+window.SIDEBAR_ITEMS = {"mod":["runtime_system","runtime_type_system_registrator","shutdown_manager"]};

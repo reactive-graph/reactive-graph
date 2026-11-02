@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["const_type_definition","constructor","generator","into_relation_instance","struct_definition"]};

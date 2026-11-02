@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["delete_entity_type_mutation"],"struct":["DeleteEntityType","MutationEntityTypes","MutationTypes"]};

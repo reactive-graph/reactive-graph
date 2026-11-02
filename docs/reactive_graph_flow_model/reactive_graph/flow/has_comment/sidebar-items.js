@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["HAS_COMMENT_NAMESPACE"],"enum":["HasCommentProperties"],"static":["HAS_COMMENT","HAS_COMMENT_COMPONENTS","HAS_COMMENT_EXTENSIONS","HAS_COMMENT_TYPE"],"struct":["HasComment","HasCommentPropertiesIterator"]};

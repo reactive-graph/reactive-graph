@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["inbound_entities_field","inbound_field","relation_field"]};

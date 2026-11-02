@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["RelationComponentTypeId"]};
+window.SIDEBAR_ITEMS = {"struct":["RelationComponentTypeId","RelationComponentTypeIds"]};

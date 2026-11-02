@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/type-system/impl/src/component_import_export_manager_impl.rs`."><title>component_import_export_manager_impl.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="reactive_graph_type_system_impl" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (0060d5a2a 2025-08-04)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">reactive_graph_type_system_impl/</div>component_import_export_manager_impl.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>std::fs::File;
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/type-system/impl/src/component_import_export_manager_impl.rs`."><title>component_import_export_manager_impl.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="reactive_graph_type_system_impl" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0-nightly (b33119ffd 2025-12-04)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">reactive_graph_type_system_impl/</div>component_import_export_manager_impl.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>std::fs::File;
 <a href=#2 id=2 data-nosnippet>2</a><span class="kw">use </span>std::io::BufReader;
 <a href=#3 id=3 data-nosnippet>3</a><span class="kw">use </span>std::io::Read;
 <a href=#4 id=4 data-nosnippet>4</a><span class="attr">#[allow(unused_imports)]
@@ -84,21 +84,21 @@
 <a href=#84 id=84 data-nosnippet>84</a></span><span class="kw">mod </span>test {
 <a href=#85 id=85 data-nosnippet>85</a>    <span class="kw">use </span>std::env;
 <a href=#86 id=86 data-nosnippet>86</a>
-<a href=#87 id=87 data-nosnippet>87</a>    <span class="kw">use </span>default_test::DefaultTest;
-<a href=#88 id=88 data-nosnippet>88</a>
-<a href=#89 id=89 data-nosnippet>89</a>    <span class="kw">use </span><span class="kw">crate</span>::TypeSystemImpl;
-<a href=#90 id=90 data-nosnippet>90</a>    <span class="kw">use </span>reactive_graph_graph::Component;
-<a href=#91 id=91 data-nosnippet>91</a>    <span class="kw">use </span>reactive_graph_graph::NamespacedTypeGetter;
-<a href=#92 id=92 data-nosnippet>92</a>    <span class="kw">use </span>reactive_graph_type_system_api::TypeSystem;
-<a href=#93 id=93 data-nosnippet>93</a>
-<a href=#94 id=94 data-nosnippet>94</a>    <span class="attr">#[tokio::test(flavor = <span class="string">"multi_thread"</span>)]
-<a href=#95 id=95 data-nosnippet>95</a>    </span><span class="kw">async fn </span>test_export_import_component() {
-<a href=#96 id=96 data-nosnippet>96</a>        reactive_graph_utils_test::init_logger();
-<a href=#97 id=97 data-nosnippet>97</a>        <span class="kw">let </span>type_system = reactive_graph_di::get_container::&lt;TypeSystemImpl&gt;();
-<a href=#98 id=98 data-nosnippet>98</a>        <span class="kw">let </span>component_manager = type_system.get_component_manager();
-<a href=#99 id=99 data-nosnippet>99</a>        <span class="kw">let </span>component_import_export_manager = type_system.get_component_import_export_manager();
-<a href=#100 id=100 data-nosnippet>100</a>
-<a href=#101 id=101 data-nosnippet>101</a>        <span class="kw">let </span>component = component_manager.register(Component::default_test()).expect(<span class="string">"Failed to create component"</span>);
+<a href=#87 id=87 data-nosnippet>87</a>    <span class="kw">use </span><span class="kw">crate</span>::TypeSystemSystemImpl;
+<a href=#88 id=88 data-nosnippet>88</a>    <span class="kw">use </span>reactive_graph_graph::Component;
+<a href=#89 id=89 data-nosnippet>89</a>    <span class="kw">use </span>reactive_graph_graph::NamespacedTypeGetter;
+<a href=#90 id=90 data-nosnippet>90</a>    <span class="kw">use </span>reactive_graph_graph::RandomNamespacedType;
+<a href=#91 id=91 data-nosnippet>91</a>    <span class="kw">use </span>reactive_graph_type_system_api::TypeSystemSystem;
+<a href=#92 id=92 data-nosnippet>92</a>
+<a href=#93 id=93 data-nosnippet>93</a>    <span class="attr">#[tokio::test(flavor = <span class="string">"multi_thread"</span>)]
+<a href=#94 id=94 data-nosnippet>94</a>    </span><span class="kw">async fn </span>test_export_import_component() {
+<a href=#95 id=95 data-nosnippet>95</a>        reactive_graph_utils_test::init_logger();
+<a href=#96 id=96 data-nosnippet>96</a>        <span class="kw">let </span>type_system = reactive_graph_di::get_container::&lt;TypeSystemSystemImpl&gt;();
+<a href=#97 id=97 data-nosnippet>97</a>        <span class="kw">let </span>component_manager = type_system.get_component_manager();
+<a href=#98 id=98 data-nosnippet>98</a>        <span class="kw">let </span>component_import_export_manager = type_system.get_component_import_export_manager();
+<a href=#99 id=99 data-nosnippet>99</a>
+<a href=#100 id=100 data-nosnippet>100</a>        <span class="kw">let </span>component = Component::random_type().expect(<span class="string">"Failed to construct a random component"</span>);
+<a href=#101 id=101 data-nosnippet>101</a>        <span class="kw">let </span>component = component_manager.register(component).expect(<span class="string">"Failed to register component"</span>);
 <a href=#102 id=102 data-nosnippet>102</a>        <span class="kw">let </span>component_orig = component.clone();
 <a href=#103 id=103 data-nosnippet>103</a>        <span class="kw">let </span>component_ty = component.ty.clone();
 <a href=#104 id=104 data-nosnippet>104</a>
@@ -121,4 +121,5 @@
 <a href=#121 id=121 data-nosnippet>121</a>            <span class="string">"The imported component should match the constructed component!"
 <a href=#122 id=122 data-nosnippet>122</a>        </span>);
 <a href=#123 id=123 data-nosnippet>123</a>    }
-<a href=#124 id=124 data-nosnippet>124</a>}</code></pre></div></section></main></body></html>
+<a href=#124 id=124 data-nosnippet>124</a>}
+</code></pre></div></section></main></body></html>

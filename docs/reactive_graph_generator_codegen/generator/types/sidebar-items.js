@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["collections","component","entity","extension","flow","header","namespace","property","relation","result","system","type_definition","type_generator"]};

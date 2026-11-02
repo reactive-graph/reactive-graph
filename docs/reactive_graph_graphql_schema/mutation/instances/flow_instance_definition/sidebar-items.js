@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["GraphQLFlowInstanceDefinition"]};
+window.SIDEBAR_ITEMS = {"enum":["GraphQLFlowInstanceDefinitionError"],"struct":["GraphQLFlowInstanceDefinition"]};

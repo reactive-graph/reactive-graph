@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["update_description_mutation"],"struct":["MutationEntityTypes","MutationTypes","UpdateDescription"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["add_entity_instance","add_extension","add_variable","create","delete","remove_entity_instance","remove_extension","remove_variable","update_description"]};

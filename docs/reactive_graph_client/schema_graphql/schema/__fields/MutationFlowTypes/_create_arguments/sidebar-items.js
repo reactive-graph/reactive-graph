@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["description","entityInstances","extensions","relationInstances","type","variables","wrapperEntityInstance"]};

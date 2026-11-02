@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["description","entityInstances","entityType","id","name","relationInstances"]};

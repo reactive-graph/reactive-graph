@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["__typename","help","long","name","required","short"]};

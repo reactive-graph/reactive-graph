@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["CreateFlowInstanceError","InvalidFlowInstanceError"]};
+window.SIDEBAR_ITEMS = {"enum":["CreateFlowInstanceError","InvalidFlowInstanceError","QueryFlowInstanceError"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["command_manager_impl","command_system_impl","command_type_provider_impl"]};
+window.SIDEBAR_ITEMS = {"mod":["command_manager_impl","command_system_impl","command_type_system_registrator_impl"]};

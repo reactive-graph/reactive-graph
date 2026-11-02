@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_item_sort_key","get_item_type_order","sort_file_items"]};

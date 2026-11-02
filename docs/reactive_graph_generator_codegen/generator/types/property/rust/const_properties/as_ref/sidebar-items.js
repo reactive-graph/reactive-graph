@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["generate_as_ref_const_properties"]};

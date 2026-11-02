@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["get_flow_type_trigger_field"]};

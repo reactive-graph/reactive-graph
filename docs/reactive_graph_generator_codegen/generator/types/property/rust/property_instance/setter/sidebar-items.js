@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["property_instance_setter_default_impl","property_instance_setter_impl","property_instance_setter_method_signatures"]};

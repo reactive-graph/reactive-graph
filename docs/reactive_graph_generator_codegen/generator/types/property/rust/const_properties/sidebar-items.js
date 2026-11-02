@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["generate_const_properties"],"mod":["as_ref","const_enum","display","ident","into_iter","into_string","property_type","static_str"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["namespace_field_name","namespace_mutation_field","namespace_mutation_type_name","namespace_mutation_type_ref","namespace_query_field","namespace_type_name","namespace_type_ref"]};
+window.SIDEBAR_ITEMS = {"constant":["NAMESPACE_FIELD_NAME"],"fn":["namespace_field","namespace_field_name","namespace_path_field","root_object_namespace_path_field"]};

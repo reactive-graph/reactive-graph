@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["code_block","table"]};

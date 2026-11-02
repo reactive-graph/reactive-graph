@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["outbound_entity_to_inbound_field"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["component_type_id_container","extension_container","property_type","property_type_container","type_definition","type_definition_json_schema","type_description","variables_container"],"struct":["MarkdownDocumentation","TypedMarkdownDocumentation"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["const_type_id","ident"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["create_entity_type_query_object","register_entity_type_query_objects"]};

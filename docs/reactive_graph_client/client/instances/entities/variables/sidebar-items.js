@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["add_property","create","remove_property","search","set_property"]};

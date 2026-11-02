@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["FIELD_JSON_SCHEMA_APPENDIX","FIELD_NAME_JSON_SCHEMA"],"trait":["JsonSchemaFieldFactory"]};

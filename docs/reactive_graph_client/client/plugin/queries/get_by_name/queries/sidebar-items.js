@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_by_name"],"struct":["GetPluginByName"]};

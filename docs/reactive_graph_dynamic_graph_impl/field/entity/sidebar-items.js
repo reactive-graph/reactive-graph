@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["creation","id","inbound","mutation","outbound","property","query"]};
+window.SIDEBAR_ITEMS = {"fn":["entity_id_field"]};

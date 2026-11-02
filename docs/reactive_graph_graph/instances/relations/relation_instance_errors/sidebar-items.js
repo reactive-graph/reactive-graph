@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["AddRelationInstanceError","RemoveRelationInstanceError","UpdateRelationInstanceError"]};
+window.SIDEBAR_ITEMS = {"enum":["AddRelationInstanceError","CreatePropertyConnectorError","CreateRelationInstanceError","InvalidRelationInstanceError","RelationInstanceIdParseError","RelationInstanceTypeIdError","RelationInstanceTypeIdParseError","RemoveRelationInstanceError","SubscribeRelationInstanceError","TriggerRelationInstanceError","UpdateRelationInstanceError"]};

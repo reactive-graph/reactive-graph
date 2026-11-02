@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["command_manager","command_system","command_type_provider","error"]};
+window.SIDEBAR_ITEMS = {"mod":["command_manager","command_system","command_type_system_registrator","error"]};

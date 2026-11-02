@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["TYPE_DEFINITION_PATTERN"],"static":["TYPE_DEFINITION_REGEX"],"struct":["TypeDefinition"],"trait":["TypeDefinitionGetter"]};

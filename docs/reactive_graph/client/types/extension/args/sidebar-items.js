@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["ExtensionDefinitionArgs","ExtensionTypeIdArgs"]};
+window.SIDEBAR_ITEMS = {"fn":["parse_extension_ty"],"struct":["ExtensionDefinitionArgs"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["property_type","property_type_definition"]};

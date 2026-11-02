@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"constant":["UNION_ALL_RELATIONS","UNION_NAMESPACE_RELATIONS_SUFFIX"],"fn":["get_all_relations_union","get_namespace_relations_union"]};

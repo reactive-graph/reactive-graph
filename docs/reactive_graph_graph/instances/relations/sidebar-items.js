@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["relation_instance","relation_instance_container","relation_instance_errors","relation_instance_id","relation_instance_type_id"]};
+window.SIDEBAR_ITEMS = {"mod":["instance_id","relation_instance","relation_instance_container","relation_instance_errors","relation_instance_id","relation_instance_type_id"]};

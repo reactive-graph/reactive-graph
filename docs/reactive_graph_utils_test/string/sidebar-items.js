@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["r_json_string","r_string","r_string_1000","r_string_255"]};
+window.SIDEBAR_ITEMS = {"fn":["r_json_string","r_lowercase_string","r_namespace_path_segment","r_namespace_segment","r_namespace_type_name","r_string","r_string_1000","r_string_255"]};

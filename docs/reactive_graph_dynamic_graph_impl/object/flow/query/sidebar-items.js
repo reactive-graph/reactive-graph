@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["create_flow_type_query_object","register_flow_type_query_objects"]};

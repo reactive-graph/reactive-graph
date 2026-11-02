@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["TypeDefinitionParseError","TypeIdParseError"],"struct":["TypeDefinition"],"trait":["TypeDefinitionGetter"]};

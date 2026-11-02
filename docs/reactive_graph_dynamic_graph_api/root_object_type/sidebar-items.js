@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["ROOT_OBJECT_NAME_MUTATION","ROOT_OBJECT_NAME_QUERY"],"enum":["RootObjectType"]};

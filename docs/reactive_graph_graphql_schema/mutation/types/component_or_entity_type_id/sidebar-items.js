@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["ComponentOrEntityTypeIdDefinition"]};
+window.SIDEBAR_ITEMS = {"enum":["GraphQLInboundOutboundType"]};

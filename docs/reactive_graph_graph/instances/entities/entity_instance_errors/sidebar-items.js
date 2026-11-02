@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["AddEntityInstanceError","RemoveEntityInstanceError","UpdateEntityInstanceError"]};
+window.SIDEBAR_ITEMS = {"enum":["AddEntityInstanceError","CreateEntityInstanceError","InvalidEntityInstanceError","QueryEntityInstanceError","RemoveEntityInstanceError","SubscribeEntityInstanceError","TriggerEntityInstanceError","UpdateEntityInstanceError"]};

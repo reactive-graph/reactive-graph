@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["type_resolver","type_system","type_system_errors","type_system_importer","type_system_provider"]};

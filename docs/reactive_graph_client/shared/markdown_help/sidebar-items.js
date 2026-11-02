@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["handle_markdown_help"],"mod":["args","commands"]};

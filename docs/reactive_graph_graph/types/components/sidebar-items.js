@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["component_container","component_type","component_type_container","component_type_errors","component_type_id"]};
+window.SIDEBAR_ITEMS = {"mod":["component_container","component_extension_type_id","component_type","component_type_container","component_type_errors","component_type_id","component_type_importer"]};

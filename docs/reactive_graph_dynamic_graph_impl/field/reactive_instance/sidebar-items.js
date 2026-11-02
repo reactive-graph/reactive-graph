@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["reactive_instance_component"]};

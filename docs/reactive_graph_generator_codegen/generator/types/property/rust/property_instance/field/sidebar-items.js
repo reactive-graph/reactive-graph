@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["generate_property_field","generate_property_parameter","property_instance_fields"]};

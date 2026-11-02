@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["_inbound_arguments","_outbound_arguments","_properties_arguments"],"struct":["__typename","behaviours","componentBehaviours","components","description","id","inbound","label","name","outbound","properties","type"]};

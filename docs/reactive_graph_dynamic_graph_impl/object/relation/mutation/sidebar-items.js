@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["create_relation_type_mutation_object","register_relation_type_mutation_objects"],"mod":["delete","export","trigger","update"]};

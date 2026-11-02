@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"constant":["INTERFACE_FLOW","INTERFACE_FLOW_FIELD_ID"],"fn":["get_flow_interface"]};

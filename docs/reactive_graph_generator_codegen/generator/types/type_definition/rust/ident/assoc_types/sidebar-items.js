@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ConstComponentsIdent","ConstExtensionsIdent","ConstNamespaceIdent","ConstTypeIdIdent","ConstTypeIdent","TypeIdent","TypePropertiesIdent","TypePropertiesIteratorIdent","TypeTypeIdIdent","TypeTypeIdent","TypeValueIdent"],"trait":["AssocTypeDefinitionIdentType"]};

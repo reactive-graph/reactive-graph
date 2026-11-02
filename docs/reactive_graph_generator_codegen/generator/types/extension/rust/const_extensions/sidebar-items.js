@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["const_extensions_doc_comment","generate_const_extensions"]};

@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Component `Flow3D`"><title>Flow3D in reactive_graph_flow_model::reactive_graph::flow::flow_3_d - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="reactive_graph_flow_model" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0-nightly (b33119ffd 2025-12-04)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../../../static.files/storage-e2aeef58.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">Flow3D</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../../../reactive_graph_flow_model/index.html">reactive_<wbr>graph_<wbr>flow_<wbr>model</a><span class="version">0.10.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Flow3D</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#component-flow3d" title="Component `Flow3D`">Component <code>Flow3D</code></a><ul><li><a href="#fully-qualified-namespace" title="Fully Qualified Namespace">Fully Qualified Namespace</a></li><li><a href="#description" title="Description">Description</a></li><li><a href="#json-schema" title="JSON Schema">JSON Schema</a></li></ul></li></ul><h3><a href="#required-methods">Required Methods</a></h3><ul class="block"><li><a href="#tymethod.f3dd" title="f3dd">f3dd</a></li><li><a href="#tymethod.f3dh" title="f3dh">f3dh</a></li><li><a href="#tymethod.f3dw" title="f3dw">f3dw</a></li><li><a href="#tymethod.f3dx" title="f3dx">f3dx</a></li><li><a href="#tymethod.f3dy" title="f3dy">f3dy</a></li><li><a href="#tymethod.f3dz" title="f3dz">f3dz</a></li><li><a href="#tymethod.set_f3dd" title="set_f3dd">set_f3dd</a></li><li><a href="#tymethod.set_f3dh" title="set_f3dh">set_f3dh</a></li><li><a href="#tymethod.set_f3dw" title="set_f3dw">set_f3dw</a></li><li><a href="#tymethod.set_f3dx" title="set_f3dx">set_f3dx</a></li><li><a href="#tymethod.set_f3dy" title="set_f3dy">set_f3dy</a></li><li><a href="#tymethod.set_f3dz" title="set_f3dz">set_f3dz</a></li></ul><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In reactive_<wbr>graph_<wbr>flow_<wbr>model::<wbr>reactive_<wbr>graph::<wbr>flow::<wbr>flow_<wbr>3_<wbr>d</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../../../index.html">reactive_graph_flow_model</a>::<wbr><a href="../../index.html">reactive_graph</a>::<wbr><a href="../index.html">flow</a>::<wbr><a href="index.html">flow_3_d</a></div><h1>Trait <span class="trait">Flow3D</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/flow_3_d.rs.html#308-453">Source</a> </span></div><pre class="rust item-decl"><code>pub trait Flow3D {
+    // Required methods
+    fn <a href="#tymethod.f3dd" class="fn">f3dd</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_f3dd" class="fn">set_f3dd</a>(&amp;mut self, f3dd: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>);
+<span class="item-spacer"></span>    fn <a href="#tymethod.f3dh" class="fn">f3dh</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_f3dh" class="fn">set_f3dh</a>(&amp;mut self, f3dh: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>);
+<span class="item-spacer"></span>    fn <a href="#tymethod.f3dw" class="fn">f3dw</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_f3dw" class="fn">set_f3dw</a>(&amp;mut self, f3dw: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>);
+<span class="item-spacer"></span>    fn <a href="#tymethod.f3dx" class="fn">f3dx</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_f3dx" class="fn">set_f3dx</a>(&amp;mut self, f3dx: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>);
+<span class="item-spacer"></span>    fn <a href="#tymethod.f3dy" class="fn">f3dy</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_f3dy" class="fn">set_f3dy</a>(&amp;mut self, f3dy: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>);
+<span class="item-spacer"></span>    fn <a href="#tymethod.f3dz" class="fn">f3dz</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_f3dz" class="fn">set_f3dz</a>(&amp;mut self, f3dz: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>);
+}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="component-flow3d"><a class="doc-anchor" href="#component-flow3d">§</a>Component <code>Flow3D</code></h2><h3 id="fully-qualified-namespace"><a class="doc-anchor" href="#fully-qualified-namespace">§</a>Fully Qualified Namespace</h3>
+<p><code>reactive_graph::flow::Flow3D</code></p>
+<h3 id="description"><a class="doc-anchor" href="#description">§</a>Description</h3>
+<p>The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual
+scripting).</p>
+<h4 id="properties"><a class="doc-anchor" href="#properties">§</a>Properties</h4>
+<ul>
+<li>f3dd</li>
+<li>f3dh</li>
+<li>f3dw</li>
+<li>f3dx</li>
+<li>f3dy</li>
+<li>f3dz</li>
+</ul>
+<h3 id="json-schema"><a class="doc-anchor" href="#json-schema">§</a>JSON Schema</h3>
+<p><a href="">https://schema.reactive-graph.io/schema/json/dynamic_graph/types/component/reactive_graph/flow/Flow3D.schema.json</a></p>
+</div></details><h2 id="required-methods" class="section-header">Required Methods<a href="#required-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="tymethod.f3dd" class="method"><a class="src rightside" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/flow_3_d.rs.html#320">Source</a><h4 class="code-header">fn <a href="#tymethod.f3dd" class="fn">f3dd</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a></h4></section></summary><div class="docblock"><h6 id="property-f3dd"><a class="doc-anchor" href="#property-f3dd">§</a>Property <code>f3dd</code></h6>
+<p>The depth (z-axis) in a 3D flow</p>
+<p>Data Type: <code>Number</code></p>
+<p>Socket Type: <code>None</code></p>
+<p>Mutability: <code>Mutable</code></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_f3dd" class="method"><a class="src rightside" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/flow_3_d.rs.html#332">Source</a><h4 class="code-header">fn <a href="#tymethod.set_f3dd" class="fn">set_f3dd</a>(&amp;mut self, f3dd: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>)</h4></section></summary><div class="docblock"><h6 id="property-f3dd-1"><a class="doc-anchor" href="#property-f3dd-1">§</a>Property <code>f3dd</code></h6>
+<p>The depth (z-axis) in a 3D flow</p>
+<p>Data Type: <code>Number</code></p>
+<p>Socket Type: <code>None</code></p>
+<p>Mutability: <code>Mutable</code></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.f3dh" class="method"><a class="src rightside" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/flow_3_d.rs.html#344">Source</a><h4 class="code-header">fn <a href="#tymethod.f3dh" class="fn">f3dh</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a></h4></section></summary><div class="docblock"><h6 id="property-f3dh"><a class="doc-anchor" href="#property-f3dh">§</a>Property <code>f3dh</code></h6>
+<p>The height (y-axis) in a 3D flow</p>
+<p>Data Type: <code>Number</code></p>
+<p>Socket Type: <code>None</code></p>
+<p>Mutability: <code>Mutable</code></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_f3dh" class="method"><a class="src rightside" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/flow_3_d.rs.html#356">Source</a><h4 class="code-header">fn <a href="#tymethod.set_f3dh" class="fn">set_f3dh</a>(&amp;mut self, f3dh: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>)</h4></section></summary><div class="docblock"><h6 id="property-f3dh-1"><a class="doc-anchor" href="#property-f3dh-1">§</a>Property <code>f3dh</code></h6>
+<p>The height (y-axis) in a 3D flow</p>
+<p>Data Type: <code>Number</code></p>
+<p>Socket Type: <code>None</code></p>
+<p>Mutability: <code>Mutable</code></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.f3dw" class="method"><a class="src rightside" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/flow_3_d.rs.html#368">Source</a><h4 class="code-header">fn <a href="#tymethod.f3dw" class="fn">f3dw</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a></h4></section></summary><div class="docblock"><h6 id="property-f3dw"><a class="doc-anchor" href="#property-f3dw">§</a>Property <code>f3dw</code></h6>
+<p>The width (x-axis) in a 3D flow</p>
+<p>Data Type: <code>Number</code></p>
+<p>Socket Type: <code>None</code></p>
+<p>Mutability: <code>Mutable</code></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_f3dw" class="method"><a class="src rightside" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/flow_3_d.rs.html#380">Source</a><h4 class="code-header">fn <a href="#tymethod.set_f3dw" class="fn">set_f3dw</a>(&amp;mut self, f3dw: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>)</h4></section></summary><div class="docblock"><h6 id="property-f3dw-1"><a class="doc-anchor" href="#property-f3dw-1">§</a>Property <code>f3dw</code></h6>
+<p>The width (x-axis) in a 3D flow</p>
+<p>Data Type: <code>Number</code></p>
+<p>Socket Type: <code>None</code></p>
+<p>Mutability: <code>Mutable</code></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.f3dx" class="method"><a class="src rightside" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/flow_3_d.rs.html#392">Source</a><h4 class="code-header">fn <a href="#tymethod.f3dx" class="fn">f3dx</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a></h4></section></summary><div class="docblock"><h6 id="property-f3dx"><a class="doc-anchor" href="#property-f3dx">§</a>Property <code>f3dx</code></h6>
+<p>The X position in a 3D flow</p>
+<p>Data Type: <code>Number</code></p>
+<p>Socket Type: <code>None</code></p>
+<p>Mutability: <code>Mutable</code></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_f3dx" class="method"><a class="src rightside" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/flow_3_d.rs.html#404">Source</a><h4 class="code-header">fn <a href="#tymethod.set_f3dx" class="fn">set_f3dx</a>(&amp;mut self, f3dx: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>)</h4></section></summary><div class="docblock"><h6 id="property-f3dx-1"><a class="doc-anchor" href="#property-f3dx-1">§</a>Property <code>f3dx</code></h6>
+<p>The X position in a 3D flow</p>
+<p>Data Type: <code>Number</code></p>
+<p>Socket Type: <code>None</code></p>
+<p>Mutability: <code>Mutable</code></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.f3dy" class="method"><a class="src rightside" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/flow_3_d.rs.html#416">Source</a><h4 class="code-header">fn <a href="#tymethod.f3dy" class="fn">f3dy</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a></h4></section></summary><div class="docblock"><h6 id="property-f3dy"><a class="doc-anchor" href="#property-f3dy">§</a>Property <code>f3dy</code></h6>
+<p>The Y position in a 3D flow</p>
+<p>Data Type: <code>Number</code></p>
+<p>Socket Type: <code>None</code></p>
+<p>Mutability: <code>Mutable</code></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_f3dy" class="method"><a class="src rightside" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/flow_3_d.rs.html#428">Source</a><h4 class="code-header">fn <a href="#tymethod.set_f3dy" class="fn">set_f3dy</a>(&amp;mut self, f3dy: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>)</h4></section></summary><div class="docblock"><h6 id="property-f3dy-1"><a class="doc-anchor" href="#property-f3dy-1">§</a>Property <code>f3dy</code></h6>
+<p>The Y position in a 3D flow</p>
+<p>Data Type: <code>Number</code></p>
+<p>Socket Type: <code>None</code></p>
+<p>Mutability: <code>Mutable</code></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.f3dz" class="method"><a class="src rightside" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/flow_3_d.rs.html#440">Source</a><h4 class="code-header">fn <a href="#tymethod.f3dz" class="fn">f3dz</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a></h4></section></summary><div class="docblock"><h6 id="property-f3dz"><a class="doc-anchor" href="#property-f3dz">§</a>Property <code>f3dz</code></h6>
+<p>The Z position in a 3D flow</p>
+<p>Data Type: <code>Number</code></p>
+<p>Socket Type: <code>None</code></p>
+<p>Mutability: <code>Mutable</code></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_f3dz" class="method"><a class="src rightside" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/flow_3_d.rs.html#452">Source</a><h4 class="code-header">fn <a href="#tymethod.set_f3dz" class="fn">set_f3dz</a>(&amp;mut self, f3dz: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>)</h4></section></summary><div class="docblock"><h6 id="property-f3dz-1"><a class="doc-anchor" href="#property-f3dz-1">§</a>Property <code>f3dz</code></h6>
+<p>The Z position in a 3D flow</p>
+<p>Data Type: <code>Number</code></p>
+<p>Socket Type: <code>None</code></p>
+<p>Mutability: <code>Mutable</code></p>
+</div></details></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><section id="impl-Flow3D-for-Comment" class="impl"><a class="src rightside" href="../../../../src/reactive_graph_flow_model/reactive_graph/flow/comment.rs.html#1187-1356">Source</a><a href="#impl-Flow3D-for-Comment" class="anchor">§</a><h3 class="code-header">impl <a class="trait" href="trait.Flow3D.html" title="trait reactive_graph_flow_model::reactive_graph::flow::flow_3_d::Flow3D">Flow3D</a> for <a class="struct" href="../comment/struct.Comment.html" title="struct reactive_graph_flow_model::reactive_graph::flow::comment::Comment">Comment</a></h3></section></div><script src="../../../../trait.impl/reactive_graph_flow_model/reactive_graph/flow/flow_3_d/trait.Flow3D.js" async></script></section></div></main></body></html>

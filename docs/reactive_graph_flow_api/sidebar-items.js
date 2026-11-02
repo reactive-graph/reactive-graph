@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["flow_system","flow_type_system_registrator"]};

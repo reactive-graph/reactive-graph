@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"static":["TYPE_SYSTEM_ID"],"struct":["CommandTypeSystemRegistratorImpl"]};

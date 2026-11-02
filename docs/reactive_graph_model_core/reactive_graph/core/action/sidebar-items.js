@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["ACTION_NAMESPACE"],"enum":["ActionProperties"],"static":["ACTION","ACTION_EXTENSIONS","ACTION_TYPE"],"struct":["ActionPropertiesIterator"],"trait":["Action"]};

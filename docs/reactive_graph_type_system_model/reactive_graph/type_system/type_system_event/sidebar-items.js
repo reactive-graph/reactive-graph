@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["TYPE_SYSTEM_EVENT_NAMESPACE"],"enum":["TypeSystemEventProperties"],"static":["TYPE_SYSTEM_EVENT","TYPE_SYSTEM_EVENT_COMPONENTS","TYPE_SYSTEM_EVENT_EXTENSIONS","TYPE_SYSTEM_EVENT_TYPE"],"struct":["TypeSystemEvent","TypeSystemEventPropertiesIterator"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["DESCRIBABLE_NAMESPACE"],"enum":["DescribableProperties"],"static":["DESCRIBABLE","DESCRIBABLE_EXTENSIONS","DESCRIBABLE_TYPE"],"struct":["DescribablePropertiesIterator"],"trait":["Describable"]};

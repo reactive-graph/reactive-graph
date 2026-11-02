@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["components","description","extensions","name","properties","relationInstanceId"]};

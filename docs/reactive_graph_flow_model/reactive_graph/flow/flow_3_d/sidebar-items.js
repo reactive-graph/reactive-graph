@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["FLOW_3_D_NAMESPACE"],"enum":["Flow3DProperties"],"static":["FLOW_3_D","FLOW_3_D_EXTENSIONS","FLOW_3_D_TYPE"],"struct":["Flow3DPropertiesIterator"],"trait":["Flow3D"]};

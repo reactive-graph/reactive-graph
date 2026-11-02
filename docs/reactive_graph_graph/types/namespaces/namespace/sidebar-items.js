@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["NamespaceError"],"static":["NAMESPACE_SEPARATOR","RELATIVE_PATH_SEPARATOR"],"struct":["Namespace","Namespaces"]};

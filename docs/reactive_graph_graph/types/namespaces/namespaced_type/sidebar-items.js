@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["NAMESPACED_TYPE_PATTERN"],"static":["NAMESPACED_TYPE_REGEX"],"struct":["NamespacedType","NamespacedTypes"],"trait":["NamespacedTypeConstructor","NamespacedTypeGetter"]};

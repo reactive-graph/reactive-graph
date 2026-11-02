@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["get_flow_mutation_type","register_flow_type_mutation_objects"],"mod":["delete","export","trigger","update"]};

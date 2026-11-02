@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["add_properties_as_field_arguments","add_property_type_container_properties_as_field_arguments","add_variables_container_properties_as_field_arguments","filter_instances_by_properties"]};

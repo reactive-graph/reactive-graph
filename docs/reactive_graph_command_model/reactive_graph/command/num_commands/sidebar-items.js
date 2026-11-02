@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["NUM_COMMANDS_NAMESPACE"],"enum":["NumCommandsProperties"],"static":["NUM_COMMANDS","NUM_COMMANDS_COMPONENTS","NUM_COMMANDS_EXTENSIONS","NUM_COMMANDS_TYPE"],"struct":["NumCommands","NumCommandsPropertiesIterator"]};

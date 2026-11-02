@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["BehaviourFunctions","BehaviourFunctionsReadOnlyView","NamespacedBehaviourFunctions"],"type":["BehaviourFactoryCreator"]};
+window.SIDEBAR_ITEMS = {"struct":["BehaviourFunctions","BehaviourFunctionsReadOnlyView"],"type":["BehaviourFactoryCreator"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["namespaced_type_container","namespaced_type_id_container"],"type":["Namespaces"]};
+window.SIDEBAR_ITEMS = {"mod":["namespace","namespaced_type","namespaced_type_container","namespaced_type_errors","namespaced_type_id_container","namespaced_tys","segment"]};

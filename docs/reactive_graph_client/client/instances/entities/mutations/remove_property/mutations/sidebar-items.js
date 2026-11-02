@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["remove_properties_by_name","remove_properties_by_type","remove_property_by_name","remove_property_by_type"],"struct":["MutationEntityInstances","MutationInstances","RemoveProperties"]};

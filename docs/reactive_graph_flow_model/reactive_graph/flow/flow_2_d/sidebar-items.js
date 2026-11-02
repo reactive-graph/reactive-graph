@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["FLOW_2_D_NAMESPACE"],"enum":["Flow2DProperties"],"static":["FLOW_2_D","FLOW_2_D_EXTENSIONS","FLOW_2_D_TYPE"],"struct":["Flow2DPropertiesIterator"],"trait":["Flow2D"]};

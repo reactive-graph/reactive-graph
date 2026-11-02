@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["const_properties_comment","const_property_comment","generate_const_properties_enum"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["component_or_entity_type_id","relation_component_type_id","relation_type","relation_type_cardinality","relation_type_errors","relation_type_id"]};
+window.SIDEBAR_ITEMS = {"mod":["inbound_outbound_type","relation_component_type_id","relation_extension_type_id","relation_type","relation_type_cardinality","relation_type_errors","relation_type_id","relation_type_importer"]};

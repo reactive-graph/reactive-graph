@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["RelationInstanceTypeId"]};
+window.SIDEBAR_ITEMS = {"constant":["RELATION_INSTANCE_TYPE_ID_PATTERN"],"static":["RELATION_INSTANCE_TYPE_ID_REGEX"],"struct":["RelationInstanceTypeId"]};

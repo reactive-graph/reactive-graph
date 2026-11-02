@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["GraphQLComponent"]};
+window.SIDEBAR_ITEMS = {"struct":["GraphQLComponent","GraphQLComponents"]};

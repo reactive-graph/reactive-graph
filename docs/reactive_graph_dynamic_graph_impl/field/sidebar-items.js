@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["component","datatype","entity","flow","json","namespace","property_instance","relation"]};
+window.SIDEBAR_ITEMS = {"fn":["add_optional_field","optional_field_to_vec"],"mod":["create","delete","entity","export","flow","json","namespace","property","property_instance","reactive_instance","relation","trigger","update"]};

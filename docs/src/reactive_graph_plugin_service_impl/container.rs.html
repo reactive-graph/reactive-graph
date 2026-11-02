@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/plugin/service/impl/src/container.rs`."><title>container.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="reactive_graph_plugin_service_impl" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (0060d5a2a 2025-08-04)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">reactive_graph_plugin_service_impl/</div>container.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>std::fs;
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/plugin/service/impl/src/container.rs`."><title>container.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="reactive_graph_plugin_service_impl" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0-nightly (b33119ffd 2025-12-04)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">reactive_graph_plugin_service_impl/</div>container.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>std::fs;
 <a href=#2 id=2 data-nosnippet>2</a><span class="kw">use </span>std::path::PathBuf;
 <a href=#3 id=3 data-nosnippet>3</a><span class="kw">use </span>std::sync::Arc;
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>std::sync::RwLock;
@@ -85,7 +85,7 @@
 <a href=#85 id=85 data-nosnippet>85</a>
 <a href=#86 id=86 data-nosnippet>86</a>    <span class="doccomment">/// Moves the file from the folder `deploy` to the folder `installed`
 <a href=#87 id=87 data-nosnippet>87</a>    </span><span class="kw">pub fn </span>deploy_dll(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; PluginTransitionResult {
-<a href=#88 id=88 data-nosnippet>88</a>        <span class="kw">if </span><span class="self">self</span>.state != PluginState::Refreshing(PluginRefreshingState::Deploying) {
+<a href=#88 id=88 data-nosnippet>88</a>        <span class="kw">if </span><span class="self">self</span>.<span class="macro">state !</span>= PluginState::Refreshing(PluginRefreshingState::Deploying) {
 <a href=#89 id=89 data-nosnippet>89</a>            <span class="kw">return </span>NoChange;
 <a href=#90 id=90 data-nosnippet>90</a>        }
 <a href=#91 id=91 data-nosnippet>91</a>        <span class="kw">let </span><span class="prelude-val">Some</span>(deploy_path) = get_deploy_path(<span class="kw-2">&amp;</span><span class="self">self</span>.path) <span class="kw">else </span>{
@@ -133,7 +133,7 @@
 <a href=#133 id=133 data-nosnippet>133</a>
 <a href=#134 id=134 data-nosnippet>134</a>    <span class="doccomment">/// Loads the dynamic link library into memory.
 <a href=#135 id=135 data-nosnippet>135</a>    </span><span class="kw">pub fn </span>load_dll(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; PluginTransitionResult {
-<a href=#136 id=136 data-nosnippet>136</a>        <span class="kw">if </span><span class="self">self</span>.state != PluginState::Installed &amp;&amp; <span class="self">self</span>.state != PluginState::Refreshing(PluginRefreshingState::Installed) {
+<a href=#136 id=136 data-nosnippet>136</a>        <span class="kw">if </span><span class="self">self</span>.<span class="macro">state !</span>= PluginState::Installed &amp;&amp; <span class="self">self</span>.<span class="macro">state !</span>= PluginState::Refreshing(PluginRefreshingState::Installed) {
 <a href=#137 id=137 data-nosnippet>137</a>            <span class="kw">return </span>NoChange;
 <a href=#138 id=138 data-nosnippet>138</a>        }
 <a href=#139 id=139 data-nosnippet>139</a>        <span class="kw">let </span>refreshing = <span class="self">self</span>.state == PluginState::Refreshing(PluginRefreshingState::Installed);
@@ -161,8 +161,8 @@
 <a href=#161 id=161 data-nosnippet>161</a>
 <a href=#162 id=162 data-nosnippet>162</a>    <span class="doccomment">/// Unloads the dynamic link library.
 <a href=#163 id=163 data-nosnippet>163</a>    </span><span class="kw">pub fn </span>unload_dll(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; PluginTransitionResult {
-<a href=#164 id=164 data-nosnippet>164</a>        <span class="kw">if </span><span class="self">self</span>.state != PluginState::Uninstalling(PluginUninstallingState::UnloadDll)
-<a href=#165 id=165 data-nosnippet>165</a>            &amp;&amp; <span class="self">self</span>.state != PluginState::Refreshing(PluginRefreshingState::Uninstalling(PluginUninstallingState::UnloadDll))
+<a href=#164 id=164 data-nosnippet>164</a>        <span class="kw">if </span><span class="self">self</span>.<span class="macro">state !</span>= PluginState::Uninstalling(PluginUninstallingState::UnloadDll)
+<a href=#165 id=165 data-nosnippet>165</a>            &amp;&amp; <span class="self">self</span>.<span class="macro">state !</span>= PluginState::Refreshing(PluginRefreshingState::Uninstalling(PluginUninstallingState::UnloadDll))
 <a href=#166 id=166 data-nosnippet>166</a>        {
 <a href=#167 id=167 data-nosnippet>167</a>            <span class="kw">return </span>NoChange;
 <a href=#168 id=168 data-nosnippet>168</a>        }
@@ -189,8 +189,8 @@
 <a href=#189 id=189 data-nosnippet>189</a>
 <a href=#190 id=190 data-nosnippet>190</a>    <span class="doccomment">/// Uninstalls the dynamic link library by removing the file from the plugin folder.
 <a href=#191 id=191 data-nosnippet>191</a>    </span><span class="kw">pub fn </span>uninstall_dll(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; PluginTransitionResult {
-<a href=#192 id=192 data-nosnippet>192</a>        <span class="kw">if </span><span class="self">self</span>.state != PluginState::Uninstalling(PluginUninstallingState::UninstallDll)
-<a href=#193 id=193 data-nosnippet>193</a>            &amp;&amp; <span class="self">self</span>.state != PluginState::Refreshing(PluginRefreshingState::Uninstalling(PluginUninstallingState::UninstallDll))
+<a href=#192 id=192 data-nosnippet>192</a>        <span class="kw">if </span><span class="self">self</span>.<span class="macro">state !</span>= PluginState::Uninstalling(PluginUninstallingState::UninstallDll)
+<a href=#193 id=193 data-nosnippet>193</a>            &amp;&amp; <span class="self">self</span>.<span class="macro">state !</span>= PluginState::Refreshing(PluginRefreshingState::Uninstalling(PluginUninstallingState::UninstallDll))
 <a href=#194 id=194 data-nosnippet>194</a>        {
 <a href=#195 id=195 data-nosnippet>195</a>            <span class="kw">return </span>NoChange;
 <a href=#196 id=196 data-nosnippet>196</a>        }
@@ -224,8 +224,8 @@
 <a href=#224 id=224 data-nosnippet>224</a>    <span class="doccomment">/// Loads the plugin declaration from the dynamic link library.
 <a href=#225 id=225 data-nosnippet>225</a>    /// The plugin declaration contains version information and a registration method.
 <a href=#226 id=226 data-nosnippet>226</a>    </span><span class="kw">pub fn </span>load_plugin_declaration(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; PluginTransitionResult {
-<a href=#227 id=227 data-nosnippet>227</a>        <span class="kw">if </span><span class="self">self</span>.state != PluginState::Resolving(PluginResolveState::Loaded)
-<a href=#228 id=228 data-nosnippet>228</a>            &amp;&amp; <span class="self">self</span>.state != PluginState::Refreshing(PluginRefreshingState::Resolving(PluginResolveState::Loaded))
+<a href=#227 id=227 data-nosnippet>227</a>        <span class="kw">if </span><span class="self">self</span>.<span class="macro">state !</span>= PluginState::Resolving(PluginResolveState::Loaded)
+<a href=#228 id=228 data-nosnippet>228</a>            &amp;&amp; <span class="self">self</span>.<span class="macro">state !</span>= PluginState::Refreshing(PluginRefreshingState::Resolving(PluginResolveState::Loaded))
 <a href=#229 id=229 data-nosnippet>229</a>        {
 <a href=#230 id=230 data-nosnippet>230</a>            <span class="kw">return </span>NoChange;
 <a href=#231 id=231 data-nosnippet>231</a>        }
@@ -260,8 +260,8 @@
 <a href=#260 id=260 data-nosnippet>260</a>
 <a href=#261 id=261 data-nosnippet>261</a>    <span class="doccomment">/// Checks for compatibility.
 <a href=#262 id=262 data-nosnippet>262</a>    </span><span class="kw">pub fn </span>check_compatibility(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; PluginTransitionResult {
-<a href=#263 id=263 data-nosnippet>263</a>        <span class="kw">if </span><span class="self">self</span>.state != PluginState::Resolving(PluginResolveState::PluginDeclarationLoaded)
-<a href=#264 id=264 data-nosnippet>264</a>            &amp;&amp; <span class="self">self</span>.state != PluginState::Refreshing(PluginRefreshingState::Resolving(PluginResolveState::PluginDeclarationLoaded))
+<a href=#263 id=263 data-nosnippet>263</a>        <span class="kw">if </span><span class="self">self</span>.<span class="macro">state !</span>= PluginState::Resolving(PluginResolveState::PluginDeclarationLoaded)
+<a href=#264 id=264 data-nosnippet>264</a>            &amp;&amp; <span class="self">self</span>.<span class="macro">state !</span>= PluginState::Refreshing(PluginRefreshingState::Resolving(PluginResolveState::PluginDeclarationLoaded))
 <a href=#265 id=265 data-nosnippet>265</a>        {
 <a href=#266 id=266 data-nosnippet>266</a>            <span class="kw">return </span>NoChange;
 <a href=#267 id=267 data-nosnippet>267</a>        }
@@ -269,7 +269,7 @@
 <a href=#269 id=269 data-nosnippet>269</a>        <span class="kw">let </span>reader = <span class="self">self</span>.plugin_declaration.read().unwrap();
 <a href=#270 id=270 data-nosnippet>270</a>        <span class="kw">match </span><span class="kw-2">*</span>reader {
 <a href=#271 id=271 data-nosnippet>271</a>            <span class="prelude-val">Some</span>(plugin_declaration) =&gt; {
-<a href=#272 id=272 data-nosnippet>272</a>                <span class="kw">if </span>plugin_declaration.rustc_version != RUSTC_VERSION {
+<a href=#272 id=272 data-nosnippet>272</a>                <span class="kw">if </span>plugin_declaration.<span class="macro">rustc_version !</span>= RUSTC_VERSION {
 <a href=#273 id=273 data-nosnippet>273</a>                    <span class="macro">error!</span>(
 <a href=#274 id=274 data-nosnippet>274</a>                        <span class="string">"Plugin {} is not compatible: Expected rustc_version {} - Actual {}"</span>,
 <a href=#275 id=275 data-nosnippet>275</a>                        <span class="self">self</span>.id, RUSTC_VERSION, plugin_declaration.rustc_version
@@ -281,7 +281,7 @@
 <a href=#281 id=281 data-nosnippet>281</a>                    }
 <a href=#282 id=282 data-nosnippet>282</a>                    <span class="kw">return </span>Changed;
 <a href=#283 id=283 data-nosnippet>283</a>                }
-<a href=#284 id=284 data-nosnippet>284</a>                <span class="kw">if </span>plugin_declaration.plugin_api_version != PLUGIN_API_VERSION {
+<a href=#284 id=284 data-nosnippet>284</a>                <span class="kw">if </span>plugin_declaration.<span class="macro">plugin_api_version !</span>= PLUGIN_API_VERSION {
 <a href=#285 id=285 data-nosnippet>285</a>                    <span class="macro">error!</span>(
 <a href=#286 id=286 data-nosnippet>286</a>                        <span class="string">"Plugin {} is not compatible: Expected plugin_api_version {} - Actual {}"</span>,
 <a href=#287 id=287 data-nosnippet>287</a>                        <span class="self">self</span>.id, PLUGIN_API_VERSION, plugin_declaration.plugin_api_version
@@ -314,8 +314,8 @@
 <a href=#314 id=314 data-nosnippet>314</a>
 <a href=#315 id=315 data-nosnippet>315</a>    <span class="attr">#[allow(clippy::redundant_clone)]
 <a href=#316 id=316 data-nosnippet>316</a>    </span><span class="kw">pub fn </span>load_plugin_dependencies(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; PluginTransitionResult {
-<a href=#317 id=317 data-nosnippet>317</a>        <span class="kw">if </span><span class="self">self</span>.state != PluginState::Resolving(PluginResolveState::PluginCompatible)
-<a href=#318 id=318 data-nosnippet>318</a>            &amp;&amp; <span class="self">self</span>.state != PluginState::Refreshing(PluginRefreshingState::Resolving(PluginResolveState::PluginCompatible))
+<a href=#317 id=317 data-nosnippet>317</a>        <span class="kw">if </span><span class="self">self</span>.<span class="macro">state !</span>= PluginState::Resolving(PluginResolveState::PluginCompatible)
+<a href=#318 id=318 data-nosnippet>318</a>            &amp;&amp; <span class="self">self</span>.<span class="macro">state !</span>= PluginState::Refreshing(PluginRefreshingState::Resolving(PluginResolveState::PluginCompatible))
 <a href=#319 id=319 data-nosnippet>319</a>        {
 <a href=#320 id=320 data-nosnippet>320</a>            <span class="kw">return </span>NoChange;
 <a href=#321 id=321 data-nosnippet>321</a>        }
@@ -341,8 +341,8 @@
 <a href=#341 id=341 data-nosnippet>341</a>    <span class="doccomment">/// Constructs the proxy for the plugin.
 <a href=#342 id=342 data-nosnippet>342</a>    </span><span class="attr">#[allow(clippy::collapsible_match)]
 <a href=#343 id=343 data-nosnippet>343</a>    </span><span class="kw">pub fn </span>construct_proxy(<span class="kw-2">&amp;mut </span><span class="self">self</span>, plugin_context: Arc&lt;<span class="kw">dyn </span>PluginContext + Send + Sync&gt;) -&gt; PluginTransitionResult {
-<a href=#344 id=344 data-nosnippet>344</a>        <span class="kw">if </span><span class="self">self</span>.state != PluginState::Starting(PluginStartingState::ConstructingProxy)
-<a href=#345 id=345 data-nosnippet>345</a>            &amp;&amp; <span class="self">self</span>.state != PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::ConstructingProxy))
+<a href=#344 id=344 data-nosnippet>344</a>        <span class="kw">if </span><span class="self">self</span>.<span class="macro">state !</span>= PluginState::Starting(PluginStartingState::ConstructingProxy)
+<a href=#345 id=345 data-nosnippet>345</a>            &amp;&amp; <span class="self">self</span>.<span class="macro">state !</span>= PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::ConstructingProxy))
 <a href=#346 id=346 data-nosnippet>346</a>        {
 <a href=#347 id=347 data-nosnippet>347</a>            <span class="kw">return </span>NoChange;
 <a href=#348 id=348 data-nosnippet>348</a>        }
@@ -387,8 +387,8 @@
 <a href=#387 id=387 data-nosnippet>387</a>    <span class="doccomment">/// Calls the activate method of the plugin.
 <a href=#388 id=388 data-nosnippet>388</a>    </span><span class="kw">pub async fn </span>activate(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; PluginTransitionResult {
 <a href=#389 id=389 data-nosnippet>389</a>        <span class="comment">// info!("{:?}", self.state);
-<a href=#390 id=390 data-nosnippet>390</a>        </span><span class="kw">if </span><span class="self">self</span>.state != PluginState::Starting(PluginStartingState::Activating)
-<a href=#391 id=391 data-nosnippet>391</a>            &amp;&amp; <span class="self">self</span>.state != PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Activating))
+<a href=#390 id=390 data-nosnippet>390</a>        </span><span class="kw">if </span><span class="self">self</span>.<span class="macro">state !</span>= PluginState::Starting(PluginStartingState::Activating)
+<a href=#391 id=391 data-nosnippet>391</a>            &amp;&amp; <span class="self">self</span>.<span class="macro">state !</span>= PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Activating))
 <a href=#392 id=392 data-nosnippet>392</a>        {
 <a href=#393 id=393 data-nosnippet>393</a>            <span class="kw">return </span>NoChange;
 <a href=#394 id=394 data-nosnippet>394</a>        }
@@ -431,8 +431,8 @@
 <a href=#431 id=431 data-nosnippet>431</a>
 <a href=#432 id=432 data-nosnippet>432</a>    <span class="doccomment">/// Calls the deactivate method of the plugin
 <a href=#433 id=433 data-nosnippet>433</a>    </span><span class="kw">pub async fn </span>deactivate(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; PluginTransitionResult {
-<a href=#434 id=434 data-nosnippet>434</a>        <span class="kw">if </span><span class="self">self</span>.state != PluginState::Stopping(PluginStoppingState::Deactivating)
-<a href=#435 id=435 data-nosnippet>435</a>            &amp;&amp; <span class="self">self</span>.state != PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::Deactivating))
+<a href=#434 id=434 data-nosnippet>434</a>        <span class="kw">if </span><span class="self">self</span>.<span class="macro">state !</span>= PluginState::Stopping(PluginStoppingState::Deactivating)
+<a href=#435 id=435 data-nosnippet>435</a>            &amp;&amp; <span class="self">self</span>.<span class="macro">state !</span>= PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::Deactivating))
 <a href=#436 id=436 data-nosnippet>436</a>        {
 <a href=#437 id=437 data-nosnippet>437</a>            <span class="kw">return </span>NoChange;
 <a href=#438 id=438 data-nosnippet>438</a>        }
@@ -465,8 +465,8 @@
 <a href=#465 id=465 data-nosnippet>465</a>
 <a href=#466 id=466 data-nosnippet>466</a>    <span class="doccomment">/// Removes the proxy from the plugin.
 <a href=#467 id=467 data-nosnippet>467</a>    </span><span class="kw">pub fn </span>remove_proxy(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; PluginTransitionResult {
-<a href=#468 id=468 data-nosnippet>468</a>        <span class="kw">if </span><span class="self">self</span>.state != PluginState::Stopping(PluginStoppingState::RemoveProxy)
-<a href=#469 id=469 data-nosnippet>469</a>            &amp;&amp; <span class="self">self</span>.state != PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::RemoveProxy))
+<a href=#468 id=468 data-nosnippet>468</a>        <span class="kw">if </span><span class="self">self</span>.<span class="macro">state !</span>= PluginState::Stopping(PluginStoppingState::RemoveProxy)
+<a href=#469 id=469 data-nosnippet>469</a>            &amp;&amp; <span class="self">self</span>.<span class="macro">state !</span>= PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::RemoveProxy))
 <a href=#470 id=470 data-nosnippet>470</a>        {
 <a href=#471 id=471 data-nosnippet>471</a>            <span class="kw">return </span>NoChange;
 <a href=#472 id=472 data-nosnippet>472</a>        }
@@ -605,4 +605,5 @@
 <a href=#605 id=605 data-nosnippet>605</a>        <span class="kw">let </span>reader = <span class="self">self</span>.plugin_declaration.read().unwrap();
 <a href=#606 id=606 data-nosnippet>606</a>        (<span class="kw-2">*</span>reader).map(|plugin_declaration| plugin_declaration.plugin_api_version.to_string())
 <a href=#607 id=607 data-nosnippet>607</a>    }
-<a href=#608 id=608 data-nosnippet>608</a>}</code></pre></div></section></main></body></html>
+<a href=#608 id=608 data-nosnippet>608</a>}
+</code></pre></div></section></main></body></html>

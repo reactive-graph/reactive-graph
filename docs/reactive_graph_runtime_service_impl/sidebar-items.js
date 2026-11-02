@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["command","runtime_system_impl","shutdown_manager_impl"]};
+window.SIDEBAR_ITEMS = {"mod":["command","runtime_system_impl","runtime_type_system_registrator_impl","shutdown_manager_impl"]};

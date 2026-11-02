@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["generate_const_type_definition"]};

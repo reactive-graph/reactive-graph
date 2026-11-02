@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["namespace_type_name","namespace_type_ref","object_type_name","object_type_ref","object_type_ref_list","object_type_ref_return_list"]};

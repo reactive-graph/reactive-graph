@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["EVENT_NAMESPACE"],"enum":["EventProperties"],"static":["EVENT","EVENT_EXTENSIONS","EVENT_TYPE"],"struct":["EventPropertiesIterator"],"trait":["Event"]};

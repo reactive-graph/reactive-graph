@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["r_temp_dir"]};
