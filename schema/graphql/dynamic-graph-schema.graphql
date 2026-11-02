@@ -1,1 +1,74 @@
+"""
+Any entity.
+"""
+union AllEntities =
 
+"""
+Any flow.
+"""
+union AllFlows =
+
+"""
+Any relation.
+"""
+union AllRelations =
+
+"""
+Entities have outbound and inbound relations as well as components and properties 
+"""
+interface Entity {
+	_namespace: ID!
+	id: ID!
+}
+
+"""
+Flows have entities and relations.
+"""
+interface Flow {
+	_namespace: ID!
+	id: ID!
+}
+
+scalar JSON
+
+"""
+Mutations
+"""
+type Mutation {
+	"""
+	Root namespace
+	"""
+	_namespace: ID!
+}
+
+"""
+Queries
+"""
+type Query {
+	"""
+	Root namespace
+	"""
+	_namespace: ID!
+}
+
+"""
+Relations have a outbound entity and a inbound entity as well as components and properties,
+"""
+interface Relation {
+	_namespace: ID!
+	id: ID!
+	instance_id: ID!
+}
+
+"""
+Directs the executor to include this field or fragment only when the `if` argument is true.
+"""
+directive @include(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+"""
+Directs the executor to skip this field or fragment when the `if` argument is true.
+"""
+directive @skip(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+schema {
+	query: Query
+	mutation: Mutation
+}
